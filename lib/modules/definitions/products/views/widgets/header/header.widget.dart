@@ -6,14 +6,6 @@ import 'package:rst/modules/definitions/products/views/widgets/forms/adding/prod
 import 'package:rst/widgets/add_button/add_button.widget.dart';
 import 'package:rst/widgets/icon_button/icon_button.widget.dart';
 
-final searchProvider = StateProvider.family<String, String>((ref, name) {
-  return '';
-});
-
-final isSearchingProvider = StateProvider.family<bool, String>((ref, name) {
-  return false;
-});
-
 class ProductsSortOptions extends ConsumerWidget {
   const ProductsSortOptions({super.key});
 

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/definitions/products/models/data/product.model.dart';
 
 final productNameProvider = StateProvider<String>(
   (ref) {
@@ -17,3 +18,7 @@ final productPhotoProvider = StateProvider<String?>(
     return;
   },
 );
+
+final productsListStreamProvider = StreamProvider<List<Product>>((ref) async* {
+  yield* <Product>[] as Stream<List<Product>>;
+});
