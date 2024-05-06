@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rst/modules/home/models/sidebar_option.model.dart';
+import 'package:rst/modules/home/models/sidebar_option/sidebar_option.model.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 import 'package:rst/widgets/text/text.widget.dart';

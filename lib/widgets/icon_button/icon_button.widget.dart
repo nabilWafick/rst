@@ -1,15 +1,14 @@
-/*
-import 'package:communitybank/utils/colors/colors.util.dart';
-import 'package:communitybank/views/widgets/globals/text/text.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/utils/colors/colors.util.dart';
+import 'package:rst/widgets/text/text.widget.dart';
 
-class CBIconButton extends ConsumerWidget {
+class RSTIconButton extends ConsumerWidget {
   final IconData icon;
   final String text;
   final Function() onTap;
 
-  const CBIconButton({
+  const RSTIconButton({
     super.key,
     required this.icon,
     required this.text,
@@ -26,7 +25,7 @@ class CBIconButton extends ConsumerWidget {
         onTap: onTap,
         child: Card(
           elevation: 5.0,
-          color: CBColors.primaryColor,
+          color: RSTColors.primaryColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 10.0,
@@ -35,16 +34,16 @@ class CBIconButton extends ConsumerWidget {
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(
                 icon,
-                color: CBColors.backgroundColor,
+                color: RSTColors.backgroundColor,
               ),
               const SizedBox(
                 width: 15.0,
               ),
-              CBText(
+              RSTText(
                 text: text,
                 fontSize: 12.0,
                 fontWeight: FontWeight.w500,
-                color: CBColors.backgroundColor,
+                color: RSTColors.backgroundColor,
               )
             ]),
           ),
@@ -53,4 +52,3 @@ class CBIconButton extends ConsumerWidget {
     );
   }
 }
-*/

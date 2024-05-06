@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:rst/modules/home/models/suboption.model.dart';
+import 'package:rst/modules/home/models/suboption/suboption.model.dart';
 
 class SidebarOptionModel {
   final IconData icon;
