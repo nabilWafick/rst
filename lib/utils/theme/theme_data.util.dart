@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CBThemeData {
+class RSTThemeData {
   static final lightTheme = ThemeData(
     scrollbarTheme: ScrollbarThemeData(
       thumbVisibility: MaterialStateProperty.all(true),

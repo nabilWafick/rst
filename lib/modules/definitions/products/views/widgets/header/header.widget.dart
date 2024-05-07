@@ -6,8 +6,8 @@ import 'package:rst/modules/definitions/products/views/widgets/forms/adding/prod
 import 'package:rst/widgets/add_button/add_button.widget.dart';
 import 'package:rst/widgets/icon_button/icon_button.widget.dart';
 
-class ProductsSortOptions extends ConsumerWidget {
-  const ProductsSortOptions({super.key});
+class ProductsPageHeader extends ConsumerWidget {
+  const ProductsPageHeader({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,11 +22,21 @@ class ProductsSortOptions extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RSTIconButton(
-                icon: Icons.refresh,
+                icon: Icons.refresh_outlined,
                 text: 'Rafraichir',
                 onTap: () {
-                  // ref.invalidate(productsListStreamProvider);
+                  ref.invalidate(productsListStreamProvider);
                 },
+              ),
+              RSTIconButton(
+                icon: Icons.print_outlined,
+                text: 'Imprimer',
+                onTap: () {},
+              ),
+              RSTIconButton(
+                icon: Icons.view_module_outlined,
+                text: 'Exporter',
+                onTap: () {},
               ),
               RSTAddButton(
                 onTap: () {

@@ -20,5 +20,6 @@ final productPhotoProvider = StateProvider<String?>(
 );
 
 final productsListStreamProvider = StreamProvider<List<Product>>((ref) async* {
-  yield* <Product>[] as Stream<List<Product>>;
+  yield* Stream<List<Product>>.periodic(
+      const Duration(seconds: 1), (x) => <Product>[]);
 });

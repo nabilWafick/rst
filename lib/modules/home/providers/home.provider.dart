@@ -7,19 +7,19 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
   (ref) {
     return [
       SidebarOptionModel(
-        icon: Icons.stacked_bar_chart,
+        icon: Icons.dashboard_outlined,
         name: 'Dashboard',
         subOptions: [
           SidebarSubOptionModel(
             index: 0,
-            icon: Icons.stacked_bar_chart,
+            icon: Icons.stacked_bar_chart_outlined,
             name: 'Dashboard',
           ),
         ],
         showSubOptions: false,
       ),
       SidebarOptionModel(
-        icon: Icons.dataset,
+        icon: Icons.table_chart_outlined,
         name: 'Définitions',
         subOptions: [
           /* SidebarSubOptionModel(
@@ -29,7 +29,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
                 ),*/
           SidebarSubOptionModel(
             index: 1,
-            icon: Icons.inventory,
+            icon: Icons.inventory_2_outlined,
             name: 'Produits',
           ),
           SidebarSubOptionModel(
@@ -39,147 +39,147 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
           ),
           SidebarSubOptionModel(
             index: 3,
-            icon: Icons.supervised_user_circle,
+            icon: Icons.supervised_user_circle_outlined,
             name: 'Chargés de comptes',
           ),
           SidebarSubOptionModel(
             index: 4,
-            icon: Icons.group,
+            icon: Icons.group_outlined,
             name: 'Catégories Client',
           ),
           SidebarSubOptionModel(
             index: 5,
-            icon: Icons.work,
+            icon: Icons.work_outlined,
             name: 'Activités Économiques',
           ),
           SidebarSubOptionModel(
             index: 6,
-            icon: Icons.person,
+            icon: Icons.person_outlined,
             name: 'Statuts Personnels',
           ),
           SidebarSubOptionModel(
             index: 7,
-            icon: Icons.location_city,
+            icon: Icons.location_city_outlined,
             name: 'Localités',
           ),
           SidebarSubOptionModel(
             index: 8,
-            icon: Icons.account_circle,
+            icon: Icons.account_circle_outlined,
             name: 'Clients',
           ),
           SidebarSubOptionModel(
             index: 9,
-            icon: Icons.admin_panel_settings,
+            icon: Icons.admin_panel_settings_outlined,
             name: 'Agents',
           ),
           SidebarSubOptionModel(
             index: 10,
-            icon: Icons.account_box,
+            icon: Icons.account_box_outlined,
             name: 'Comptes Clients',
           ),
           SidebarSubOptionModel(
             index: 11,
-            icon: Icons.payment,
+            icon: Icons.payment_outlined,
             name: 'Cartes',
           ),
         ],
         showSubOptions: true,
       ),
       SidebarOptionModel(
-        icon: Icons.account_balance,
+        icon: Icons.account_balance_outlined,
         name: 'Caisse',
         subOptions: [
           SidebarSubOptionModel(
             index: 12,
-            icon: Icons.payments,
+            icon: Icons.payments_outlined,
             name: 'Versements Collectes',
           ),
           SidebarSubOptionModel(
             index: 13,
-            icon: Icons.account_balance,
+            icon: Icons.account_balance_outlined,
             name: 'Opérations Caisse',
           ),
           SidebarSubOptionModel(
             index: 14,
-            icon: Icons.money,
+            icon: Icons.money_outlined,
             name: 'Règlements',
           ),
         ],
         showSubOptions: true,
       ),
       SidebarOptionModel(
-        icon: Icons.analytics,
+        icon: Icons.analytics_outlined,
         name: 'Activités',
         subOptions: [
           SidebarSubOptionModel(
             index: 15,
-            icon: Icons.analytics,
+            icon: Icons.analytics_outlined,
             name: ' Client',
           ),
           SidebarSubOptionModel(
             index: 16,
-            icon: Icons.analytics,
+            icon: Icons.analytics_outlined,
             name: 'Chargé de Compte',
           ),
           SidebarSubOptionModel(
             index: 17,
-            icon: Icons.analytics,
+            icon: Icons.analytics_outlined,
             name: 'Cartes Satisfaites',
           ),
         ],
         showSubOptions: true,
       ),
       SidebarOptionModel(
-        icon: Icons.stacked_line_chart,
+        icon: Icons.stacked_line_chart_outlined,
         name: 'Statistiques',
         subOptions: [
           SidebarSubOptionModel(
             index: 18,
-            icon: Icons.stacked_line_chart,
+            icon: Icons.stacked_line_chart_outlined,
             name: 'Types',
           ),
           SidebarSubOptionModel(
             index: 19,
-            icon: Icons.stacked_line_chart,
+            icon: Icons.stacked_line_chart_outlined,
             name: 'Produits',
           ),
           SidebarSubOptionModel(
             index: 20,
-            icon: Icons.query_stats,
+            icon: Icons.query_stats_outlined,
             name: 'Prévisions',
           ),
         ],
         showSubOptions: true,
       ),
       SidebarOptionModel(
-        icon: Icons.swap_vert,
+        icon: Icons.swap_vert_outlined,
         name: 'Transferts',
         subOptions: [
           SidebarSubOptionModel(
             index: 21,
-            icon: Icons.swap_vert,
+            icon: Icons.swap_vert_outlined,
             name: 'Entre Cartes',
           ),
           SidebarSubOptionModel(
             index: 22,
-            icon: Icons.swap_vert,
+            icon: Icons.swap_vert_outlined,
             name: 'Entre Comptes',
           ),
           SidebarSubOptionModel(
             index: 23,
-            icon: Icons.published_with_changes,
+            icon: Icons.published_with_changes_outlined,
             name: 'Validations',
           ),
         ],
         showSubOptions: true,
       ),
       SidebarOptionModel(
-        icon: Icons.inventory_2,
+        icon: Icons.widgets_outlined,
         name: 'Stocks',
         subOptions: [
           SidebarSubOptionModel(
             index: 24,
-            icon: Icons.stacked_bar_chart,
+            icon: Icons.stacked_bar_chart_outlined,
             name: 'Stocks',
           ),
         ],

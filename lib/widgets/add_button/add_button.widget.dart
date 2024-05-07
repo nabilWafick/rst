@@ -29,7 +29,7 @@ class RSTAddButton extends ConsumerWidget {
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(
-                Icons.add_circle,
+                Icons.add_circle_outline,
                 color: RSTColors.backgroundColor,
               ),
               SizedBox(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/definitions/products/views/page/products.page.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
+import 'package:rst/widget.test.dart';
 
 class MainBody extends ConsumerStatefulWidget {
   const MainBody({super.key});
@@ -10,9 +12,11 @@ class MainBody extends ConsumerStatefulWidget {
 
 class _MainBodyState extends ConsumerState<MainBody> {
   final pages = const <Widget>[
-    /* DashboardPage(),
+    WidgetTest(),
+    // DashboardPage(),
+
     ProductsPage(),
-    TypesPage(),
+    /* TypesPage(),
     CollectorsPage(),
     CustomersCategoriesPage(),
     EconomicalActivitiesPage(),
