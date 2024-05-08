@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rst/common/models/common.model.dart';
-import 'package:rst/modules/definitions/products/models/product.model.dart';
+import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
 
 class ProductsServices {
@@ -18,7 +18,9 @@ class ProductsServices {
 
       return ServiceResponse(
         statusCode: 201,
-        data: [response],
+        data: [
+          response as Map<String, dynamic>,
+        ],
         result: ServiceResult(
           en: 'Added',
           fr: 'Ajouté',
@@ -64,7 +66,9 @@ class ProductsServices {
 
       return ServiceResponse(
         statusCode: 200,
-        data: [response],
+        data: [
+          response as Map<String, dynamic>,
+        ],
       );
     } on DioException catch (error) {
       if (error.response != null) {
@@ -103,7 +107,7 @@ class ProductsServices {
 
       return ServiceResponse(
         statusCode: 200,
-        data: response,
+        data: response as List<Map<String, dynamic>>,
         result: ServiceResult(
           en: 'Updated',
           fr: 'Modifié',
@@ -151,7 +155,9 @@ class ProductsServices {
 
       return ServiceResponse(
         statusCode: 200,
-        data: [response],
+        data: [
+          response as Map<String, dynamic>,
+        ],
         result: ServiceResult(
           en: 'Updated',
           fr: 'Modifié',
@@ -187,7 +193,9 @@ class ProductsServices {
     }
   }
 
-  static Future<ServiceResponse> delete({required int productId}) async {
+  static Future<ServiceResponse> delete({
+    required int productId,
+  }) async {
     try {
       final response = await RSTApiConstants.dio.post(
         '$route/$productId',
@@ -195,7 +203,9 @@ class ProductsServices {
 
       return ServiceResponse(
         statusCode: 200,
-        data: [response],
+        data: [
+          response as Map<String, dynamic>,
+        ],
         result: ServiceResult(
           en: 'Deleted',
           fr: 'Supprimé',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:rst/modules/definitions/products/models/product.model.dart';
+import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/modules/definitions/products/services/products.service.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
