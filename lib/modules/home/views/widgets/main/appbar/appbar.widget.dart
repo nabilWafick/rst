@@ -5,7 +5,7 @@ import 'package:rst/modules/home/views/widgets/main/appbar/horizontal_scroller/h
 import 'package:rst/modules/home/views/widgets/sidebar/suboptions/suboption.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 import 'package:rst/utils/constants/constants.util.dart';
-import 'package:rst/widgets/text/text.widget.dart';
+import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final authenticatedAgentNameProvider = FutureProvider<String>((ref) async {

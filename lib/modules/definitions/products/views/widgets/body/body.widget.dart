@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:rst/functions/common/common.function.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/modules/definitions/products/views/widgets/forms/update/products_update.widget.dart';
-import 'package:rst/providers/common.provider.dart';
+import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
-import 'package:rst/widgets/search_input/search_input.widget.dart';
-import 'package:rst/widgets/text/text.widget.dart';
+import 'package:rst/common/widgets/search_input/search_input.widget.dart';
+import 'package:rst/common/widgets/text/text.widget.dart';
 
 class ProductsPageBody extends StatefulHookConsumerWidget {
   const ProductsPageBody({super.key});

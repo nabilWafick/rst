@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rst/widgets/global.widgets.dart';
+import 'package:rst/common/widgets/common.widgets.dart';
 
 class ProductsPageFooter extends ConsumerWidget {
   const ProductsPageFooter({super.key});

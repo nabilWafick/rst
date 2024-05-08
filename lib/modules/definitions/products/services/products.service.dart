@@ -1,44 +1,232 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:rst/modules/definitions/products/models/data/product.model.dart';
+import 'package:rst/common/models/common.model.dart';
+import 'package:rst/modules/definitions/products/models/product.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
 
 class ProductsServices {
-  static create({
+  static const route = '/products';
+
+  static Future<ServiceResponse> create({
     required Product product,
   }) async {
     try {
-      // 404
-      final response = await RSTApiConstants.dio.get(
-        '/products',
-        /*  data: product.toMap(
-            isAdding: true,
-          ),*/
-        queryParameters: {
-          'skip': 0,
-          'take': 10,
-        },
+      final response = await RSTApiConstants.dio.post(
+        route,
+        data: product.toMap(),
       );
 
-      debugPrint(
-        response.toString(),
+      return ServiceResponse(
+        statusCode: 201,
+        data: [response],
+        result: ServiceResult(
+          en: 'Added',
+          fr: 'Ajouté',
+        ),
+        message: ServiceMessage(
+          en: 'The product have been added successfully',
+          fr: 'Le produit a été ajouté avec succès',
+        ),
       );
     } on DioException catch (error) {
       if (error.response != null) {
-        debugPrint(
-          error.response?.data.toString(),
-        );
-        debugPrint(
-          error.response?.headers.toString(),
-        );
-        debugPrint(
-          error.response?.requestOptions.toString(),
-        );
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
       } else {
-        debugPrint(
-          error.requestOptions.toString(),
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
         );
-        debugPrint(error.message);
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getOne({
+    required int productId,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/$productId',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: [response],
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getMany({
+    required Map<String, dynamic> filterOptions,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        route,
+        queryParameters: filterOptions,
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response,
+        result: ServiceResult(
+          en: 'Updated',
+          fr: 'Modifié',
+        ),
+        message: ServiceMessage(
+          en: 'The product have been updated successfully',
+          fr: 'Le produit a été mis à jour avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> update({
+    required int productId,
+    required Product product,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.patch(
+        '$route/$productId',
+        data: product.toMap(),
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: [response],
+        result: ServiceResult(
+          en: 'Updated',
+          fr: 'Modifié',
+        ),
+        message: ServiceMessage(
+          en: 'The product have been updated successfully',
+          fr: 'Le produit a été mis à jour avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> delete({required int productId}) async {
+    try {
+      final response = await RSTApiConstants.dio.post(
+        '$route/$productId',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: [response],
+        result: ServiceResult(
+          en: 'Deleted',
+          fr: 'Supprimé',
+        ),
+        message: ServiceMessage(
+          en: 'The product have been deleted successfully',
+          fr: 'Le produit a été supprimé avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
       }
     }
   }

@@ -6,7 +6,7 @@ import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/home/views/widgets/sidebar/logout_option/logout_option.widget.dart';
 import 'package:rst/modules/home/views/widgets/sidebar/options/option.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
-import 'package:rst/widgets/logo/logo.dart';
+import 'package:rst/common/widgets/logo/logo.dart';
 
 class Sidebar extends ConsumerStatefulWidget {
   const Sidebar({super.key});

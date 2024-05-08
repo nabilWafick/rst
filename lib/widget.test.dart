@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:rst/modules/definitions/products/models/data/product.model.dart';
+import 'package:rst/modules/definitions/products/models/product.model.dart';
 import 'package:rst/modules/definitions/products/services/products.service.dart';
-import 'package:rst/widgets/icon_button/icon_button.widget.dart';
-import 'package:rst/widgets/text/text.widget.dart';
+import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/common/widgets/text/text.widget.dart';
 
 class WidgetTest extends StatefulHookConsumerWidget {
   const WidgetTest({super.key});
@@ -40,8 +40,8 @@ class _WidgetTestState extends ConsumerState<WidgetTest> {
               onTap: () async {
                 await ProductsServices.create(
                   product: Product(
-                    name: 'From RST App',
-                    purchasePrice: 10,
+                    name: 'Product 1',
+                    purchasePrice: 1,
                     createdAt: DateTime.now(),
                     updatedAt: DateTime.now(),
                   ),

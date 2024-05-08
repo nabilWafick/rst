@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/modules/home/models/suboption/suboption.model.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
-import 'package:rst/widgets/text/text.widget.dart';
+import 'package:rst/common/widgets/text/text.widget.dart';
 
 class SidebarSubOption extends ConsumerWidget {
   final SidebarSubOptionModel sidebarSubOptionData;

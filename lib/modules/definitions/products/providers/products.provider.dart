@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rst/modules/definitions/products/models/data/product.model.dart';
+import 'package:rst/modules/definitions/products/models/product.model.dart';
 
 final productNameProvider = StateProvider<String>(
   (ref) {

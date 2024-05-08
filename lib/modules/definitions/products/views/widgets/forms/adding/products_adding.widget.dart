@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rst/functions/common/common.function.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
-import 'package:rst/widgets/elevated_button/elevated_button.widget.dart';
-import 'package:rst/widgets/text/text.widget.dart';
-import 'package:rst/widgets/textformfield/textformfield.widget.dart';
+import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
+import 'package:rst/common/widgets/text/text.widget.dart';
+import 'package:rst/common/widgets/textformfield/textformfield.widget.dart';
 
 class ProductAddingForm extends StatefulHookConsumerWidget {
   const ProductAddingForm({super.key});

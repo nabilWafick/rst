@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rst/functions/common/common.function.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/modules/definitions/products/views/widgets/forms/adding/products_adding.widget.dart';
-import 'package:rst/widgets/add_button/add_button.widget.dart';
-import 'package:rst/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/common/widgets/add_button/add_button.widget.dart';
+import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 
 class ProductsPageHeader extends ConsumerWidget {
   const ProductsPageHeader({super.key});
