@@ -4,7 +4,7 @@ import 'package:rst/modules/definitions/products/models/product/product.model.da
 import 'package:rst/modules/definitions/products/services/products.service.dart';
 
 class ProductsController {
-  Future<ControllerResponse> create({
+  static Future<ControllerResponse> create({
     required Product product,
   }) async {
     final serviceResponse = await ProductsServices.create(
@@ -24,7 +24,7 @@ class ProductsController {
     );
   }
 
-  Future<ControllerResponse> getOne({
+  static Future<ControllerResponse> getOne({
     required int productId,
   }) async {
     final serviceResponse = await ProductsServices.getOne(
@@ -44,7 +44,7 @@ class ProductsController {
     );
   }
 
-  Future<ControllerResponse> getMany({
+  static Future<ControllerResponse> getMany({
     required Map<String, dynamic> filterOptions,
   }) async {
     final serviceResponse = await ProductsServices.getMany(
@@ -64,7 +64,7 @@ class ProductsController {
     );
   }
 
-  Future<ControllerResponse> update({
+  static Future<ControllerResponse> update({
     required int productId,
     required Product product,
   }) async {
@@ -86,7 +86,7 @@ class ProductsController {
     );
   }
 
-  Future<ControllerResponse> delete({
+  static Future<ControllerResponse> delete({
     required int productId,
   }) async {
     final serviceResponse = await ProductsServices.getOne(

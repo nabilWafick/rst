@@ -13,6 +13,7 @@ class FunctionsController {
       context: context,
       builder: (context) => alertDialog,
       barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(.3),
     );
   }
 

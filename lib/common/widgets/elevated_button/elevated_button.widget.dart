@@ -22,9 +22,6 @@ class RSTElevatedButton extends ConsumerWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          /* shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(.0),),*/
-          //   elevation: 5.0,
           backgroundColor: backgroundColor,
           // minimumSize: const Size(50.0, 45.0),
         ),

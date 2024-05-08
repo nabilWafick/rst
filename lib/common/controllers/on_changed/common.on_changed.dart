@@ -46,6 +46,6 @@ class CommonOnChangedFunction {
     if (value == null || value.isEmpty || value.trim() == '') {
       ref.read(provider.notifier).state = '';
     }
-    ref.read(provider.notifier).state = value;
+    ref.read(provider.notifier).state = value?.trim();
   }
 }

@@ -16,10 +16,12 @@ class ProductsServices {
         data: product.toMap(),
       );
 
+      debugPrint(response.toString());
+
       return ServiceResponse(
         statusCode: 201,
         data: [
-          response as Map<String, dynamic>,
+          response,
         ],
         result: ServiceResult(
           en: 'Added',
@@ -67,7 +69,7 @@ class ProductsServices {
       return ServiceResponse(
         statusCode: 200,
         data: [
-          response as Map<String, dynamic>,
+          response,
         ],
       );
     } on DioException catch (error) {
@@ -107,7 +109,7 @@ class ProductsServices {
 
       return ServiceResponse(
         statusCode: 200,
-        data: response as List<Map<String, dynamic>>,
+        data: response,
         result: ServiceResult(
           en: 'Updated',
           fr: 'Modifié',
@@ -156,7 +158,7 @@ class ProductsServices {
       return ServiceResponse(
         statusCode: 200,
         data: [
-          response as Map<String, dynamic>,
+          response,
         ],
         result: ServiceResult(
           en: 'Updated',
@@ -204,7 +206,7 @@ class ProductsServices {
       return ServiceResponse(
         statusCode: 200,
         data: [
-          response as Map<String, dynamic>,
+          response,
         ],
         result: ServiceResult(
           en: 'Deleted',
