@@ -44,3 +44,25 @@ final productsListStreamProvider = FutureProvider<List<Product>>((ref) async {
       ? List<Product>.from(controllerResponse.data)
       : <Product>[];
 });
+
+// used for storing all products of database count
+final productsCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await ProductsController.countAll();
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
+// used for storing fetched products (products respecting filter options) count
+final specificProductsCountProvider = FutureProvider<int>((ref) async {
+  final filterOptions = ref.watch(productsFilterOptionsProvider);
+
+  final controllerResponse = await ProductsController.countSpecific(
+    filterOptions: filterOptions,
+  );
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});

@@ -8,7 +8,15 @@ class ProductsPageFooter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            width: 1.0,
+            color: Colors.grey,
+          ),
+        ),
+      ),
       width: double.maxFinite,
       height: 50.0,
       child: Center(
@@ -16,89 +24,112 @@ class ProductsPageFooter extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Row(
+            Row(
               children: [
-                RSTText(
+                const RSTText(
                   text: 'Total: ',
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
                 ),
-                RSTText(
-                  text: '100 produits',
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    ref
-                        .read(productsFilterOptionsProvider.notifier)
-                        .update((state) {
-                      // do anything if it the first list of product
-                      if (state['skip'] == 0) {
-                        return state;
-                      }
-
-                      // decrease the pagination
-                      state = {
-                        ...state,
-                        'skip': state['skip'] -= 25,
-                      };
-
-                      return state;
-                    });
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_rounded,
-                    size: 20.0,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final productsFilterOptions =
-                        ref.watch(productsFilterOptionsProvider);
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                      ),
-                      child: RSTText(
-                        text: productsFilterOptions['skip'].toString(),
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    final count = ref.watch(productsCountProvider);
+
+                    return RSTText(
+                      text: count.when(
+                          data: (data) =>
+                              data != 1 ? '$data produits' : '$data produit',
+                          error: (error, stackTrace) {
+                            return ' produits';
+                          },
+                          loading: () => ' produits'),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     );
                   },
                 ),
-                IconButton(
-                  onPressed: () {
-                    ref
-                        .read(productsFilterOptionsProvider.notifier)
-                        .update((state) {
-                      // should do nothing if the last products have been reached
-                      /* if (state['skip'] == 0) {
-                        return state;
-                      }*/
-
-                      // increase the pagination
-                      state = {
-                        ...state,
-                        'skip': state['skip'] += 25,
-                      };
-
-                      return state;
-                    });
-                  },
-                  icon: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 20.0,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
               ],
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                final count = ref.watch(productsCountProvider);
+                return count.when(
+                  data: (data) => Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          ref
+                              .read(productsFilterOptionsProvider.notifier)
+                              .update((state) {
+                            // do anything if it the first list of product
+                            if (state['skip'] == 0) {
+                              return state;
+                            }
+
+                            // decrease the pagination
+                            state = {
+                              ...state,
+                              'skip': state['skip'] -= 25,
+                            };
+
+                            return state;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios_rounded,
+                          size: 20.0,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final productsFilterOptions =
+                              ref.watch(productsFilterOptionsProvider);
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 30.0,
+                            ),
+                            child: RSTText(
+                              text:
+                                  '${((productsFilterOptions['skip'] + 25) / 25).toInt()}',
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          ref
+                              .read(productsFilterOptionsProvider.notifier)
+                              .update((state) {
+                            // should do nothing if the last products
+                            // have been getted or if the skip >= products count
+                            if (state['skip'] >= data) {
+                              return state;
+                            }
+
+                            // increase the pagination
+                            state = {
+                              ...state,
+                              'skip': state['skip'] += 25,
+                            };
+
+                            return state;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 20.0,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  error: (error, stackTrace) => const SizedBox(),
+                  loading: () => const SizedBox(),
+                );
+              },
             ),
             Row(
               children: [
@@ -145,10 +176,20 @@ class ProductsPageFooter extends ConsumerWidget {
                   fontSize: 10.0,
                   fontWeight: FontWeight.w500,
                 ),
-                const RSTText(
-                  text: '100',
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
+                Consumer(
+                  builder: (context, ref, child) {
+                    final count = ref.watch(specificProductsCountProvider);
+
+                    return RSTText(
+                      text: count.when(
+                          data: (data) =>
+                              data != 1 ? '$data produits' : '$data produit',
+                          error: (error, stackTrace) => ' produits',
+                          loading: () => ' produits'),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    );
+                  },
                 ),
               ],
             ),
