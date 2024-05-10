@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 
 // used for storing product name (form)
@@ -22,10 +23,24 @@ final productPhotoProvider = StateProvider<String?>(
   },
 );
 
+// used for storing products filter options
+final productsFilterOptionsProvider =
+    StateProvider<Map<String, dynamic>>((ref) {
+  return {
+    'skip': 0,
+    'take': 25,
+  };
+});
+
 // used for storing fetched products
-final productsListStreamProvider = StreamProvider<List<Product>>((ref) async* {
-  yield* Stream<List<Product>>.periodic(
-    const Duration(seconds: 1),
-    (x) => <Product>[],
+final productsListStreamProvider = FutureProvider<List<Product>>((ref) async {
+  final filterOptions = ref.watch(productsFilterOptionsProvider);
+
+  final controllerResponse = await ProductsController.getMany(
+    filterOptions: filterOptions,
   );
+
+  return controllerResponse.data != null
+      ? List<Product>.from(controllerResponse.data)
+      : <Product>[];
 });

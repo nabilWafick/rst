@@ -21,7 +21,7 @@ class ProductsServices {
       return ServiceResponse(
         statusCode: 201,
         data: [
-          response,
+          response.data,
         ],
         result: ServiceResult(
           en: 'Added',
@@ -69,7 +69,7 @@ class ProductsServices {
       return ServiceResponse(
         statusCode: 200,
         data: [
-          response,
+          response.data,
         ],
       );
     } on DioException catch (error) {
@@ -109,7 +109,7 @@ class ProductsServices {
 
       return ServiceResponse(
         statusCode: 200,
-        data: response,
+        data: response.data,
         result: ServiceResult(
           en: 'Updated',
           fr: 'Modifié',
@@ -158,7 +158,7 @@ class ProductsServices {
       return ServiceResponse(
         statusCode: 200,
         data: [
-          response,
+          response.data,
         ],
         result: ServiceResult(
           en: 'Updated',
@@ -206,7 +206,7 @@ class ProductsServices {
       return ServiceResponse(
         statusCode: 200,
         data: [
-          response,
+          response.data,
         ],
         result: ServiceResult(
           en: 'Deleted',

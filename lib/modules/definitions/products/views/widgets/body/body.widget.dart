@@ -189,13 +189,13 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
             scrollPhysics: const BouncingScrollPhysics(),
             horizontalScrollPhysics: const BouncingScrollPhysics(),
           ),
-          error: (error, stackTrace) => const RSTText(
-            text: 'ERREUR :)',
+          error: (error, stackTrace) => RSTText(
+            text: 'ERREUR :) \n ${error.toString()}',
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
           loading: () => const CircularProgressIndicator(
-            strokeWidth: 10.0,
+            strokeWidth: 5.0,
           ),
         ),
       ),

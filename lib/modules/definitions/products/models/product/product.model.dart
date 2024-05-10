@@ -53,7 +53,7 @@ class Product {
     return Product(
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] as String,
-      purchasePrice: map['purchasePrice'] as double,
+      purchasePrice: double.tryParse(map['purchasePrice']) ?? .0,
       photo: map['photo'] != null ? map['photo'] as String : null,
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),

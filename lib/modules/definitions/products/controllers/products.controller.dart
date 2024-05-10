@@ -1,5 +1,4 @@
 import 'package:rst/common/models/controller_response/controller_response.model.dart';
-
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/modules/definitions/products/services/products.service.dart';
 
@@ -13,11 +12,13 @@ class ProductsController {
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: serviceResponse.data?.map(
-        (productMap) => Product.fromMap(
-          productMap,
-        ),
-      ),
+      data: serviceResponse.data
+          ?.map(
+            (productMap) => Product.fromMap(
+              productMap,
+            ),
+          )
+          .toList(),
       result: serviceResponse.result,
       error: serviceResponse.error,
       message: serviceResponse.message,
@@ -33,11 +34,13 @@ class ProductsController {
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: serviceResponse.data?.map(
-        (productMap) => Product.fromMap(
-          productMap,
-        ),
-      ),
+      data: serviceResponse.data
+          ?.map(
+            (productMap) => Product.fromMap(
+              productMap,
+            ),
+          )
+          .toList(),
       result: serviceResponse.result,
       error: serviceResponse.error,
       message: serviceResponse.message,
@@ -53,11 +56,13 @@ class ProductsController {
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: serviceResponse.data?.map(
-        (productMap) => Product.fromMap(
-          productMap,
-        ),
-      ),
+      data: serviceResponse.data
+          ?.map(
+            (productMap) => Product.fromMap(
+              productMap,
+            ),
+          )
+          .toList(),
       result: serviceResponse.result,
       error: serviceResponse.error,
       message: serviceResponse.message,
@@ -75,11 +80,13 @@ class ProductsController {
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: serviceResponse.data?.map(
-        (productMap) => Product.fromMap(
-          productMap,
-        ),
-      ),
+      data: serviceResponse.data
+          ?.map(
+            (productMap) => Product.fromMap(
+              productMap,
+            ),
+          )
+          .toList(),
       result: serviceResponse.result,
       error: serviceResponse.error,
       message: serviceResponse.message,
@@ -95,11 +102,13 @@ class ProductsController {
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: serviceResponse.data?.map(
-        (productMap) => Product.fromMap(
-          productMap,
-        ),
-      ),
+      data: serviceResponse.data
+          ?.map(
+            (productMap) => Product.fromMap(
+              productMap,
+            ),
+          )
+          .toList(),
       result: serviceResponse.result,
       error: serviceResponse.error,
       message: serviceResponse.message,
