@@ -22,12 +22,10 @@ class ProductsCRUDFunctions {
     if (isFormValid) {
       // hide validated button
       showValidatedButton.value = false;
+
       // get form inputs value
       final productName = ref.watch(productNameProvider);
       final productPrice = ref.watch(productPurchasePriceProvider);
-
-      //* TEST
-      debugPrint('productName: $productName');
 
       // instanciate the product
       final product = Product(
@@ -38,7 +36,7 @@ class ProductsCRUDFunctions {
         updatedAt: DateTime.now(),
       );
 
-      // launch product adding
+      // launch product addition
       final productAdditionResponse = await ProductsController.create(
         product: product,
       );
@@ -65,6 +63,98 @@ class ProductsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
     }
-    return;
+  }
+
+  static Future<void> update({
+    required BuildContext context,
+    required GlobalKey<FormState> formKey,
+    required WidgetRef ref,
+    required Product product,
+    required ValueNotifier<bool> showValidatedButton,
+  }) async {
+    final isFormValid = formKey.currentState!.validate();
+
+    if (isFormValid) {
+      // hide validated button
+      showValidatedButton.value = false;
+
+      // get form inputs value
+      final productName = ref.watch(productNameProvider);
+      final productPrice = ref.watch(productPurchasePriceProvider);
+
+      // instanciate the product
+      final newProduct = Product(
+        name: productName,
+        purchasePrice: productPrice,
+        photo: null,
+        createdAt: product.createdAt,
+        updatedAt: DateTime.now(),
+      );
+
+      // launch product update
+      final productUpdateResponse = await ProductsController.update(
+        productId: product.id!,
+        product: newProduct,
+      );
+
+      // store response
+      ref.read(feedbackDialogResponseProvider.notifier).state =
+          FeedbackDialogResponse(
+        result: productUpdateResponse.result?.fr,
+        error: productUpdateResponse.error?.fr,
+        message: productUpdateResponse.message!.fr,
+      );
+
+      // show validated button
+      showValidatedButton.value = true;
+
+      // hide update form if the the product have been updated
+      if (productUpdateResponse.error == null) {
+        Navigator.of(context).pop();
+      }
+
+      // show response
+      FunctionsController.showAlertDialog(
+        context: context,
+        alertDialog: const FeedbackDialog(),
+      );
+    }
+  }
+
+  static Future<void> delete({
+    required BuildContext context,
+    required WidgetRef ref,
+    required Product product,
+    required ValueNotifier<bool> showConfirmationButton,
+  }) async {
+    // hide validated button
+    showConfirmationButton.value = false;
+
+    // launch product deletion
+    final productDeletionResponse = await ProductsController.delete(
+      productId: product.id!,
+    );
+
+    // store response
+    ref.read(feedbackDialogResponseProvider.notifier).state =
+        FeedbackDialogResponse(
+      result: productDeletionResponse.result?.fr,
+      error: productDeletionResponse.error?.fr,
+      message: productDeletionResponse.message!.fr,
+    );
+
+    // show validated button
+    showConfirmationButton.value = true;
+
+    // hide addition form if the the product have been added
+    if (productDeletionResponse.error == null) {
+      Navigator.of(context).pop();
+    }
+
+    // show response
+    FunctionsController.showAlertDialog(
+      context: context,
+      alertDialog: const FeedbackDialog(),
+    );
   }
 }

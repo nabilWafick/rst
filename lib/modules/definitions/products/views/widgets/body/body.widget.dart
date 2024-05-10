@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
-import 'package:rst/modules/definitions/products/providers/products.provider.dart';
-import 'package:rst/modules/definitions/products/views/widgets/forms/update/product_update.widget.dart';
 import 'package:rst/common/providers/common.provider.dart';
-import 'package:rst/utils/colors/colors.util.dart';
 import 'package:rst/common/widgets/search_input/search_input.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
+import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
+import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/products/functions/crud/crud.function.dart';
+import 'package:rst/modules/definitions/products/providers/products.provider.dart';
+import 'package:rst/modules/definitions/products/views/widgets/products.widget.dart';
+import 'package:rst/utils/colors/colors.util.dart';
 
 class ProductsPageBody extends StatefulHookConsumerWidget {
   const ProductsPageBody({super.key});
@@ -19,8 +24,16 @@ class ProductsPageBody extends StatefulHookConsumerWidget {
 
 class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
   @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting('fr');
+  }
+
+  @override
   Widget build(BuildContext context) {
     final productsList = ref.watch(productsListStreamProvider);
+
+    final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
       child: Container(
@@ -28,7 +41,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
         child: productsList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width - 100,
+            rightHandSideColumnWidth: 1400,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
@@ -46,18 +59,13 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                 ),
               ),
               Container(
-                width: 200.0,
+                width: 100.0,
                 height: 50.0,
                 alignment: Alignment.center,
-                child: const RSTText(
-                  text: 'Photo',
-                  textAlign: TextAlign.center,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
-                ),
+                child: const SizedBox(),
               ),
               Container(
-                width: 700.0,
+                width: 400.0,
                 height: 50.0,
                 alignment: Alignment.center,
                 child: RSTSearchInput(
@@ -68,7 +76,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                 ),
               ),
               Container(
-                width: 250.0,
+                width: 300.0,
                 height: 50.0,
                 alignment: Alignment.centerLeft,
                 child: const RSTText(
@@ -78,13 +86,27 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 150.0,
+              Container(
+                width: 300.0,
                 height: 50.0,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Insertion',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              const SizedBox(
-                width: 150.0,
+              Container(
+                width: 300.0,
                 height: 50.0,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Dernière Modification',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
             leftSideItemBuilder: (context, index) {
@@ -115,73 +137,86 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      width: 200.0,
+                      width: 100.0,
                       height: 30.0,
-                      child: product.photo != null
-                          ? const Icon(
-                              Icons.photo,
-                              color: RSTColors.primaryColor,
-                            )
-                          : const SizedBox(),
+                      child: RSTTooltip(
+                        options: [
+                          RSTToolTipOption(
+                            icon: Icons.aspect_ratio,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Détails',
+                            onTap: () {},
+                          ),
+                          RSTToolTipOption(
+                            icon: Icons.edit,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Modifier',
+                            onTap: () async {
+                              FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: ProductUpdateForm(
+                                  product: product,
+                                ),
+                              );
+                            },
+                          ),
+                          RSTToolTipOption(
+                            icon: Icons.delete,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Supprimer',
+                            onTap: () {
+                              FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: ProductDeletionConfirmationDialog(
+                                  product: product,
+                                  confirmToDelete: ProductsCRUDFunctions.delete,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    width: 700.0,
+                    width: 400.0,
                     height: 30.0,
                     child: RSTText(
-                      text: product.name,
+                      text: FunctionsController.truncateText(
+                        text: product.name,
+                        maxLength: 45,
+                      ),
                       fontSize: 12.0,
                     ),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    width: 250.0,
+                    width: 300.0,
                     height: 30.0,
                     child: RSTText(
                       text: '${product.purchasePrice.ceil()} f',
                       fontSize: 12.0,
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      ref.read(productPhotoProvider.notifier).state = null;
-                      FunctionsController.showAlertDialog(
-                        context: context,
-                        alertDialog: ProductUpdateForm(product: product),
-                      );
-                    },
-                    child: Container(
-                      width: 150.0,
-                      height: 30.0,
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.green[500],
-                      ),
-                    ),
-                    // showEditIcon: true,
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      /*   FunctionsController.showAlertDialog(
-                        context: context,
-                        alertDialog: ProductDeletionConfirmationDialog(
-                          product: product,
-                          confirmToDelete: ProductCRUDFunctions.delete,
-                        )
-                      );*/
-                    },
-                    child: Container(
-                      width: 150.0,
-                      height: 30.0,
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.delete_sharp,
-                        color: Colors.red,
-                      ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(product.createdAt),
+                      fontSize: 12.0,
                     ),
                   ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(product.updatedAt),
+                      fontSize: 12.0,
+                    ),
+                  )
                 ],
               );
             },
@@ -195,7 +230,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
             fontWeight: FontWeight.w500,
           ),
           loading: () => const CircularProgressIndicator(
-            strokeWidth: 5.0,
+            strokeWidth: 2.5,
           ),
         ),
       ),

@@ -55,103 +55,97 @@ class _ProductAdditionFormState extends ConsumerState<ProductAdditionForm> {
           key: formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            // crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  /*/     Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 15.0,
+              /*/     Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 15.0,
+                ),
+                alignment: Alignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 25.0,
+                        horizontal: 55.0,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 15.0),
+                      //width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: RSTColors.sidebarTextColor,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(15.0),
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Center(
+                        child: InkWell(
+                          onTap: () async {
+                            final imageFromGallery =
+                                await FunctionsController.pickFile();
+                            ref.read(productPhotoProvider.notifier).state =
+                                imageFromGallery;
+                          },
+                          child: productPicture == null
+                              ? const Icon(
+                                  Icons.photo,
+                                  size: 150.0,
+                                  color: RSTColors.primaryColor,
+                                )
+                              : Image.asset(
+                                  productPicture,
+                                  height: 250.0,
+                                  width: 250.0,
+                                ),
+                        ),
+                      ),
                     ),
-                    alignment: Alignment.center,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 25.0,
-                            horizontal: 55.0,
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 15.0),
-                          //width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: RSTColors.sidebarTextColor,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(15.0),
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: Center(
-                            child: InkWell(
-                              onTap: () async {
-                                final imageFromGallery =
-                                    await FunctionsController.pickFile();
-                                ref.read(productPhotoProvider.notifier).state =
-                                    imageFromGallery;
-                              },
-                              child: productPicture == null
-                                  ? const Icon(
-                                      Icons.photo,
-                                      size: 150.0,
-                                      color: RSTColors.primaryColor,
-                                    )
-                                  : Image.asset(
-                                      productPicture,
-                                      height: 250.0,
-                                      width: 250.0,
-                                    ),
-                            ),
-                          ),
-                        ),
-                        const RSTText(
-                          text: 'Produit',
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ],
+                    const RSTText(
+                      text: 'Produit',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ],
+                ),
+              ),
+          */
+              Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    width: formCardWidth * 1,
+                    child: const RSTTextFormField(
+                      label: 'Nom',
+                      hintText: 'Nom',
+                      isMultilineTextForm: false,
+                      obscureText: false,
+                      textInputType: TextInputType.name,
+                      validator: ProductValidators.productName,
+                      onChanged: ProductOnChanged.productName,
                     ),
                   ),
-              */
-                  Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        width: formCardWidth * 1,
-                        child: const RSTTextFormField(
-                          label: 'Nom',
-                          hintText: 'Nom',
-                          isMultilineTextForm: false,
-                          obscureText: false,
-                          textInputType: TextInputType.name,
-                          validator: ProductValidators.productName,
-                          onChanged: ProductOnChanged.productName,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        width: formCardWidth * 1,
-                        child: const RSTTextFormField(
-                          label: 'Prix d\'achat',
-                          hintText: 'Prix d\'achat',
-                          isMultilineTextForm: false,
-                          obscureText: false,
-                          textInputType: TextInputType.name,
-                          validator: ProductValidators.productPurchasePrice,
-                          onChanged: ProductOnChanged.productPurchasePrice,
-                        ),
-                      ),
-                    ],
-                  )
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    width: formCardWidth * 1,
+                    child: const RSTTextFormField(
+                      label: 'Prix d\'achat',
+                      hintText: 'Prix d\'achat',
+                      isMultilineTextForm: false,
+                      obscureText: false,
+                      textInputType: TextInputType.name,
+                      validator: ProductValidators.productPurchasePrice,
+                      onChanged: ProductOnChanged.productPurchasePrice,
+                    ),
+                  ),
                 ],
-              ),
+              )
             ],
           ),
         ),

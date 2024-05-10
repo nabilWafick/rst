@@ -25,7 +25,10 @@ class ProductsPageHeader extends ConsumerWidget {
                 icon: Icons.refresh_outlined,
                 text: 'Rafraichir',
                 onTap: () {
+                  // refresh providers counts and the products list
                   ref.invalidate(productsListStreamProvider);
+                  ref.invalidate(productsCountProvider);
+                  ref.invalidate(specificProductsCountProvider);
                 },
               ),
               RSTIconButton(

@@ -23,8 +23,11 @@ class _RSTSearchInputState extends ConsumerState<RSTSearchInput> {
   @override
   Widget build(BuildContext context) {
     //  textEditingController.text = ref.watch(searchProvider(widget.familyName));
-    return SizedBox(
+    return Container(
       width: widget.width ?? 350.0,
+      padding: const EdgeInsets.only(
+        right: 15.0,
+      ),
       child: Form(
         child: TextFormField(
           //  initialValue: initialValue != '' ? initialValue : null,

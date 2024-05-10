@@ -128,7 +128,7 @@ class ProductsController {
   static Future<ControllerResponse> delete({
     required int productId,
   }) async {
-    final serviceResponse = await ProductsServices.getOne(
+    final serviceResponse = await ProductsServices.delete(
       productId: productId,
     );
 

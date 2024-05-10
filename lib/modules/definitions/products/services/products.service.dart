@@ -264,7 +264,7 @@ class ProductsServices {
     required int productId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final response = await RSTApiConstants.dio.delete(
         '$route/$productId',
       );
 
