@@ -107,7 +107,9 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog> {
               child: RSTElevatedButton(
                 text: 'Fermer',
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  if (feedbackResponse.error != null) {
+                    Navigator.of(context).pop();
+                  }
                 },
               ),
             ),

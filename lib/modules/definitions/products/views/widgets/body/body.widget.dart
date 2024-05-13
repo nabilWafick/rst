@@ -4,8 +4,6 @@ import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
-import 'package:rst/common/providers/common.provider.dart';
-import 'package:rst/common/widgets/search_input/search_input.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
@@ -41,7 +39,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
         child: productsList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: 1400,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
@@ -55,24 +53,18 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                   text: 'N°',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
-              ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
               ),
               Container(
                 width: 400.0,
                 height: 50.0,
-                alignment: Alignment.center,
-                child: RSTSearchInput(
-                  hintText: 'Nom',
-                  familyName: 'products',
-                  searchProvider: searchProvider('products'),
-                  width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Nom',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               Container(
@@ -83,7 +75,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                   text: 'Prix d\'achat',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               Container(
@@ -94,7 +86,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                   text: 'Insertion',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               Container(
@@ -105,8 +97,14 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                   text: 'Dernière Modification',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
+              ),
+              Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
               ),
             ],
             leftSideItemBuilder: (context, index) {
@@ -117,6 +115,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                 child: RSTText(
                   text: '${index + 1}',
                   fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
                 ),
               );
             },
@@ -124,60 +123,6 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
               final product = data[index];
               return Row(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      /*  product.photo != null
-                          ? FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: SingleImageShower(
-                                imageSource: product.photo!,
-                              ),
-                            )
-                          : () {};*/
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 100.0,
-                      height: 30.0,
-                      child: RSTTooltip(
-                        options: [
-                          RSTToolTipOption(
-                            icon: Icons.aspect_ratio,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Détails',
-                            onTap: () {},
-                          ),
-                          RSTToolTipOption(
-                            icon: Icons.edit,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Modifier',
-                            onTap: () async {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog: ProductUpdateForm(
-                                  product: product,
-                                ),
-                              );
-                            },
-                          ),
-                          RSTToolTipOption(
-                            icon: Icons.delete,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Supprimer',
-                            onTap: () {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog: ProductDeletionConfirmationDialog(
-                                  product: product,
-                                  confirmToDelete: ProductsCRUDFunctions.delete,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     width: 400.0,
@@ -188,6 +133,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                         maxLength: 45,
                       ),
                       fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   Container(
@@ -197,6 +143,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                     child: RSTText(
                       text: '${product.purchasePrice.ceil()} f',
                       fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   Container(
@@ -206,6 +153,7 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                     child: RSTText(
                       text: format.format(product.createdAt),
                       fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   Container(
@@ -215,8 +163,51 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                     child: RSTText(
                       text: format.format(product.updatedAt),
                       fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
-                  )
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    width: 100.0,
+                    height: 30.0,
+                    child: RSTTooltip(
+                      options: [
+                        RSTToolTipOption(
+                          icon: Icons.aspect_ratio,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Détails',
+                          onTap: () {},
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.edit,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Modifier',
+                          onTap: () async {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: ProductUpdateForm(
+                                product: product,
+                              ),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.delete,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Supprimer',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: ProductDeletionConfirmationDialog(
+                                product: product,
+                                confirmToDelete: ProductsCRUDFunctions.delete,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               );
             },

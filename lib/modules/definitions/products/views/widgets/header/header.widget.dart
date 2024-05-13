@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
-import 'package:rst/modules/definitions/products/functions/excel/excel_file.function.dart';
-import 'package:rst/modules/definitions/products/providers/products.provider.dart';
-import 'package:rst/modules/definitions/products/views/widgets/forms/addition/product_addition.widget.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/products/providers/products.provider.dart';
+import 'package:rst/modules/definitions/products/views/widgets/dialogs/dialogs.widget.dart';
+import 'package:rst/modules/definitions/products/views/widgets/forms/addition/product_addition.widget.dart';
 
 class ProductsPageHeader extends ConsumerWidget {
   const ProductsPageHeader({super.key});
@@ -35,13 +35,21 @@ class ProductsPageHeader extends ConsumerWidget {
               RSTIconButton(
                 icon: Icons.print_outlined,
                 text: 'Imprimer',
-                onTap: () {},
+                onTap: () {
+                  FunctionsController.showAlertDialog(
+                    context: context,
+                    alertDialog: const ProductPdfGenerationDialog(),
+                  );
+                },
               ),
               RSTIconButton(
                 icon: Icons.view_module_outlined,
                 text: 'Exporter',
                 onTap: () {
-                  createExcelFile();
+                  FunctionsController.showAlertDialog(
+                    context: context,
+                    alertDialog: const ProductExcelFileGenerationDialog(),
+                  );
                 },
               ),
               RSTAddButton(

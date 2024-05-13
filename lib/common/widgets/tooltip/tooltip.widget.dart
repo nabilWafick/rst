@@ -53,7 +53,7 @@ class _RSTTooltipState extends ConsumerState<RSTTooltip> {
             link: layerLink,
             showWhenUnlinked: false,
             offset: Offset(
-              0,
+              -100,
               isOverlayBelow ? targetSize.height : -200,
             ),
             child: Column(

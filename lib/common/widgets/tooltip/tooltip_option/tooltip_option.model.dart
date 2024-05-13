@@ -32,34 +32,5 @@ class RSTToolTipOption extends ConsumerWidget {
         fontWeight: FontWeight.w500,
       ),
     );
-
-    /*  InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 7.0,
-        ),
-        width: 120.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Icon(
-              icon,
-              size: 20.0,
-              color: iconColor,
-            ),
-            const SizedBox(
-              width: 10.0,
-            ),
-            RSTText(
-              text: name,
-              fontSize: 12.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ],
-        ),
-      ),
-    );
- */
   }
 }

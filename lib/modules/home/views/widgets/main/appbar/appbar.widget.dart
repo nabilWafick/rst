@@ -4,17 +4,18 @@ import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/home/views/widgets/main/appbar/horizontal_scroller/horizontal_scroller.widget.dart';
 import 'package:rst/modules/home/views/widgets/sidebar/suboptions/suboption.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
-import 'package:rst/utils/constants/constants.util.dart';
+//import 'package:rst/utils/constants/constants.util.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 final authenticatedAgentNameProvider = FutureProvider<String>((ref) async {
   //  set user data in shared preferences
-  final prefs = await SharedPreferences.getInstance();
-  final agentFistnames = prefs.getString(RSTConstants.agentFirstnamesPrefKey);
-  final agentName = prefs.getString(RSTConstants.agentNamePrefKey);
+  // final prefs = await SharedPreferences.getInstance();
+  const agentFistnames =
+      'TESTER'; // prefs.getString(RSTConstants.agentFirstnamesPrefKey);
+  const agentName = 'Tester'; // prefs.getString(RSTConstants.agentNamePrefKey);
 
-  return '${agentFistnames ?? ''} ${agentName ?? ''}';
+  return '$agentFistnames $agentName';
 });
 
 class MainAppbar extends ConsumerStatefulWidget {
