@@ -53,36 +53,28 @@ class ProductDeletionConfirmationDialog extends HookConsumerWidget {
       content: Container(
         // color: Colors.blueGrey,
         padding: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.symmetric(
+          vertical: 25.0,
+        ),
         width: formCardWidth,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Row(
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(
-                vertical: 25.0,
+            Icon(
+              Icons.warning,
+              color: Colors.orange[900],
+              size: 30.0,
+            ),
+            const SizedBox(
+              width: 25.0,
+            ),
+            const Flexible(
+              child: RSTText(
+                text: 'Êtes-vous sûr de vouloir supprimer ce produit ?',
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
+                textOverflow: TextOverflow.ellipsis,
               ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.warning,
-                    color: Colors.orange[900],
-                    size: 30.0,
-                  ),
-                  const SizedBox(
-                    width: 25.0,
-                  ),
-                  const Flexible(
-                    child: RSTText(
-                      text: 'Êtes-vous sûr de vouloir supprimer ce produit ?',
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w500,
-                      textOverflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            )
+            ),
           ],
         ),
       ),

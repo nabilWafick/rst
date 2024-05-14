@@ -72,6 +72,7 @@ class ProductsCRUDFunctions {
     required Product product,
     required ValueNotifier<bool> showValidatedButton,
   }) async {
+    formKey.currentState?.save();
     final isFormValid = formKey.currentState!.validate();
 
     if (isFormValid) {
@@ -110,7 +111,18 @@ class ProductsCRUDFunctions {
 
       // hide update form if the the product have been updated
       if (productUpdateResponse.error == null) {
-        Navigator.of(context).pop();
+        // delay due response dialog
+        Future.delayed(
+          const Duration(
+            milliseconds: 1500,
+          ),
+          () {
+            // pop confirmation dialog
+            Navigator.of(context).pop();
+            // pop update dialog
+            Navigator.of(context).pop();
+          },
+        );
       }
 
       // show response

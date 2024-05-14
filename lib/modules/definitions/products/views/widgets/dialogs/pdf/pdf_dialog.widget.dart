@@ -48,55 +48,49 @@ class ProductPdfGenerationDialog extends HookConsumerWidget {
       content: Container(
         // color: Colors.blueGrey,
         padding: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.symmetric(
+          vertical: 25.0,
+        ),
         width: formCardWidth,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(
-                vertical: 25.0,
+            SwitchListTile(
+              value: exportAllProducts.value,
+              title: const RSTText(
+                text: 'Tout',
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
               ),
-              child: Column(
-                children: [
-                  SwitchListTile(
-                    value: exportAllProducts.value,
-                    title: const RSTText(
-                      text: 'Tout',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hoverColor: Colors.transparent,
-                    onChanged: (value) {
-                      if (value) {
-                        exportAllProducts.value = value;
-                        exportSelectionnedProducts.value = !value;
-                      } else {
-                        exportAllProducts.value = value;
-                        exportSelectionnedProducts.value = !value;
-                      }
-                    },
-                  ),
-                  SwitchListTile(
-                    value: exportSelectionnedProducts.value,
-                    title: const RSTText(
-                      text: 'Groupe sélectionné',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hoverColor: Colors.transparent,
-                    onChanged: (value) {
-                      if (value) {
-                        exportSelectionnedProducts.value = value;
-                        exportAllProducts.value = !value;
-                      } else {
-                        exportSelectionnedProducts.value = value;
-                        exportAllProducts.value = !value;
-                      }
-                    },
-                  )
-                ],
+              hoverColor: Colors.transparent,
+              onChanged: (value) {
+                if (value) {
+                  exportAllProducts.value = value;
+                  exportSelectionnedProducts.value = !value;
+                } else {
+                  exportAllProducts.value = value;
+                  exportSelectionnedProducts.value = !value;
+                }
+              },
+            ),
+            SwitchListTile(
+              value: exportSelectionnedProducts.value,
+              title: const RSTText(
+                text: 'Groupe sélectionné',
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
               ),
+              hoverColor: Colors.transparent,
+              onChanged: (value) {
+                if (value) {
+                  exportSelectionnedProducts.value = value;
+                  exportAllProducts.value = !value;
+                } else {
+                  exportSelectionnedProducts.value = value;
+                  exportAllProducts.value = !value;
+                }
+              },
             )
           ],
         ),
@@ -118,10 +112,10 @@ class ProductPdfGenerationDialog extends HookConsumerWidget {
             const SizedBox(
               width: 20.0,
             ),
-            SizedBox(
-              width: 170.0,
-              child: showPrintButton.value
-                  ? RSTElevatedButton(
+            showPrintButton.value
+                ? SizedBox(
+                    width: 170.0,
+                    child: RSTElevatedButton(
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current products filter option
@@ -153,9 +147,9 @@ class ProductPdfGenerationDialog extends HookConsumerWidget {
                           );
                         }
                       },
-                    )
-                  : const SizedBox(),
-            )
+                    ),
+                  )
+                : const SizedBox(),
           ],
         ),
       ],

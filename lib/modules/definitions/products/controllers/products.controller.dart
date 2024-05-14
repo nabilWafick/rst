@@ -1,4 +1,4 @@
-import 'package:rst/common/models/controller_response/controller_response.model.dart';
+import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/modules/definitions/products/services/products.service.dart';
 
@@ -74,7 +74,7 @@ class ProductsController {
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: ProductCount.fromMap(
+      data: DataCount.fromMap(
         serviceResponse.data,
       ),
       result: serviceResponse.result,
@@ -92,7 +92,7 @@ class ProductsController {
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: ProductCount.fromMap(
+      data: DataCount.fromMap(
         serviceResponse.data,
       ),
       result: serviceResponse.result,

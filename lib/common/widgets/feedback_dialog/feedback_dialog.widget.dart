@@ -19,7 +19,7 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog> {
     /* final remarkSuccessFeedbackDialog =
         ref.read(remarkSuccessfeedbackDialogResponseProvider);*/
     if (feedbackResponse.result != null) {
-      Future.delayed(const Duration(milliseconds: 1500), () {
+      Future.delayed(const Duration(milliseconds: 1200), () {
         if (mounted) {
           Navigator.of(context).pop();
         }

@@ -33,6 +33,21 @@ class ProductsPageHeader extends ConsumerWidget {
                 },
               ),
               RSTIconButton(
+                icon: Icons.filter_alt_rounded,
+                text: 'Filtrer',
+                onTap: () {},
+              ),
+              RSTIconButton(
+                icon: Icons.format_list_bulleted_sharp,
+                text: 'Trier',
+                onTap: () {
+                  FunctionsController.showAlertDialog(
+                    context: context,
+                    alertDialog: const ProductSortDialog(),
+                  );
+                },
+              ),
+              RSTIconButton(
                 icon: Icons.print_outlined,
                 text: 'Imprimer',
                 onTap: () {

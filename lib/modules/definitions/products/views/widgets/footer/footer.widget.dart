@@ -73,10 +73,11 @@ class ProductsPageFooter extends ConsumerWidget {
                                       return state;
                                     });
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.arrow_back_ios_rounded,
                                     size: 20.0,
-                                    color: Colors.grey.shade700,
+                                    color: RSTColors.primaryColor,
+                                    //  color: Colors.grey.shade700,
                                   ),
                                 )
                               : const SizedBox();
@@ -95,6 +96,7 @@ class ProductsPageFooter extends ConsumerWidget {
                                   '${((productsFilterOptions['skip'] + 25) / 25).toInt()}',
                               fontSize: 15.0,
                               fontWeight: FontWeight.w700,
+                              color: RSTColors.primaryColor,
                             ),
                           );
                         },
@@ -120,10 +122,11 @@ class ProductsPageFooter extends ConsumerWidget {
                                       return state;
                                     });
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20.0,
-                                    color: Colors.grey.shade700,
+                                    color: RSTColors.primaryColor,
+                                    //   color: Colors.grey.shade700,
                                   ),
                                 )
                               : const SizedBox();

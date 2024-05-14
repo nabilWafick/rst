@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/textformfield/textformfield.widget.dart';
 import 'package:rst/modules/definitions/products/controllers/forms/forms.controller.dart';
 import 'package:rst/modules/definitions/products/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
+import 'package:rst/modules/definitions/products/views/widgets/products.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class ProductUpdateForm extends StatefulHookConsumerWidget {
@@ -125,42 +127,37 @@ class _ProductUpdateFormState extends ConsumerState<ProductUpdateForm> {
                 ),
               ),
            */
-              Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                    ),
-                    width: formCardWidth,
-                    child: RSTTextFormField(
-                      label: 'Nom',
-                      hintText: 'Nom',
-                      initialValue: widget.product.name,
-                      isMultilineTextForm: false,
-                      obscureText: false,
-                      textInputType: TextInputType.name,
-                      validator: ProductValidators.productName,
-                      onChanged: ProductOnChanged.productName,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                    ),
-                    width: formCardWidth,
-                    child: RSTTextFormField(
-                      label: 'Prix d\'achat',
-                      hintText: 'Prix d\'achat',
-                      initialValue:
-                          widget.product.purchasePrice.toInt().toString(),
-                      isMultilineTextForm: false,
-                      obscureText: false,
-                      textInputType: TextInputType.name,
-                      validator: ProductValidators.productPurchasePrice,
-                      onChanged: ProductOnChanged.productPurchasePrice,
-                    ),
-                  ),
-                ],
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                ),
+                width: formCardWidth,
+                child: RSTTextFormField(
+                  label: 'Nom',
+                  hintText: 'Nom',
+                  initialValue: widget.product.name,
+                  isMultilineTextForm: false,
+                  obscureText: false,
+                  textInputType: TextInputType.name,
+                  validator: ProductValidators.productName,
+                  onChanged: ProductOnChanged.productName,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                ),
+                width: formCardWidth,
+                child: RSTTextFormField(
+                  label: 'Prix d\'achat',
+                  hintText: 'Prix d\'achat',
+                  initialValue: widget.product.purchasePrice.toInt().toString(),
+                  isMultilineTextForm: false,
+                  obscureText: false,
+                  textInputType: TextInputType.name,
+                  validator: ProductValidators.productPurchasePrice,
+                  onChanged: ProductOnChanged.productPurchasePrice,
+                ),
               )
             ],
           ),
@@ -189,12 +186,13 @@ class _ProductUpdateFormState extends ConsumerState<ProductUpdateForm> {
                     child: RSTElevatedButton(
                       text: 'Valider',
                       onPressed: () async {
-                        await ProductsCRUDFunctions.update(
+                        FunctionsController.showAlertDialog(
                           context: context,
-                          formKey: formKey,
-                          ref: ref,
-                          product: widget.product,
-                          showValidatedButton: showValidatedButton,
+                          alertDialog: ProductUpdateConfirmationDialog(
+                            product: widget.product,
+                            formKey: formKey,
+                            update: ProductsCRUDFunctions.update,
+                          ),
                         );
                       },
                     ),

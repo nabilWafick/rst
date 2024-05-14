@@ -1,2 +1,2 @@
 export './product/product.model.dart';
-export './product_count/product_count.model.dart';
+export './structure/structure.model.dart';

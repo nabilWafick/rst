@@ -6,25 +6,27 @@ import 'package:rst/utils/colors/colors.util.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 
-class ProductValidationStatusUpdateConfirmationDialog
-    extends HookConsumerWidget {
+class ProductUpdateConfirmationDialog extends HookConsumerWidget {
   final Product product;
+  final GlobalKey<FormState> formKey;
   final Future<void> Function({
     required BuildContext context,
     required WidgetRef ref,
+    required GlobalKey<FormState> formKey,
     required Product product,
-    required ValueNotifier<bool> showConfirmationButton,
-  }) confirmToDelete;
+    required ValueNotifier<bool> showValidatedButton,
+  }) update;
 
-  const ProductValidationStatusUpdateConfirmationDialog({
+  const ProductUpdateConfirmationDialog({
     super.key,
     required this.product,
-    required this.confirmToDelete,
+    required this.formKey,
+    required this.update,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const formCardWidth = 500.0;
-    final showConfirmationButton = useState<bool>(true);
+    final showValidatedButton = useState<bool>(true);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
         vertical: 20.0,
@@ -53,37 +55,29 @@ class ProductValidationStatusUpdateConfirmationDialog
       content: Container(
         // color: Colors.blueGrey,
         padding: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.symmetric(
+          vertical: 25.0,
+        ),
         width: formCardWidth,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Row(
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(
-                vertical: 25.0,
+            Icon(
+              Icons.warning,
+              color: Colors.orange[900],
+              size: 30.0,
+            ),
+            const SizedBox(
+              width: 25.0,
+            ),
+            const Flexible(
+              child: RSTText(
+                text:
+                    'Êtes-vous sûr de vouloir modifier les données de ce produit ?',
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
+                textOverflow: TextOverflow.ellipsis,
               ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.warning,
-                    color: Colors.orange[900],
-                    size: 30.0,
-                  ),
-                  const SizedBox(
-                    width: 25.0,
-                  ),
-                  const Flexible(
-                    child: RSTText(
-                      text:
-                          'Êtes-vous sûr de vouloir modifier les données de ce produit ?',
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w500,
-                      textOverflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            )
+            ),
           ],
         ),
       ),
@@ -104,17 +98,18 @@ class ProductValidationStatusUpdateConfirmationDialog
             const SizedBox(
               width: 20.0,
             ),
-            showConfirmationButton.value
+            showValidatedButton.value
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
                       text: 'Confirmer',
                       onPressed: () async {
-                        confirmToDelete(
+                        update(
                           context: context,
                           ref: ref,
+                          formKey: formKey,
                           product: product,
-                          showConfirmationButton: showConfirmationButton,
+                          showValidatedButton: showValidatedButton,
                         );
                       },
                     ),

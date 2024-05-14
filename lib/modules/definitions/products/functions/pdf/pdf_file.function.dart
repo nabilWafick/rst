@@ -16,6 +16,7 @@ import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/utils/utils.dart';
+import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
 Future<void> generateProductPdf({
   required BuildContext context,
@@ -88,12 +89,12 @@ Future<void> generateProductPdf({
                       pw.SizedBox(
                         height: 4.0,
                       ),
-                      OtherInfos(
+                      PdfInfos(
                         label: 'Tel',
                         value:
                             '${RSTCompanyDataConstants.phoneNumber1} /  ${RSTCompanyDataConstants.phoneNumber2}',
                       ),
-                      OtherInfos(
+                      PdfInfos(
                         label: 'BP',
                         value: RSTCompanyDataConstants.postBox,
                       )
@@ -104,12 +105,12 @@ Future<void> generateProductPdf({
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  OtherInfos(
+                  PdfInfos(
                     label: 'Imprimé le',
                     value: format.format(DateTime.now()),
                   ),
                   pw.SizedBox(height: 3.0),
-                  OtherInfos(
+                  PdfInfos(
                     label: 'Imprimé par',
                     value: 'TESTER Tester',
                   )
@@ -328,43 +329,4 @@ Future<void> generateProductPdf({
   }
 }
 
-// OtherInfos Widget
-class OtherInfos extends pw.StatelessWidget {
-  final String label;
-  final String value;
-
-  OtherInfos({
-    required this.label,
-    required this.value,
-  });
-
-  @override
-  pw.Widget build(pw.Context context) {
-    // customise font
-    final Uint8List regularFontData =
-        File('assets/fonts/Poppins/Poppins-Regular.ttf').readAsBytesSync();
-    final regularFont = pw.Font.ttf(regularFontData.buffer.asByteData());
-    final Uint8List mediumFontData =
-        File('assets/fonts/Poppins/Poppins-Medium.ttf').readAsBytesSync();
-    final mediumFont = pw.Font.ttf(mediumFontData.buffer.asByteData());
-    return pw.Row(
-      children: [
-        pw.Text(
-          '$label: ',
-          style: pw.TextStyle(
-            font: regularFont,
-            fontSize: 7,
-          ),
-        ),
-        pw.Text(
-          value,
-          style: pw.TextStyle(
-            font: mediumFont,
-            fontSize: 7,
-            fontWeight: pw.FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-}
+// PdfInfo Widget

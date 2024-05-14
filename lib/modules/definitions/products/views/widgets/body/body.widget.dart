@@ -10,6 +10,7 @@ import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.d
 import 'package:rst/modules/definitions/products/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/modules/definitions/products/views/widgets/products.widget.dart';
+import 'package:rst/modules/definitions/products/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class ProductsPageBody extends StatefulHookConsumerWidget {
@@ -175,8 +176,13 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                         RSTToolTipOption(
                           icon: Icons.aspect_ratio,
                           iconColor: RSTColors.primaryColor,
-                          name: 'Détails',
-                          onTap: () {},
+                          name: 'Vue Simple',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: ProductSimpleView(product: product),
+                            );
+                          },
                         ),
                         RSTToolTipOption(
                           icon: Icons.edit,

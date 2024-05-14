@@ -112,39 +112,35 @@ class _ProductAdditionFormState extends ConsumerState<ProductAdditionForm> {
                 ),
               ),
           */
-              Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                    ),
-                    width: formCardWidth * 1,
-                    child: const RSTTextFormField(
-                      label: 'Nom',
-                      hintText: 'Nom',
-                      isMultilineTextForm: false,
-                      obscureText: false,
-                      textInputType: TextInputType.name,
-                      validator: ProductValidators.productName,
-                      onChanged: ProductOnChanged.productName,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                    ),
-                    width: formCardWidth * 1,
-                    child: const RSTTextFormField(
-                      label: 'Prix d\'achat',
-                      hintText: 'Prix d\'achat',
-                      isMultilineTextForm: false,
-                      obscureText: false,
-                      textInputType: TextInputType.name,
-                      validator: ProductValidators.productPurchasePrice,
-                      onChanged: ProductOnChanged.productPurchasePrice,
-                    ),
-                  ),
-                ],
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                ),
+                width: formCardWidth * 1,
+                child: const RSTTextFormField(
+                  label: 'Nom',
+                  hintText: 'Nom',
+                  isMultilineTextForm: false,
+                  obscureText: false,
+                  textInputType: TextInputType.name,
+                  validator: ProductValidators.productName,
+                  onChanged: ProductOnChanged.productName,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                ),
+                width: formCardWidth * 1,
+                child: const RSTTextFormField(
+                  label: 'Prix d\'achat',
+                  hintText: 'Prix d\'achat',
+                  isMultilineTextForm: false,
+                  obscureText: false,
+                  textInputType: TextInputType.name,
+                  validator: ProductValidators.productPurchasePrice,
+                  onChanged: ProductOnChanged.productPurchasePrice,
+                ),
               )
             ],
           ),
