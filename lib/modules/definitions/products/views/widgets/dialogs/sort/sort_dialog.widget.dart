@@ -17,7 +17,6 @@ class ProductSortDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const formCardWidth = 500.0;
     final showSortOptions = useState<bool>(false);
-    final showSortButton = useState<bool>(true);
     final productFilterOptions = ref.watch(productsFilterOptionsProvider);
 
     return AlertDialog(
@@ -47,7 +46,9 @@ class ProductSortDialog extends HookConsumerWidget {
       ),
       content: Container(
         // color: Colors.blueGrey,
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+        ),
 
         width: formCardWidth,
         child: Column(
@@ -57,23 +58,31 @@ class ProductSortDialog extends HookConsumerWidget {
             ConstrainedBox(
               constraints: const BoxConstraints(
                 maxHeight: 280.0,
+                minHeight: .0,
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: productFilterOptions.containsKey('orderBy')
-                      ? productFilterOptions['orderBy']
-                          .map(
-                            (sortOption) => SortOptionTool(
-                              sortOption: sortOption,
-                              filterOptionsProvider:
-                                  productsFilterOptionsProvider,
-                            ),
-                          )
-                          .toList()
-                      : [],
-                ),
-              ),
+              child: productFilterOptions.containsKey('orderBy')
+                  ? Consumer(
+                      builder: (context, ref, child) {
+                        List<Map<String, String>> sortConditions =
+                            productFilterOptions['orderBy'];
+                        return SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: sortConditions
+                                .map(
+                                  (sortOption) => SortOptionTool(
+                                    sortOption: sortOption,
+                                    filterOptionsProvider:
+                                        productsFilterOptionsProvider,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ),
             Container(
               alignment: Alignment.centerRight,
@@ -106,7 +115,7 @@ class ProductSortDialog extends HookConsumerWidget {
                         width: 15.0,
                       ),
                       Icon(
-                        !showSortOptions.value
+                        showSortOptions.value
                             ? Icons.keyboard_arrow_up_rounded
                             : Icons.keyboard_arrow_down_rounded,
                         color: RSTColors.primaryColor,
@@ -119,19 +128,25 @@ class ProductSortDialog extends HookConsumerWidget {
             ),
             showSortOptions.value
                 ? ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 200.0),
+                    constraints: const BoxConstraints(
+                      maxHeight: 200.0,
+                      minHeight: .0,
+                    ),
                     child: Wrap(
                       children: productFilterOptions.containsKey('orderBy')
                           ? ProductStructure.fields
                               .where(
-                                // show only field which have not been sorted
-                                // get first  due to {..., 'nulls':'last'}
-                                (field) => productFilterOptions['orderBy'].any(
-                                  (sortOption) =>
-                                      sortOption.entries.first.key !=
-                                      field.back,
-                                ),
+                                (field) {
+                                  List<Map<String, String>> sortOptions =
+                                      productFilterOptions['orderBy'];
+                                  return sortOptions.every(
+                                    (sortOption) =>
+                                        sortOption.entries.first.key !=
+                                        field.back,
+                                  );
+                                },
                               )
+                              .toList()
                               .map(
                                 (field) => SortOption(
                                   field: field,
@@ -159,28 +174,47 @@ class ProductSortDialog extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(
-              width: 170.0,
-              child: RSTElevatedButton(
-                text: 'Annuler',
-                backgroundColor: RSTColors.sidebarTextColor,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            const SizedBox(
-              width: 20.0,
-            ),
-            showSortButton.value
+            productFilterOptions['orderBy']?.isNotEmpty ?? false
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
-                      text: 'Trier',
-                      onPressed: () async {},
+                      text: 'Réinitialiser',
+                      backgroundColor: RSTColors.primaryColor,
+                      onPressed: () {
+                        // remove the sort option
+                        ref.read(productsFilterOptionsProvider.notifier).update(
+                          (state) {
+                            Map<String, dynamic> newState = {};
+
+                            for (MapEntry<String, dynamic> entry
+                                in state.entries) {
+                              if (entry.key != 'orderBy') {
+                                newState[entry.key] = entry.value;
+                              }
+                            }
+                            state = newState;
+
+                            return state;
+                          },
+                        );
+                      },
                     ),
                   )
                 : const SizedBox(),
+            const SizedBox(
+              width: 20.0,
+            ),
+            SizedBox(
+              width: 170.0,
+              child: RSTElevatedButton(
+                text: productFilterOptions['orderBy']?.isEmpty ?? false
+                    ? 'Valider'
+                    : 'Fermer',
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+              ),
+            )
           ],
         ),
       ],

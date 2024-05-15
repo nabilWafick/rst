@@ -35,7 +35,12 @@ class ProductsPageHeader extends ConsumerWidget {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: 'Filtrer',
-                onTap: () {},
+                onTap: () {
+                  FunctionsController.showAlertDialog(
+                    context: context,
+                    alertDialog: const ProductFilterDialog(),
+                  );
+                },
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,

@@ -13,3 +13,5 @@ export './pdf_info/pdf_info.info.dart';
 export './label_value/label_value.model.dart';
 export 'sort_option_tool/sort_option_tool.widget.dart';
 export 'sort_option/sort_option.widget.dart';
+export './filter_option_tool/filter_option_tool.widget.dart';
+export './dropdowns/dropdowns.widget.dart';

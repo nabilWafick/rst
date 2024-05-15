@@ -6,10 +6,10 @@ import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class SortOptionTool extends HookConsumerWidget {
+class FilterOptionTool extends HookConsumerWidget {
   final Map<String, String> sortOption;
   final StateProvider<Map<String, dynamic>> filterOptionsProvider;
-  const SortOptionTool({
+  const FilterOptionTool({
     super.key,
     required this.sortOption,
     required this.filterOptionsProvider,
@@ -27,11 +27,11 @@ class SortOptionTool extends HookConsumerWidget {
     );
     return showWidget.value
         ? ListTile(
-            leading: const Icon(
+            /*  leading: const Icon(
               Icons.format_list_bulleted_sharp,
               color: RSTColors.primaryColor,
               size: 20,
-            ),
+            ),*/
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -43,39 +43,6 @@ class SortOptionTool extends HookConsumerWidget {
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
                 ),
-                Row(
-                  children: [
-                    const RSTText(
-                      text: 'ascendant:',
-                      fontSize: 12.0,
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Switch(
-                      value: sortOption[field.back] == 'asc',
-                      onChanged: (value) {
-                        ref.read(filterOptionsProvider.notifier).update(
-                          (state) {
-                            // get th index of the sort option in the list
-                            final index = state['orderBy'].indexOf(sortOption);
-
-                            // update the sort method
-                            state['orderBy'][index][field.back] =
-                                value ? 'asc' : 'desc';
-
-                            state = {
-                              ...state,
-                              'orderBy': state['orderBy'],
-                            };
-
-                            return state;
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                )
               ],
             ),
             trailing: IconButton(

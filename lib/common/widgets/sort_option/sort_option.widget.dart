@@ -31,16 +31,19 @@ class SortOption extends ConsumerWidget {
 
           // if there is a sort option
           // add a new sort option
-          if (filterOptions.containsKey('orderBy')) {
+          if (!filterOptions.containsKey('orderBy')) {
             // add
             ref.read(filterOptionsProvider.notifier).update(
               (state) {
-                state['orderBy'].add(
-                  {
-                    field.back: 'asc',
-                    'nulls': 'last',
-                  },
-                );
+                state = {
+                  ...state,
+                  "orderBy": [
+                    {
+                      field.back: 'asc',
+                    },
+                  ]
+                };
+
                 return state;
               },
             );
@@ -49,12 +52,16 @@ class SortOption extends ConsumerWidget {
             // add sort option
             ref.read(filterOptionsProvider.notifier).update(
               (state) {
-                state['orderBy'] = [
-                  {
-                    field.back: 'asc',
-                    'nulls': 'last',
-                  },
-                ];
+                List<Map<String, String>> sortConditions = state['orderBy'];
+                state = {
+                  ...state,
+                  "orderBy": [
+                    ...sortConditions,
+                    {
+                      field.back: 'asc',
+                    },
+                  ]
+                };
                 return state;
               },
             );

@@ -1,53 +1,48 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
 class Field {
   final String front;
   final String back;
+  final Type type;
+  final bool isNullable;
   Field({
     required this.front,
     required this.back,
+    required this.type,
+    required this.isNullable,
   });
 
   Field copyWith({
     String? front,
     String? back,
+    Type? type,
+    bool? isNullable,
   }) {
     return Field(
       front: front ?? this.front,
       back: back ?? this.back,
+      type: type ?? this.type,
+      isNullable: isNullable ?? this.isNullable,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'front': front,
-      'back': back,
-    };
-  }
-
-  factory Field.fromMap(Map<String, dynamic> map) {
-    return Field(
-      front: map['front'] as String,
-      back: map['back'] as String,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Field.fromJson(String source) =>
-      Field.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Field(front: $front, back: $back)';
+  String toString() {
+    return 'Field(front: $front, back: $back, type: $type, isNullable: $isNullable)';
+  }
 
   @override
   bool operator ==(covariant Field other) {
     if (identical(this, other)) return true;
 
-    return other.front == front && other.back == back;
+    return other.front == front &&
+        other.back == back &&
+        other.type == type &&
+        other.isNullable == isNullable;
   }
 
   @override
-  int get hashCode => front.hashCode ^ back.hashCode;
+  int get hashCode {
+    return front.hashCode ^ back.hashCode ^ type.hashCode ^ isNullable.hashCode;
+  }
 }
