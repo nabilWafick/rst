@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/modules/definitions/products/models/structure/structure.model.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
@@ -12,9 +14,12 @@ class ProductFilterDialog extends HookConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const formCardWidth = 500.0;
-
-    final productFilterOptions = ref.watch(productsFilterOptionsProvider);
+    const formCardWidth = 800.0;
+    final productsFilterOptions = ref.watch(productsFilterOptionsProvider);
+    final logicalOperator = useState<String>('ET');
+    final andOperatorSelected = useState<bool>(true);
+    final orOperatorSelected = useState<bool>(false);
+    final notOperatorSelected = useState<bool>(false);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -52,21 +57,117 @@ class ProductFilterDialog extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+              margin: const EdgeInsets.only(
+                bottom: 10.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: formCardWidth / 3.5,
+                    child: CheckboxListTile(
+                      value: andOperatorSelected.value,
+                      hoverColor: RSTColors.primaryColor.withOpacity(.1),
+                      title: const RSTText(
+                        text: 'ET',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      onChanged: (value) {
+                        if (value == true) {
+                          andOperatorSelected.value = true;
+                          logicalOperator.value = "ET";
+                          orOperatorSelected.value = false;
+                          notOperatorSelected.value = false;
+                        } else if (value == false) {
+                          andOperatorSelected.value = value!;
+                          notOperatorSelected.value = value;
+                          orOperatorSelected.value = true;
+                          logicalOperator.value = "OU";
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: formCardWidth / 3.5,
+                    child: CheckboxListTile(
+                      value: orOperatorSelected.value,
+                      hoverColor: RSTColors.primaryColor.withOpacity(.1),
+                      title: const RSTText(
+                        text: 'OU',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      onChanged: (value) {
+                        if (value == true) {
+                          orOperatorSelected.value = value!;
+                          logicalOperator.value = "OU";
+                          andOperatorSelected.value = false;
+                          notOperatorSelected.value = false;
+                        } else if (value == false) {
+                          orOperatorSelected.value = value!;
+                          notOperatorSelected.value = value;
+                          andOperatorSelected.value = true;
+                          logicalOperator.value = "ET";
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: formCardWidth / 3.5,
+                    child: CheckboxListTile(
+                      value: notOperatorSelected.value,
+                      hoverColor: RSTColors.primaryColor.withOpacity(.15),
+                      title: const RSTText(
+                        text: 'NON',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      onChanged: (value) {
+                        if (value == true) {
+                          notOperatorSelected.value = value!;
+                          logicalOperator.value = "NON";
+                          orOperatorSelected.value = false;
+                          andOperatorSelected.value = false;
+                        } else if (value == false) {
+                          notOperatorSelected.value = value!;
+                          orOperatorSelected.value = value;
+                          andOperatorSelected.value = true;
+                          logicalOperator.value = "ET";
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            FilterOptionTool(
+              logicalOperator: logicalOperator.value,
+              fields: ProductStructure.fields,
+              filterOption: const {
+                "name": {
+                  "contains": 'riz',
+                  'mode': 'insensitive',
+                },
+              },
+              filterOptionsProvider: productsFilterOptionsProvider,
+            ),
             ConstrainedBox(
               constraints: const BoxConstraints(
                 maxHeight: 280.0,
                 minHeight: .0,
               ),
-              child: productFilterOptions.containsKey('orderBy')
+              child: productsFilterOptions.containsKey('where')
                   ? Consumer(
                       builder: (context, ref, child) {
-                        List<Map<String, String>> sortConditions =
-                            productFilterOptions['orderBy'];
+                        List<Map<String, String>> filterConditions =
+                            productsFilterOptions['where'];
                         return SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            children: sortConditions
+                            children: filterConditions
                                 .map(
                                   (sortOption) => SortOptionTool(
                                     sortOption: sortOption,
@@ -125,7 +226,7 @@ class ProductFilterDialog extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            productFilterOptions['where']?.isNotEmpty ?? false
+            productsFilterOptions['where']?.isNotEmpty ?? false
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 
-final formStringDropdownProvider =
-    StateProvider.family<String, String>((ref, dropdown) {
-  return '*';
-});
+final formStringDropdownProvider = StateProvider.family<String, String>(
+  (ref, dropdown) {
+    return '*';
+  },
+);
 
 class RSTStringDropdown extends ConsumerStatefulWidget {
   final String label;

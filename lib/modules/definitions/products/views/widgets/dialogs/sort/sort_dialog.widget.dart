@@ -17,7 +17,7 @@ class ProductSortDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const formCardWidth = 500.0;
     final showSortOptions = useState<bool>(false);
-    final productFilterOptions = ref.watch(productsFilterOptionsProvider);
+    final productsFilterOptions = ref.watch(productsFilterOptionsProvider);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -60,11 +60,11 @@ class ProductSortDialog extends HookConsumerWidget {
                 maxHeight: 280.0,
                 minHeight: .0,
               ),
-              child: productFilterOptions.containsKey('orderBy')
+              child: productsFilterOptions.containsKey('orderBy')
                   ? Consumer(
                       builder: (context, ref, child) {
                         List<Map<String, String>> sortConditions =
-                            productFilterOptions['orderBy'];
+                            productsFilterOptions['orderBy'];
                         return SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
                           child: Column(
@@ -133,12 +133,12 @@ class ProductSortDialog extends HookConsumerWidget {
                       minHeight: .0,
                     ),
                     child: Wrap(
-                      children: productFilterOptions.containsKey('orderBy')
+                      children: productsFilterOptions.containsKey('orderBy')
                           ? ProductStructure.fields
                               .where(
                                 (field) {
                                   List<Map<String, String>> sortOptions =
-                                      productFilterOptions['orderBy'];
+                                      productsFilterOptions['orderBy'];
                                   return sortOptions.every(
                                     (sortOption) =>
                                         sortOption.entries.first.key !=
@@ -174,7 +174,7 @@ class ProductSortDialog extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            productFilterOptions['orderBy']?.isNotEmpty ?? false
+            productsFilterOptions['orderBy']?.isNotEmpty ?? false
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
@@ -207,7 +207,7 @@ class ProductSortDialog extends HookConsumerWidget {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: productFilterOptions['orderBy']?.isEmpty ?? false
+                text: productsFilterOptions['orderBy']?.isEmpty ?? false
                     ? 'Valider'
                     : 'Fermer',
                 onPressed: () async {

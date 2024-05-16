@@ -12,6 +12,7 @@ class ProductsPageHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final productsFilterOptions = ref.watch(productsFilterOptionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -34,7 +35,9 @@ class ProductsPageHeader extends ConsumerWidget {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: 'Filtrer',
+                text: !productsFilterOptions.containsKey('where')
+                    ? 'Filtrer'
+                    : 'Filtré',
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -44,7 +47,9 @@ class ProductsPageHeader extends ConsumerWidget {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: 'Trier',
+                text: !productsFilterOptions.containsKey('orderBy')
+                    ? 'Trier'
+                    : 'Trié',
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
