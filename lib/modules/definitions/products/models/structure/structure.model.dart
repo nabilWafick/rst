@@ -8,6 +8,7 @@ class ProductStructure {
     back: 'name',
     type: String,
     isNullable: false,
+    isRelation: false,
   );
 
   static Field purchasePrice = Field(
@@ -15,6 +16,7 @@ class ProductStructure {
     back: 'purchasePrice',
     type: double,
     isNullable: false,
+    isRelation: false,
   );
 
   static Field photo = Field(
@@ -22,6 +24,7 @@ class ProductStructure {
     back: 'photo',
     type: String,
     isNullable: true,
+    isRelation: false,
   );
 
   static Field createdAt = Field(
@@ -29,6 +32,7 @@ class ProductStructure {
     back: 'createdAt',
     type: DateTime,
     isNullable: false,
+    isRelation: false,
   );
 
   static Field updatedAt = Field(
@@ -36,6 +40,7 @@ class ProductStructure {
     back: 'updatedAt',
     type: DateTime,
     isNullable: false,
+    isRelation: false,
   );
 
   static List<Field> fields = [

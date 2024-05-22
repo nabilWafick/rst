@@ -16,8 +16,8 @@ class ProductSortDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const formCardWidth = 500.0;
-    final showSortOptions = useState<bool>(false);
-    final productsFilterOptions = ref.watch(productsFilterOptionsProvider);
+    final showSortParameters = useState<bool>(false);
+    final productsListParameters = ref.watch(productsListParametersProvider);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -60,21 +60,21 @@ class ProductSortDialog extends HookConsumerWidget {
                 maxHeight: 280.0,
                 minHeight: .0,
               ),
-              child: productsFilterOptions.containsKey('orderBy')
+              child: productsListParameters.containsKey('orderBy')
                   ? Consumer(
                       builder: (context, ref, child) {
                         List<Map<String, String>> sortConditions =
-                            productsFilterOptions['orderBy'];
+                            productsListParameters['orderBy'];
                         return SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: sortConditions
                                 .map(
-                                  (sortOption) => SortOptionTool(
-                                    sortOption: sortOption,
-                                    filterOptionsProvider:
-                                        productsFilterOptionsProvider,
+                                  (sortParameter) => SortParameterTool(
+                                    sortParameter: sortParameter,
+                                    listParametersProvider:
+                                        productsListParametersProvider,
                                   ),
                                 )
                                 .toList(),
@@ -92,8 +92,8 @@ class ProductSortDialog extends HookConsumerWidget {
               ),
               child: InkWell(
                 onTap: () {
-                  // show or hide sort options
-                  showSortOptions.value = !showSortOptions.value;
+                  // show or hide sort Parameters
+                  showSortParameters.value = !showSortParameters.value;
                 },
                 splashColor: RSTColors.primaryColor.withOpacity(.15),
                 hoverColor: RSTColors.primaryColor.withOpacity(.1),
@@ -115,7 +115,7 @@ class ProductSortDialog extends HookConsumerWidget {
                         width: 15.0,
                       ),
                       Icon(
-                        showSortOptions.value
+                        showSortParameters.value
                             ? Icons.keyboard_arrow_up_rounded
                             : Icons.keyboard_arrow_down_rounded,
                         color: RSTColors.primaryColor,
@@ -126,41 +126,41 @@ class ProductSortDialog extends HookConsumerWidget {
                 ),
               ),
             ),
-            showSortOptions.value
+            showSortParameters.value
                 ? ConstrainedBox(
                     constraints: const BoxConstraints(
                       maxHeight: 200.0,
                       minHeight: .0,
                     ),
                     child: Wrap(
-                      children: productsFilterOptions.containsKey('orderBy')
+                      children: productsListParameters.containsKey('orderBy')
                           ? ProductStructure.fields
                               .where(
                                 (field) {
-                                  List<Map<String, String>> sortOptions =
-                                      productsFilterOptions['orderBy'];
-                                  return sortOptions.every(
-                                    (sortOption) =>
-                                        sortOption.entries.first.key !=
+                                  List<Map<String, String>> sortParameters =
+                                      productsListParameters['orderBy'];
+                                  return sortParameters.every(
+                                    (sortParameter) =>
+                                        sortParameter.entries.first.key !=
                                         field.back,
                                   );
                                 },
                               )
                               .toList()
                               .map(
-                                (field) => SortOption(
+                                (field) => SortParameter(
                                   field: field,
-                                  filterOptionsProvider:
-                                      productsFilterOptionsProvider,
+                                  listParametersProvider:
+                                      productsListParametersProvider,
                                 ),
                               )
                               .toList()
                           : ProductStructure.fields
                               .map(
-                                (field) => SortOption(
+                                (field) => SortParameter(
                                   field: field,
-                                  filterOptionsProvider:
-                                      productsFilterOptionsProvider,
+                                  listParametersProvider:
+                                      productsListParametersProvider,
                                 ),
                               )
                               .toList(),
@@ -174,15 +174,17 @@ class ProductSortDialog extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            productsFilterOptions['orderBy']?.isNotEmpty ?? false
+            productsListParameters['orderBy']?.isNotEmpty ?? false
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
                       text: 'Réinitialiser',
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
-                        // remove the sort option
-                        ref.read(productsFilterOptionsProvider.notifier).update(
+                        // remove the sort Parameter
+                        ref
+                            .read(productsListParametersProvider.notifier)
+                            .update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
@@ -207,7 +209,7 @@ class ProductSortDialog extends HookConsumerWidget {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: productsFilterOptions['orderBy']?.isEmpty ?? false
+                text: productsListParameters['orderBy']?.isEmpty ?? false
                     ? 'Valider'
                     : 'Fermer',
                 onPressed: () async {

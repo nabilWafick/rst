@@ -5,13 +5,13 @@ import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class SortOption extends ConsumerWidget {
+class SortParameter extends ConsumerWidget {
   final Field field;
-  final StateProvider<Map<String, dynamic>> filterOptionsProvider;
-  const SortOption({
+  final StateProvider<Map<String, dynamic>> listParametersProvider;
+  const SortParameter({
     super.key,
     required this.field,
-    required this.filterOptionsProvider,
+    required this.listParametersProvider,
   });
 
   @override
@@ -27,13 +27,13 @@ class SortOption extends ConsumerWidget {
       ),
       child: InkWell(
         onTap: () {
-          final filterOptions = ref.read(filterOptionsProvider);
+          final listParameters = ref.read(listParametersProvider);
 
           // if there is a sort option
           // add a new sort option
-          if (!filterOptions.containsKey('orderBy')) {
+          if (!listParameters.containsKey('orderBy')) {
             // add
-            ref.read(filterOptionsProvider.notifier).update(
+            ref.read(listParametersProvider.notifier).update(
               (state) {
                 state = {
                   ...state,
@@ -50,13 +50,13 @@ class SortOption extends ConsumerWidget {
           } else {
             // there is any sort option before
             // add sort option
-            ref.read(filterOptionsProvider.notifier).update(
+            ref.read(listParametersProvider.notifier).update(
               (state) {
-                List<Map<String, String>> sortConditions = state['orderBy'];
+                List<Map<String, String>> sortParameters = state['orderBy'];
                 state = {
                   ...state,
                   "orderBy": [
-                    ...sortConditions,
+                    ...sortParameters,
                     {
                       field.back: 'asc',
                     },

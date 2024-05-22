@@ -18,7 +18,7 @@ import 'package:rst/modules/definitions/products/models/products.model.dart';
 Future<void> generateProductExcelFile({
   required BuildContext context,
   required WidgetRef ref,
-  required Map<String, dynamic> filterOptions,
+  required Map<String, dynamic> listParameters,
   required ValueNotifier<bool> showExportButton,
 }) async {
   // hide Export button
@@ -32,7 +32,7 @@ Future<void> generateProductExcelFile({
 
     // Get products list
     final productsList = await ProductsController.getMany(
-      filterOptions: filterOptions,
+      listParameters: listParameters,
     );
 
     // Create a new Excel workbook

@@ -118,8 +118,8 @@ class ProductExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current products filter option
-                        final productsFilterOptions =
-                            ref.read(productsFilterOptionsProvider);
+                        final productsListParameters =
+                            ref.read(productsListParametersProvider);
 
                         if (exportAllProducts.value) {
                           // get all products count
@@ -130,7 +130,7 @@ class ProductExcelFileGenerationDialog extends HookConsumerWidget {
                           await generateProductExcelFile(
                             context: context,
                             ref: ref,
-                            filterOptions: {
+                            listParameters: {
                               'skip': 0,
                               'take': productsCount.data.count,
                             },
@@ -141,7 +141,7 @@ class ProductExcelFileGenerationDialog extends HookConsumerWidget {
                           await generateProductExcelFile(
                             context: context,
                             ref: ref,
-                            filterOptions: productsFilterOptions,
+                            listParameters: productsListParameters,
                             showExportButton: showExportButton,
                           );
                         }

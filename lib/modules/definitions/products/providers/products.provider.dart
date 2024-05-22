@@ -24,7 +24,7 @@ final productPhotoProvider = StateProvider<String?>(
 );
 
 // used for storing products filter options
-final productsFilterOptionsProvider =
+final productsListParametersProvider =
     StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
@@ -32,12 +32,24 @@ final productsFilterOptionsProvider =
   };
 });
 
+// used for storing added filter tool
+final productsListFilterParametersToolsAddedProvider =
+    StateProvider<Map<int, bool>>((ref) {
+  return {};
+});
+
+// used for storing added filter tool
+final productsListFilterParametersAddedProvider =
+    StateProvider<Map<int, Map<String, dynamic>>>((ref) {
+  return {};
+});
+
 // used for storing fetched products
 final productsListStreamProvider = FutureProvider<List<Product>>((ref) async {
-  final filterOptions = ref.watch(productsFilterOptionsProvider);
+  final listParameters = ref.watch(productsListParametersProvider);
 
   final controllerResponse = await ProductsController.getMany(
-    filterOptions: filterOptions,
+    listParameters: listParameters,
   );
 
   return controllerResponse.data != null
@@ -56,10 +68,10 @@ final productsCountProvider = FutureProvider<int>((ref) async {
 
 // used for storing fetched products (products respecting filter options) count
 final specificProductsCountProvider = FutureProvider<int>((ref) async {
-  final filterOptions = ref.watch(productsFilterOptionsProvider);
+  final listParameters = ref.watch(productsListParametersProvider);
 
   final controllerResponse = await ProductsController.countSpecific(
-    filterOptions: filterOptions,
+    listParameters: listParameters,
   );
 
   return controllerResponse.data != null

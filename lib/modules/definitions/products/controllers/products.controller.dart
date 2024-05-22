@@ -48,10 +48,10 @@ class ProductsController {
   }
 
   static Future<ControllerResponse> getMany({
-    required Map<String, dynamic> filterOptions,
+    required Map<String, dynamic> listParameters,
   }) async {
     final serviceResponse = await ProductsServices.getMany(
-      filterOptions: filterOptions,
+      listParameters: listParameters,
     );
 
     return ControllerResponse(
@@ -84,10 +84,10 @@ class ProductsController {
   }
 
   static Future<ControllerResponse> countSpecific({
-    required Map<String, dynamic> filterOptions,
+    required Map<String, dynamic> listParameters,
   }) async {
     final serviceResponse = await ProductsServices.countSpecific(
-      filterOptions: filterOptions,
+      listParameters: listParameters,
     );
 
     return ControllerResponse(

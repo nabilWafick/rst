@@ -97,12 +97,12 @@ class ProductsServices {
   }
 
   static Future<ServiceResponse> getMany({
-    required Map<String, dynamic> filterOptions,
+    required Map<String, dynamic> listParameters,
   }) async {
     try {
       final response = await RSTApiConstants.dio.get(
         route,
-        queryParameters: filterOptions,
+        queryParameters: listParameters,
       );
 
       return ServiceResponse(
@@ -172,12 +172,12 @@ class ProductsServices {
   }
 
   static Future<ServiceResponse> countSpecific({
-    required Map<String, dynamic> filterOptions,
+    required Map<String, dynamic> listParameters,
   }) async {
     try {
       final response = await RSTApiConstants.dio.get(
         '$route/count/specific',
-        queryParameters: filterOptions,
+        queryParameters: listParameters,
       );
 
       return ServiceResponse(

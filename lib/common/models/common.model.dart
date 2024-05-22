@@ -5,3 +5,5 @@ export './service_response/service_response.model.dart';
 export './controller_response/controller_response.model.dart';
 export './data_count/data_count.model.dart';
 export './field/field.model.dart';
+export 'operator/operator.model.dart';
+export './filter_operations/filter_operations.model.dart';

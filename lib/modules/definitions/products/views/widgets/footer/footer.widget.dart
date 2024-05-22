@@ -50,91 +50,96 @@ class ProductsPageFooter extends ConsumerWidget {
               builder: (context, ref, child) {
                 final count = ref.watch(specificProductsCountProvider);
                 return count.when(
-                  data: (data) => Row(
-                    children: [
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final productsFilterOptions =
-                              ref.watch(productsFilterOptionsProvider);
+                  data: (data) {
+                    return Row(
+                      children: [
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final productsListParameters =
+                                ref.watch(productsListParametersProvider);
 
-                          return productsFilterOptions['skip'] != 0
-                              ? IconButton(
-                                  onPressed: () {
-                                    ref
-                                        .read(productsFilterOptionsProvider
-                                            .notifier)
-                                        .update((state) {
-                                      // decrease the pagination
-                                      state = {
-                                        ...state,
-                                        'skip': state['skip'] -= 25,
-                                      };
+                            return productsListParameters['skip'] != 0
+                                ? IconButton(
+                                    onPressed: () {
+                                      ref
+                                          .read(productsListParametersProvider
+                                              .notifier)
+                                          .update((state) {
+                                        // decrease the pagination
+                                        state = {
+                                          ...state,
+                                          'skip': state['skip'] -= 25,
+                                        };
 
-                                      return state;
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_back_ios_rounded,
-                                    size: 20.0,
-                                    color: RSTColors.primaryColor,
-                                    //  color: Colors.grey.shade700,
-                                  ),
-                                )
-                              : const SizedBox();
-                        },
-                      ),
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final productsFilterOptions =
-                              ref.watch(productsFilterOptionsProvider);
-                          return Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 30.0,
-                            ),
-                            child: RSTText(
-                              text:
-                                  '${((productsFilterOptions['skip'] + 25) / 25).toInt()}',
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w700,
-                              color: RSTColors.primaryColor,
-                            ),
-                          );
-                        },
-                      ),
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final productsFilterOptions =
-                              ref.watch(productsFilterOptionsProvider);
+                                        return state;
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_back_ios_rounded,
+                                      size: 20.0,
+                                      color: RSTColors.primaryColor,
+                                      //  color: Colors.grey.shade700,
+                                    ),
+                                  )
+                                : const SizedBox();
+                          },
+                        ),
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final productsListParameters =
+                                ref.watch(productsListParametersProvider);
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 30.0,
+                              ),
+                              child: RSTText(
+                                text:
+                                    '${((productsListParameters['skip'] + 25) / 25).toInt()}',
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w700,
+                                color: RSTColors.primaryColor,
+                              ),
+                            );
+                          },
+                        ),
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final productsListParameters =
+                                ref.watch(productsListParametersProvider);
 
-                          return productsFilterOptions['skip'] + 25 < data
-                              ? IconButton(
-                                  onPressed: () {
-                                    ref
-                                        .read(productsFilterOptionsProvider
-                                            .notifier)
-                                        .update((state) {
-                                      // increase the pagination
-                                      state = {
-                                        ...state,
-                                        'skip': state['skip'] += 25,
-                                      };
+                            return productsListParameters['skip'] + 25 < data
+                                ? IconButton(
+                                    onPressed: () {
+                                      ref
+                                          .read(productsListParametersProvider
+                                              .notifier)
+                                          .update((state) {
+                                        // increase the pagination
+                                        state = {
+                                          ...state,
+                                          'skip': state['skip'] += 25,
+                                        };
 
-                                      return state;
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 20.0,
-                                    color: RSTColors.primaryColor,
-                                    //   color: Colors.grey.shade700,
-                                  ),
-                                )
-                              : const SizedBox();
-                        },
-                      ),
-                    ],
-                  ),
-                  error: (error, stackTrace) => const SizedBox(),
+                                        return state;
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 20.0,
+                                      color: RSTColors.primaryColor,
+                                      //   color: Colors.grey.shade700,
+                                    ),
+                                  )
+                                : const SizedBox();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    debugPrint(error.toString());
+                    return const SizedBox();
+                  },
                   loading: () => const SizedBox(),
                 );
               },
@@ -143,12 +148,12 @@ class ProductsPageFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final productsFilterOptions =
-                        ref.watch(productsFilterOptionsProvider);
+                    final productsListParameters =
+                        ref.watch(productsListParametersProvider);
                     final productList = ref.watch(productsListStreamProvider);
                     return RSTText(
                       text: productList.when(
-                        data: (data) => '${productsFilterOptions['skip'] + 1}',
+                        data: (data) => '${productsListParameters['skip'] + 1}',
                         error: (error, stackTrace) => '',
                         loading: () => '',
                       ),
@@ -164,13 +169,13 @@ class ProductsPageFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final productsFilterOptions =
-                        ref.watch(productsFilterOptionsProvider);
+                    final productsListParameters =
+                        ref.watch(productsListParametersProvider);
                     final productList = ref.watch(productsListStreamProvider);
                     return RSTText(
                       text: productList.when(
                         data: (data) =>
-                            '${productsFilterOptions['skip'] + data.length}',
+                            '${productsListParameters['skip'] + data.length}',
                         error: (error, stackTrace) => '',
                         loading: () => '',
                       ),

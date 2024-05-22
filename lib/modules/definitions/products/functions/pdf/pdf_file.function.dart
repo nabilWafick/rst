@@ -21,7 +21,7 @@ import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 Future<void> generateProductPdf({
   required BuildContext context,
   required WidgetRef ref,
-  required Map<String, dynamic> filterOptions,
+  required Map<String, dynamic> listParameters,
   required ValueNotifier<bool> showPrintButton,
 }) async {
 // hide Export button
@@ -35,7 +35,7 @@ Future<void> generateProductPdf({
 
     // Get products list
     final productsList = await ProductsController.getMany(
-      filterOptions: filterOptions,
+      listParameters: listParameters,
     );
 
     // Create a new pdf docu,ent

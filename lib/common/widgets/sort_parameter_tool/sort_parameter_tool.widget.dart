@@ -6,13 +6,13 @@ import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class SortOptionTool extends HookConsumerWidget {
-  final Map<String, String> sortOption;
-  final StateProvider<Map<String, dynamic>> filterOptionsProvider;
-  const SortOptionTool({
+class SortParameterTool extends HookConsumerWidget {
+  final Map<String, String> sortParameter;
+  final StateProvider<Map<String, dynamic>> listParametersProvider;
+  const SortParameterTool({
     super.key,
-    required this.sortOption,
-    required this.filterOptionsProvider,
+    required this.sortParameter,
+    required this.listParametersProvider,
   });
 
   @override
@@ -22,7 +22,7 @@ class SortOptionTool extends HookConsumerWidget {
     // get the field of the sort option
     final field = ProductStructure.fields.firstWhere(
       (field) {
-        return field.back == sortOption.entries.first.key;
+        return field.back == sortParameter.entries.first.key;
       },
     );
     return showWidget.value
@@ -53,12 +53,13 @@ class SortOptionTool extends HookConsumerWidget {
                       width: 10.0,
                     ),
                     Switch(
-                      value: sortOption[field.back] == 'asc',
+                      value: sortParameter[field.back] == 'asc',
                       onChanged: (value) {
-                        ref.read(filterOptionsProvider.notifier).update(
+                        ref.read(listParametersProvider.notifier).update(
                           (state) {
                             // get th index of the sort option in the list
-                            final index = state['orderBy'].indexOf(sortOption);
+                            final index =
+                                state['orderBy'].indexOf(sortParameter);
 
                             // update the sort method
                             state['orderBy'][index][field.back] =
@@ -81,11 +82,11 @@ class SortOptionTool extends HookConsumerWidget {
             trailing: IconButton(
               onPressed: () {
                 // remove the sort option
-                ref.read(filterOptionsProvider.notifier).update(
+                ref.read(listParametersProvider.notifier).update(
                   (state) {
                     if (state['orderBy'].length > 1) {
                       // get th index of the sort option in the list
-                      final index = state['orderBy'].indexOf(sortOption);
+                      final index = state['orderBy'].indexOf(sortParameter);
 
                       // remove the sort option
                       state['orderBy'].removeAt(index);

@@ -119,8 +119,8 @@ class ProductPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current products filter option
-                        final productsFilterOptions =
-                            ref.read(productsFilterOptionsProvider);
+                        final productsListParameters =
+                            ref.read(productsListParametersProvider);
 
                         if (exportAllProducts.value) {
                           // get all products count
@@ -131,7 +131,7 @@ class ProductPdfGenerationDialog extends HookConsumerWidget {
                           await generateProductPdf(
                             context: context,
                             ref: ref,
-                            filterOptions: {
+                            listParameters: {
                               'skip': 0,
                               'take': productsCount.data.count,
                             },
@@ -142,7 +142,7 @@ class ProductPdfGenerationDialog extends HookConsumerWidget {
                           await generateProductPdf(
                             context: context,
                             ref: ref,
-                            filterOptions: productsFilterOptions,
+                            listParameters: productsListParameters,
                             showPrintButton: showPrintButton,
                           );
                         }

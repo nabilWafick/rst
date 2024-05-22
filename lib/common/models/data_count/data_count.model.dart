@@ -2,28 +2,28 @@
 import 'dart:convert';
 
 class DataCount {
-  final int number;
+  final int count;
   DataCount({
-    required this.number,
+    required this.count,
   });
 
   DataCount copyWith({
-    int? number,
+    int? count,
   }) {
     return DataCount(
-      number: number ?? this.number,
+      count: count ?? this.count,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'number': number,
+      'count': count,
     };
   }
 
   factory DataCount.fromMap(Map<String, dynamic> map) {
     return DataCount(
-      number: map['number'] as int,
+      count: map['count'] as int,
     );
   }
 
@@ -33,15 +33,15 @@ class DataCount {
       DataCount.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'DataCount(number: $number)';
+  String toString() => 'DataCount(count: $count)';
 
   @override
   bool operator ==(covariant DataCount other) {
     if (identical(this, other)) return true;
 
-    return other.number == number;
+    return other.count == count;
   }
 
   @override
-  int get hashCode => number.hashCode;
+  int get hashCode => count.hashCode;
 }

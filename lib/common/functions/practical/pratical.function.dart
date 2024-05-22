@@ -31,14 +31,14 @@ class FunctionsController {
     }
   }
 
-  static showDateTime({
+  static showDate({
     required BuildContext context,
     required WidgetRef ref,
     required StateProvider<DateTime?> stateProvider,
+    required bool isNullable,
   }) async {
     DateTime? selectedDate;
-    //  TimeOfDay? selectedTime;
-    //  do {
+
     selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -48,15 +48,6 @@ class FunctionsController {
       confirmText: 'Valider',
       cancelText: 'Annuler',
     );
-/*
-    selectedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      confirmText: 'Valider',
-      cancelText: 'Annuler',
-    );
-    */
-    //  } while (selectedDate == null || selectedTime == null);
 
     DateTime? dateTime;
 
@@ -72,15 +63,66 @@ class FunctionsController {
       );
     }
 
-    ref.read(stateProvider.notifier).state = dateTime != null
-        ? DateTime(
-            dateTime.year,
-            dateTime.month,
-            dateTime.day,
-            dateTime.hour,
-            dateTime.minute,
-          )
-        : null;
+    if (isNullable) {
+      ref.read(stateProvider.notifier).state = dateTime;
+    } else {
+      ref.read(stateProvider.notifier).state = dateTime ??
+          DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+            0,
+            0,
+            0,
+          );
+    }
+  }
+
+  static showDateTime({
+    required BuildContext context,
+    required WidgetRef ref,
+    required StateProvider<DateTime?> stateProvider,
+    required bool isNullable,
+  }) async {
+    DateTime? selectedDate;
+    TimeOfDay? selectedTime;
+
+    selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      locale: const Locale('fr', 'FR'),
+      firstDate: DateTime(2010),
+      lastDate: DateTime(20500),
+      confirmText: 'Valider',
+      cancelText: 'Annuler',
+    );
+
+    selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      confirmText: 'Valider',
+      cancelText: 'Annuler',
+    );
+
+    DateTime? dateTime;
+
+    if (selectedDate != null) {
+      dateTime = DateTime.now();
+      dateTime = dateTime.copyWith(
+        year: selectedDate.year,
+        month: selectedDate.month,
+        day: selectedDate.day,
+        hour: selectedTime != null ? selectedTime.hour : 0,
+        minute: selectedTime != null ? selectedTime.minute : 0,
+        second: 0,
+      );
+    }
+
+    if (isNullable) {
+      ref.read(stateProvider.notifier).state = dateTime;
+    } else {
+      ref.read(stateProvider.notifier).state = dateTime ?? DateTime.now();
+    }
   }
 
   static String getFormatedTime({
