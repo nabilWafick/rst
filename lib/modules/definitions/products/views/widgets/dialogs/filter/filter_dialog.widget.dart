@@ -3,21 +3,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
+import 'package:rst/main.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/modules/definitions/products/models/structure/structure.model.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class ProductFilterDialog extends HookConsumerWidget {
-  const ProductFilterDialog({
-    super.key,
-  });
+class ProductFilterDialog extends StatefulHookConsumerWidget {
+  const ProductFilterDialog({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ProductFilterDialogState();
+}
+
+class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
+  final formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
     const formCardWidth = 880.0;
-    final productsListParameters = ref.watch(productsListParametersProvider);
-    final logicalOperator = useState<String>('ET');
+    // final productsListParameters = ref.watch(productsListParametersProvider);
+    final productsListFilterParametersAdded =
+        ref.watch(productsListFilterParametersAddedProvider);
+
+    final logicalOperator = useState<String>('AND');
     final andOperatorSelected = useState<bool>(true);
     final orOperatorSelected = useState<bool>(false);
     final notOperatorSelected = useState<bool>(false);
@@ -54,183 +66,152 @@ class ProductFilterDialog extends HookConsumerWidget {
         ),
 
         width: formCardWidth,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(
-                bottom: 10.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: formCardWidth / 3.5,
-                    child: CheckboxListTile(
-                      value: andOperatorSelected.value,
-                      hoverColor: RSTColors.primaryColor.withOpacity(.1),
-                      title: const RSTText(
-                        text: 'ET',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(
+                  bottom: 10.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: formCardWidth / 3.5,
+                      child: CheckboxListTile(
+                        value: andOperatorSelected.value,
+                        hoverColor: RSTColors.primaryColor.withOpacity(.1),
+                        title: const RSTText(
+                          text: 'ET',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        onChanged: (value) {
+                          if (value == true) {
+                            andOperatorSelected.value = true;
+                            logicalOperator.value = "AND";
+                            orOperatorSelected.value = false;
+                            notOperatorSelected.value = false;
+                          } else if (value == false) {
+                            andOperatorSelected.value = value!;
+                            notOperatorSelected.value = value;
+                            orOperatorSelected.value = true;
+                            logicalOperator.value = "OR";
+                          }
+                        },
                       ),
-                      onChanged: (value) {
-                        if (value == true) {
-                          andOperatorSelected.value = true;
-                          logicalOperator.value = "ET";
-                          orOperatorSelected.value = false;
-                          notOperatorSelected.value = false;
-                        } else if (value == false) {
-                          andOperatorSelected.value = value!;
-                          notOperatorSelected.value = value;
-                          orOperatorSelected.value = true;
-                          logicalOperator.value = "OU";
-                        }
-                      },
                     ),
-                  ),
-                  SizedBox(
-                    width: formCardWidth / 3.5,
-                    child: CheckboxListTile(
-                      value: orOperatorSelected.value,
-                      hoverColor: RSTColors.primaryColor.withOpacity(.1),
-                      title: const RSTText(
-                        text: 'OU',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: formCardWidth / 3.5,
+                      child: CheckboxListTile(
+                        value: orOperatorSelected.value,
+                        hoverColor: RSTColors.primaryColor.withOpacity(.1),
+                        title: const RSTText(
+                          text: 'OU',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        onChanged: (value) {
+                          if (value == true) {
+                            orOperatorSelected.value = value!;
+                            logicalOperator.value = "OR";
+                            andOperatorSelected.value = false;
+                            notOperatorSelected.value = false;
+                          } else if (value == false) {
+                            orOperatorSelected.value = value!;
+                            notOperatorSelected.value = value;
+                            andOperatorSelected.value = true;
+                            logicalOperator.value = "AND";
+                          }
+                        },
                       ),
-                      onChanged: (value) {
-                        if (value == true) {
-                          orOperatorSelected.value = value!;
-                          logicalOperator.value = "OU";
-                          andOperatorSelected.value = false;
-                          notOperatorSelected.value = false;
-                        } else if (value == false) {
-                          orOperatorSelected.value = value!;
-                          notOperatorSelected.value = value;
-                          andOperatorSelected.value = true;
-                          logicalOperator.value = "ET";
-                        }
-                      },
                     ),
-                  ),
-                  SizedBox(
-                    width: formCardWidth / 3.5,
-                    child: CheckboxListTile(
-                      value: notOperatorSelected.value,
-                      hoverColor: RSTColors.primaryColor.withOpacity(.15),
-                      title: const RSTText(
-                        text: 'NON',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: formCardWidth / 3.5,
+                      child: CheckboxListTile(
+                        value: notOperatorSelected.value,
+                        hoverColor: RSTColors.primaryColor.withOpacity(.15),
+                        title: const RSTText(
+                          text: 'NON',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        onChanged: (value) {
+                          if (value == true) {
+                            notOperatorSelected.value = value!;
+                            logicalOperator.value = "NOT";
+                            orOperatorSelected.value = false;
+                            andOperatorSelected.value = false;
+                          } else if (value == false) {
+                            notOperatorSelected.value = value!;
+                            orOperatorSelected.value = value;
+                            andOperatorSelected.value = true;
+                            logicalOperator.value = "AND";
+                          }
+                        },
                       ),
-                      onChanged: (value) {
-                        if (value == true) {
-                          notOperatorSelected.value = value!;
-                          logicalOperator.value = "NON";
-                          orOperatorSelected.value = false;
-                          andOperatorSelected.value = false;
-                        } else if (value == false) {
-                          notOperatorSelected.value = value!;
-                          orOperatorSelected.value = value;
-                          andOperatorSelected.value = true;
-                          logicalOperator.value = "ET";
-                        }
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            /* FilterParameterTool(
-              index: 1,
-              logicalOperator: logicalOperator.value,
-              fields: ProductStructure.fields,
-              listParametersProvider: productsListParametersProvider,
-            ),
-            FilterParameterTool(
-              index: 2,
-              logicalOperator: logicalOperator.value,
-              fields: ProductStructure.fields,
-              listParametersProvider: productsListParametersProvider,
-            ),*/
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxHeight: 280.0,
-                minHeight: .0,
-              ),
-              child: productsListParameters.containsKey('where')
-                  ? Consumer(
-                      builder: (context, ref, child) {
-                        // will store filter parameters tools
-                        List<Widget> filterParametersToolsList = [];
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 280.0,
+                  minHeight: .0,
+                ),
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    // will store filter parameters tools
+                    List<Widget> filterParametersToolsList = [];
 
-                        // get all added parameters
-                        final productsListFilterParametersAdded = ref.watch(
-                          productsListFilterParametersAddedProvider,
-                        );
+                    for (MapEntry filterParameter
+                        in productsListFilterParametersAdded.entries) {
+                      filterParametersToolsList.add(
+                        FilterParameterTool(
+                          index: filterParameter.key,
+                          fields: ProductStructure.fields,
+                          filterParametersAddedProvider:
+                              productsListFilterParametersAddedProvider,
+                        ),
+                      );
+                    }
 
-                        for (MapEntry filterParameter
-                            in productsListFilterParametersAdded.entries) {
-                          filterParametersToolsList.add(
-                            FilterParameterTool(
-                              index: filterParameter.key,
-                              fields: ProductStructure.fields,
-                              filterParametersAddedProvider:
-                                  productsListFilterParametersAddedProvider,
-                              filterParametersToolsAddedProvider:
-                                  productsListFilterParametersToolsAddedProvider,
-                            ),
-                          );
-                        }
-
-                        // store the filters tools in a widget list
-                        List<Widget> filterParametersTools = [];
-
-                        return SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: filterParametersTools,
-                          ),
-                        );
-                      },
-                    )
-                  : const SizedBox(),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              margin: const EdgeInsets.only(
-                top: 15.0,
-                bottom: 10.0,
-              ),
-              child: InkWell(
-                onTap: () {
-                  // check if there is at least one filter parameter
-                  // add a new filter parameter
-
-                  final productsListFilterParametersToolsAdded =
-                      ref.watch(productsListFilterParametersToolsAddedProvider);
-
-                  if (productsListFilterParametersToolsAdded
-                      .entries.isNotEmpty) {
-                    // add new filter tool visibility
-                    ref
-                        .read(productsListFilterParametersToolsAddedProvider
-                            .notifier)
-                        .update(
-                      (state) {
-                        state = {
-                          ...state,
-                          productsListFilterParametersToolsAdded.entries.length:
-                              true,
-                        };
-
-                        return state;
-                      },
+                    return SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: filterParametersToolsList,
+                      ),
                     );
-
+                  },
+                ),
+              ),
+              /*        /// * === TEST ===
+              RSTText(
+                text: 'Parameters Added : $productsListFilterParametersAdded',
+                fontSize: 12.0,
+              ),
+              const SizedBox(
+                height: 5.00,
+              ),
+              RSTText(
+                text:
+                    'List Parameters : ${ref.watch(productsListParametersProvider)}',
+                fontSize: 12.0,
+              ),
+              /// * === TEST ===
+*/
+              Container(
+                alignment: Alignment.centerRight,
+                margin: const EdgeInsets.only(
+                  top: 15.0,
+                  bottom: 10.0,
+                ),
+                child: InkWell(
+                  onTap: () {
                     // add new filter parameter
                     ref
                         .read(
@@ -239,94 +220,65 @@ class ProductFilterDialog extends HookConsumerWidget {
                       (state) {
                         state = {
                           ...state,
-                          productsListFilterParametersToolsAdded.length: {
+                          DateTime.now().millisecondsSinceEpoch: {
                             ProductStructure.name.back: {
-                              "contains": "",
-                              "insensitive": true,
+                              FilterOperators.commonOperators.first.back: "",
                             }
                           }
                         };
                         return state;
                       },
                     );
-                  } else {
-                    // there is any filter parameter before
-                    // add first filter tool visibility
-                    ref
-                        .read(productsListFilterParametersToolsAddedProvider
-                            .notifier)
-                        .update(
-                      (state) {
-                        state = {
-                          0: true,
-                        };
-                        return state;
-                      },
-                    );
-
-                    // add new filter parameter
-                    ref
-                        .read(
-                            productsListFilterParametersAddedProvider.notifier)
-                        .update(
-                      (state) {
-                        state = {
-                          0: {
-                            ProductStructure.name.back: {
-                              "contains": "",
-                              "insensitive": true,
-                            }
-                          }
-                        };
-                        return state;
-                      },
-                    );
-                  }
-                },
-                splashColor: RSTColors.primaryColor.withOpacity(.15),
-                hoverColor: RSTColors.primaryColor.withOpacity(.1),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 10.0,
-                    horizontal: 15.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RSTText(
-                        text: 'Ajouter un filtre',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      SizedBox(
-                        width: 15.0,
-                      ),
-                      Icon(
-                        Icons.add_circle_outline_rounded,
-                        color: RSTColors.primaryColor,
-                        size: 25.0,
-                      ),
-                    ],
+                  },
+                  splashColor: RSTColors.primaryColor.withOpacity(.15),
+                  hoverColor: RSTColors.primaryColor.withOpacity(.1),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 15.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RSTText(
+                          text: 'Ajouter un filtre',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        Icon(
+                          Icons.add_circle_outline_rounded,
+                          color: RSTColors.primaryColor,
+                          size: 25.0,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            productsListParameters['where']?.isNotEmpty ?? false
+            productsListFilterParametersAdded.isNotEmpty
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
                       text: 'Réinitialiser',
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
-                        // remove the sort option
+                        // reset filter tools parameters provider
+                        ref.invalidate(
+                            productsListFilterParametersAddedProvider);
+
+                        // remove the filter parameters
                         ref
                             .read(productsListParametersProvider.notifier)
                             .update(
@@ -335,7 +287,8 @@ class ProductFilterDialog extends HookConsumerWidget {
 
                             for (MapEntry<String, dynamic> entry
                                 in state.entries) {
-                              if (entry.key != 'where ') {
+                              // remove where key from parameters
+                              if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }
                             }
@@ -355,10 +308,64 @@ class ProductFilterDialog extends HookConsumerWidget {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: 'Valider',
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                },
+                text: productsListFilterParametersAdded.isNotEmpty
+                    ? 'Valider'
+                    : 'Effacer',
+                onPressed: productsListFilterParametersAdded.isNotEmpty
+                    ? () async {
+                        final isFormValid = formKey.currentState!.validate();
+
+                        if (isFormValid) {
+                          List<Map<String, dynamic>> filterParameters = [];
+
+                          // perform filter Tool parameter
+                          for (MapEntry<int,
+                                  Map<String, dynamic>> filterToolParameterEntry
+                              in productsListFilterParametersAdded.entries) {
+                            final finalFilterToolParameter =
+                                performFilterParameter(
+                              ref: ref,
+                              filterToolIndex: filterToolParameterEntry.key,
+                              filterParameter: filterToolParameterEntry.value,
+                            );
+
+                            debugPrint(
+                                'final Parameter ${filterToolParameterEntry.key}: $finalFilterToolParameter');
+
+                            filterParameters.add(finalFilterToolParameter);
+                          }
+
+                          // add filter parameters to productsListParameter
+
+                          ref
+                              .read(productsListParametersProvider.notifier)
+                              .update((state) {
+                            // remove if exists, 'AND', 'OR', 'NOT' keys
+
+                            Map<String, dynamic> newState = {};
+
+                            for (MapEntry<String, dynamic> entry
+                                in state.entries) {
+                              if (entry.key != 'where') {
+                                newState[entry.key] = entry.value;
+                              }
+                            }
+                            state = newState;
+
+                            state = {
+                              ...state,
+                              'where': {
+                                logicalOperator.value: filterParameters,
+                              }
+                            };
+
+                            return state;
+                          });
+                        }
+                      }
+                    : () {
+                        Navigator.of(context).pop();
+                      },
               ),
             )
           ],

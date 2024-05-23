@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/models/field/field.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
-import 'package:rst/common/widgets/text/text.widget.dart';
+import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 
 final filterToolFieldDropdownProvider = StateProvider.family<Field, String>(
   (ref, dropdown) {
@@ -31,13 +31,10 @@ class RSTFilterToolFieldDropdown extends RSTFieldDropdown {
   /// changed
   final int subFieldIndex;
 
-  /// used for storing the last subField added in the filter tool
-  /// in order to display the equivalent operator
-  final ValueNotifier<Field> lastSubField;
-
   /// used for storing every nested field dropdown builded
   /// it used in filter tool for diplaying all subField dropdown builded
-  final ValueNotifier<List<Widget>> filterToolFieldsDropdowns;
+  final ValueNotifier<List<RSTFilterToolFieldDropdown>>
+      filterToolFieldsDropdowns;
 
   /// the value of the first entry of the parent entry
   /// ex: `parameter = {'product': {'name': '1'}}`
@@ -47,7 +44,12 @@ class RSTFilterToolFieldDropdown extends RSTFieldDropdown {
   final Map<String, dynamic> subEntryValue;
 
   /// the provider of the filter tool, used for storing the tool parameter
-  final StateProvider<Map<String, dynamic>> filterToolParameterProvider;
+  // final StateProvider<Map<String, dynamic>> filterToolParameterProvider;
+
+  /// the provider of the filter tools added (Map<int, Map<String,dynamic>>)
+  /// used for storing alls tools parameters aded
+  final StateProvider<Map<int, Map<String, dynamic>>>
+      filterParametersAddedProvider;
   const RSTFilterToolFieldDropdown({
     super.key,
     super.width,
@@ -59,10 +61,10 @@ class RSTFilterToolFieldDropdown extends RSTFieldDropdown {
     required super.dropdownMenuEntriesValues,
     required this.filterToolIndex,
     required this.subFieldIndex,
-    required this.lastSubField,
     required this.filterToolFieldsDropdowns,
     required this.subEntryValue,
-    required this.filterToolParameterProvider,
+    //  required this.filterToolParameterProvider,
+    required this.filterParametersAddedProvider,
   });
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -96,25 +98,6 @@ class _RSTFilterToolFieldDropdownState
   Widget build(BuildContext context) {
     final selectedDropdownItem =
         ref.watch(filterToolFieldDropdownProvider(widget.providerName));
-
-    //*  === === === TEST === === ===
-    Future.delayed(
-      const Duration(
-        milliseconds: 100,
-      ),
-      () {
-        // check if dropdown item is not empty so as to avoid error
-        // while setting the  the first item as the selectedItem
-        if (widget.dropdownMenuEntriesValues.isNotEmpty) {
-          ref
-              .read(
-                  filterToolFieldDropdownProvider(widget.providerName).notifier)
-              .state = widget.dropdownMenuEntriesValues[0];
-        }
-      },
-    );
-
-    ///*  === === === TEST === === ===
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -160,41 +143,77 @@ class _RSTFilterToolFieldDropdownState
 
           // check if the the new field is a relation
           if (value.isRelation) {
-            // created a new nested map
-
-            tryBuildFieldDropDown(
-              ref: ref,
-              filterToolIndex: widget.filterToolIndex,
-              subFieldIndex: widget.subFieldIndex + 1,
-              lastSubField: widget.lastSubField,
-              fields: value.fields!,
-              filterToolFieldsDropdowns: widget.filterToolFieldsDropdowns,
-              subEntryValue: {},
-              filterToolParameterProvider: widget.filterToolParameterProvider,
+            // generate a new nested map
+            final newNestedMap = generateNestedMap(
+              field: value,
             );
-          } else {
-            // set the field as the lastSelected of the tool
-            widget.lastSubField.value = value;
 
             // split and perfom the filterToolParameter
             final newFilterToolMap = splitMap(
               map: ref.watch(
-                widget.filterToolParameterProvider,
-              ),
+                    widget.filterParametersAddedProvider,
+                  )[widget.filterToolIndex] ??
+                  {},
               depth: 0,
               targetDepth: widget.subFieldIndex,
-              newNestedMap: {
-                value.back: {
-                  'equals': '',
-                },
+              newNestedMap: newNestedMap,
+            );
+
+            // update added filter tools parameters
+            ref
+                .read(
+              widget.filterParametersAddedProvider.notifier,
+            )
+                .update((state) {
+              state = {...state, widget.filterToolIndex: newFilterToolMap};
+              return state;
+            });
+
+            // build nested field dropdown
+            tryBuildFieldDropDown(
+              ref: ref,
+              filterToolIndex: widget.filterToolIndex,
+              subFieldIndex: widget.subFieldIndex + 1,
+              fields: value.fields!,
+              filterToolFieldsDropdowns: widget.filterToolFieldsDropdowns,
+              subEntryValue: newNestedMap,
+              filterParametersAddedProvider:
+                  widget.filterParametersAddedProvider,
+            );
+          } else {
+            // set the field as the lastSelected of the tool
+            ref
+                .read(filterToolLastSubFieldProvider(widget.filterToolIndex)
+                    .notifier)
+                .state = value;
+
+            // split and perfom the filterToolParameter
+            final newFilterToolMap = splitMap(
+              map: ref.watch(
+                    widget.filterParametersAddedProvider,
+                  )[widget.filterToolIndex] ??
+                  {},
+              depth: 0,
+              targetDepth: widget.subFieldIndex,
+              newNestedMap: generateNestedMap(
+                field: value,
+              ),
+            );
+
+            // update added filter tools parameters
+            ref
+                .read(
+              widget.filterParametersAddedProvider.notifier,
+            )
+                .update(
+              (state) {
+                state = {...state, widget.filterToolIndex: newFilterToolMap};
+                return state;
               },
             );
 
-            // update filter toolMap provider
-            ref.read(widget.filterToolParameterProvider.notifier).state =
-                newFilterToolMap;
-
             // reduce the subField dropdowns and stop at this one
+
             widget.filterToolFieldsDropdowns.value = widget
                 .filterToolFieldsDropdowns.value
                 .take(widget.subFieldIndex + 1)
@@ -204,83 +223,4 @@ class _RSTFilterToolFieldDropdownState
       ),
     );
   }
-}
-
-Map<String, dynamic> splitMap({
-  required Map<String, dynamic> map,
-  required int depth,
-  required int targetDepth,
-  required Map<String, dynamic> newNestedMap,
-}) {
-  Map<String, dynamic> result = {};
-
-  map.forEach((key, value) {
-    // check if the targetDepth is reached
-    if (depth == targetDepth) {
-      // remove all key without 'include' key
-      // this because, filter parameter map an sub map
-      // contain only two key (currently)
-      if (key != 'include') {
-        result.remove(key);
-      } else {
-        result[key] = value;
-      }
-
-      // populate the subField
-    } else if (value is Map) {
-      // continue the nesting if the goal is not reached
-      result[key] = splitMap(
-        map: value as Map<String, dynamic>,
-        depth: depth + 1,
-        targetDepth: targetDepth,
-        newNestedMap: newNestedMap,
-      );
-    } else {
-      // store all keys
-      result[key] = value;
-    }
-  });
-
-  return result;
-}
-
-Map<String, dynamic> generateNestedMap({
-  required Field field,
-}) {
-  Map<String, dynamic> nestedMap = {};
-
-  if (field.isRelation) {
-    // get the first sub field which is not a relation
-    final subField = field.fields!.firstWhere(
-      (field) => !field.isRelation,
-      orElse: () {
-        return Field(
-          front: '_',
-          back: '_',
-          type: String,
-          isNullable: false,
-          isRelation: false,
-        );
-      },
-    );
-
-    if (subField.back == '_') {
-    } else {
-      // generate a nested rel
-      nestedMap = {
-        field.back: generateNestedMap(
-          field: subField,
-        ),
-        'include': true,
-      };
-    }
-  } else {
-    nestedMap = {
-      field.back: {
-        'equals': '',
-      }
-    };
-  }
-
-  return nestedMap;
 }

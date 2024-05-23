@@ -33,12 +33,6 @@ final productsListParametersProvider =
 });
 
 // used for storing added filter tool
-final productsListFilterParametersToolsAddedProvider =
-    StateProvider<Map<int, bool>>((ref) {
-  return {};
-});
-
-// used for storing added filter tool
 final productsListFilterParametersAddedProvider =
     StateProvider<Map<int, Map<String, dynamic>>>((ref) {
   return {};
