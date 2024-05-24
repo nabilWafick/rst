@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
-import 'package:rst/main.dart';
+import 'package:rst/common/widgets/filter_parameter_tool/logical_operator/logical_operator.widget.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/modules/definitions/products/models/structure/structure.model.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
@@ -30,9 +30,6 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
         ref.watch(productsListFilterParametersAddedProvider);
 
     final logicalOperator = useState<String>('AND');
-    final andOperatorSelected = useState<bool>(true);
-    final orOperatorSelected = useState<bool>(false);
-    final notOperatorSelected = useState<bool>(false);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -72,94 +69,13 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                margin: const EdgeInsets.only(
-                  bottom: 10.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: formCardWidth / 3.5,
-                      child: CheckboxListTile(
-                        value: andOperatorSelected.value,
-                        hoverColor: RSTColors.primaryColor.withOpacity(.1),
-                        title: const RSTText(
-                          text: 'ET',
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        onChanged: (value) {
-                          if (value == true) {
-                            andOperatorSelected.value = true;
-                            logicalOperator.value = "AND";
-                            orOperatorSelected.value = false;
-                            notOperatorSelected.value = false;
-                          } else if (value == false) {
-                            andOperatorSelected.value = value!;
-                            notOperatorSelected.value = value;
-                            orOperatorSelected.value = true;
-                            logicalOperator.value = "OR";
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: formCardWidth / 3.5,
-                      child: CheckboxListTile(
-                        value: orOperatorSelected.value,
-                        hoverColor: RSTColors.primaryColor.withOpacity(.1),
-                        title: const RSTText(
-                          text: 'OU',
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        onChanged: (value) {
-                          if (value == true) {
-                            orOperatorSelected.value = value!;
-                            logicalOperator.value = "OR";
-                            andOperatorSelected.value = false;
-                            notOperatorSelected.value = false;
-                          } else if (value == false) {
-                            orOperatorSelected.value = value!;
-                            notOperatorSelected.value = value;
-                            andOperatorSelected.value = true;
-                            logicalOperator.value = "AND";
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: formCardWidth / 3.5,
-                      child: CheckboxListTile(
-                        value: notOperatorSelected.value,
-                        hoverColor: RSTColors.primaryColor.withOpacity(.15),
-                        title: const RSTText(
-                          text: 'NON',
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        onChanged: (value) {
-                          if (value == true) {
-                            notOperatorSelected.value = value!;
-                            logicalOperator.value = "NOT";
-                            orOperatorSelected.value = false;
-                            andOperatorSelected.value = false;
-                          } else if (value == false) {
-                            notOperatorSelected.value = value!;
-                            orOperatorSelected.value = value;
-                            andOperatorSelected.value = true;
-                            logicalOperator.value = "AND";
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+              FilterParametersLogicalOperator(
+                logicalOperator: logicalOperator,
+                formCardWidth: formCardWidth,
               ),
               ConstrainedBox(
                 constraints: const BoxConstraints(
-                  maxHeight: 280.0,
+                  maxHeight: 300.0,
                   minHeight: .0,
                 ),
                 child: Consumer(
@@ -189,7 +105,8 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                   },
                 ),
               ),
-              /*        /// * === TEST ===
+
+              /// * === TEST ===
               RSTText(
                 text: 'Parameters Added : $productsListFilterParametersAdded',
                 fontSize: 12.0,
@@ -202,8 +119,9 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                     'List Parameters : ${ref.watch(productsListParametersProvider)}',
                 fontSize: 12.0,
               ),
+
               /// * === TEST ===
-*/
+
               Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(
@@ -310,12 +228,17 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
               child: RSTElevatedButton(
                 text: productsListFilterParametersAdded.isNotEmpty
                     ? 'Valider'
-                    : 'Effacer',
+                    : 'Fermer',
                 onPressed: productsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         final isFormValid = formKey.currentState!.validate();
 
                         if (isFormValid) {
+                          /// * === TEST ===  */
+                          debugPrint('before applying filter');
+
+                          /// * === TEST ===  */
+
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
@@ -329,10 +252,28 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                               filterParameter: filterToolParameterEntry.value,
                             );
 
+                            /// * === TEST === * /
+                            /// update added filter
+                            ref
+                                .read(productsListFilterParametersAddedProvider
+                                    .notifier)
+                                .update((state) {
+                              state = {
+                                ...state,
+                                filterToolParameterEntry.key:
+                                    finalFilterToolParameter,
+                              };
+                              return state;
+                            });
+
+                            /// * === TEST === * /
+
                             debugPrint(
                                 'final Parameter ${filterToolParameterEntry.key}: $finalFilterToolParameter');
 
-                            filterParameters.add(finalFilterToolParameter);
+                            if (finalFilterToolParameter != {}) {
+                              filterParameters.add(finalFilterToolParameter);
+                            }
                           }
 
                           // add filter parameters to productsListParameter
@@ -358,6 +299,7 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                                 logicalOperator.value: filterParameters,
                               }
                             };
+                            debugPrint('filter Parameter: $state');
 
                             return state;
                           });

@@ -27,7 +27,7 @@ class CommonOnChangedFunction {
         value.isEmpty ||
         value.trim() == '' ||
         !hasSpecialCharactersOrLettersForInt(value)) {
-      ref.read(provider.notifier).state = int.tryParse(value!) ?? 0;
+      ref.read(provider.notifier).state = int.tryParse(value!.trim()) ?? 0;
     }
   }
 
@@ -37,7 +37,7 @@ class CommonOnChangedFunction {
         value.isEmpty ||
         value.trim() == '' ||
         !hasSpecialCharactersOrLettersForDouble(value)) {
-      ref.read(provider.notifier).state = double.tryParse(value!) ?? .0;
+      ref.read(provider.notifier).state = double.tryParse(value!.trim()) ?? .0;
     }
   }
 
@@ -46,6 +46,7 @@ class CommonOnChangedFunction {
     if (value == null || value.isEmpty || value.trim() == '') {
       ref.read(provider.notifier).state = '';
     }
+
     ref.read(provider.notifier).state = value?.trim();
   }
 }

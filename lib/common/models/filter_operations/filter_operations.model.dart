@@ -61,22 +61,11 @@ class FilterOperators {
       back: 'gte',
     ),
   ];
-  static final List<Operator> nullOperators = [
-    Operator(
-      front: 'est nul',
-      back: 'isNull',
-    ),
-    Operator(
-      front: 'n\'est pas nul',
-      back: 'isNotNull',
-    ),
-  ];
 
   static final List<Operator> allOperators = [
     ...commonOperators,
     ...stringOperators,
     ...numberOperators,
     ...datesOperators,
-    ...nullOperators,
   ];
 }

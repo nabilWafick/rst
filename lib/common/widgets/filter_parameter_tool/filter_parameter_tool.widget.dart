@@ -252,13 +252,6 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                       ];
                     }
 
-                    if (lastSubField.isNullable) {
-                      filterParameterToolOperators = [
-                        ...FilterOperators.commonOperators,
-                        ...FilterOperators.nullOperators,
-                      ];
-                    }
-
                     // remove repeated operators
                     filterParameterToolOperators =
                         filterParameterToolOperators.toSet().toList();
@@ -278,22 +271,6 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                   width: 250.0,
                   child: Consumer(
                     builder: (context, ref, child) {
-                      // watch the tool operator so as to dispalay, show or use
-                      // the correct formfiel (text, date, bool, )
-                      final selectedOperator = ref.watch(
-                        operatorDropdownProvider(
-                          'filter_parameter_tool_operator_${widget.index}',
-                        ),
-                      );
-
-                      if (FilterOperators.nullOperators
-                          .contains(selectedOperator)) {
-                        return FilterParameterToolBoolField(
-                          providerName:
-                              'filter_parameter_tool_null_input_${widget.index}',
-                        );
-                      }
-
                       if (lastSubField.type == bool) {
                         return FilterParameterToolBoolField(
                           providerName:

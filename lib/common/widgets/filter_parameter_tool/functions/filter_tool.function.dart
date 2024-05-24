@@ -10,6 +10,7 @@ Map<String, dynamic> splitMap({
   required int depth,
   required int targetDepth,
   required Map<String, dynamic> newNestedMap,
+  required bool isRelation,
 }) {
   Map<String, dynamic> result = {};
 
@@ -27,6 +28,11 @@ Map<String, dynamic> splitMap({
 
       // populate the subField
       result[newNestedMap.entries.first.key] = newNestedMap.entries.first.value;
+
+      // add include key if it is a relation
+      if (isRelation) {
+        result['include'] = true;
+      }
     } else if (value is Map) {
       // continue the nesting if the goal is not reached
       result[key] = splitMap(
@@ -34,6 +40,7 @@ Map<String, dynamic> splitMap({
         depth: depth + 1,
         targetDepth: targetDepth,
         newNestedMap: newNestedMap,
+        isRelation: isRelation,
       );
     } else {
       // store all keys
@@ -103,7 +110,8 @@ Map<String, dynamic> performFilterParameter({
 
   filterParameter.forEach((key, value) {
     // check if the key is an operator
-    if (key == 'equals') {
+    if (FilterOperators.allOperators
+        .any((operatore) => operatore.back == key)) {
       // watch the last subField of the filterTool
       final filterToolLastSubField =
           ref.watch(filterToolLastSubFieldProvider(filterToolIndex));
@@ -148,13 +156,10 @@ Map<String, dynamic> performFilterParameter({
 
           filterValue = '${filterValue.toIso8601String()}Z';
         }
-      } else if (FilterOperators.nullOperators.contains(filterToolOperator)) {
-        filterValue = ref.watch(
-          filterParameterToolBoolFieldValueProvider(
-            'filter_parameter_tool_null_input_$filterToolIndex',
-          ),
-        );
-      } else if (FilterOperators.numberOperators.contains(filterToolOperator)) {
+      } else if (FilterOperators.numberOperators.contains(filterToolOperator) &&
+          (filterToolLastSubField.type == int ||
+              filterToolLastSubField.type == double ||
+              filterToolLastSubField.type == num)) {
         filterValue = ref.watch(
           filterParameterToolTextFieldValueProvider(
             'filter_parameter_tool_number_input_$filterToolIndex',

@@ -93,8 +93,9 @@ class ProductsPageFooter extends ConsumerWidget {
                                 horizontal: 30.0,
                               ),
                               child: RSTText(
-                                text:
-                                    '${((productsListParameters['skip'] + 25) / 25).toInt()}',
+                                text: data != 0
+                                    ? '${((productsListParameters['skip'] + 25) / 25).toInt()}'
+                                    : '0',
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700,
                                 color: RSTColors.primaryColor,
@@ -153,7 +154,9 @@ class ProductsPageFooter extends ConsumerWidget {
                     final productList = ref.watch(productsListStreamProvider);
                     return RSTText(
                       text: productList.when(
-                        data: (data) => '${productsListParameters['skip'] + 1}',
+                        data: (data) => data.isNotEmpty
+                            ? '${productsListParameters['skip'] + 1}'
+                            : '0',
                         error: (error, stackTrace) => '',
                         loading: () => '',
                       ),

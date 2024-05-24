@@ -148,7 +148,16 @@ class _RSTFilterToolFieldDropdownState
               field: value,
             );
 
-            // split and perfom the filterToolParameter
+            /// * === TEST ===
+
+            debugPrint(
+              'Relation => nestedMap: $newNestedMap',
+            );
+
+            /// * === TEST ===
+
+            // split and perfom the filterToolParameter add field  subField
+            // in filterParameter
             final newFilterToolMap = splitMap(
               map: ref.watch(
                     widget.filterParametersAddedProvider,
@@ -157,6 +166,7 @@ class _RSTFilterToolFieldDropdownState
               depth: 0,
               targetDepth: widget.subFieldIndex,
               newNestedMap: newNestedMap,
+              isRelation: true,
             );
 
             // update added filter tools parameters
@@ -165,9 +175,20 @@ class _RSTFilterToolFieldDropdownState
               widget.filterParametersAddedProvider.notifier,
             )
                 .update((state) {
-              state = {...state, widget.filterToolIndex: newFilterToolMap};
+              state = {
+                ...state,
+                widget.filterToolIndex: newFilterToolMap,
+              };
               return state;
             });
+
+            /// * === TEST ===
+
+            debugPrint(
+              'Relation => newFilterToolMap: $newFilterToolMap',
+            );
+
+            /// * === TEST ===
 
             // build nested field dropdown
             tryBuildFieldDropDown(
@@ -176,15 +197,19 @@ class _RSTFilterToolFieldDropdownState
               subFieldIndex: widget.subFieldIndex + 1,
               fields: value.fields!,
               filterToolFieldsDropdowns: widget.filterToolFieldsDropdowns,
-              subEntryValue: newNestedMap,
+              // newNestedMap[value.back] because nested is generated
+              // containing value but on subField is need
+              subEntryValue: newNestedMap[value.back],
               filterParametersAddedProvider:
                   widget.filterParametersAddedProvider,
             );
           } else {
             // set the field as the lastSelected of the tool
             ref
-                .read(filterToolLastSubFieldProvider(widget.filterToolIndex)
-                    .notifier)
+                .read(
+                  filterToolLastSubFieldProvider(widget.filterToolIndex)
+                      .notifier,
+                )
                 .state = value;
 
             // split and perfom the filterToolParameter
@@ -198,6 +223,7 @@ class _RSTFilterToolFieldDropdownState
               newNestedMap: generateNestedMap(
                 field: value,
               ),
+              isRelation: false,
             );
 
             // update added filter tools parameters
