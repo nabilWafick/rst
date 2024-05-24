@@ -6,6 +6,7 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/boolfield/boolfield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/datetimefield/datetimefield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/field_dopdown/filter_field_dopdown.widget.dart';
+import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/on_changed/filter_tool_on_changed.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/textformfield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/validator/filter_tool_validator.dart';
@@ -21,6 +22,13 @@ final filterToolLastSubFieldProvider = StateProvider.family<Field, int>(
       isNullable: false,
       isRelation: false,
     );
+  },
+);
+
+// used for storing the lastSubField of the filter tool
+final filterToolValueProvider = StateProvider.family<dynamic, int>(
+  (ref, index) {
+    return null;
   },
 );
 
@@ -191,7 +199,6 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                     Future.delayed(
                       const Duration(milliseconds: 100),
                       () {
-                        // if(ref.watch(f))
                         tryBuildFieldDropDown(
                           ref: ref,
                           filterToolIndex: widget.index,
@@ -212,6 +219,14 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                         );
                       },
                     );
+
+                    // force building
+                    Future.delayed(
+                        const Duration(
+                          milliseconds: 120,
+                        ), () {
+                      setState(() {});
+                    });
 
                     return Wrap(
                       runSpacing: 5,
@@ -256,6 +271,22 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                     filterParameterToolOperators =
                         filterParameterToolOperators.toSet().toList();
 
+                    Future.delayed(
+                      const Duration(
+                        milliseconds: 100,
+                      ),
+                      () {
+                        defineFilterToolOperatorAndValue(
+                          ref: ref,
+                          filterToolIndex: widget.index,
+                          filterParameter:
+                              ref.watch(widget.filterParametersAddedProvider)[
+                                      widget.index] ??
+                                  {},
+                        );
+                      },
+                    );
+
                     return RSTOperatorDropdown(
                       width: 250.0,
                       menuHeigth: 300.0,
@@ -271,8 +302,14 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                   width: 250.0,
                   child: Consumer(
                     builder: (context, ref, child) {
+                      final filterToolValue =
+                          ref.watch(filterToolValueProvider(widget.index));
                       if (lastSubField.type == bool) {
                         return FilterParameterToolBoolField(
+                          initialValue: filterToolValue != null &&
+                                  filterToolValue.runtimeType == bool
+                              ? filterToolValue
+                              : null,
                           providerName:
                               'filter_parameter_tool_bool_input_${widget.index}',
                         );
@@ -282,6 +319,11 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                           lastSubField.type == double ||
                           lastSubField.type == num) {
                         return FilterParameterToolTextFormField(
+                          initialValue: filterToolValue != null &&
+                                  filterToolValue.runtimeType == String &&
+                                  double.tryParse(filterToolValue) != null
+                              ? filterToolValue
+                              : null,
                           inputProvider:
                               'filter_parameter_tool_number_input_${widget.index}',
                           label: 'Nombre',
@@ -296,12 +338,20 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
 
                       if (lastSubField.type == DateTime) {
                         return FilterParameterToolDateTimeField(
+                          initialValue: filterToolValue != null &&
+                                  filterToolValue.runtimeType == String
+                              ? filterToolValue
+                              : null,
                           providerName:
                               'filter_parameter_tool_datetime_input_${widget.index}',
                         );
                       }
 
                       return FilterParameterToolTextFormField(
+                        initialValue: filterToolValue != null &&
+                                filterToolValue.runtimeType == String
+                            ? filterToolValue
+                            : null,
                         inputProvider:
                             'filter_parameter_tool_text_input_${widget.index}',
                         label: 'Texte',

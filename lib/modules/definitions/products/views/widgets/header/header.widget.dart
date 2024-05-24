@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
@@ -7,11 +8,17 @@ import 'package:rst/modules/definitions/products/providers/products.provider.dar
 import 'package:rst/modules/definitions/products/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/products/views/widgets/forms/addition/product_addition.widget.dart';
 
-class ProductsPageHeader extends ConsumerWidget {
+class ProductsPageHeader extends StatefulHookConsumerWidget {
   const ProductsPageHeader({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ProductsPageHeaderState();
+}
+
+class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
+  @override
+  Widget build(BuildContext context) {
     final productsListParameters = ref.watch(productsListParametersProvider);
     return Container(
       margin: const EdgeInsets.only(
@@ -38,7 +45,34 @@ class ProductsPageHeader extends ConsumerWidget {
                 text: !productsListParameters.containsKey('where')
                     ? 'Filtrer'
                     : 'Filtré',
-                onTap: () {
+                onTap: () async {
+                  // reset added filter paramters provider
+                  ref.invalidate(productsListFilterParametersAddedProvider);
+
+                  // updated added filter parameters with list parameters
+
+                  if (productsListParameters.containsKey('where')) {
+                    for (Map<String, dynamic> filterParameter
+                        in productsListParameters['where']
+                            .entries
+                            // first for logical operator
+                            .first
+                            .value) {
+                      ref
+                          .read(
+                        productsListFilterParametersAddedProvider.notifier,
+                      )
+                          .update((state) {
+                        state = {
+                          ...state,
+                          DateTime.now().millisecondsSinceEpoch:
+                              filterParameter,
+                        };
+                        return state;
+                      });
+                    }
+                  }
+
                   FunctionsController.showAlertDialog(
                     context: context,
                     alertDialog: const ProductFilterDialog(),

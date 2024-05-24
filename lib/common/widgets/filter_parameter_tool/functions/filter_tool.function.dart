@@ -3,6 +3,7 @@ import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/boolfield/boolfield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/datetimefield/datetimefield.widget.dart';
+import 'package:rst/common/widgets/filter_parameter_tool/filter_parameter_tool.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/validator/filter_tool_validator.dart';
 
 Map<String, dynamic> splitMap({
@@ -207,4 +208,35 @@ Map<String, dynamic> performFilterParameter({
   });
 
   return result;
+}
+
+void defineFilterToolOperatorAndValue({
+  required WidgetRef ref,
+  required int filterToolIndex,
+  required Map<String, dynamic> filterParameter,
+}) {
+  filterParameter.forEach((key, value) {
+    // check if the key is an operator
+    if (FilterOperators.allOperators
+        .any((operatore) => operatore.back == key)) {
+      // update  tool operator
+      ref
+              .read(operatorDropdownProvider(
+                      'filter_parameter_tool_operator_$filterToolIndex')
+                  .notifier)
+              .state =
+          FilterOperators.allOperators
+              .firstWhere((operatore) => operatore.back == key);
+
+      // update tool value
+      ref.read(filterToolValueProvider(filterToolIndex).notifier).state = value;
+    } else if (value is Map) {
+      // continue the nesting if the goal is not reached
+      defineFilterToolOperatorAndValue(
+        ref: ref,
+        filterToolIndex: filterToolIndex,
+        filterParameter: value as Map<String, dynamic>,
+      );
+    }
+  });
 }

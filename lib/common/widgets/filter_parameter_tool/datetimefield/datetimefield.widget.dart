@@ -10,16 +10,43 @@ final filterParameterToolDateTimeFieldValueProvider =
   return DateTime.now();
 });
 
-class FilterParameterToolDateTimeField extends HookConsumerWidget {
+class FilterParameterToolDateTimeField extends StatefulHookConsumerWidget {
+  final String? initialValue;
   final String providerName;
   const FilterParameterToolDateTimeField({
     super.key,
+    this.initialValue,
     required this.providerName,
   });
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedDateTime =
-        ref.watch(filterParameterToolDateTimeFieldValueProvider(providerName));
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _FilterParameterToolDateTimeFieldState();
+}
+
+class _FilterParameterToolDateTimeFieldState
+    extends ConsumerState<FilterParameterToolDateTimeField> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.initialValue != null) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        final isoStringDate = widget.initialValue!.split('Z')[0];
+
+        ref
+            .read(filterParameterToolDateTimeFieldValueProvider(
+                    widget.providerName)
+                .notifier)
+            .state = DateTime.parse(isoStringDate);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedDateTime = ref.watch(
+        filterParameterToolDateTimeFieldValueProvider(widget.providerName));
     final format = DateFormat.yMMMMEEEEd('fr');
     final formatedDate = format.format(selectedDateTime);
     final formatedTime = FunctionsController.getFormatedTime(
@@ -31,8 +58,8 @@ class FilterParameterToolDateTimeField extends HookConsumerWidget {
           await FunctionsController.showDateTime(
             context: context,
             ref: ref,
-            stateProvider:
-                filterParameterToolDateTimeFieldValueProvider(providerName),
+            stateProvider: filterParameterToolDateTimeFieldValueProvider(
+                widget.providerName),
             isNullable: false,
           );
         } catch (error) {

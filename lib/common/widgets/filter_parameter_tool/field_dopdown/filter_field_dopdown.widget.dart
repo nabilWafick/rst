@@ -148,14 +148,6 @@ class _RSTFilterToolFieldDropdownState
               field: value,
             );
 
-            /// * === TEST ===
-
-            debugPrint(
-              'Relation => nestedMap: $newNestedMap',
-            );
-
-            /// * === TEST ===
-
             // split and perfom the filterToolParameter add field  subField
             // in filterParameter
             final newFilterToolMap = splitMap(
@@ -181,14 +173,6 @@ class _RSTFilterToolFieldDropdownState
               };
               return state;
             });
-
-            /// * === TEST ===
-
-            debugPrint(
-              'Relation => newFilterToolMap: $newFilterToolMap',
-            );
-
-            /// * === TEST ===
 
             // build nested field dropdown
             tryBuildFieldDropDown(

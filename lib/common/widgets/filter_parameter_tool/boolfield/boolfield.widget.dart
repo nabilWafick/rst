@@ -7,16 +7,37 @@ final filterParameterToolBoolFieldValueProvider =
   return true;
 });
 
-class FilterParameterToolBoolField extends HookConsumerWidget {
+class FilterParameterToolBoolField extends StatefulHookConsumerWidget {
+  final bool? initialValue;
   final String providerName;
   const FilterParameterToolBoolField({
     super.key,
+    this.initialValue,
     required this.providerName,
   });
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _FilterParameterToolBoolFieldState();
+}
+
+class _FilterParameterToolBoolFieldState
+    extends ConsumerState<FilterParameterToolBoolField> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      ref
+          .read(filterParameterToolBoolFieldValueProvider(widget.providerName)
+              .notifier)
+          .state = widget.initialValue ?? true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectedValue = ref.watch(
-      filterParameterToolBoolFieldValueProvider(providerName),
+      filterParameterToolBoolFieldValueProvider(widget.providerName),
     );
     return SwitchListTile(
       value: selectedValue,
@@ -27,7 +48,7 @@ class FilterParameterToolBoolField extends HookConsumerWidget {
       ),
       onChanged: (value) {
         ref
-            .read(filterParameterToolBoolFieldValueProvider(providerName)
+            .read(filterParameterToolBoolFieldValueProvider(widget.providerName)
                 .notifier)
             .state = value;
       },

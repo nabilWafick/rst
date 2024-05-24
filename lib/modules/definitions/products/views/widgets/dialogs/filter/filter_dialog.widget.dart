@@ -231,14 +231,12 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                     : 'Fermer',
                 onPressed: productsListFilterParametersAdded.isNotEmpty
                     ? () async {
+                        // save in update case
+                        formKey.currentState!.save();
+
                         final isFormValid = formKey.currentState!.validate();
 
                         if (isFormValid) {
-                          /// * === TEST ===  */
-                          debugPrint('before applying filter');
-
-                          /// * === TEST ===  */
-
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
@@ -266,12 +264,7 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                               return state;
                             });
 
-                            /// * === TEST === * /
-
-                            debugPrint(
-                                'final Parameter ${filterToolParameterEntry.key}: $finalFilterToolParameter');
-
-                            if (finalFilterToolParameter != {}) {
+                            if (finalFilterToolParameter.isNotEmpty) {
                               filterParameters.add(finalFilterToolParameter);
                             }
                           }
@@ -299,7 +292,8 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                                 logicalOperator.value: filterParameters,
                               }
                             };
-                            debugPrint('filter Parameter: $state');
+
+                            // debugPrint('filter Parameter: $state');
 
                             return state;
                           });
