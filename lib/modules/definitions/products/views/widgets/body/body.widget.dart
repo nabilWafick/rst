@@ -36,11 +36,12 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
 
     return Expanded(
       child: Container(
+        width: 1500,
         alignment: Alignment.center,
         child: productsList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width,
+            rightHandSideColumnWidth: 1400,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,

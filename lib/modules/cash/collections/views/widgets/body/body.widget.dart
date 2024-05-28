@@ -40,7 +40,7 @@ class _CollectionsPageBodyState extends ConsumerState<CollectionsPageBody> {
         child: collectionsList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 532,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
@@ -52,6 +52,17 @@ class _CollectionsPageBodyState extends ConsumerState<CollectionsPageBody> {
                 alignment: Alignment.center,
                 child: const RSTText(
                   text: 'N°',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Container(
+                width: 400.0,
+                height: 50.0,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Collecteur',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
@@ -85,17 +96,6 @@ class _CollectionsPageBodyState extends ConsumerState<CollectionsPageBody> {
                 alignment: Alignment.centerLeft,
                 child: const RSTText(
                   text: 'Date',
-                  textAlign: TextAlign.center,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Container(
-                width: 400.0,
-                height: 50.0,
-                alignment: Alignment.centerLeft,
-                child: const RSTText(
-                  text: 'Collecteur',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
@@ -159,6 +159,20 @@ class _CollectionsPageBodyState extends ConsumerState<CollectionsPageBody> {
                 children: [
                   Container(
                     alignment: Alignment.centerLeft,
+                    width: 400.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: FunctionsController.truncateText(
+                        text:
+                            '${collection.collector.name} ${collection.collector.firstnames}',
+                        maxLength: 45,
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
                     width: 300.0,
                     height: 30.0,
                     child: RSTText(
@@ -189,20 +203,6 @@ class _CollectionsPageBodyState extends ConsumerState<CollectionsPageBody> {
                     height: 30.0,
                     child: RSTText(
                       text: format.format(collection.collectedAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text:
-                            '${collection.collector.name} ${collection.collector.firstnames}',
-                        maxLength: 45,
-                      ),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),

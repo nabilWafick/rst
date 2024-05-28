@@ -45,7 +45,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
           SidebarSubOptionModel(
             index: 4,
             icon: Icons.group_outlined,
-            name: 'Catégories Client',
+            name: 'Catégories',
           ),
           SidebarSubOptionModel(
             index: 5,
@@ -72,16 +72,6 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             icon: Icons.admin_panel_settings_outlined,
             name: 'Agents',
           ),
-          SidebarSubOptionModel(
-            index: 10,
-            icon: Icons.account_box_outlined,
-            name: 'Comptes Clients',
-          ),
-          SidebarSubOptionModel(
-            index: 11,
-            icon: Icons.payment_outlined,
-            name: 'Cartes',
-          ),
         ],
         showSubOptions: true,
       ),
@@ -90,7 +80,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Caisse',
         subOptions: [
           SidebarSubOptionModel(
-            index: 12,
+            index: 10,
             icon: Icons.payments_outlined,
             name: 'Versements Collectes',
           ),

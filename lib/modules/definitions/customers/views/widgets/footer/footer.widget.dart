@@ -33,13 +33,12 @@ class CustomersPageFooter extends ConsumerWidget {
 
                     return RSTText(
                       text: count.when(
-                        data: (data) => data != 1
-                            ? '$data collecteurs'
-                            : '$data collecteur',
+                        data: (data) =>
+                            data != 1 ? '$data clients' : '$data client',
                         error: (error, stackTrace) {
-                          return ' collecteurs';
+                          return ' clients';
                         },
-                        loading: () => ' collecteurs',
+                        loading: () => ' clients',
                       ),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
@@ -200,11 +199,10 @@ class CustomersPageFooter extends ConsumerWidget {
 
                     return RSTText(
                       text: count.when(
-                        data: (data) => data != 1
-                            ? '$data collecteurs'
-                            : '$data collecteur',
-                        error: (error, stackTrace) => ' collecteurs',
-                        loading: () => ' collecteurs',
+                        data: (data) =>
+                            data != 1 ? '$data clients' : '$data client',
+                        error: (error, stackTrace) => ' clients',
+                        loading: () => ' clients',
                       ),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,

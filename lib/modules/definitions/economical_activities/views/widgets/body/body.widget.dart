@@ -38,11 +38,12 @@ class _EconomicalActivitiesPageBodyState
 
     return Expanded(
       child: Container(
+        width: 1200,
         alignment: Alignment.center,
         child: economicalActivitiesList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width,
+            rightHandSideColumnWidth: 1100,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,

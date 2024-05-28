@@ -38,14 +38,14 @@ class _WidgetTestState extends ConsumerState<WidgetTest> {
             ),
             RSTIconButton(
               onTap: () async {
-                await ProductsServices.create(
+                /*   await ProductsServices.create(
                   product: Product(
                     name: 'Product 1',
                     purchasePrice: 1,
                     createdAt: DateTime.now(),
                     updatedAt: DateTime.now(),
                   ),
-                );
+                );*/
               },
               icon: Icons.telegram_outlined,
               text: 'Test',

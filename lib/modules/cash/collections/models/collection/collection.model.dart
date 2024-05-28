@@ -62,14 +62,13 @@ class Collection {
   factory Collection.fromMap(Map<String, dynamic> map) {
     return Collection(
       id: map['id'] != null ? map['id'] as int : null,
-      amount: map['amount'] as double,
-      rest: map['rest'] as double,
-      collectedAt:
-          DateTime.fromMillisecondsSinceEpoch(map['collectedAt'] as int),
+      amount: double.tryParse(map['amount']) ?? .0,
+      rest: double.tryParse(map['rest']) ?? .0,
+      collectedAt: DateTime.parse(map['collectedAt']),
       collector: Collector.fromMap(map['collector'] as Map<String, dynamic>),
       agent: Agent.fromMap(map['agent'] as Map<String, dynamic>),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+      createdAt: DateTime.parse(map['createdAt']),
+      updatedAt: DateTime.parse(map['updatedAt']),
     );
   }
 

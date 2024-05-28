@@ -40,7 +40,7 @@ class _CollectorsPageBodyState extends ConsumerState<CollectorsPageBody> {
         child: collectorsList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 432,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,

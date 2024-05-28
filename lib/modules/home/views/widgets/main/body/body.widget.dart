@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/cash/collections/views/page/collections.page.dart';
+import 'package:rst/modules/definitions/agents/views/page/agents.page.dart';
+import 'package:rst/modules/definitions/categories/views/page/categories.page.dart';
+import 'package:rst/modules/definitions/collectors/views/page/collectors.page.dart';
+import 'package:rst/modules/definitions/customers/views/page/customers.page.dart';
+import 'package:rst/modules/definitions/economical_activities/views/page/economical_activities.page.dart';
+import 'package:rst/modules/definitions/localities/views/page/localities.page.dart';
+import 'package:rst/modules/definitions/personal_status/views/page/personal_status.page.dart';
 import 'package:rst/modules/definitions/products/views/page/products.page.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/widget.test.dart';
@@ -16,20 +24,20 @@ class _MainBodyState extends ConsumerState<MainBody> {
     // DashboardPage(),
 
     ProductsPage(),
-    /* TypesPage(),
+    WidgetTest(),
+    // TypesPage(),
     CollectorsPage(),
-    CustomersCategoriesPage(),
+    CategoriesPage(),
     EconomicalActivitiesPage(),
-    PersonnalStatusPage(),
+    PersonalStatusPage(),
     LocalitiesPage(),
     CustomersPage(),
     AgentsPage(),
-    CustomersAccountsPage(),
-    CardsPage(),
+
     CollectionsPage(),
-    CashOperationsPage(),
-    SettlementsPage(),
-    CustomerPeriodicActivityPage(),
+    // CashOperationsPage(),
+    // SettlementsPage(),
+    /*CustomerPeriodicActivityPage(),
     CollectorPeriodicActivityPage(),
     SatisfiedCustomersCardsPage(),
     CustomersTypesPage(),
