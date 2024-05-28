@@ -85,7 +85,7 @@ class ProductSimpleView extends ConsumerWidget {
                 vertical: 5.0,
               ),
               child: LabelValue(
-                label: 'Nom',
+                label: 'Dernière Modification',
                 value: format.format(product.updatedAt),
               ),
             ),

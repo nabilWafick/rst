@@ -18,7 +18,7 @@ import 'package:rst/modules/definitions/products/models/product/product.model.da
 import 'package:rst/utils/utils.dart';
 import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
-Future<void> generateProductPdf({
+Future<void> generateProductsPdf({
   required BuildContext context,
   required WidgetRef ref,
   required Map<String, dynamic> listParameters,

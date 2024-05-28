@@ -127,7 +127,7 @@ class ProductExcelFileGenerationDialog extends HookConsumerWidget {
                               await ProductsController.countAll();
 
                           // generate excel file
-                          await generateProductExcelFile(
+                          await generateProductsExcelFile(
                             context: context,
                             ref: ref,
                             listParameters: {
@@ -138,7 +138,7 @@ class ProductExcelFileGenerationDialog extends HookConsumerWidget {
                           );
                         } else {
                           // generate excel file
-                          await generateProductExcelFile(
+                          await generateProductsExcelFile(
                             context: context,
                             ref: ref,
                             listParameters: productsListParameters,

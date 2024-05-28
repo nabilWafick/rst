@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
+import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/modules/definitions/products/views/widgets/dialogs/dialogs.widget.dart';
@@ -55,21 +55,36 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
                     for (Map<String, dynamic> filterParameter
                         in productsListParameters['where']
                             .entries
-                            // first for logical operator
                             .first
                             .value) {
+                      debugPrint('saved fiter : $filterParameter \n');
+
+                      // create a filterToolIndex
+                      final filterToolIndex =
+                          DateTime.now().millisecondsSinceEpoch;
+
+                      // add it to added filter parameters
                       ref
                           .read(
                         productsListFilterParametersAddedProvider.notifier,
                       )
-                          .update((state) {
-                        state = {
-                          ...state,
-                          DateTime.now().millisecondsSinceEpoch:
-                              filterParameter,
-                        };
-                        return state;
-                      });
+                          .update(
+                        (state) {
+                          state = {
+                            ...state,
+                            filterToolIndex: filterParameter,
+                          };
+                          return state;
+                        },
+                      );
+
+                      // define the operators and the values
+
+                      defineFilterToolOperatorAndValue(
+                        ref: ref,
+                        filterToolIndex: filterToolIndex,
+                        filterParameter: filterParameter,
+                      );
                     }
                   }
 

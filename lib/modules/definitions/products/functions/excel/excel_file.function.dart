@@ -15,7 +15,7 @@ import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 
-Future<void> generateProductExcelFile({
+Future<void> generateProductsExcelFile({
   required BuildContext context,
   required WidgetRef ref,
   required Map<String, dynamic> listParameters,
@@ -72,7 +72,7 @@ Future<void> generateProductExcelFile({
           .cell(
             CellIndex.indexByString("C${i + 2}"),
           )
-          .value = TextCellValue(format.format(products[i].updatedAt));
+          .value = TextCellValue(format.format(products[i].createdAt));
 
       sheet
           .cell(

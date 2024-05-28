@@ -6,7 +6,6 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/boolfield/boolfield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/datetimefield/datetimefield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/field_dopdown/filter_field_dopdown.widget.dart';
-import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/on_changed/filter_tool_on_changed.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/textformfield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/validator/filter_tool_validator.dart';
@@ -179,6 +178,9 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
     final filterToolFieldsDropdowns =
         useState<List<RSTFilterToolFieldDropdown>>([]);
 
+    final filterToolParameter =
+        ref.watch(widget.filterParametersAddedProvider)[widget.index] ?? {};
+
     return showWidget.value
         ? Container(
             margin: const EdgeInsets.only(
@@ -193,7 +195,7 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                       'subField Number: ${filterToolFieldsDropdowns.value.length}',
                   fontSize: 12,
                 ),*/
-                // build fields dropdowns
+                // build subfields dropdowns
                 Consumer(
                   builder: (context, ref, child) {
                     Future.delayed(
@@ -209,10 +211,7 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                           // due initState state update stability problems,
                           // prefer watch the filter parameters added instead of
                           // of the tool provider
-                          subEntryValue:
-                              ref.watch(widget.filterParametersAddedProvider)[
-                                      widget.index] ??
-                                  {},
+                          subEntryValue: filterToolParameter,
 
                           filterParametersAddedProvider:
                               widget.filterParametersAddedProvider,
@@ -225,7 +224,9 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                         const Duration(
                           milliseconds: 120,
                         ), () {
-                      setState(() {});
+                      if (mounted) {
+                        setState(() {});
+                      }
                     });
 
                     return Wrap(
@@ -240,6 +241,11 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                 Consumer(
                   builder: (context, ref, child) {
                     List<Operator> filterParameterToolOperators = [];
+
+                    // necessary in case of update
+                    final filterToolOperator = ref.watch(
+                        operatorDropdownProvider(
+                            'filter_parameter_tool_operator_${widget.index}'));
 
                     // check lastSubFiled type and add equivalent operators
                     // to common type operators
@@ -267,25 +273,17 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                       ];
                     }
 
-                    // remove repeated operators
-                    filterParameterToolOperators =
-                        filterParameterToolOperators.toSet().toList();
-
-                    Future.delayed(
-                      const Duration(
-                        milliseconds: 100,
-                      ),
-                      () {
-                        defineFilterToolOperatorAndValue(
-                          ref: ref,
-                          filterToolIndex: widget.index,
-                          filterParameter:
-                              ref.watch(widget.filterParametersAddedProvider)[
-                                      widget.index] ??
-                                  {},
-                        );
-                      },
-                    );
+                    if (FilterOperators.allOperators
+                        .contains(filterToolOperator)) {
+                      filterParameterToolOperators = {
+                        filterToolOperator,
+                        ...filterParameterToolOperators,
+                      }.toList();
+                    } else {
+                      // remove repeated operators
+                      filterParameterToolOperators =
+                          filterParameterToolOperators.toSet().toList();
+                    }
 
                     return RSTOperatorDropdown(
                       width: 250.0,
@@ -306,24 +304,17 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                           ref.watch(filterToolValueProvider(widget.index));
                       if (lastSubField.type == bool) {
                         return FilterParameterToolBoolField(
-                          initialValue: filterToolValue != null &&
-                                  filterToolValue.runtimeType == bool
-                              ? filterToolValue
-                              : null,
+                          initialValue: filterToolValue,
                           providerName:
                               'filter_parameter_tool_bool_input_${widget.index}',
                         );
                       }
-
-                      if (lastSubField.type == int ||
-                          lastSubField.type == double ||
-                          lastSubField.type == num) {
+                      if ((lastSubField.runtimeType == double ||
+                              lastSubField.runtimeType == int) ||
+                          (filterToolValue.runtimeType == double ||
+                              filterToolValue.runtimeType == int)) {
                         return FilterParameterToolTextFormField(
-                          initialValue: filterToolValue != null &&
-                                  filterToolValue.runtimeType == String &&
-                                  double.tryParse(filterToolValue) != null
-                              ? filterToolValue
-                              : null,
+                          initialValue: filterToolValue?.toString(),
                           inputProvider:
                               'filter_parameter_tool_number_input_${widget.index}',
                           label: 'Nombre',
@@ -334,24 +325,16 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
                           onChanged:
                               FilterParameterToolOnChanged.textFieldValue,
                         );
-                      }
-
-                      if (lastSubField.type == DateTime) {
+                      } else if (lastSubField.type == DateTime) {
                         return FilterParameterToolDateTimeField(
-                          initialValue: filterToolValue != null &&
-                                  filterToolValue.runtimeType == String
-                              ? filterToolValue
-                              : null,
+                          initialValue: filterToolValue,
                           providerName:
                               'filter_parameter_tool_datetime_input_${widget.index}',
                         );
                       }
 
                       return FilterParameterToolTextFormField(
-                        initialValue: filterToolValue != null &&
-                                filterToolValue.runtimeType == String
-                            ? filterToolValue
-                            : null,
+                        initialValue: filterToolValue,
                         inputProvider:
                             'filter_parameter_tool_text_input_${widget.index}',
                         label: 'Texte',
