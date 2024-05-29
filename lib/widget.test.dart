@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:rst/modules/definitions/products/models/product/product.model.dart';
-import 'package:rst/modules/definitions/products/services/products.service.dart';
+import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/common/widgets/selection_tools/products/card/product_selection_card.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 
 class WidgetTest extends StatefulHookConsumerWidget {
@@ -35,6 +35,10 @@ class _WidgetTestState extends ConsumerState<WidgetTest> {
               text: 'Test',
               fontSize: 12.0,
               fontWeight: FontWeight.w500,
+            ),
+            const ProductSelectionToolCard(
+              toolName: 'test',
+              roundedStyle: RoundedStyle.full,
             ),
             RSTIconButton(
               onTap: () async {

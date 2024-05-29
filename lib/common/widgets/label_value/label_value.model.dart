@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/common/widgets/common.widgets.dart';
 
 class LabelValue extends ConsumerWidget {
   final String label;
@@ -21,18 +23,18 @@ class LabelValue extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '$label: ',
-          style: TextStyle(
-            fontSize: labelSize ?? 12,
-            fontWeight: labelFontWeight ?? FontWeight.normal,
-          ),
+        RSTText(
+          text: '$label: ',
+          fontSize: labelSize ?? 12,
+          fontWeight: labelFontWeight ?? FontWeight.normal,
         ),
-        Text(
-          value,
-          style: TextStyle(
+        Flexible(
+          child: RSTText(
+            text: value,
             fontSize: valueSize ?? 12,
+            textOverflow: TextOverflow.ellipsis,
             fontWeight: valueFontWeight ?? FontWeight.w500,
           ),
         ),

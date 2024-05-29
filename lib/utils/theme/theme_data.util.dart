@@ -126,11 +126,11 @@ class RSTThemeData {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15.0),
-        borderSide: const BorderSide(color: Colors.redAccent, width: .5),
+        borderSide: const BorderSide(color: Colors.red, width: .5),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15.0),
-        borderSide: const BorderSide(color: Colors.redAccent, width: 2.0),
+        borderSide: const BorderSide(color: Colors.red, width: 2.0),
       ),
     ),
     dropdownMenuTheme: DropdownMenuThemeData(
@@ -175,7 +175,7 @@ class RSTThemeData {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
-          borderSide: const BorderSide(color: Colors.redAccent, width: .5),
+          borderSide: const BorderSide(color: Colors.red, width: .5),
         ),
       ),
     ),
@@ -288,11 +288,11 @@ class RSTThemeData {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15.0),
-        borderSide: const BorderSide(color: Colors.redAccent, width: .5),
+        borderSide:  BorderSide(color: Colors.red , width: .5),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15.0),
-        borderSide: const BorderSide(color: Colors.redAccent, width: 2.0),
+        borderSide:  BorderSide(color: Colors.red , width: 2.0),
       ),
     ),
     dropdownMenuTheme: DropdownMenuThemeData(
@@ -316,7 +316,7 @@ class RSTThemeData {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
-          borderSide: const BorderSide(color: Colors.redAccent, width: .5),
+          borderSide:  BorderSide(color: Colors.red , width: .5),
         ),
       ),
     ),

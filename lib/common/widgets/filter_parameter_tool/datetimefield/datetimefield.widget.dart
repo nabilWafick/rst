@@ -77,7 +77,7 @@ class _FilterParameterToolDateTimeFieldState
           ),
           borderRadius: BorderRadius.circular(15.0),
         ),
-        child: RSTText(
+        child: RSTText( 
           text: FunctionsController.truncateText(
             text: '$formatedDate $formatedTime',
             maxLength: 25,

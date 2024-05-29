@@ -39,28 +39,28 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
           ),
           SidebarSubOptionModel(
             index: 3,
-            icon: Icons.supervised_user_circle_outlined,
-            name: 'Chargés de comptes',
-          ),
-          SidebarSubOptionModel(
-            index: 4,
             icon: Icons.group_outlined,
             name: 'Catégories',
           ),
           SidebarSubOptionModel(
-            index: 5,
+            index: 4,
             icon: Icons.work_outlined,
             name: 'Activités Économiques',
           ),
           SidebarSubOptionModel(
-            index: 6,
+            index: 5,
             icon: Icons.person_outlined,
             name: 'Statuts Personnels',
           ),
           SidebarSubOptionModel(
-            index: 7,
+            index: 6,
             icon: Icons.location_city_outlined,
             name: 'Localités',
+          ),
+          SidebarSubOptionModel(
+            index: 7,
+            icon: Icons.admin_panel_settings_outlined,
+            name: 'Cartes',
           ),
           SidebarSubOptionModel(
             index: 8,
@@ -69,6 +69,11 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
           ),
           SidebarSubOptionModel(
             index: 9,
+            icon: Icons.supervised_user_circle_outlined,
+            name: 'Collecteurs',
+          ),
+          SidebarSubOptionModel(
+            index: 10,
             icon: Icons.admin_panel_settings_outlined,
             name: 'Agents',
           ),
@@ -80,7 +85,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Caisse',
         subOptions: [
           SidebarSubOptionModel(
-            index: 10,
+            index: 11,
             icon: Icons.payments_outlined,
             name: 'Versements Collectes',
           ),

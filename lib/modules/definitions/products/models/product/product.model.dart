@@ -6,7 +6,7 @@ class Product {
   final String name;
   final double purchasePrice;
   final String? photo;
-  int? number;
+
   final DateTime createdAt;
   final DateTime updatedAt;
   Product({
@@ -14,7 +14,6 @@ class Product {
     required this.name,
     required this.purchasePrice,
     this.photo,
-    this.number,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -33,7 +32,6 @@ class Product {
       name: name ?? this.name,
       purchasePrice: purchasePrice ?? this.purchasePrice,
       photo: photo ?? this.photo,
-      number: number ?? this.number,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -45,7 +43,6 @@ class Product {
       'name': name,
       'purchasePrice': purchasePrice,
       'photo': photo,
-      'number': number,
     };
   }
 
@@ -67,7 +64,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, purchasePrice: $purchasePrice, photo: $photo, number: $number, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Product(id: $id, name: $name, purchasePrice: $purchasePrice, photo: $photo, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -78,7 +75,6 @@ class Product {
         other.name == name &&
         other.purchasePrice == purchasePrice &&
         other.photo == photo &&
-        other.number == number &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt;
   }
@@ -89,7 +85,6 @@ class Product {
         name.hashCode ^
         purchasePrice.hashCode ^
         photo.hashCode ^
-        number.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode;
   }

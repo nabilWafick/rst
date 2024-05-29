@@ -24,7 +24,7 @@ class RSTText extends StatelessWidget {
       text,
       textAlign: textAlign,
       overflow: textOverflow,
-      maxLines: 3,
+      maxLines: 10,
       style: TextStyle(
         fontSize: fontSize,
         fontFamily: 'Poppins',

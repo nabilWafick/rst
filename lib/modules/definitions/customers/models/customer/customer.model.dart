@@ -96,8 +96,8 @@ class Customer {
       'localityId': locality?.id,
       'profile': profile,
       'signature': signature,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
@@ -110,7 +110,8 @@ class Customer {
       address: map['address'] as String,
       occupation:
           map['occupation'] != null ? map['occupation'] as String : null,
-      nicNumber: map['nicNumber'] != null ? map['nicNumber'] as int : null,
+      nicNumber:
+          map['nicNumber'] != null ? int.tryParse(map['nicNumber']) : null,
       collector: map['collector'] != null
           ? Collector.fromMap(map['collector'] as Map<String, dynamic>)
           : null,
@@ -130,8 +131,8 @@ class Customer {
           : null,
       profile: map['profile'] != null ? map['profile'] as String : null,
       signature: map['signature'] != null ? map['signature'] as String : null,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+      createdAt: DateTime.parse(map['createdAt']),
+      updatedAt: DateTime.parse(map['updatedAt']),
     );
   }
 

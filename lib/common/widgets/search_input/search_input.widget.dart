@@ -4,14 +4,17 @@ import 'package:rst/utils/colors/colors.util.dart';
 
 class RSTSearchInput extends ConsumerStatefulWidget {
   final String hintText;
-  final String familyName;
-  final StateProvider<String> searchProvider;
+  final StateProvider searchProvider;
+  final Function({
+    required WidgetRef ref,
+    required String value,
+  }) onChanged;
   final double? width;
   const RSTSearchInput({
     super.key,
-    required this.familyName,
     required this.hintText,
     required this.searchProvider,
+    required this.onChanged,
     this.width,
   });
   @override
@@ -33,15 +36,21 @@ class _RSTSearchInputState extends ConsumerState<RSTSearchInput> {
           //  initialValue: initialValue != '' ? initialValue : null,
           controller: textEditingController,
           onChanged: (value) {
-            ref.read(widget.searchProvider.notifier).state = value;
+            //  textEditingController.text = value;
+            widget.onChanged(
+              ref: ref,
+              value: value,
+            );
           },
           style: const TextStyle(
             fontSize: 12.0,
+            fontWeight: FontWeight.w600,
           ),
           decoration: InputDecoration(
             // contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
             hintStyle: const TextStyle(
               fontSize: 12.0,
+              fontWeight: FontWeight.w600,
             ),
             hintText: widget.hintText,
             enabledBorder: const UnderlineInputBorder(
@@ -56,7 +65,13 @@ class _RSTSearchInputState extends ConsumerState<RSTSearchInput> {
             ),
             suffixIcon: IconButton(
               onPressed: () {
-                ref.read(widget.searchProvider.notifier).state = '';
+                // reset search
+                widget.onChanged(
+                  ref: ref,
+                  value: '',
+                );
+
+                // reset text editing controller
                 textEditingController.text = '';
               },
               icon: const Icon(
