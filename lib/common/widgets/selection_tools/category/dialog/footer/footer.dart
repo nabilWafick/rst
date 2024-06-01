@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
-import 'package:rst/common/widgets/selection_tools/products/providers/product_selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/category/providers/selection.provider.dart';
 import 'package:rst/utils/utils.dart';
 
-class ProductSelectionDialogFooter extends ConsumerWidget {
-  const ProductSelectionDialogFooter({super.key});
+class CategorySelectionDialogFooter extends ConsumerWidget {
+  const CategorySelectionDialogFooter({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,22 +25,24 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count = ref.watch(specificProductsSelectionCountProvider);
+                final count =
+                    ref.watch(specificcategoriesSelectionCountProvider);
                 return count.when(
                   data: (data) {
                     return Row(
                       children: [
                         Consumer(
                           builder: (context, ref, child) {
-                            final productsSelectionListParameters = ref
-                                .watch(productsSelectionListParametersProvider);
+                            final categoriesSelectionListParameters = ref.watch(
+                                categoriesSelectionListParametersProvider);
 
-                            return productsSelectionListParameters['skip'] != 0
+                            return categoriesSelectionListParameters['skip'] !=
+                                    0
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              productsSelectionListParametersProvider
+                                              categoriesSelectionListParametersProvider
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -64,15 +66,15 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final productsSelectionListParameters = ref
-                                .watch(productsSelectionListParametersProvider);
+                            final categoriesSelectionListParameters = ref.watch(
+                                categoriesSelectionListParametersProvider);
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
                               ),
                               child: RSTText(
                                 text: data != 0
-                                    ? '${((productsSelectionListParameters['skip'] + 15) / 15).toInt()}'
+                                    ? '${((categoriesSelectionListParameters['skip'] + 15) / 15).toInt()}'
                                     : '0',
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w700,
@@ -83,17 +85,17 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final productsSelectionListParameters = ref
-                                .watch(productsSelectionListParametersProvider);
+                            final categoriesSelectionListParameters = ref.watch(
+                                categoriesSelectionListParametersProvider);
 
-                            return productsSelectionListParameters['skip'] +
+                            return categoriesSelectionListParameters['skip'] +
                                         15 <
                                     data
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              productsSelectionListParametersProvider
+                                              categoriesSelectionListParametersProvider
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -130,14 +132,14 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final productsSelectionListParameters =
-                        ref.watch(productsSelectionListParametersProvider);
-                    final productsSelectionList =
-                        ref.watch(productsSelectionListStreamProvider);
+                    final categoriesSelectionListParameters =
+                        ref.watch(categoriesSelectionListParametersProvider);
+                    final categoriesSelectionList =
+                        ref.watch(categoriesSelectionListStreamProvider);
                     return RSTText(
-                      text: productsSelectionList.when(
+                      text: categoriesSelectionList.when(
                         data: (data) => data.isNotEmpty
-                            ? '${productsSelectionListParameters['skip'] + 1}'
+                            ? '${categoriesSelectionListParameters['skip'] + 1}'
                             : '0',
                         error: (error, stackTrace) => '',
                         loading: () => '',
@@ -154,14 +156,14 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final productsSelectionListParameters =
-                        ref.watch(productsSelectionListParametersProvider);
-                    final productsSelectionList =
-                        ref.watch(productsSelectionListStreamProvider);
+                    final categoriesSelectionListParameters =
+                        ref.watch(categoriesSelectionListParametersProvider);
+                    final categoriesSelectionList =
+                        ref.watch(categoriesSelectionListStreamProvider);
                     return RSTText(
-                      text: productsSelectionList.when(
+                      text: categoriesSelectionList.when(
                         data: (data) =>
-                            '${productsSelectionListParameters['skip'] + data.length}',
+                            '${categoriesSelectionListParameters['skip'] + data.length}',
                         error: (error, stackTrace) => '',
                         loading: () => '',
                       ),
@@ -178,7 +180,7 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final count =
-                        ref.watch(specificProductsSelectionCountProvider);
+                        ref.watch(specificcategoriesSelectionCountProvider);
 
                     return RSTText(
                       text: count.when(

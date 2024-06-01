@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
-import 'package:rst/common/widgets/selection_tools/products/dialog/body/body.dart';
-import 'package:rst/common/widgets/selection_tools/products/dialog/footer/footer.dart';
-import 'package:rst/common/widgets/selection_tools/products/providers/product_selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/product/dialog/body/body.dart';
+import 'package:rst/common/widgets/selection_tools/product/dialog/footer/footer.dart';
+import 'package:rst/common/widgets/selection_tools/product/providers/selection.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class ProductSelectionDialog extends StatefulHookConsumerWidget {
@@ -69,6 +69,7 @@ class _ProductSelectionDialogState
                 bottom: 20.0,
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const RSTText(
                     text: 'Produit sélectionné: ',

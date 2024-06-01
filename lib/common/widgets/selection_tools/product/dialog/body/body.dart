@@ -3,8 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
-import 'package:rst/common/widgets/selection_tools/products/providers/product_selection.provider.dart';
-import 'package:rst/modules/definitions/products/providers/products.provider.dart';
+import 'package:rst/common/widgets/selection_tools/functions/on_changed/on_changed.function.dart';
+import 'package:rst/common/widgets/selection_tools/product/providers/selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/search_input/search_input.widget.dart';
+import 'package:rst/modules/definitions/products/models/structure/structure.model.dart';
 
 class ProductSelectionDialogBody extends StatefulHookConsumerWidget {
   final String toolName;
@@ -20,147 +22,6 @@ class ProductSelectionDialogBody extends StatefulHookConsumerWidget {
 
 class _ProductSelectionDialogBodyState
     extends ConsumerState<ProductSelectionDialogBody> {
-  onProductNameChangedTest({required WidgetRef ref, required String value}) {
-    final parameters = ref.read(productsSelectionListParametersProvider);
-
-    if (parameters.containsKey('where') &&
-        parameters['where'].containsKey('AND')) {
-      ref
-          .read(productsSelectionListParametersProvider.notifier)
-          .update((state) {
-        List<Map<String, dynamic>> filters = state['where']['AND'];
-
-        // remove name filter
-        filters.removeWhere(
-          (filter) => filter.entries.first.key == 'name',
-        );
-
-        if (value != '') {
-          Map<String, dynamic> newNameFilter = {
-            'name': {
-              'contains': value,
-              'mode': 'insensitive',
-            }
-          };
-
-          // update state
-          state = {
-            ...state,
-            'where': {
-              'AND': [
-                ...filters,
-                newNameFilter,
-              ],
-            }
-          };
-        } else {
-          // update state
-          state = {
-            ...state,
-            'where': {
-              'AND': filters,
-            }
-          };
-        }
-
-        return state;
-      });
-    } else {
-      if (value != '') {
-        ref
-            .read(productsSelectionListParametersProvider.notifier)
-            .update((state) {
-          // update state
-          state = {
-            ...state,
-            'where': {
-              'AND': [
-                {
-                  'name': {
-                    'contains': value,
-                    'mode': 'insensitive',
-                  }
-                },
-              ],
-            }
-          };
-
-          return state;
-        });
-      }
-    }
-  }
-
-  onProductPurchasePriceChangedTest(
-      {required WidgetRef ref, required String value}) {
-    final parameters = ref.read(productsSelectionListParametersProvider);
-
-    if (parameters.containsKey('where') &&
-        parameters['where'].containsKey('AND')) {
-      ref
-          .read(productsSelectionListParametersProvider.notifier)
-          .update((state) {
-        List<Map<String, dynamic>> filters = state['where']['AND'];
-
-        // remove name filter
-        filters.removeWhere(
-          (filter) => filter.entries.first.key == 'purchasePrice',
-        );
-
-        if (value != '') {
-          Map<String, dynamic> newPurchasePriceFilter = {
-            'purchasePrice': {
-              'equals': double.tryParse(value) ?? .0,
-            }
-          };
-
-          // update state
-          state = {
-            ...state,
-            'where': {
-              'AND': [
-                ...filters,
-                newPurchasePriceFilter,
-              ],
-            }
-          };
-        } else {
-          // update state
-          state = {
-            ...state,
-            'where': {
-              'AND': filters,
-            }
-          };
-        }
-
-        return state;
-      });
-    } else {
-      if (value != '') {
-        ref
-            .read(productsSelectionListParametersProvider.notifier)
-            .update((state) {
-          // update state
-          state = {
-            ...state,
-            'where': {
-              'AND': [
-                {
-                  'purchasePrice': {
-                    'equals': double.tryParse(value) ?? .0,
-                  }
-                },
-              ],
-            }
-          };
-
-          return state;
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final productsList = ref.watch(productsSelectionListStreamProvider);
@@ -194,22 +55,10 @@ class _ProductSelectionDialogBodyState
                   const SizedBox(
                     width: 400.0,
                     height: 50.0,
-                    /* const RSTText(
-                      text: 'Nom',
-                      textAlign: TextAlign.center,
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w600,
-                    ),*/
                   ),
                   const SizedBox(
                     width: 300.0,
                     height: 50.0,
-                    /* const RSTText(
-                      text: 'Prix d\'achat',
-                      textAlign: TextAlign.center,
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w600,
-                    ),*/
                   ),
                 ],
                 leftSideItemBuilder: (context, index) {
@@ -286,17 +135,21 @@ class _ProductSelectionDialogBodyState
                 const SizedBox(
                   width: 100.0,
                 ),
-                RSTSearchInput(
+                RSTSelectionSearchInput(
                   width: 400.0,
                   hintText: 'Nom',
-                  searchProvider: productNameProvider,
-                  onChanged: onProductNameChangedTest,
+                  field: ProductStructure.name,
+                  selectionListParametersProvider:
+                      productsSelectionListParametersProvider,
+                  onChanged: SelectionToolSearchInputOnChanged.stringInput,
                 ),
-                RSTSearchInput(
+                RSTSelectionSearchInput(
                   width: 300.0,
                   hintText: 'Prix d\'achat',
-                  searchProvider: productNameProvider,
-                  onChanged: onProductPurchasePriceChangedTest,
+                  field: ProductStructure.purchasePrice,
+                  selectionListParametersProvider:
+                      productsSelectionListParametersProvider,
+                  onChanged: SelectionToolSearchInputOnChanged.doubleInput,
                 ),
               ],
             ),

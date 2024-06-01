@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/common/models/field/field.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class RSTSearchInput extends ConsumerStatefulWidget {
+class RSTSelectionSearchInput extends ConsumerStatefulWidget {
   final String hintText;
-  final StateProvider<String> searchProvider;
-  final String providerName;
+  final Field field;
+  final StateProvider<Map<String, dynamic>> selectionListParametersProvider;
+  final Function({
+    required WidgetRef ref,
+    required Field field,
+    required String value,
+    required StateProvider<Map<String, dynamic>>
+        selectionListParametersProvider,
+  }) onChanged;
   final double? width;
-  const RSTSearchInput({
+  const RSTSelectionSearchInput({
     super.key,
     required this.hintText,
-    required this.searchProvider,
-    required this.providerName,
+    required this.field,
+    required this.selectionListParametersProvider,
+    required this.onChanged,
     this.width,
   });
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RSTSearchInputState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RSTSelectionSearchInputState();
 }
 
-class _RSTSearchInputState extends ConsumerState<RSTSearchInput> {
+class _RSTSelectionSearchInputState
+    extends ConsumerState<RSTSelectionSearchInput> {
   TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    //  textEditingController.text = ref.watch(searchProvider(widget.familyName));
+    //  textEditingController.text = ref.watch(selectionListParametersProvider(widget.familyName));
     return Container(
       width: widget.width ?? 350.0,
       padding: const EdgeInsets.only(
@@ -32,7 +43,13 @@ class _RSTSearchInputState extends ConsumerState<RSTSearchInput> {
         child: TextFormField(
           controller: textEditingController,
           onChanged: (value) {
-            ref.read(widget.searchProvider.notifier).state = value;
+            widget.onChanged(
+              ref: ref,
+              field: widget.field,
+              value: value,
+              selectionListParametersProvider:
+                  widget.selectionListParametersProvider,
+            );
           },
           style: const TextStyle(
             fontSize: 12.0,
@@ -58,7 +75,13 @@ class _RSTSearchInputState extends ConsumerState<RSTSearchInput> {
             suffixIcon: IconButton(
               onPressed: () {
                 // reset search
-                ref.read(widget.searchProvider.notifier).state = '';
+                widget.onChanged(
+                  ref: ref,
+                  field: widget.field,
+                  value: '',
+                  selectionListParametersProvider:
+                      widget.selectionListParametersProvider,
+                );
 
                 // reset text editing controller
                 textEditingController.text = '';

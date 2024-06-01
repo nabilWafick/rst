@@ -4,46 +4,46 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
-import 'package:rst/common/widgets/selection_tools/products/dialog/product_selection_dialog.widget.dart';
-import 'package:rst/common/widgets/selection_tools/products/providers/product_selection.provider.dart';
-import 'package:rst/modules/definitions/products/models/product/product.model.dart';
+import 'package:rst/common/widgets/selection_tools/locality/dialog/selection_dialog.widget.dart';
+import 'package:rst/common/widgets/selection_tools/locality/providers/selection.provider.dart';
+import 'package:rst/modules/definitions/localities/models/locality/locality.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class ProductSelectionToolCard extends StatefulHookConsumerWidget {
+class LocalitySelectionToolCard extends StatefulHookConsumerWidget {
   final String toolName;
-  final Product? product;
+  final Locality? locality;
   final double? width;
   final RoundedStyle roundedStyle;
 
-  const ProductSelectionToolCard({
+  const LocalitySelectionToolCard({
     super.key,
     required this.toolName,
     required this.roundedStyle,
-    this.product,
+    this.locality,
     this.width,
   });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ProductSelectionToolCardState();
+      _LocalitySelectionToolCardState();
 }
 
-class _ProductSelectionToolCardState
-    extends ConsumerState<ProductSelectionToolCard> {
+class _LocalitySelectionToolCardState
+    extends ConsumerState<LocalitySelectionToolCard> {
   final focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
 
-    if (widget.product != null) {
+    if (widget.locality != null) {
       Future.delayed(
         const Duration(
           milliseconds: 100,
         ),
         () {
           ref
-              .read(productSelectionToolProvider(widget.toolName).notifier)
-              .state = widget.product;
+              .read(localitySelectionToolProvider(widget.toolName).notifier)
+              .state = widget.locality;
         },
       );
     }
@@ -51,18 +51,20 @@ class _ProductSelectionToolCardState
 
   @override
   Widget build(BuildContext context) {
-    final selectedProduct =
-        ref.watch(productSelectionToolProvider(widget.toolName));
+    final selectedlocality =
+        ref.watch(localitySelectionToolProvider(widget.toolName));
     final focusOn = useState<bool>(false);
     double width = widget.width ?? 210;
     return InkWell(
       onTap: () async {
-        // invalidate product selection list parameters
-        ref.invalidate(productsSelectionListParametersProvider);
+        // invalidate locality selection list parameters
+        ref.invalidate(localitiesSelectionListParametersProvider);
 
         FunctionsController.showAlertDialog(
           context: context,
-          alertDialog: ProductSelectionDialog(toolName: widget.toolName),
+          alertDialog: LocalitySelectionDialog(
+            toolName: widget.toolName,
+          ),
         );
       },
       splashColor: RSTColors.primaryColor.withOpacity(.05),
@@ -108,7 +110,7 @@ class _ProductSelectionToolCardState
             ),
             RSTText(
               text: FunctionsController.truncateText(
-                text: selectedProduct?.name ?? 'Produit',
+                text: selectedlocality?.name ?? 'Produit',
                 maxLength: 15,
               ),
               fontSize: 10.0,

@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
-import 'package:rst/common/widgets/selection_tools/products/card/product_selection_card.widget.dart';
+import 'package:rst/common/widgets/selection_tools/product/card/selection_card.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 
 class WidgetTest extends StatefulHookConsumerWidget {
