@@ -22,8 +22,8 @@ class _LocalitySelectionDialogState
     extends ConsumerState<LocalitySelectionDialog> {
   @override
   Widget build(BuildContext context) {
-    const dialogWidth = 820.0;
-    const dialogHeight = 700.0;
+    const dialogWidth = 520.0;
+    const dialogHeight = 500.0;
     final selectedlocality =
         ref.watch(localitySelectionToolProvider(widget.toolName));
     return AlertDialog(
@@ -72,7 +72,7 @@ class _LocalitySelectionDialogState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const RSTText(
-                    text: 'Localité sélectionné: ',
+                    text: 'Localité sélectionnée: ',
                     fontSize: 12.0,
                     fontWeight: FontWeight.w500,
                   ),

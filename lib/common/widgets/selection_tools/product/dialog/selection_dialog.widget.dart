@@ -23,7 +23,7 @@ class _ProductSelectionDialogState
   @override
   Widget build(BuildContext context) {
     const dialogWidth = 820.0;
-    const dialogHeight = 700.0;
+    const dialogHeight = 500.0;
     final selectedProduct =
         ref.watch(productSelectionToolProvider(widget.toolName));
     return AlertDialog(

@@ -22,9 +22,9 @@ class _CategorySelectionDialogState
     extends ConsumerState<CategorySelectionDialog> {
   @override
   Widget build(BuildContext context) {
-    const dialogWidth = 820.0;
-    const dialogHeight = 700.0;
-    final selectedcategory =
+    const dialogWidth = 520.0;
+    const dialogHeight = 500.0;
+    final selectedCategory =
         ref.watch(categorySelectionToolProvider(widget.toolName));
     return AlertDialog(
       /*   contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -35,7 +35,7 @@ class _CategorySelectionDialogState
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const RSTText(
-            text: 'categorés',
+            text: 'Categories',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
           ),
@@ -72,12 +72,12 @@ class _CategorySelectionDialogState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const RSTText(
-                    text: 'categoré sélectionné: ',
+                    text: 'Categorie sélectionnée: ',
                     fontSize: 12.0,
                     fontWeight: FontWeight.w500,
                   ),
                   RSTText(
-                    text: selectedcategory?.name ?? '',
+                    text: selectedCategory?.name ?? '',
                     fontSize: 14.0,
                     fontWeight: FontWeight.w500,
                   ),

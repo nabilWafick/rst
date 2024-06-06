@@ -22,8 +22,8 @@ class _EconomicalActivitySelectionDialogState
     extends ConsumerState<EconomicalActivitySelectionDialog> {
   @override
   Widget build(BuildContext context) {
-    const dialogWidth = 820.0;
-    const dialogHeight = 700.0;
+    const dialogWidth = 520.0;
+    const dialogHeight = 500.0;
     final selectedeconomicalActivity =
         ref.watch(economicalActivitySelectionToolProvider(widget.toolName));
     return AlertDialog(
@@ -35,7 +35,7 @@ class _EconomicalActivitySelectionDialogState
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const RSTText(
-            text: 'Activité Économiques',
+            text: 'Activités Économiques',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
           ),
@@ -72,7 +72,7 @@ class _EconomicalActivitySelectionDialogState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const RSTText(
-                    text: 'Activité Économique sélectionné: ',
+                    text: 'Activité économique sélectionnée: ',
                     fontSize: 12.0,
                     fontWeight: FontWeight.w500,
                   ),

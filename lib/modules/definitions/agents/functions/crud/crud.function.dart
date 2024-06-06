@@ -37,12 +37,18 @@ class AgentsCRUDFunctions {
         email: agentEmail,
         phoneNumber: agentPhoneNumber,
         address: agentAddress,
-        permissions: {},
-        views: {},
+        permissions: {
+          'admin': false,
+        },
+        views: {
+          'dashboard': false,
+        },
         profile: null,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
+
+      //  debugPrint('Instanciated Agent: $agent');
 
       // launch agent addition
       final agentAdditionResponse = await AgentsController.create(

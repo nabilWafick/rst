@@ -27,7 +27,7 @@ class CollectionsServices {
         ),
         message: ServiceMessage(
           en: 'The collection have been added successfully',
-          fr: 'Le client a été ajouté avec succès',
+          fr: 'La collecte a été ajoutée avec succès',
         ),
       );
     } on DioException catch (error) {
@@ -231,7 +231,107 @@ class CollectionsServices {
         ),
         message: ServiceMessage(
           en: 'The collection have been updated successfully',
-          fr: 'Le client a été mis à jour avec succès',
+          fr: 'La collecte a été mise à jour avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> increase({
+    required int collectionId,
+    required Map<String, double> amount,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.patch(
+        '$route/amount/increase/$collectionId',
+        data: amount,
+      );
+
+      return ServiceResponse(
+        statusCode: 201,
+        data: [
+          response.data,
+        ],
+        result: ServiceResult(
+          en: 'Increased',
+          fr: 'Incrémenté',
+        ),
+        message: ServiceMessage(
+          en: 'The collection have been increased successfully',
+          fr: 'Le montant de la collecte a été incrémenté avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> decrease({
+    required int collectionId,
+    required Map<String, double> amount,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.patch(
+        '$route/amount/decrease/$collectionId',
+        data: amount,
+      );
+
+      return ServiceResponse(
+        statusCode: 201,
+        data: [
+          response.data,
+        ],
+        result: ServiceResult(
+          en: 'Increased',
+          fr: 'Incrémenté',
+        ),
+        message: ServiceMessage(
+          en: 'The collection have been decreased successfully',
+          fr: 'La montant de la collecte a été décrémenté avec succès',
         ),
       );
     } on DioException catch (error) {
@@ -279,7 +379,7 @@ class CollectionsServices {
         ),
         message: ServiceMessage(
           en: 'The collection have been deleted successfully',
-          fr: 'Le produit a été supprimé avec succès',
+          fr: 'La collecte a été supprimé avec succès',
         ),
       );
     } on DioException catch (error) {

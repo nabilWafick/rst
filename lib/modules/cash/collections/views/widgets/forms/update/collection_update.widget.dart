@@ -4,14 +4,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
+import 'package:rst/common/models/rounded_style/rounded_style.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/common/widgets/selection_tools/collector/card/selection_card.widget.dart';
+import 'package:rst/common/widgets/selection_tools/collector/providers/selection.provider.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/textformfield/textformfield.widget.dart';
 import 'package:rst/modules/cash/collections/models/collection/collection.model.dart';
 import 'package:rst/modules/cash/collections/providers/collections.provider.dart';
 import 'package:rst/modules/cash/collections/controllers/forms/forms.controller.dart';
 import 'package:rst/modules/cash/collections/functions/crud/crud.function.dart';
+import 'package:rst/modules/cash/collections/views/widgets/collections.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CollectionUpdateForm extends StatefulHookConsumerWidget {
@@ -35,6 +39,10 @@ class _CollectionUpdateFormState extends ConsumerState<CollectionUpdateForm> {
         milliseconds: 100,
       ),
       () {
+        ref
+            .read(collectorSelectionToolProvider('collection-update').notifier)
+            .state = widget.collection.collector;
+
         ref.read(collectionDateProvider.notifier).state =
             widget.collection.collectedAt;
       },
@@ -92,6 +100,18 @@ class _CollectionUpdateFormState extends ConsumerState<CollectionUpdateForm> {
                   horizontal: 10.0,
                   vertical: .0,
                 ),
+                child: const CollectorSelectionToolCard(
+                  toolName: 'collection-update',
+                  width: formCardWidth,
+                  roundedStyle: RoundedStyle.full,
+                  textLimit: 40,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: .0,
+                ),
                 width: formCardWidth,
                 child: RSTTextFormField(
                   initialValue: widget.collection.amount.toInt().toString(),
@@ -117,7 +137,7 @@ class _CollectionUpdateFormState extends ConsumerState<CollectionUpdateForm> {
                       icon: Icons.date_range,
                       text: 'Date de Collecte',
                       onTap: () {
-                        FunctionsController.showDateTime(
+                        FunctionsController.showDate(
                           isNullable: true,
                           context: context,
                           ref: ref,
@@ -169,11 +189,13 @@ class _CollectionUpdateFormState extends ConsumerState<CollectionUpdateForm> {
                     child: RSTElevatedButton(
                       text: 'Valider',
                       onPressed: () async {
-                        await CollectionsCRUDFunctions.create(
+                        FunctionsController.showAlertDialog(
                           context: context,
-                          formKey: formKey,
-                          ref: ref,
-                          showValidatedButton: showValidatedButton,
+                          alertDialog: CollectionUpdateConfirmationDialog(
+                            collection: widget.collection,
+                            formKey: formKey,
+                            update: CollectionsCRUDFunctions.update,
+                          ),
                         );
                       },
                     ),

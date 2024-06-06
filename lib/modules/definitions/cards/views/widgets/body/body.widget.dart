@@ -57,6 +57,12 @@ class _CardsPageBodyState extends ConsumerState<CardsPageBody> {
                 ),
               ),
               Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
+              ),
+              Container(
                 width: 300.0,
                 height: 50.0,
                 alignment: Alignment.centerLeft,
@@ -155,12 +161,6 @@ class _CardsPageBodyState extends ConsumerState<CardsPageBody> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -178,6 +178,55 @@ class _CardsPageBodyState extends ConsumerState<CardsPageBody> {
               final card = data[index];
               return Row(
                 children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 100.0,
+                    height: 30.0,
+                    child: RSTTooltip(
+                      options: [
+                        RSTToolTipOption(
+                          icon: Icons.aspect_ratio,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Vue Simple',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: CardSimpleView(
+                                card: card,
+                              ),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.edit,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Modifier',
+                          onTap: () async {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: CardUpdateForm(
+                                card: card,
+                              ),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.delete,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Supprimer',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: CardDeletionConfirmationDialog(
+                                card: card,
+                                confirmToDelete: CardsCRUDFunctions.delete,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     width: 300.0,
@@ -285,55 +334,6 @@ class _CardsPageBodyState extends ConsumerState<CardsPageBody> {
                       text: format.format(card.updatedAt),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 100.0,
-                    height: 30.0,
-                    child: RSTTooltip(
-                      options: [
-                        RSTToolTipOption(
-                          icon: Icons.aspect_ratio,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Vue Simple',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CardSimpleView(
-                                card: card,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CardUpdateForm(
-                                card: card,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CardDeletionConfirmationDialog(
-                                card: card,
-                                confirmToDelete: CardsCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
                     ),
                   ),
                 ],

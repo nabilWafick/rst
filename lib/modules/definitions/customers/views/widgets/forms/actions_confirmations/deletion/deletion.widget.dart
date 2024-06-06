@@ -69,7 +69,7 @@ class CustomerDeletionConfirmationDialog extends HookConsumerWidget {
             ),
             const Flexible(
               child: RSTText(
-                text: 'Êtes-vous sûr de vouloir supprimer cet collecteur ?',
+                text: 'Êtes-vous sûr de vouloir supprimer ce client ?',
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
                 textOverflow: TextOverflow.ellipsis,

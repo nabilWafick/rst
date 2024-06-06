@@ -6,6 +6,8 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/type/providers/selection.provider.dart';
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
@@ -96,29 +98,19 @@ class CardsCRUDFunctions {
       showValidatedButton.value = false;
 
       // get form inputs value
-      // get form inputs value
       final cardLabel = ref.watch(cardLabelProvider);
       final cardTypesNumber = ref.watch(cardTypesNumberProvider);
+      final cardOwner = ref.watch(customerSelectionToolProvider('card-update'));
+      final cardType = ref.watch(typeSelectionToolProvider('card-update'));
+      final cardRepaymentDate = ref.watch(cardRepaymentDateProvider);
 
       // instanciate the card
       final newCard = Card(
         label: cardLabel,
         typesNumber: cardTypesNumber,
-        type: Type(
-          name: 'Test',
-          stake: 1.0,
-          typeProducts: [],
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-        customer: Customer(
-          name: 'TEST',
-          firstnames: 'Test',
-          phoneNumber: '1234567890',
-          address: 'Address',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
+        type: cardType!,
+        customer: cardOwner!,
+        repaidAt: cardRepaymentDate,
         createdAt: card.createdAt,
         updatedAt: DateTime.now(),
       );

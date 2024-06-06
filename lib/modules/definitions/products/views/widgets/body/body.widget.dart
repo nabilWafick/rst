@@ -59,6 +59,12 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                 ),
               ),
               Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
+              ),
+              Container(
                 width: 400.0,
                 height: 50.0,
                 alignment: Alignment.centerLeft,
@@ -102,12 +108,6 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -125,49 +125,6 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
               final product = data[index];
               return Row(
                 children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: product.name,
-                        maxLength: 45,
-                      ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: '${product.purchasePrice.ceil()} f',
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(product.createdAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(product.updatedAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.center,
                     width: 100.0,
@@ -213,6 +170,49 @@ class _ProductsPageBodyState extends ConsumerState<ProductsPageBody> {
                           },
                         ),
                       ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 400.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: FunctionsController.truncateText(
+                        text: product.name,
+                        maxLength: 45,
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: '${product.purchasePrice.ceil()} f',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(product.createdAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(product.updatedAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

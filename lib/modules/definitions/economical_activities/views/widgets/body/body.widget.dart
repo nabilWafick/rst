@@ -61,6 +61,12 @@ class _EconomicalActivitiesPageBodyState
                 ),
               ),
               Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
+              ),
+              Container(
                 width: 400.0,
                 height: 50.0,
                 alignment: Alignment.centerLeft,
@@ -93,12 +99,6 @@ class _EconomicalActivitiesPageBodyState
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -116,39 +116,6 @@ class _EconomicalActivitiesPageBodyState
               final economicalActivity = data[index];
               return Row(
                 children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: economicalActivity.name,
-                        maxLength: 45,
-                      ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(economicalActivity.createdAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(economicalActivity.updatedAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.center,
                     width: 100.0,
@@ -197,6 +164,39 @@ class _EconomicalActivitiesPageBodyState
                           },
                         ),
                       ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 400.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: FunctionsController.truncateText(
+                        text: economicalActivity.name,
+                        maxLength: 45,
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(economicalActivity.createdAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(economicalActivity.updatedAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

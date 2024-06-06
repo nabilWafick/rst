@@ -8,6 +8,7 @@ import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
 import 'package:rst/modules/definitions/types/functions/crud/crud.function.dart';
+import 'package:rst/modules/definitions/types/models/types.model.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
 import 'package:rst/modules/definitions/types/views/widgets/types.widget.dart';
 import 'package:rst/modules/definitions/types/views/widgets/simple_view/simple_view.widget.dart';
@@ -55,6 +56,12 @@ class _TypesPageBodyState extends ConsumerState<TypesPageBody> {
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
                 ),
+              ),
+              Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
               ),
               Container(
                 width: 300.0,
@@ -111,12 +118,6 @@ class _TypesPageBodyState extends ConsumerState<TypesPageBody> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -134,6 +135,74 @@ class _TypesPageBodyState extends ConsumerState<TypesPageBody> {
               final type = data[index];
               return Row(
                 children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 100.0,
+                    height: 30.0,
+                    child: RSTTooltip(
+                      options: [
+                        RSTToolTipOption(
+                          icon: Icons.aspect_ratio,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Vue Simple',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: TypeSimpleView(type: type),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.edit,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Modifier',
+                          onTap: () async {
+                            // invalidate typeProductsInputsAddedProvider
+                            ref.invalidate(
+                                typeProductsInputsAddedVisibilityProvider);
+
+                            // add the type products inputs
+
+                            for (TypeProduct typeProduct in type.typeProducts) {
+                              ref
+                                  .read(
+                                      typeProductsInputsAddedVisibilityProvider
+                                          .notifier)
+                                  .update((state) {
+                                state = {
+                                  ...state,
+                                  typeProduct.productId.toString(): true,
+                                };
+
+                                return state;
+                              });
+                            }
+
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: TypeUpdateForm(
+                                type: type,
+                              ),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.delete,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Supprimer',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: TypeDeletionConfirmationDialog(
+                                type: type,
+                                confirmToDelete: TypesCRUDFunctions.delete,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     width: 300.0,
@@ -204,53 +273,6 @@ class _TypesPageBodyState extends ConsumerState<TypesPageBody> {
                       text: format.format(type.updatedAt),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 100.0,
-                    height: 30.0,
-                    child: RSTTooltip(
-                      options: [
-                        RSTToolTipOption(
-                          icon: Icons.aspect_ratio,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Vue Simple',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: TypeSimpleView(type: type),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: TypeUpdateForm(
-                                type: type,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: TypeDeletionConfirmationDialog(
-                                type: type,
-                                confirmToDelete: TypesCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
                     ),
                   ),
                 ],

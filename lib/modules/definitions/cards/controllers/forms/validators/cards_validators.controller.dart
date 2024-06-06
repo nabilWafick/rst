@@ -6,7 +6,7 @@ class CardValidors {
     final cardLabel = ref.watch(cardLabelProvider);
     if (cardLabel == '') {
       return 'Entrez un libellé valide';
-    } else if (cardLabel.length < 8) {
+    } else if (cardLabel.length < 5) {
       return 'Le libellé doit contenir au moins 8 lettres';
     }
     return null;

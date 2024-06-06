@@ -125,8 +125,10 @@ class _TypesPageHeaderState extends ConsumerState<TypesPageHeader> {
               ),
               RSTAddButton(
                 onTap: () {
-                  ref.read(typeAddedInputsProvider.notifier).state = {};
-                  ref.read(typeSelectedProductsProvider.notifier).state = {};
+                  ref
+                      .read(typeProductsInputsAddedVisibilityProvider.notifier)
+                      .state = {};
+                  //  ref.read(typeSelectedProductsProvider.notifier).state = {};
                   FunctionsController.showAlertDialog(
                     context: context,
                     alertDialog: const TypeAdditionForm(),

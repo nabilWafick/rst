@@ -58,19 +58,18 @@ final customerSignatureProvider = StateProvider<String?>(
   },
 );
 
+// for managing products inputs, add,hide inputs, identify inputs
+final customerCardsInputsAddedVisibilityProvider =
+    StateProvider<Map<String, bool>>((ref) {
+  return {};
+});
+
 // used for storing customers filter options
 final customersListParametersProvider =
     StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
-    'include': {
-      'collector': true,
-      'locality': true,
-      'category': true,
-      'economicalActivity': true,
-      'personalStatus': true,
-    }
   };
 });
 

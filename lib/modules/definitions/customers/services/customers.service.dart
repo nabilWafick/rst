@@ -279,7 +279,7 @@ class CustomersServices {
         ),
         message: ServiceMessage(
           en: 'The customer have been deleted successfully',
-          fr: 'Le produit a été supprimé avec succès',
+          fr: 'Le client a été supprimé avec succès',
         ),
       );
     } on DioException catch (error) {

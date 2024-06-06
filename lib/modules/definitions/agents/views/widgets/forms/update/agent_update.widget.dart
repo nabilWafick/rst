@@ -57,7 +57,7 @@ class _AgentUpdateFormState extends ConsumerState<AgentUpdateForm> {
       ),
       content: Container(
         // color: Colors.blueGrey,
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
         width: formCardWidth,
         child: Form(
           key: formKey,

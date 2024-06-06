@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:flutter/material.dart' as material;
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -7,10 +10,12 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/customers/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/customers/providers/customers.provider.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/customers.widget.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/definitions/cards/models/cards.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CustomersPageBody extends StatefulHookConsumerWidget {
@@ -56,6 +61,12 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
                 ),
+              ),
+              Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
               ),
               Container(
                 width: 400.0,
@@ -200,12 +211,6 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -223,6 +228,120 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
               final customer = data[index];
               return Row(
                 children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 100.0,
+                    height: 30.0,
+                    child: RSTTooltip(
+                      options: [
+                        RSTToolTipOption(
+                          icon: material.Icons.aspect_ratio,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Vue Simple',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: CustomerSimpleView(
+                                customer: customer,
+                              ),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: material.Icons.edit,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Modifier',
+                          onTap: () async {
+                            // invalidate cardsTypesInputsAddedProvider
+                            ref.invalidate(
+                                customerCardsInputsAddedVisibilityProvider);
+
+                            // fetch all cards of customer cars
+                            List<Card> customerCards = [];
+                            try {
+                              // get customer cards number
+                              // because the number can be knowed without
+                              // asking the database
+                              final customerCardsNumberData =
+                                  await CardsController.countSpecific(
+                                listParameters: {
+                                  'skip':
+                                      0, // This value is override in backend
+                                  'take':
+                                      100, // This value is override in backend
+                                  'where': {
+                                    'customer': {
+                                      'id': customer.id!.toInt(),
+                                    },
+                                  },
+                                },
+                              );
+
+                              // fetch the cards
+                              final customerCardsData =
+                                  await CardsController.getMany(
+                                      listParameters: {
+                                    'skip': 0,
+                                    'take': customerCardsNumberData.data.count,
+                                    'where': {
+                                      'customer': {
+                                        'id': customer.id!.toInt(),
+                                      },
+                                    },
+                                  });
+
+                              // store the cards
+                              customerCards = List<Card>.from(
+                                customerCardsData.data,
+                              );
+                            } catch (e) {
+                              debugPrint(e.toString());
+                            }
+
+                            // update customer data
+                            customer.cards = customerCards;
+
+                            // add the cards inputs
+                            for (Card card in customerCards) {
+                              ref
+                                  .read(
+                                      customerCardsInputsAddedVisibilityProvider
+                                          .notifier)
+                                  .update((state) {
+                                state = {
+                                  ...state,
+                                  card.id.toString(): true,
+                                };
+
+                                return state;
+                              });
+                            }
+
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: CustomerUpdateForm(
+                                customer: customer,
+                              ),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: material.Icons.delete,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Supprimer',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: CustomerDeletionConfirmationDialog(
+                                customer: customer,
+                                confirmToDelete: CustomersCRUDFunctions.delete,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     width: 400.0,
@@ -388,59 +507,10 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 100.0,
-                    height: 30.0,
-                    child: RSTTooltip(
-                      options: [
-                        RSTToolTipOption(
-                          icon: Icons.aspect_ratio,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Vue Simple',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CustomerSimpleView(
-                                customer: customer,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CustomerUpdateForm(
-                                customer: customer,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CustomerDeletionConfirmationDialog(
-                                customer: customer,
-                                confirmToDelete: CustomersCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               );
             },
-            rowSeparatorWidget: const Divider(),
+            rowSeparatorWidget: const material.Divider(),
             scrollPhysics: const BouncingScrollPhysics(),
             horizontalScrollPhysics: const BouncingScrollPhysics(),
           ),
@@ -449,7 +519,7 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
-          loading: () => const CircularProgressIndicator(
+          loading: () => const material.CircularProgressIndicator(
             strokeWidth: 2.5,
           ),
         ),

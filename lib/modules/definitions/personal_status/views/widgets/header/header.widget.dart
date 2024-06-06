@@ -4,9 +4,12 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
-import 'package:rst/modules/definitions/economical_activities/views/widgets/dialogs/dialogs.widget.dart';
-import 'package:rst/modules/definitions/economical_activities/views/widgets/forms/addition/economical_activity_addition.widget.dart';
 import 'package:rst/modules/definitions/personal_status/providers/personal_status.provider.dart';
+import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/excel/excel_dialog.widget.dart';
+import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/filter/filter_dialog.widget.dart';
+import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/pdf/pdf_dialog.widget.dart';
+import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/sort/sort_dialog.widget.dart';
+import 'package:rst/modules/definitions/personal_status/views/widgets/forms/addition/personal_status_addition.widget.dart';
 
 class PersonalStatusPageHeader extends StatefulHookConsumerWidget {
   const PersonalStatusPageHeader({super.key});
@@ -92,7 +95,7 @@ class _PersonalStatusPageHeaderState
 
                   FunctionsController.showAlertDialog(
                     context: context,
-                    alertDialog: const EconomicalActivityFilterDialog(),
+                    alertDialog: const PersonalStatusFilterDialog(),
                   );
                 },
               ),
@@ -104,7 +107,7 @@ class _PersonalStatusPageHeaderState
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
-                    alertDialog: const EconomicalActivitySortDialog(),
+                    alertDialog: const PersonalStatusSortDialog(),
                   );
                 },
               ),
@@ -114,7 +117,7 @@ class _PersonalStatusPageHeaderState
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
-                    alertDialog: const EconomicalActivityPdfGenerationDialog(),
+                    alertDialog: const PersonalStatusPdfGenerationDialog(),
                   );
                 },
               ),
@@ -125,7 +128,7 @@ class _PersonalStatusPageHeaderState
                   FunctionsController.showAlertDialog(
                     context: context,
                     alertDialog:
-                        const EconomicalActivityExcelFileGenerationDialog(),
+                        const PersonalStatusExcelFileGenerationDialog(),
                   );
                 },
               ),
@@ -133,7 +136,7 @@ class _PersonalStatusPageHeaderState
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
-                    alertDialog: const EconomicalActivityAdditionForm(),
+                    alertDialog: const PersonalStatusAdditionForm(),
                   );
                 },
               ),

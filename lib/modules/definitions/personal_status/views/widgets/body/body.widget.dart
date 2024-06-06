@@ -61,6 +61,12 @@ class _PersonalStatusPageBodyState
                 ),
               ),
               Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
+              ),
+              Container(
                 width: 400.0,
                 height: 50.0,
                 alignment: Alignment.centerLeft,
@@ -93,12 +99,6 @@ class _PersonalStatusPageBodyState
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -116,39 +116,6 @@ class _PersonalStatusPageBodyState
               final personalStatus = data[index];
               return Row(
                 children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: personalStatus.name,
-                        maxLength: 45,
-                      ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(personalStatus.createdAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(personalStatus.updatedAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.center,
                     width: 100.0,
@@ -198,6 +165,39 @@ class _PersonalStatusPageBodyState
                           },
                         ),
                       ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 400.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: FunctionsController.truncateText(
+                        text: personalStatus.name,
+                        maxLength: 45,
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(personalStatus.createdAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(personalStatus.updatedAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
 import 'package:rst/modules/definitions/types/models/type/type.model.dart';
 
@@ -18,16 +17,10 @@ final typeStakeProvider = StateProvider<double>(
 );
 
 // for managing products inputs, add,hide inputs, identify inputs
-final typeAddedInputsProvider = StateProvider<Map<int, bool>>((ref) {
+final typeProductsInputsAddedVisibilityProvider =
+    StateProvider<Map<String, bool>>((ref) {
   return {};
 });
-
-// store selected items so as to reduce items for the remain dropdowns
-final typeSelectedProductsProvider = StateProvider<Map<String, Product>>(
-  (ref) {
-    return {};
-  },
-);
 
 final typeProductNumberProvider = StateProvider.family<int, int>(
   (ref, productIndex) {

@@ -72,7 +72,7 @@ class CustomerUpdateConfirmationDialog extends HookConsumerWidget {
             const Flexible(
               child: RSTText(
                 text:
-                    'Êtes-vous sûr de vouloir modifier les données de cet collecteur ?',
+                    'Êtes-vous sûr de vouloir modifier les données de ce client ?',
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
                 textOverflow: TextOverflow.ellipsis,
@@ -104,13 +104,17 @@ class CustomerUpdateConfirmationDialog extends HookConsumerWidget {
                     child: RSTElevatedButton(
                       text: 'Confirmer',
                       onPressed: () async {
-                        update(
-                          context: context,
-                          ref: ref,
-                          formKey: formKey,
-                          customer: customer,
-                          showValidatedButton: showValidatedButton,
-                        );
+                        try {
+                          update(
+                            context: context,
+                            ref: ref,
+                            formKey: formKey,
+                            customer: customer,
+                            showValidatedButton: showValidatedButton,
+                          );
+                        } catch (e) {
+                          debugPrint(e.toString());
+                        }
                       },
                     ),
                   )

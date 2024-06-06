@@ -65,10 +65,8 @@ class Agent {
       'email': email,
       'address': address,
       'profile': profile,
-      'permissions': permissions,
-      'views': views,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'permissions': json.encode(permissions),
+      'views': json.encode(views),
     };
   }
 

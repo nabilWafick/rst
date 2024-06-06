@@ -27,7 +27,7 @@ class CardsServices {
         ),
         message: ServiceMessage(
           en: 'The card have been added successfully',
-          fr: 'Le client a été ajouté avec succès',
+          fr: 'La carte a été ajoutée avec succès',
         ),
       );
     } on DioException catch (error) {
@@ -231,7 +231,7 @@ class CardsServices {
         ),
         message: ServiceMessage(
           en: 'The card have been updated successfully',
-          fr: 'Le client a été mis à jour avec succès',
+          fr: 'La carte a été mise à jour avec succès',
         ),
       );
     } on DioException catch (error) {

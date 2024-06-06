@@ -57,6 +57,12 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
                 ),
               ),
               Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
+              ),
+              Container(
                 width: 400.0,
                 height: 50.0,
                 alignment: Alignment.centerLeft,
@@ -133,12 +139,6 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -156,6 +156,53 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
               final agent = data[index];
               return Row(
                 children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 100.0,
+                    height: 30.0,
+                    child: RSTTooltip(
+                      options: [
+                        RSTToolTipOption(
+                          icon: Icons.aspect_ratio,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Vue Simple',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: AgentSimpleView(agent: agent),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.edit,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Modifier',
+                          onTap: () async {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: AgentUpdateForm(
+                                agent: agent,
+                              ),
+                            );
+                          },
+                        ),
+                        RSTToolTipOption(
+                          icon: Icons.delete,
+                          iconColor: RSTColors.primaryColor,
+                          name: 'Supprimer',
+                          onTap: () {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog: AgentDeletionConfirmationDialog(
+                                agent: agent,
+                                confirmToDelete: AgentsCRUDFunctions.delete,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     width: 400.0,
@@ -239,53 +286,6 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
                       text: format.format(agent.updatedAt),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 100.0,
-                    height: 30.0,
-                    child: RSTTooltip(
-                      options: [
-                        RSTToolTipOption(
-                          icon: Icons.aspect_ratio,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Vue Simple',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: AgentSimpleView(agent: agent),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: AgentUpdateForm(
-                                agent: agent,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: AgentDeletionConfirmationDialog(
-                                agent: agent,
-                                confirmToDelete: AgentsCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
                     ),
                   ),
                 ],

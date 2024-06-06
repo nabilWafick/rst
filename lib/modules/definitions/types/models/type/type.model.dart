@@ -45,9 +45,11 @@ class Type {
       'id': id,
       'name': name,
       'stake': stake,
-      'productsIds': typeProducts.map(
-        (typeProduct) => typeProduct.product.id,
-      ),
+      'productsIds': typeProducts
+          .map(
+            (typeProduct) => typeProduct.product.id,
+          )
+          .toList(),
       'productsNumbers': typeProducts
           .map(
             (typeProduct) => typeProduct.productNumber,

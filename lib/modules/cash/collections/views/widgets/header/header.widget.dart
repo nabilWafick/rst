@@ -4,6 +4,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/common/widgets/selection_tools/collector/providers/selection.provider.dart';
 import 'package:rst/modules/cash/collections/providers/collections.provider.dart';
 import 'package:rst/modules/cash/collections/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/cash/collections/views/widgets/forms/addition/collection_addition.widget.dart';
@@ -127,6 +128,8 @@ class _CollectionsPageHeaderState extends ConsumerState<CollectionsPageHeader> {
               ),
               RSTAddButton(
                 onTap: () {
+                  ref.invalidate(
+                      collectorSelectionToolProvider('collection-addition'));
                   ref.read(collectionDateProvider.notifier).state = null;
                   FunctionsController.showAlertDialog(
                     context: context,

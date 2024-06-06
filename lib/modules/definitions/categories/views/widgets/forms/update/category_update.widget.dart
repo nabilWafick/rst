@@ -39,7 +39,7 @@ class _CategoryUpdateFormState extends ConsumerState<CategoryUpdateForm> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const RSTText(
-            text: 'Categorie',
+            text: 'Catégorie',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
           ),

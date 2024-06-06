@@ -4,6 +4,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/common/widgets/selection_tools/category/providers/selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/collector/providers/selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/economical_activity/providers/selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/locality/providers/selection.provider.dart';
+import 'package:rst/common/widgets/selection_tools/personal_status/providers/selection.provider.dart';
 import 'package:rst/modules/definitions/customers/providers/customers.provider.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/forms/addition/customer_addition.widget.dart';
@@ -127,6 +132,23 @@ class _CustomersPageHeaderState extends ConsumerState<CustomersPageHeader> {
               RSTAddButton(
                 onTap: () {
                   ref.read(customerProfileProvider.notifier).state = null;
+                  ref.read(customerSignatureProvider.notifier).state = null;
+
+                  ref
+                      .read(customerCardsInputsAddedVisibilityProvider.notifier)
+                      .state = {};
+
+                  ref.invalidate(
+                      collectorSelectionToolProvider('customer-addition'));
+                  ref.invalidate(
+                      categorySelectionToolProvider('customer-addition'));
+                  ref.invalidate(
+                      personalStatusSelectionToolProvider('customer-addition'));
+                  ref.invalidate(economicalActivitySelectionToolProvider(
+                      'customer-addition'));
+                  ref.invalidate(
+                      localitySelectionToolProvider('customer-addition'));
+
                   FunctionsController.showAlertDialog(
                     context: context,
                     alertDialog: const CustomerAdditionForm(),

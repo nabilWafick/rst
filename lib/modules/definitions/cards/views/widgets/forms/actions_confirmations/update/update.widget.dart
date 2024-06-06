@@ -105,13 +105,17 @@ class CardUpdateConfirmationDialog extends HookConsumerWidget {
                     child: RSTElevatedButton(
                       text: 'Confirmer',
                       onPressed: () async {
-                        update(
-                          context: context,
-                          ref: ref,
-                          formKey: formKey,
-                          card: card,
-                          showValidatedButton: showValidatedButton,
-                        );
+                        try {
+                          update(
+                            context: context,
+                            ref: ref,
+                            formKey: formKey,
+                            card: card,
+                            showValidatedButton: showValidatedButton,
+                          );
+                        } catch (e) {
+                          debugPrint(e.toString());
+                        }
                       },
                     ),
                   )

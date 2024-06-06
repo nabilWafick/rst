@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
 import 'package:rst/modules/definitions/types/models/type/type.model.dart';
 
@@ -62,13 +63,28 @@ class Card {
       'typeId': type.id,
       'typesNumber': typesNumber,
       'customerId': customer.id,
-      'satisfiedAt': satisfiedAt?.toIso8601String(),
-      'repaidAt': repaidAt?.toIso8601String(),
-      'transferredAt': transferredAt?.toIso8601String(),
+      'satisfiedAt': satisfiedAt != null
+          ? FunctionsController.getTimestamptzDateString(
+              dateTime: satisfiedAt!,
+            )
+          : null,
+      'repaidAt': repaidAt != null
+          ? FunctionsController.getTimestamptzDateString(
+              dateTime: repaidAt!,
+            )
+          : null,
+      'transferredAt': repaidAt != null
+          ? FunctionsController.getTimestamptzDateString(
+              dateTime: repaidAt!,
+            )
+          : null,
     };
   }
 
   factory Card.fromMap(Map<String, dynamic> map) {
+    // clear all type products for improving speed and performance (display)
+    map['type']['typeProducts'] = [];
+
     return Card(
       id: map['id'] != null ? map['id'] as int : null,
       label: map['label'] as String,

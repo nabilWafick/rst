@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,6 +38,7 @@ class FunctionsController {
     required WidgetRef ref,
     required StateProvider<DateTime?> stateProvider,
     required bool isNullable,
+    bool? ereasable,
   }) async {
     DateTime? selectedDate;
 
@@ -64,7 +67,9 @@ class FunctionsController {
     }
 
     if (isNullable) {
-      ref.read(stateProvider.notifier).state = dateTime;
+      if ((ereasable != null && ereasable) || dateTime != null) {
+        ref.read(stateProvider.notifier).state = dateTime;
+      }
     } else {
       ref.read(stateProvider.notifier).state = dateTime ??
           DateTime(
@@ -125,6 +130,13 @@ class FunctionsController {
     }
   }
 
+  static String getTimestamptzDateString({required DateTime dateTime}) {
+    if (dateTime.toIso8601String().endsWith('Z')) {
+      return dateTime.toIso8601String();
+    }
+    return '${dateTime.toIso8601String()}Z';
+  }
+
   static String getFormatedTime({
     required DateTime dateTime,
   }) {
@@ -182,5 +194,24 @@ class FunctionsController {
           ? number.toInt().toString()
           : number.toStringAsFixed(2).replaceFirst(r'.', r',');
     }
+  }
+
+  static String generateRandomStringFromCurrentDateTime() {
+    String millisecondsString =
+        DateTime.now().millisecondsSinceEpoch.toString();
+    String result = '';
+    Random random = Random();
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    for (int i = 0; i < millisecondsString.length; i++) {
+      result += millisecondsString[i];
+      if ((i + 1) % 3 == 0 && i != millisecondsString.length - 1) {
+        // add a random letter  after each three letters
+        result += characters[random.nextInt(characters.length)];
+      }
+    }
+
+    return result;
   }
 }

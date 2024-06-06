@@ -49,7 +49,7 @@ class _AgentAdditionFormState extends ConsumerState<AgentAdditionForm> {
       ),
       content: Container(
         // color: Colors.blueGrey,
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
         width: formCardWidth,
         child: Form(
           key: formKey,
@@ -218,12 +218,16 @@ class _AgentAdditionFormState extends ConsumerState<AgentAdditionForm> {
                     child: RSTElevatedButton(
                       text: 'Valider',
                       onPressed: () async {
-                        await AgentsCRUDFunctions.create(
-                          context: context,
-                          formKey: formKey,
-                          ref: ref,
-                          showValidatedButton: showValidatedButton,
-                        );
+                        try {
+                          await AgentsCRUDFunctions.create(
+                            context: context,
+                            formKey: formKey,
+                            ref: ref,
+                            showValidatedButton: showValidatedButton,
+                          );
+                        } catch (e) {
+                          debugPrint(e.toString());
+                        }
                       },
                     ),
                   )

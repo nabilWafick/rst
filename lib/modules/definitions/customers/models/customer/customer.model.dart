@@ -7,6 +7,8 @@ import 'package:rst/modules/definitions/economical_activities/models/economical_
 import 'package:rst/modules/definitions/localities/models/localities.model.dart';
 import 'package:rst/modules/definitions/personal_status/models/personal_status/personal_status.model.dart';
 
+import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
+
 class Customer {
   final int? id;
   final String name;
@@ -20,6 +22,7 @@ class Customer {
   final EconomicalActivity? economicalActivity;
   final PersonalStatus? personalStatus;
   final Locality? locality;
+  List<Card>? cards;
   final String? profile;
   final String? signature;
   final DateTime createdAt;
@@ -39,6 +42,7 @@ class Customer {
     this.locality,
     this.profile,
     this.signature,
+    this.cards,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -56,6 +60,7 @@ class Customer {
     EconomicalActivity? economicalActivity,
     PersonalStatus? personalStatus,
     Locality? locality,
+    List<Card>? cards,
     String? profile,
     String? signature,
     DateTime? createdAt,
@@ -75,6 +80,7 @@ class Customer {
       personalStatus: personalStatus ?? this.personalStatus,
       locality: locality ?? this.locality,
       profile: profile ?? this.profile,
+      cards: cards ?? this.cards,
       signature: signature ?? this.signature,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -96,6 +102,11 @@ class Customer {
       'localityId': locality?.id,
       'profile': profile,
       'signature': signature,
+      'cards': cards
+          ?.map(
+            (card) => card.toMap(),
+          )
+          .toList(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -110,8 +121,7 @@ class Customer {
       address: map['address'] as String,
       occupation:
           map['occupation'] != null ? map['occupation'] as String : null,
-      nicNumber:
-          map['nicNumber'] != null ? int.tryParse(map['nicNumber']) : null,
+      nicNumber: map['nicNumber'] != null ? map['nicNumber'] as int : null,
       collector: map['collector'] != null
           ? Collector.fromMap(map['collector'] as Map<String, dynamic>)
           : null,

@@ -125,6 +125,54 @@ class CollectionsController {
     );
   }
 
+  static Future<ControllerResponse> increase({
+    required int collectionId,
+    required Map<String, double> amount,
+  }) async {
+    final serviceResponse = await CollectionsServices.increase(
+      collectionId: collectionId,
+      amount: amount,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (collectionMap) => Collection.fromMap(
+              collectionMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> decrease({
+    required int collectionId,
+    required Map<String, double> amount,
+  }) async {
+    final serviceResponse = await CollectionsServices.decrease(
+      collectionId: collectionId,
+      amount: amount,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (collectionMap) => Collection.fromMap(
+              collectionMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
   static Future<ControllerResponse> delete({
     required int collectionId,
   }) async {

@@ -11,16 +11,20 @@ import 'package:rst/utils/colors/colors.util.dart';
 
 class CategorySelectionToolCard extends StatefulHookConsumerWidget {
   final String toolName;
+  final bool? enabled;
   final Category? category;
   final double? width;
+  final int? textLimit;
   final RoundedStyle roundedStyle;
 
   const CategorySelectionToolCard({
     super.key,
     required this.toolName,
+    this.enabled,
     required this.roundedStyle,
     this.category,
     this.width,
+    this.textLimit,
   });
 
   @override
@@ -55,68 +59,94 @@ class _CategorySelectionToolCardState
         ref.watch(categorySelectionToolProvider(widget.toolName));
     final focusOn = useState<bool>(false);
     double width = widget.width ?? 210;
-    return InkWell(
-      onTap: () async {
-        // invalidate category selection list parameters
-        ref.invalidate(categoriesSelectionListParametersProvider);
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        vertical: 10.0,
+      ),
+      child: InkWell(
+        onTap: widget.enabled == null || widget.enabled == true
+            ? () async {
+                // invalidate category selection list parameters
+                ref.invalidate(categoriesSelectionListParametersProvider);
 
-        FunctionsController.showAlertDialog(
-          context: context,
-          alertDialog: CategorySelectionDialog(
-            toolName: widget.toolName,
+                FunctionsController.showAlertDialog(
+                  context: context,
+                  alertDialog: CategorySelectionDialog(
+                    toolName: widget.toolName,
+                  ),
+                );
+              }
+            : null,
+        splashColor: RSTColors.primaryColor.withOpacity(.05),
+        hoverColor: Colors.transparent,
+        child: Container(
+          width: width,
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
+            horizontal: 16.0,
           ),
-        );
-      },
-      splashColor: RSTColors.primaryColor.withOpacity(.05),
-      hoverColor: Colors.transparent,
-      child: Container(
-        width: width,
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.5,
-            color: focusOn.value
-                ? RSTColors.primaryColor
-                : RSTColors.tertiaryColor,
-          ),
-          borderRadius: widget.roundedStyle == RoundedStyle.full
-              ? BorderRadius.circular(15.0)
-              : BorderRadius.only(
-                  topLeft: Radius.circular(
-                    widget.roundedStyle == RoundedStyle.onlyLeft ? 15.0 : 0,
-                  ),
-                  bottomLeft: Radius.circular(
-                    widget.roundedStyle == RoundedStyle.onlyLeft ? 15.0 : 0,
-                  ),
-                  topRight: Radius.circular(
-                    widget.roundedStyle == RoundedStyle.onlyRight ? 15.0 : 0,
-                  ),
-                  bottomRight: Radius.circular(
-                    widget.roundedStyle == RoundedStyle.onlyRight ? 15.0 : 0,
-                  ),
-                ),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.inventory_2_outlined,
-              size: 15,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: .5,
               color: focusOn.value
                   ? RSTColors.primaryColor
                   : RSTColors.tertiaryColor,
             ),
-            const SizedBox(
-              width: 10.0,
-            ),
-            RSTText(
-              text: FunctionsController.truncateText(
-                text: selectedcategory?.name ?? 'Produit',
-                maxLength: 15,
+            borderRadius: widget.roundedStyle == RoundedStyle.full
+                ? BorderRadius.circular(15.0)
+                : widget.roundedStyle == RoundedStyle.none
+                    ? BorderRadius.circular(.0)
+                    : BorderRadius.only(
+                        topLeft: Radius.circular(
+                          widget.roundedStyle == RoundedStyle.onlyLeft
+                              ? 15.0
+                              : 0,
+                        ),
+                        bottomLeft: Radius.circular(
+                          widget.roundedStyle == RoundedStyle.onlyLeft
+                              ? 15.0
+                              : 0,
+                        ),
+                        topRight: Radius.circular(
+                          widget.roundedStyle == RoundedStyle.onlyRight
+                              ? 15.0
+                              : 0,
+                        ),
+                        bottomRight: Radius.circular(
+                          widget.roundedStyle == RoundedStyle.onlyRight
+                              ? 15.0
+                              : 0,
+                        ),
+                      ),
+          ),
+          child: Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  ref.invalidate(
+                      categorySelectionToolProvider(widget.toolName));
+                },
+                child: Icon(
+                  Icons.group_outlined,
+                  size: 15,
+                  color: focusOn.value
+                      ? RSTColors.primaryColor
+                      : RSTColors.tertiaryColor,
+                ),
               ),
-              fontSize: 10.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ],
+              const SizedBox(
+                width: 10.0,
+              ),
+              RSTText(
+                text: FunctionsController.truncateText(
+                  text: selectedcategory?.name ?? 'Catégorie',
+                  maxLength: widget.textLimit ?? 15,
+                ),
+                fontSize: 10.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ],
+          ),
         ),
       ),
     );

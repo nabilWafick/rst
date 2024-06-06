@@ -40,7 +40,7 @@ class _PersonalStatusUpdateFormState
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const RSTText(
-            text: 'Activité économique',
+            text: 'Statut Personnel',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
           ),
@@ -66,68 +66,6 @@ class _PersonalStatusUpdateFormState
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              /*     Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 15.0,
-                ),
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 25.0,
-                        horizontal: 55.0,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 15.0),
-                      //width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: RSTColors.sidebarTextColor,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15.0),
-                        shape: BoxShape.rectangle,
-                      ),
-                      child: Center(
-                        child: InkWell(
-                          onTap: () async {
-                            final imageFromGallery =
-                                await FunctionsController.pickFile();
-                            ref.read(personalStatusPhotoProvider.notifier).state =
-                                imageFromGallery;
-                          },
-                          child: personalStatusPhoto == null &&
-                                  widget.personalStatus.photo != null
-                              ? Image.network(
-                                  widget.personalStatus.photo!,
-                                  height: 250.0,
-                                  width: 250.0,
-                                )
-                              : personalStatusPhoto == null
-                                  ? const Icon(
-                                      Icons.photo,
-                                      size: 150.0,
-                                      color: RSTColors.primaryColor,
-                                    )
-                                  : Image.asset(
-                                      personalStatusPhoto,
-                                      height: 250.0,
-                                      width: 250.0,
-                                    ),
-                        ),
-                      ),
-                    ),
-                    const RSTText(
-                      text: 'Produit',
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ],
-                ),
-              ),
-           */
               Container(
                 margin: const EdgeInsets.symmetric(
                   horizontal: 10.0,

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/modules/definitions/agents/models/agents.model.dart';
 import 'package:rst/modules/definitions/collectors/models/collectors.model.dart';
 
@@ -50,12 +51,11 @@ class Collection {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'amount': amount,
-      'rest': rest,
-      'collectedAt': '${collectedAt.toIso8601String()}Z',
+      'collectedAt': FunctionsController.getTimestamptzDateString(
+        dateTime: collectedAt,
+      ),
       'collectorId': collector.id,
       'agentId': agent.id,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 

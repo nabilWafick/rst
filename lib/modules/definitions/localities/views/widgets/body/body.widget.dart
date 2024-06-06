@@ -59,6 +59,12 @@ class _LocalitiesPageBodyState extends ConsumerState<LocalitiesPageBody> {
                 ),
               ),
               Container(
+                width: 100.0,
+                height: 50.0,
+                alignment: Alignment.center,
+                child: const SizedBox(),
+              ),
+              Container(
                 width: 400.0,
                 height: 50.0,
                 alignment: Alignment.centerLeft,
@@ -91,12 +97,6 @@ class _LocalitiesPageBodyState extends ConsumerState<LocalitiesPageBody> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
-              ),
             ],
             leftSideItemBuilder: (context, index) {
               return Container(
@@ -114,39 +114,6 @@ class _LocalitiesPageBodyState extends ConsumerState<LocalitiesPageBody> {
               final locality = data[index];
               return Row(
                 children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: locality.name,
-                        maxLength: 45,
-                      ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(locality.createdAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(locality.updatedAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.center,
                     width: 100.0,
@@ -193,6 +160,39 @@ class _LocalitiesPageBodyState extends ConsumerState<LocalitiesPageBody> {
                           },
                         ),
                       ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 400.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: FunctionsController.truncateText(
+                        text: locality.name,
+                        maxLength: 45,
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(locality.createdAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: format.format(locality.updatedAt),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

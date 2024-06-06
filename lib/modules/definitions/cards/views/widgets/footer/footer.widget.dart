@@ -34,11 +34,11 @@ class CardsPageFooter extends ConsumerWidget {
                     return RSTText(
                       text: count.when(
                         data: (data) =>
-                            data != 1 ? '$data collectes' : '$data collecte',
+                            data != 1 ? '$data cartes' : '$data carte',
                         error: (error, stackTrace) {
-                          return ' collectes';
+                          return ' cartes';
                         },
-                        loading: () => ' collectes',
+                        loading: () => ' cartes',
                       ),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
@@ -200,9 +200,9 @@ class CardsPageFooter extends ConsumerWidget {
                     return RSTText(
                       text: count.when(
                         data: (data) =>
-                            data != 1 ? '$data collectes' : '$data collecte',
-                        error: (error, stackTrace) => ' collectes',
-                        loading: () => ' collectes',
+                            data != 1 ? '$data cartes' : '$data carte',
+                        error: (error, stackTrace) => ' cartes',
+                        loading: () => ' cartes',
                       ),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,

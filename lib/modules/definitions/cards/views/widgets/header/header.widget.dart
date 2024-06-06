@@ -6,7 +6,6 @@ import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.f
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/cards/views/widgets/dialogs/dialogs.widget.dart';
-import 'package:rst/modules/definitions/cards/views/widgets/forms/addition/card_addition.widget.dart';
 
 class CardsPageHeader extends StatefulHookConsumerWidget {
   const CardsPageHeader({super.key});
@@ -123,10 +122,10 @@ class _CardsPageHeaderState extends ConsumerState<CardsPageHeader> {
               ),
               RSTAddButton(
                 onTap: () {
-                  FunctionsController.showAlertDialog(
+                  /* FunctionsController.showAlertDialog(
                     context: context,
                     alertDialog: const CardAdditionForm(),
-                  );
+                  );*/
                 },
               ),
             ],

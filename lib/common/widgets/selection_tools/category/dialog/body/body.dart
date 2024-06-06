@@ -30,12 +30,12 @@ class _CategorySelectionDialogBodyState
       child: Stack(
         children: [
           Container(
-            width: 800,
+            width: 500,
             alignment: Alignment.center,
             child: categoriesList.when(
               data: (data) => HorizontalDataTable(
                 leftHandSideColumnWidth: 100,
-                rightHandSideColumnWidth: 700,
+                rightHandSideColumnWidth: 400,
                 itemCount: data.length,
                 isFixedHeader: true,
                 leftHandSideColBackgroundColor: Colors.transparent,

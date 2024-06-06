@@ -4,7 +4,7 @@ import 'package:rst/modules/cash/collections/providers/collections.provider.dart
 
 class CollectionOnChanged {
   static collectionAmount(String? value, WidgetRef ref) =>
-      CommonOnChangedFunction.onStringTextInputValueChanged(
+      CommonOnChangedFunction.onDoubleTextInputValueChanged(
         value,
         ref,
         collectionAmountProvider,

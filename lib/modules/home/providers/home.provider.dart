@@ -59,7 +59,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
           ),
           SidebarSubOptionModel(
             index: 7,
-            icon: Icons.admin_panel_settings_outlined,
+            icon: Icons.credit_card,
             name: 'Cartes',
           ),
           SidebarSubOptionModel(
@@ -90,12 +90,12 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Versements Collectes',
           ),
           SidebarSubOptionModel(
-            index: 13,
+            index: 12,
             icon: Icons.account_balance_outlined,
             name: 'Opérations Caisse',
           ),
           SidebarSubOptionModel(
-            index: 14,
+            index: 13,
             icon: Icons.money_outlined,
             name: 'Règlements',
           ),
