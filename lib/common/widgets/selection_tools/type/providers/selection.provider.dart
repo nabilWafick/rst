@@ -9,7 +9,7 @@ final typeSelectionToolProvider =
 
 // used for storing types filter options
 final typesSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,8 +18,9 @@ final typesSelectionListParametersProvider =
 
 // used for storing fetched types
 final typesSelectionListStreamProvider =
-    FutureProvider<List<Type>>((ref) async {
-  final listParameters = ref.watch(typesSelectionListParametersProvider);
+    FutureProvider.family<List<Type>, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(typesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await TypesController.getMany(
     listParameters: listParameters,
@@ -31,8 +32,10 @@ final typesSelectionListStreamProvider =
 });
 
 // used for storing fetched types (types respecting filter options) count
-final specifictypesSelectionCountProvider = FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(typesSelectionListParametersProvider);
+final specificTypesSelectionCountProvider =
+    FutureProvider.family<int, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(typesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await TypesController.countSpecific(
     listParameters: listParameters,

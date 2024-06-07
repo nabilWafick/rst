@@ -24,7 +24,8 @@ class _CategorySelectionDialogBodyState
     extends ConsumerState<CategorySelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final categoriesList = ref.watch(categoriesSelectionListStreamProvider);
+    final categoriesList =
+        ref.watch(categoriesSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -132,7 +133,8 @@ class _CategorySelectionDialogBodyState
                   hintText: 'Nom',
                   field: CategoryStructure.name,
                   selectionListParametersProvider:
-                      categoriesSelectionListParametersProvider,
+                      categoriesSelectionListParametersProvider(
+                          widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.stringInput,
                 ),
               ],

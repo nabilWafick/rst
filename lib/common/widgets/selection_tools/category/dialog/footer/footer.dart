@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/category/providers/selection.
 import 'package:rst/utils/utils.dart';
 
 class CategorySelectionDialogFooter extends ConsumerWidget {
-  const CategorySelectionDialogFooter({super.key});
+  final String toolName;
+  const CategorySelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +29,8 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count =
-                    ref.watch(specificcategoriesSelectionCountProvider);
+                final count = ref
+                    .watch(specificCategoriesSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
@@ -34,7 +38,8 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final categoriesSelectionListParameters = ref.watch(
-                                categoriesSelectionListParametersProvider);
+                                categoriesSelectionListParametersProvider(
+                                    toolName));
 
                             return categoriesSelectionListParameters['skip'] !=
                                     0
@@ -42,7 +47,8 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              categoriesSelectionListParametersProvider
+                                              categoriesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -67,7 +73,8 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final categoriesSelectionListParameters = ref.watch(
-                                categoriesSelectionListParametersProvider);
+                                categoriesSelectionListParametersProvider(
+                                    toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -86,7 +93,8 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final categoriesSelectionListParameters = ref.watch(
-                                categoriesSelectionListParametersProvider);
+                                categoriesSelectionListParametersProvider(
+                                    toolName));
 
                             return categoriesSelectionListParameters['skip'] +
                                         15 <
@@ -95,7 +103,8 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              categoriesSelectionListParametersProvider
+                                              categoriesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -132,10 +141,10 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final categoriesSelectionListParameters =
-                        ref.watch(categoriesSelectionListParametersProvider);
-                    final categoriesSelectionList =
-                        ref.watch(categoriesSelectionListStreamProvider);
+                    final categoriesSelectionListParameters = ref.watch(
+                        categoriesSelectionListParametersProvider(toolName));
+                    final categoriesSelectionList = ref
+                        .watch(categoriesSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: categoriesSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -156,10 +165,10 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final categoriesSelectionListParameters =
-                        ref.watch(categoriesSelectionListParametersProvider);
-                    final categoriesSelectionList =
-                        ref.watch(categoriesSelectionListStreamProvider);
+                    final categoriesSelectionListParameters = ref.watch(
+                        categoriesSelectionListParametersProvider(toolName));
+                    final categoriesSelectionList = ref
+                        .watch(categoriesSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: categoriesSelectionList.when(
                         data: (data) =>
@@ -179,8 +188,8 @@ class CategorySelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specificcategoriesSelectionCountProvider);
+                    final count = ref.watch(
+                        specificCategoriesSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

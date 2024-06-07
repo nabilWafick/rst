@@ -88,7 +88,9 @@ class _TypeSelectionDialogState extends ConsumerState<TypeSelectionDialog> {
             const SizedBox(
               height: 15.0,
             ),
-            const TypeSelectionDialogFooter(),
+            TypeSelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

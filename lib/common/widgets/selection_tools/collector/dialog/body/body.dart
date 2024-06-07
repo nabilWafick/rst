@@ -24,7 +24,8 @@ class _CollectorSelectionDialogBodyState
     extends ConsumerState<CollectorSelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final collectorsList = ref.watch(collectorsSelectionListStreamProvider);
+    final collectorsList =
+        ref.watch(collectorsSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -186,7 +187,8 @@ class _CollectorSelectionDialogBodyState
                     hintText: 'Nom',
                     field: CollectorStructure.name,
                     selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider,
+                        collectorsSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -194,7 +196,8 @@ class _CollectorSelectionDialogBodyState
                     hintText: 'Prénoms',
                     field: CollectorStructure.firstnames,
                     selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider,
+                        collectorsSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -202,7 +205,8 @@ class _CollectorSelectionDialogBodyState
                     hintText: 'Téléphone',
                     field: CollectorStructure.phoneNumber,
                     selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider,
+                        collectorsSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -210,7 +214,8 @@ class _CollectorSelectionDialogBodyState
                     hintText: 'Adresse',
                     field: CollectorStructure.address,
                     selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider,
+                        collectorsSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                 ],

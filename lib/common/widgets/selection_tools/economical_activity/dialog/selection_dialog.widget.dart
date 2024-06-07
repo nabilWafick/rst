@@ -90,7 +90,9 @@ class _EconomicalActivitySelectionDialogState
             const SizedBox(
               height: 15.0,
             ),
-            const EconomicalActivitySelectionDialogFooter(),
+            EconomicalActivitySelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

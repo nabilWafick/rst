@@ -24,7 +24,8 @@ class _ProductSelectionDialogBodyState
     extends ConsumerState<ProductSelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final productsList = ref.watch(productsSelectionListStreamProvider);
+    final productsList =
+        ref.watch(productsSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -140,7 +141,7 @@ class _ProductSelectionDialogBodyState
                   hintText: 'Nom',
                   field: ProductStructure.name,
                   selectionListParametersProvider:
-                      productsSelectionListParametersProvider,
+                      productsSelectionListParametersProvider(widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.stringInput,
                 ),
                 RSTSelectionSearchInput(
@@ -148,7 +149,7 @@ class _ProductSelectionDialogBodyState
                   hintText: 'Prix d\'achat',
                   field: ProductStructure.purchasePrice,
                   selectionListParametersProvider:
-                      productsSelectionListParametersProvider,
+                      productsSelectionListParametersProvider(widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.doubleInput,
                 ),
               ],

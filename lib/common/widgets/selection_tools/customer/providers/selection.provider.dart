@@ -9,7 +9,7 @@ final customerSelectionToolProvider =
 
 // used for storing customers filter options
 final customersSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,8 +18,9 @@ final customersSelectionListParametersProvider =
 
 // used for storing fetched customers
 final customersSelectionListStreamProvider =
-    FutureProvider<List<Customer>>((ref) async {
-  final listParameters = ref.watch(customersSelectionListParametersProvider);
+    FutureProvider.family<List<Customer>, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(customersSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CustomersController.getMany(
     listParameters: listParameters,
@@ -32,8 +33,9 @@ final customersSelectionListStreamProvider =
 
 // used for storing fetched customers (customers respecting filter options) count
 final specificCustomersSelectionCountProvider =
-    FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(customersSelectionListParametersProvider);
+    FutureProvider.family<int, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(customersSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CustomersController.countSpecific(
     listParameters: listParameters,

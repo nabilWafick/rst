@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/personal_status/providers/sel
 import 'package:rst/utils/utils.dart';
 
 class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
-  const PersonalStatusSelectionDialogFooter({super.key});
+  final String toolName;
+  const PersonalStatusSelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +29,8 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count =
-                    ref.watch(specificPersonalStatusSelectionCountProvider);
+                final count = ref.watch(
+                    specificPersonalStatusSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
@@ -35,7 +39,8 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
                           builder: (context, ref, child) {
                             final personalStatusSelectionListParameters =
                                 ref.watch(
-                                    personalStatusSelectionListParametersProvider);
+                                    personalStatusSelectionListParametersProvider(
+                                        toolName));
 
                             return personalStatusSelectionListParameters[
                                         'skip'] !=
@@ -44,7 +49,8 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              personalStatusSelectionListParametersProvider
+                                              personalStatusSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -70,7 +76,8 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
                           builder: (context, ref, child) {
                             final personalStatusSelectionListParameters =
                                 ref.watch(
-                                    personalStatusSelectionListParametersProvider);
+                                    personalStatusSelectionListParametersProvider(
+                                        toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -90,7 +97,8 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
                           builder: (context, ref, child) {
                             final personalStatusSelectionListParameters =
                                 ref.watch(
-                                    personalStatusSelectionListParametersProvider);
+                                    personalStatusSelectionListParametersProvider(
+                                        toolName));
 
                             return personalStatusSelectionListParameters[
                                             'skip'] +
@@ -100,7 +108,8 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              personalStatusSelectionListParametersProvider
+                                              personalStatusSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -137,10 +146,11 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final personalStatusSelectionListParameters = ref
-                        .watch(personalStatusSelectionListParametersProvider);
-                    final personalStatusSelectionList =
-                        ref.watch(personalStatusSelectionListStreamProvider);
+                    final personalStatusSelectionListParameters = ref.watch(
+                        personalStatusSelectionListParametersProvider(
+                            toolName));
+                    final personalStatusSelectionList = ref.watch(
+                        personalStatusSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: personalStatusSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -161,10 +171,11 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final personalStatusSelectionListParameters = ref
-                        .watch(personalStatusSelectionListParametersProvider);
-                    final personalStatusSelectionList =
-                        ref.watch(personalStatusSelectionListStreamProvider);
+                    final personalStatusSelectionListParameters = ref.watch(
+                        personalStatusSelectionListParametersProvider(
+                            toolName));
+                    final personalStatusSelectionList = ref.watch(
+                        personalStatusSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: personalStatusSelectionList.when(
                         data: (data) =>
@@ -184,8 +195,8 @@ class PersonalStatusSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specificPersonalStatusSelectionCountProvider);
+                    final count = ref.watch(
+                        specificPersonalStatusSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

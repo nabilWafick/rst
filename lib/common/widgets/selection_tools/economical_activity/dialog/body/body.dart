@@ -24,8 +24,8 @@ class _EconomicalActivitySelectionDialogBodyState
     extends ConsumerState<EconomicalActivitySelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final economicalActivitiesList =
-        ref.watch(economicalActivitiesSelectionListStreamProvider);
+    final economicalActivitiesList = ref.watch(
+        economicalActivitiesSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -134,7 +134,8 @@ class _EconomicalActivitySelectionDialogBodyState
                   hintText: 'Nom',
                   field: EconomicalActivityStructure.name,
                   selectionListParametersProvider:
-                      economicalActivitiesSelectionListParametersProvider,
+                      economicalActivitiesSelectionListParametersProvider(
+                          widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.stringInput,
                 ),
               ],

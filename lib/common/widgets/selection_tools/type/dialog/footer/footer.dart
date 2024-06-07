@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/type/providers/selection.prov
 import 'package:rst/utils/utils.dart';
 
 class TypeSelectionDialogFooter extends ConsumerWidget {
-  const TypeSelectionDialogFooter({super.key});
+  final String toolName;
+  const TypeSelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,22 +29,24 @@ class TypeSelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count = ref.watch(specifictypesSelectionCountProvider);
+                final count =
+                    ref.watch(specificTypesSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
                       children: [
                         Consumer(
                           builder: (context, ref, child) {
-                            final typesSelectionListParameters =
-                                ref.watch(typesSelectionListParametersProvider);
+                            final typesSelectionListParameters = ref.watch(
+                                typesSelectionListParametersProvider(toolName));
 
                             return typesSelectionListParameters['skip'] != 0
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              typesSelectionListParametersProvider
+                                              typesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -64,8 +70,8 @@ class TypeSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final typesSelectionListParameters =
-                                ref.watch(typesSelectionListParametersProvider);
+                            final typesSelectionListParameters = ref.watch(
+                                typesSelectionListParametersProvider(toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -83,8 +89,8 @@ class TypeSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final typesSelectionListParameters =
-                                ref.watch(typesSelectionListParametersProvider);
+                            final typesSelectionListParameters = ref.watch(
+                                typesSelectionListParametersProvider(toolName));
 
                             return typesSelectionListParameters['skip'] + 15 <
                                     data
@@ -92,7 +98,8 @@ class TypeSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              typesSelectionListParametersProvider
+                                              typesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -129,10 +136,10 @@ class TypeSelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final typesSelectionListParameters =
-                        ref.watch(typesSelectionListParametersProvider);
+                    final typesSelectionListParameters = ref
+                        .watch(typesSelectionListParametersProvider(toolName));
                     final typesSelectionList =
-                        ref.watch(typesSelectionListStreamProvider);
+                        ref.watch(typesSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: typesSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -153,10 +160,10 @@ class TypeSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final typesSelectionListParameters =
-                        ref.watch(typesSelectionListParametersProvider);
+                    final typesSelectionListParameters = ref
+                        .watch(typesSelectionListParametersProvider(toolName));
                     final typesSelectionList =
-                        ref.watch(typesSelectionListStreamProvider);
+                        ref.watch(typesSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: typesSelectionList.when(
                         data: (data) =>
@@ -176,8 +183,8 @@ class TypeSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specifictypesSelectionCountProvider);
+                    final count = ref
+                        .watch(specificTypesSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

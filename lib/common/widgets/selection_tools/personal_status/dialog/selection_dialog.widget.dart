@@ -90,7 +90,9 @@ class _PersonalStatusSelectionDialogState
             const SizedBox(
               height: 15.0,
             ),
-            const PersonalStatusSelectionDialogFooter(),
+            PersonalStatusSelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

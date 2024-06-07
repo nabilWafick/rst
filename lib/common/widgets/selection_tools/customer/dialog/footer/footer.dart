@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/customer/providers/selection.
 import 'package:rst/utils/utils.dart';
 
 class CustomerSelectionDialogFooter extends ConsumerWidget {
-  const CustomerSelectionDialogFooter({super.key});
+  final String toolName;
+  const CustomerSelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +29,8 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count =
-                    ref.watch(specificCustomersSelectionCountProvider);
+                final count = ref
+                    .watch(specificCustomersSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
@@ -34,14 +38,16 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final customersSelectionListParameters = ref.watch(
-                                customersSelectionListParametersProvider);
+                                customersSelectionListParametersProvider(
+                                    toolName));
 
                             return customersSelectionListParameters['skip'] != 0
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              customersSelectionListParametersProvider
+                                              customersSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -66,7 +72,8 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final customersSelectionListParameters = ref.watch(
-                                customersSelectionListParametersProvider);
+                                customersSelectionListParametersProvider(
+                                    toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -85,7 +92,8 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final customersSelectionListParameters = ref.watch(
-                                customersSelectionListParametersProvider);
+                                customersSelectionListParametersProvider(
+                                    toolName));
 
                             return customersSelectionListParameters['skip'] +
                                         15 <
@@ -94,7 +102,8 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              customersSelectionListParametersProvider
+                                              customersSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -131,10 +140,10 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final customersSelectionListParameters =
-                        ref.watch(customersSelectionListParametersProvider);
-                    final customersSelectionList =
-                        ref.watch(customersSelectionListStreamProvider);
+                    final customersSelectionListParameters = ref.watch(
+                        customersSelectionListParametersProvider(toolName));
+                    final customersSelectionList = ref
+                        .watch(customersSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: customersSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -155,10 +164,10 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final customersSelectionListParameters =
-                        ref.watch(customersSelectionListParametersProvider);
-                    final customersSelectionList =
-                        ref.watch(customersSelectionListStreamProvider);
+                    final customersSelectionListParameters = ref.watch(
+                        customersSelectionListParametersProvider(toolName));
+                    final customersSelectionList = ref
+                        .watch(customersSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: customersSelectionList.when(
                         data: (data) =>
@@ -178,8 +187,8 @@ class CustomerSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specificCustomersSelectionCountProvider);
+                    final count = ref.watch(
+                        specificCustomersSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

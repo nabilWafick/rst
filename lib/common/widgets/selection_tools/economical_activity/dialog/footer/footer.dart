@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/economical_activity/providers
 import 'package:rst/utils/utils.dart';
 
 class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
-  const EconomicalActivitySelectionDialogFooter({super.key});
+  final String toolName;
+  const EconomicalActivitySelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +29,9 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count = ref
-                    .watch(specificeconomicalActivitiesSelectionCountProvider);
+                final count = ref.watch(
+                    specificEconomicalActivitiesSelectionCountProvider(
+                        toolName));
                 return count.when(
                   data: (data) {
                     return Row(
@@ -35,7 +40,8 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                           builder: (context, ref, child) {
                             final economicalActivitiesSelectionListParameters =
                                 ref.watch(
-                                    economicalActivitiesSelectionListParametersProvider);
+                                    economicalActivitiesSelectionListParametersProvider(
+                                        toolName));
 
                             return economicalActivitiesSelectionListParameters[
                                         'skip'] !=
@@ -44,7 +50,8 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              economicalActivitiesSelectionListParametersProvider
+                                              economicalActivitiesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -70,7 +77,8 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                           builder: (context, ref, child) {
                             final economicalActivitiesSelectionListParameters =
                                 ref.watch(
-                                    economicalActivitiesSelectionListParametersProvider);
+                                    economicalActivitiesSelectionListParametersProvider(
+                                        toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -90,7 +98,8 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                           builder: (context, ref, child) {
                             final economicalActivitiesSelectionListParameters =
                                 ref.watch(
-                                    economicalActivitiesSelectionListParametersProvider);
+                                    economicalActivitiesSelectionListParametersProvider(
+                                        toolName));
 
                             return economicalActivitiesSelectionListParameters[
                                             'skip'] +
@@ -100,7 +109,8 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              economicalActivitiesSelectionListParametersProvider
+                                              economicalActivitiesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -139,9 +149,11 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                   builder: (context, ref, child) {
                     final economicalActivitiesSelectionListParameters =
                         ref.watch(
-                            economicalActivitiesSelectionListParametersProvider);
-                    final economicalActivitiesSelectionList = ref
-                        .watch(economicalActivitiesSelectionListStreamProvider);
+                            economicalActivitiesSelectionListParametersProvider(
+                                toolName));
+                    final economicalActivitiesSelectionList = ref.watch(
+                        economicalActivitiesSelectionListStreamProvider(
+                            toolName));
                     return RSTText(
                       text: economicalActivitiesSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -164,9 +176,11 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                   builder: (context, ref, child) {
                     final economicalActivitiesSelectionListParameters =
                         ref.watch(
-                            economicalActivitiesSelectionListParametersProvider);
-                    final economicalActivitiesSelectionList = ref
-                        .watch(economicalActivitiesSelectionListStreamProvider);
+                            economicalActivitiesSelectionListParametersProvider(
+                                toolName));
+                    final economicalActivitiesSelectionList = ref.watch(
+                        economicalActivitiesSelectionListStreamProvider(
+                            toolName));
                     return RSTText(
                       text: economicalActivitiesSelectionList.when(
                         data: (data) =>
@@ -187,7 +201,8 @@ class EconomicalActivitySelectionDialogFooter extends ConsumerWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final count = ref.watch(
-                        specificeconomicalActivitiesSelectionCountProvider);
+                        specificEconomicalActivitiesSelectionCountProvider(
+                            toolName));
 
                     return RSTText(
                       text: count.when(

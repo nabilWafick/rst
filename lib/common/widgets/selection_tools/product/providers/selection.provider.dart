@@ -9,7 +9,7 @@ final productSelectionToolProvider =
 
 // used for storing products filter options
 final productsSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,8 +18,9 @@ final productsSelectionListParametersProvider =
 
 // used for storing fetched products
 final productsSelectionListStreamProvider =
-    FutureProvider<List<Product>>((ref) async {
-  final listParameters = ref.watch(productsSelectionListParametersProvider);
+    FutureProvider.family<List<Product>, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(productsSelectionListParametersProvider(toolName));
 
   final controllerResponse = await ProductsController.getMany(
     listParameters: listParameters,
@@ -31,8 +32,10 @@ final productsSelectionListStreamProvider =
 });
 
 // used for storing fetched products (products respecting filter options) count
-final specificProductsSelectionCountProvider = FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(productsSelectionListParametersProvider);
+final specificProductsSelectionCountProvider =
+    FutureProvider.family<int, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(productsSelectionListParametersProvider(toolName));
 
   final controllerResponse = await ProductsController.countSpecific(
     listParameters: listParameters,

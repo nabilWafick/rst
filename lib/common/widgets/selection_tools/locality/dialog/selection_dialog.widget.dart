@@ -90,7 +90,9 @@ class _LocalitySelectionDialogState
             const SizedBox(
               height: 15.0,
             ),
-            const LocalitySelectionDialogFooter(),
+            LocalitySelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

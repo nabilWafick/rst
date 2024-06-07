@@ -9,7 +9,7 @@ final collectorSelectionToolProvider =
 
 // used for storing collectors filter options
 final collectorsSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,8 +18,9 @@ final collectorsSelectionListParametersProvider =
 
 // used for storing fetched collectors
 final collectorsSelectionListStreamProvider =
-    FutureProvider<List<Collector>>((ref) async {
-  final listParameters = ref.watch(collectorsSelectionListParametersProvider);
+    FutureProvider.family<List<Collector>, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(collectorsSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CollectorsController.getMany(
     listParameters: listParameters,
@@ -32,8 +33,9 @@ final collectorsSelectionListStreamProvider =
 
 // used for storing fetched collectors (collectors respecting filter options) count
 final specificCollectorsSelectionCountProvider =
-    FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(collectorsSelectionListParametersProvider);
+    FutureProvider.family<int, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(collectorsSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CollectorsController.countSpecific(
     listParameters: listParameters,

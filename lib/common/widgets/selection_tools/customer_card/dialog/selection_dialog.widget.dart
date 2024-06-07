@@ -88,7 +88,9 @@ class _CardSelectionDialogState extends ConsumerState<CardSelectionDialog> {
             const SizedBox(
               height: 15.0,
             ),
-            const CardSelectionDialogFooter(),
+            CardSelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

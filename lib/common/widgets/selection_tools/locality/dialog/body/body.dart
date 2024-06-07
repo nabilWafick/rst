@@ -24,7 +24,8 @@ class _LocalitySelectionDialogBodyState
     extends ConsumerState<LocalitySelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final localitiesList = ref.watch(localitiesSelectionListStreamProvider);
+    final localitiesList =
+        ref.watch(localitiesSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -132,7 +133,8 @@ class _LocalitySelectionDialogBodyState
                   hintText: 'Nom',
                   field: LocalityStructure.name,
                   selectionListParametersProvider:
-                      localitiesSelectionListParametersProvider,
+                      localitiesSelectionListParametersProvider(
+                          widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.stringInput,
                 ),
               ],

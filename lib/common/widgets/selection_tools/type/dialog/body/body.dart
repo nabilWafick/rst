@@ -24,7 +24,8 @@ class _TypeSelectionDialogBodyState
     extends ConsumerState<TypeSelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final typesList = ref.watch(typesSelectionListStreamProvider);
+    final typesList =
+        ref.watch(typesSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -140,7 +141,7 @@ class _TypeSelectionDialogBodyState
                   hintText: 'Nom',
                   field: TypeStructure.name,
                   selectionListParametersProvider:
-                      typesSelectionListParametersProvider,
+                      typesSelectionListParametersProvider(widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.stringInput,
                 ),
                 RSTSelectionSearchInput(
@@ -148,7 +149,7 @@ class _TypeSelectionDialogBodyState
                   hintText: 'Prix d\'achat',
                   field: TypeStructure.stake,
                   selectionListParametersProvider:
-                      typesSelectionListParametersProvider,
+                      typesSelectionListParametersProvider(widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.doubleInput,
                 ),
               ],

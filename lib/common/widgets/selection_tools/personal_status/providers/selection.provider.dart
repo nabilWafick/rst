@@ -9,7 +9,7 @@ final personalStatusSelectionToolProvider =
 
 // used for storing PersonalStatus filter options
 final personalStatusSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,9 +18,9 @@ final personalStatusSelectionListParametersProvider =
 
 // used for storing fetched PersonalStatus
 final personalStatusSelectionListStreamProvider =
-    FutureProvider<List<PersonalStatus>>((ref) async {
+    FutureProvider.family<List<PersonalStatus>, String>((ref, toolName) async {
   final listParameters =
-      ref.watch(personalStatusSelectionListParametersProvider);
+      ref.watch(personalStatusSelectionListParametersProvider(toolName));
 
   final controllerResponse = await PersonalStatusController.getMany(
     listParameters: listParameters,
@@ -33,9 +33,9 @@ final personalStatusSelectionListStreamProvider =
 
 // used for storing fetched PersonalStatus (PersonalStatus respecting filter options) count
 final specificPersonalStatusSelectionCountProvider =
-    FutureProvider<int>((ref) async {
+    FutureProvider.family<int, String>((ref, toolName) async {
   final listParameters =
-      ref.watch(personalStatusSelectionListParametersProvider);
+      ref.watch(personalStatusSelectionListParametersProvider(toolName));
 
   final controllerResponse = await PersonalStatusController.countSpecific(
     listParameters: listParameters,

@@ -25,7 +25,7 @@ class _PersonalStatusSelectionDialogBodyState
   @override
   Widget build(BuildContext context) {
     final personalStatusList =
-        ref.watch(personalStatusSelectionListStreamProvider);
+        ref.watch(personalStatusSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -133,7 +133,8 @@ class _PersonalStatusSelectionDialogBodyState
                   hintText: 'Nom',
                   field: PersonalStatusStructure.name,
                   selectionListParametersProvider:
-                      personalStatusSelectionListParametersProvider,
+                      personalStatusSelectionListParametersProvider(
+                          widget.toolName),
                   onChanged: SelectionToolSearchInputOnChanged.stringInput,
                 ),
               ],

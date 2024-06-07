@@ -9,7 +9,7 @@ final categorySelectionToolProvider =
 
 // used for storing categories filter options
 final categoriesSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,8 +18,9 @@ final categoriesSelectionListParametersProvider =
 
 // used for storing fetched categories
 final categoriesSelectionListStreamProvider =
-    FutureProvider<List<Category>>((ref) async {
-  final listParameters = ref.watch(categoriesSelectionListParametersProvider);
+    FutureProvider.family<List<Category>, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(categoriesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CategoriesController.getMany(
     listParameters: listParameters,
@@ -31,9 +32,10 @@ final categoriesSelectionListStreamProvider =
 });
 
 // used for storing fetched categories (categories respecting filter options) count
-final specificcategoriesSelectionCountProvider =
-    FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(categoriesSelectionListParametersProvider);
+final specificCategoriesSelectionCountProvider =
+    FutureProvider.family<int, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(categoriesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CategoriesController.countSpecific(
     listParameters: listParameters,

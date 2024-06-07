@@ -92,7 +92,9 @@ class _CustomerSelectionDialogState
             const SizedBox(
               height: 15.0,
             ),
-            const CustomerSelectionDialogFooter(),
+            CustomerSelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

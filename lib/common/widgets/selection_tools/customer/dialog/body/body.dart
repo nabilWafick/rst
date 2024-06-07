@@ -24,7 +24,8 @@ class _CustomerSelectionDialogBodyState
     extends ConsumerState<CustomerSelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final customersList = ref.watch(customersSelectionListStreamProvider);
+    final customersList =
+        ref.watch(customersSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -212,7 +213,8 @@ class _CustomerSelectionDialogBodyState
                     hintText: 'Nom',
                     field: CustomerStructure.name,
                     selectionListParametersProvider:
-                        customersSelectionListParametersProvider,
+                        customersSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -220,7 +222,8 @@ class _CustomerSelectionDialogBodyState
                     hintText: 'Prénoms',
                     field: CustomerStructure.firstnames,
                     selectionListParametersProvider:
-                        customersSelectionListParametersProvider,
+                        customersSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -228,7 +231,8 @@ class _CustomerSelectionDialogBodyState
                     hintText: 'Téléphone',
                     field: CustomerStructure.phoneNumber,
                     selectionListParametersProvider:
-                        customersSelectionListParametersProvider,
+                        customersSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -236,7 +240,8 @@ class _CustomerSelectionDialogBodyState
                     hintText: 'Adresse',
                     field: CustomerStructure.address,
                     selectionListParametersProvider:
-                        customersSelectionListParametersProvider,
+                        customersSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -244,7 +249,8 @@ class _CustomerSelectionDialogBodyState
                     hintText: 'Profession',
                     field: CustomerStructure.occupation,
                     selectionListParametersProvider:
-                        customersSelectionListParametersProvider,
+                        customersSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -252,7 +258,8 @@ class _CustomerSelectionDialogBodyState
                     hintText: 'NCI/NPI',
                     field: CustomerStructure.nicNumber,
                     selectionListParametersProvider:
-                        customersSelectionListParametersProvider,
+                        customersSelectionListParametersProvider(
+                            widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.intInput,
                   ),
                 ],

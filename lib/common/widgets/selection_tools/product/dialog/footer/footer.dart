@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/product/providers/selection.p
 import 'package:rst/utils/utils.dart';
 
 class ProductSelectionDialogFooter extends ConsumerWidget {
-  const ProductSelectionDialogFooter({super.key});
+  final String toolName;
+  const ProductSelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,22 +29,25 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count = ref.watch(specificProductsSelectionCountProvider);
+                final count =
+                    ref.watch(specificProductsSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
                       children: [
                         Consumer(
                           builder: (context, ref, child) {
-                            final productsSelectionListParameters = ref
-                                .watch(productsSelectionListParametersProvider);
+                            final productsSelectionListParameters = ref.watch(
+                                productsSelectionListParametersProvider(
+                                    toolName));
 
                             return productsSelectionListParameters['skip'] != 0
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              productsSelectionListParametersProvider
+                                              productsSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -64,8 +71,9 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final productsSelectionListParameters = ref
-                                .watch(productsSelectionListParametersProvider);
+                            final productsSelectionListParameters = ref.watch(
+                                productsSelectionListParametersProvider(
+                                    toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -83,8 +91,9 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final productsSelectionListParameters = ref
-                                .watch(productsSelectionListParametersProvider);
+                            final productsSelectionListParameters = ref.watch(
+                                productsSelectionListParametersProvider(
+                                    toolName));
 
                             return productsSelectionListParameters['skip'] +
                                         15 <
@@ -93,7 +102,8 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              productsSelectionListParametersProvider
+                                              productsSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -130,10 +140,10 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final productsSelectionListParameters =
-                        ref.watch(productsSelectionListParametersProvider);
-                    final productsSelectionList =
-                        ref.watch(productsSelectionListStreamProvider);
+                    final productsSelectionListParameters = ref.watch(
+                        productsSelectionListParametersProvider(toolName));
+                    final productsSelectionList = ref
+                        .watch(productsSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: productsSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -154,10 +164,10 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final productsSelectionListParameters =
-                        ref.watch(productsSelectionListParametersProvider);
-                    final productsSelectionList =
-                        ref.watch(productsSelectionListStreamProvider);
+                    final productsSelectionListParameters = ref.watch(
+                        productsSelectionListParametersProvider(toolName));
+                    final productsSelectionList = ref
+                        .watch(productsSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: productsSelectionList.when(
                         data: (data) =>
@@ -177,8 +187,8 @@ class ProductSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specificProductsSelectionCountProvider);
+                    final count = ref.watch(
+                        specificProductsSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

@@ -9,7 +9,7 @@ final cardSelectionToolProvider =
 
 // used for storing cards filter options
 final cardsSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,8 +18,9 @@ final cardsSelectionListParametersProvider =
 
 // used for storing fetched cards
 final cardsSelectionListStreamProvider =
-    FutureProvider<List<Card>>((ref) async {
-  final listParameters = ref.watch(cardsSelectionListParametersProvider);
+    FutureProvider.family<List<Card>, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(cardsSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CardsController.getMany(
     listParameters: listParameters,
@@ -31,8 +32,10 @@ final cardsSelectionListStreamProvider =
 });
 
 // used for storing fetched cards (cards respecting filter options) count
-final specificCardsSelectionCountProvider = FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(cardsSelectionListParametersProvider);
+final specificCardsSelectionCountProvider =
+    FutureProvider.family<int, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(cardsSelectionListParametersProvider(toolName));
 
   final controllerResponse = await CardsController.countSpecific(
     listParameters: listParameters,

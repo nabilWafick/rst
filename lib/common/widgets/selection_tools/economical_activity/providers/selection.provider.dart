@@ -9,7 +9,7 @@ final economicalActivitySelectionToolProvider =
 
 // used for storing economicalActivities filter options
 final economicalActivitiesSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,9 +18,10 @@ final economicalActivitiesSelectionListParametersProvider =
 
 // used for storing fetched economicalActivities
 final economicalActivitiesSelectionListStreamProvider =
-    FutureProvider<List<EconomicalActivity>>((ref) async {
+    FutureProvider.family<List<EconomicalActivity>, String>(
+        (ref, toolName) async {
   final listParameters =
-      ref.watch(economicalActivitiesSelectionListParametersProvider);
+      ref.watch(economicalActivitiesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await EconomicalActivitiesController.getMany(
     listParameters: listParameters,
@@ -32,10 +33,10 @@ final economicalActivitiesSelectionListStreamProvider =
 });
 
 // used for storing fetched economicalActivities (economicalActivities respecting filter options) count
-final specificeconomicalActivitiesSelectionCountProvider =
-    FutureProvider<int>((ref) async {
+final specificEconomicalActivitiesSelectionCountProvider =
+    FutureProvider.family<int, String>((ref, toolName) async {
   final listParameters =
-      ref.watch(economicalActivitiesSelectionListParametersProvider);
+      ref.watch(economicalActivitiesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await EconomicalActivitiesController.countSpecific(
     listParameters: listParameters,

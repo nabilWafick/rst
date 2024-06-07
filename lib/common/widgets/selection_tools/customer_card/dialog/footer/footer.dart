@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/customer_card/providers/selec
 import 'package:rst/utils/utils.dart';
 
 class CardSelectionDialogFooter extends ConsumerWidget {
-  const CardSelectionDialogFooter({super.key});
+  final String toolName;
+  const CardSelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,22 +29,24 @@ class CardSelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count = ref.watch(specificCardsSelectionCountProvider);
+                final count =
+                    ref.watch(specificCardsSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
                       children: [
                         Consumer(
                           builder: (context, ref, child) {
-                            final cardsSelectionListParameters =
-                                ref.watch(cardsSelectionListParametersProvider);
+                            final cardsSelectionListParameters = ref.watch(
+                                cardsSelectionListParametersProvider(toolName));
 
                             return cardsSelectionListParameters['skip'] != 0
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              cardsSelectionListParametersProvider
+                                              cardsSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -64,8 +70,8 @@ class CardSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final cardsSelectionListParameters =
-                                ref.watch(cardsSelectionListParametersProvider);
+                            final cardsSelectionListParameters = ref.watch(
+                                cardsSelectionListParametersProvider(toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -83,8 +89,8 @@ class CardSelectionDialogFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final cardsSelectionListParameters =
-                                ref.watch(cardsSelectionListParametersProvider);
+                            final cardsSelectionListParameters = ref.watch(
+                                cardsSelectionListParametersProvider(toolName));
 
                             return cardsSelectionListParameters['skip'] + 15 <
                                     data
@@ -92,7 +98,8 @@ class CardSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              cardsSelectionListParametersProvider
+                                              cardsSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -129,10 +136,10 @@ class CardSelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final cardsSelectionListParameters =
-                        ref.watch(cardsSelectionListParametersProvider);
+                    final cardsSelectionListParameters = ref
+                        .watch(cardsSelectionListParametersProvider(toolName));
                     final cardsSelectionList =
-                        ref.watch(cardsSelectionListStreamProvider);
+                        ref.watch(cardsSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: cardsSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -153,10 +160,10 @@ class CardSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final cardsSelectionListParameters =
-                        ref.watch(cardsSelectionListParametersProvider);
+                    final cardsSelectionListParameters = ref
+                        .watch(cardsSelectionListParametersProvider(toolName));
                     final cardsSelectionList =
-                        ref.watch(cardsSelectionListStreamProvider);
+                        ref.watch(cardsSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: cardsSelectionList.when(
                         data: (data) =>
@@ -176,8 +183,8 @@ class CardSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specificCardsSelectionCountProvider);
+                    final count = ref
+                        .watch(specificCardsSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

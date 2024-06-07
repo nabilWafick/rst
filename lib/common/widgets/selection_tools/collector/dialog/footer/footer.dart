@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/collector/providers/selection
 import 'package:rst/utils/utils.dart';
 
 class CollectorSelectionDialogFooter extends ConsumerWidget {
-  const CollectorSelectionDialogFooter({super.key});
+  final String toolName;
+  const CollectorSelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +29,8 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count =
-                    ref.watch(specificCollectorsSelectionCountProvider);
+                final count = ref
+                    .watch(specificCollectorsSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
@@ -34,7 +38,8 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final collectorsSelectionListParameters = ref.watch(
-                                collectorsSelectionListParametersProvider);
+                                collectorsSelectionListParametersProvider(
+                                    toolName));
 
                             return collectorsSelectionListParameters['skip'] !=
                                     0
@@ -42,7 +47,8 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              collectorsSelectionListParametersProvider
+                                              collectorsSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -67,7 +73,8 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final collectorsSelectionListParameters = ref.watch(
-                                collectorsSelectionListParametersProvider);
+                                collectorsSelectionListParametersProvider(
+                                    toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -86,7 +93,8 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final collectorsSelectionListParameters = ref.watch(
-                                collectorsSelectionListParametersProvider);
+                                collectorsSelectionListParametersProvider(
+                                    toolName));
 
                             return collectorsSelectionListParameters['skip'] +
                                         15 <
@@ -95,7 +103,8 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              collectorsSelectionListParametersProvider
+                                              collectorsSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -132,10 +141,10 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final collectorsSelectionListParameters =
-                        ref.watch(collectorsSelectionListParametersProvider);
-                    final collectorsSelectionList =
-                        ref.watch(collectorsSelectionListStreamProvider);
+                    final collectorsSelectionListParameters = ref.watch(
+                        collectorsSelectionListParametersProvider(toolName));
+                    final collectorsSelectionList = ref
+                        .watch(collectorsSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: collectorsSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -156,10 +165,10 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final collectorsSelectionListParameters =
-                        ref.watch(collectorsSelectionListParametersProvider);
-                    final collectorsSelectionList =
-                        ref.watch(collectorsSelectionListStreamProvider);
+                    final collectorsSelectionListParameters = ref.watch(
+                        collectorsSelectionListParametersProvider(toolName));
+                    final collectorsSelectionList = ref
+                        .watch(collectorsSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: collectorsSelectionList.when(
                         data: (data) =>
@@ -179,8 +188,8 @@ class CollectorSelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specificCollectorsSelectionCountProvider);
+                    final count = ref.watch(
+                        specificCollectorsSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

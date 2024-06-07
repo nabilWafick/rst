@@ -90,7 +90,9 @@ class _CategorySelectionDialogState
             const SizedBox(
               height: 15.0,
             ),
-            const CategorySelectionDialogFooter(),
+            CategorySelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

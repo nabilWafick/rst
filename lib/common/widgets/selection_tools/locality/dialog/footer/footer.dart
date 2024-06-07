@@ -5,7 +5,11 @@ import 'package:rst/common/widgets/selection_tools/locality/providers/selection.
 import 'package:rst/utils/utils.dart';
 
 class LocalitySelectionDialogFooter extends ConsumerWidget {
-  const LocalitySelectionDialogFooter({super.key});
+  final String toolName;
+  const LocalitySelectionDialogFooter({
+    super.key,
+    required this.toolName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +29,8 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count =
-                    ref.watch(specificlocalitiesSelectionCountProvider);
+                final count = ref
+                    .watch(specificLocaitiesSelectionCountProvider(toolName));
                 return count.when(
                   data: (data) {
                     return Row(
@@ -34,7 +38,8 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final localitiesSelectionListParameters = ref.watch(
-                                localitiesSelectionListParametersProvider);
+                                localitiesSelectionListParametersProvider(
+                                    toolName));
 
                             return localitiesSelectionListParameters['skip'] !=
                                     0
@@ -42,7 +47,8 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              localitiesSelectionListParametersProvider
+                                              localitiesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -67,7 +73,8 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final localitiesSelectionListParameters = ref.watch(
-                                localitiesSelectionListParametersProvider);
+                                localitiesSelectionListParametersProvider(
+                                    toolName));
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -86,7 +93,8 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final localitiesSelectionListParameters = ref.watch(
-                                localitiesSelectionListParametersProvider);
+                                localitiesSelectionListParametersProvider(
+                                    toolName));
 
                             return localitiesSelectionListParameters['skip'] +
                                         15 <
@@ -95,7 +103,8 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
                                     onPressed: () {
                                       ref
                                           .read(
-                                              localitiesSelectionListParametersProvider
+                                              localitiesSelectionListParametersProvider(
+                                                      toolName)
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -132,10 +141,10 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final localitiesSelectionListParameters =
-                        ref.watch(localitiesSelectionListParametersProvider);
-                    final localitiesSelectionList =
-                        ref.watch(localitiesSelectionListStreamProvider);
+                    final localitiesSelectionListParameters = ref.watch(
+                        localitiesSelectionListParametersProvider(toolName));
+                    final localitiesSelectionList = ref
+                        .watch(localitiesSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: localitiesSelectionList.when(
                         data: (data) => data.isNotEmpty
@@ -156,10 +165,10 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final localitiesSelectionListParameters =
-                        ref.watch(localitiesSelectionListParametersProvider);
-                    final localitiesSelectionList =
-                        ref.watch(localitiesSelectionListStreamProvider);
+                    final localitiesSelectionListParameters = ref.watch(
+                        localitiesSelectionListParametersProvider(toolName));
+                    final localitiesSelectionList = ref
+                        .watch(localitiesSelectionListStreamProvider(toolName));
                     return RSTText(
                       text: localitiesSelectionList.when(
                         data: (data) =>
@@ -179,8 +188,8 @@ class LocalitySelectionDialogFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(specificlocalitiesSelectionCountProvider);
+                    final count = ref.watch(
+                        specificLocaitiesSelectionCountProvider(toolName));
 
                     return RSTText(
                       text: count.when(

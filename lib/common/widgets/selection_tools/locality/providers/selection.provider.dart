@@ -9,7 +9,7 @@ final localitySelectionToolProvider =
 
 // used for storing localities filter options
 final localitiesSelectionListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+    StateProvider.family<Map<String, dynamic>, String>((ref, toolName) {
   return {
     'skip': 0,
     'take': 15,
@@ -18,8 +18,9 @@ final localitiesSelectionListParametersProvider =
 
 // used for storing fetched localities
 final localitiesSelectionListStreamProvider =
-    FutureProvider<List<Locality>>((ref) async {
-  final listParameters = ref.watch(localitiesSelectionListParametersProvider);
+    FutureProvider.family<List<Locality>, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(localitiesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await LocalitiesController.getMany(
     listParameters: listParameters,
@@ -31,9 +32,10 @@ final localitiesSelectionListStreamProvider =
 });
 
 // used for storing fetched localities (localities respecting filter options) count
-final specificlocalitiesSelectionCountProvider =
-    FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(localitiesSelectionListParametersProvider);
+final specificLocaitiesSelectionCountProvider =
+    FutureProvider.family<int, String>((ref, toolName) async {
+  final listParameters =
+      ref.watch(localitiesSelectionListParametersProvider(toolName));
 
   final controllerResponse = await LocalitiesController.countSpecific(
     listParameters: listParameters,

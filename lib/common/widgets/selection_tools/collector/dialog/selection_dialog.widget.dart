@@ -92,7 +92,9 @@ class _CollectorSelectionDialogState
             const SizedBox(
               height: 15.0,
             ),
-            const CollectorSelectionDialogFooter(),
+            CollectorSelectionDialogFooter(
+              toolName: widget.toolName,
+            ),
           ],
         ),
       ),

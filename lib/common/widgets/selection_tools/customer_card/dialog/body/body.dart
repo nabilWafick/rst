@@ -25,7 +25,8 @@ class _CardSelectionDialogBodyState
     extends ConsumerState<CardSelectionDialogBody> {
   @override
   Widget build(BuildContext context) {
-    final cardsList = ref.watch(cardsSelectionListStreamProvider);
+    final cardsList =
+        ref.watch(cardsSelectionListStreamProvider(widget.toolName));
 
     return Expanded(
       child: Stack(
@@ -145,7 +146,7 @@ class _CardSelectionDialogBodyState
                     hintText: 'Libellé',
                     field: CardStructure.label,
                     selectionListParametersProvider:
-                        cardsSelectionListParametersProvider,
+                        cardsSelectionListParametersProvider(widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
                   ),
                   RSTSelectionSearchInput(
@@ -153,7 +154,7 @@ class _CardSelectionDialogBodyState
                     hintText: 'Nombre Type',
                     field: CardStructure.typesNumber,
                     selectionListParametersProvider:
-                        cardsSelectionListParametersProvider,
+                        cardsSelectionListParametersProvider(widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.intInput,
                   ),
                 ],
