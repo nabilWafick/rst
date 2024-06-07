@@ -4,25 +4,26 @@ import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
-import 'package:rst/common/widgets/text/text.widget.dart';
-import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
+import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
 import 'package:rst/modules/cash/settlements/functions/crud/crud.function.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
+import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/deletion/deletion.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/toggle%20_validation/toggle_validation.widget.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.dart';
+import 'package:rst/modules/cash/settlements/views/widgets/forms/update/settlement_update.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class SettlementsPageBody extends StatefulHookConsumerWidget {
-  const SettlementsPageBody({super.key});
+class CashOperationsSettlementsCardBody extends StatefulHookConsumerWidget {
+  const CashOperationsSettlementsCardBody({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SettlementsPageBodyState();
+      _CashOperationsSettlementsCardBodyState();
 }
 
-class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
+class _CashOperationsSettlementsCardBodyState
+    extends ConsumerState<CashOperationsSettlementsCardBody> {
   @override
   void initState() {
     super.initState();
@@ -35,11 +36,18 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
-    return Expanded(
-      child: Container(
-        alignment: Alignment.center,
-        child: settlementsList.when(
-          data: (data) => HorizontalDataTable(
+    return settlementsList.when(
+      data: (data) => Expanded(
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(
+              15.0,
+            ),
+            topRight: Radius.circular(
+              15.0,
+            ),
+          ),
+          child: HorizontalDataTable(
             leftHandSideColumnWidth: 100,
             rightHandSideColumnWidth: MediaQuery.of(context).size.width + 632,
             itemCount: data.length,
@@ -342,15 +350,15 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
             scrollPhysics: const BouncingScrollPhysics(),
             horizontalScrollPhysics: const BouncingScrollPhysics(),
           ),
-          error: (error, stackTrace) => RSTText(
-            text: 'ERREUR :) \n ${error.toString()}',
-            fontSize: 25,
-            fontWeight: FontWeight.w500,
-          ),
-          loading: () => const CircularProgressIndicator(
-            strokeWidth: 2.5,
-          ),
         ),
+      ),
+      error: (error, stackTrace) => RSTText(
+        text: 'ERREUR :) \n ${error.toString()}',
+        fontSize: 25,
+        fontWeight: FontWeight.w500,
+      ),
+      loading: () => const CircularProgressIndicator(
+        strokeWidth: 2.5,
       ),
     );
   }

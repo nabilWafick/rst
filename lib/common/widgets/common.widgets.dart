@@ -15,3 +15,4 @@ export 'sort_parameter_tool/sort_parameter_tool.widget.dart';
 export 'sort_parameter/sort_parameter.widget.dart';
 export 'filter_parameter_tool/filter_parameter_tool.widget.dart';
 export './dropdowns/dropdowns.widget.dart';
+export './horizontal_scroller/horizontal_scroller.widget.dart';

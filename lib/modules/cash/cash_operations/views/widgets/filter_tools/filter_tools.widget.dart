@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/rounded_style/rounded_style.dart';
+import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/common/widgets/selection_tools/selection_tools.widget.dart';
+import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
+import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 
 class CashOperationsFilterTools extends StatefulHookConsumerWidget {
   const CashOperationsFilterTools({super.key});
@@ -16,9 +20,12 @@ class _CashOperationsFilterToolsState
     extends ConsumerState<CashOperationsFilterTools> {
   @override
   Widget build(BuildContext context) {
+    final cashOperationsSelectedCustomerCards =
+        ref.watch(cashOperationsSelectedCustomerCardsProvider);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           RSTIconButton(
             icon: Icons.refresh,
@@ -27,17 +34,24 @@ class _CashOperationsFilterToolsState
           ),
           const CustomerSelectionToolCard(
             toolName: 'cash-operation',
-            width: 300.0,
+            width: 280.0,
             roundedStyle: RoundedStyle.full,
             textLimit: 45,
           ),
           const CollectorSelectionToolCard(
             toolName: 'cash-operation',
-            width: 300.0,
+            width: 280.0,
             roundedStyle: RoundedStyle.full,
             textLimit: 45,
           ),
-              ? CBIconButton(
+          const CardSelectionToolCard(
+            toolName: 'cash-operation',
+            width: 280.0,
+            roundedStyle: RoundedStyle.full,
+            textLimit: 45,
+          ),
+          cashOperationsSelectedCustomerCards.isEmpty
+              ? RSTIconButton(
                   icon: Icons.add_circle,
                   text: 'Régler plusieurs cartes',
                   onTap: () {
@@ -66,7 +80,8 @@ class _CashOperationsFilterToolsState
 
                     FunctionsController.showAlertDialog(
                       context: context,
-                      alertDialog: const MultipleSettlementsAddingForm(),
+                      alertDialog:
+                          Container() /* const MultipleSettlementsAddingForm()*/,
                     );
                   },
                 )
@@ -75,7 +90,7 @@ class _CashOperationsFilterToolsState
             width: 220.0,
             child: CheckboxListTile(
               value: true,
-              title: const CBText(
+              title: const RSTText(
                 text: 'Toutes les cartes',
                 fontSize: 12,
               ),
@@ -83,13 +98,12 @@ class _CashOperationsFilterToolsState
               onChanged: (value) {
                 ref
                     .read(
-                      showAllCustomerCardsProvider.notifier,
+                      cashOperationsShowAllCustomerCardsProvider.notifier,
                     )
                     .state = value!;
               },
             ),
           ),
-        
         ],
       ),
     );

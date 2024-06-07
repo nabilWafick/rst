@@ -28,9 +28,9 @@ class CardStructure {
         ),
       ]);
 
-  static Field typeNumber = Field(
+  static Field typesNumber = Field(
     front: 'Nombre Type',
-    back: 'typeNumber',
+    back: 'typesNumber',
     type: int,
     isNullable: false,
     isRelation: false,
@@ -88,7 +88,7 @@ class CardStructure {
   static List<Field> fields = [
     label,
     type,
-    typeNumber,
+    typesNumber,
     customer,
     repaidAt,
     satisfiedAt,

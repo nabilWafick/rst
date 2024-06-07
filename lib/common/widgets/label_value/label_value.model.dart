@@ -6,6 +6,7 @@ import 'package:rst/common/widgets/common.widgets.dart';
 class LabelValue extends ConsumerWidget {
   final String label;
   final String value;
+  final double? width;
   final double? labelSize;
   final double? valueSize;
   final FontWeight? labelFontWeight;
@@ -14,6 +15,7 @@ class LabelValue extends ConsumerWidget {
     super.key,
     required this.label,
     required this.value,
+    this.width,
     this.labelSize,
     this.valueSize,
     this.labelFontWeight,
@@ -22,23 +24,27 @@ class LabelValue extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RSTText(
-          text: '$label: ',
-          fontSize: labelSize ?? 12,
-          fontWeight: labelFontWeight ?? FontWeight.normal,
-        ),
-        Flexible(
-          child: RSTText(
-            text: value,
-            fontSize: valueSize ?? 12,
-            textOverflow: TextOverflow.ellipsis,
-            fontWeight: valueFontWeight ?? FontWeight.w500,
+    return SizedBox(
+      width: width,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RSTText(
+            text: '$label: ',
+            fontSize: labelSize ?? 12,
+            fontWeight: labelFontWeight ?? FontWeight.normal,
           ),
-        ),
-      ],
+          Flexible(
+            child: RSTText(
+              text: value,
+              fontSize: valueSize ?? 12,
+              textOverflow: TextOverflow.ellipsis,
+              fontWeight: valueFontWeight ?? FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

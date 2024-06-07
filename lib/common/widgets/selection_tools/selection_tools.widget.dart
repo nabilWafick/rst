@@ -6,3 +6,4 @@ export './personal_status/card/selection_card.widget.dart';
 export './type/card/selection_card.widget.dart';
 export './customer/card/selection_card.widget.dart';
 export './collector/card/selection_card.widget.dart';
+export './customer_card/card/selection_card.widget.dart';

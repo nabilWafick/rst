@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
-import 'package:rst/modules/home/views/widgets/main/appbar/horizontal_scroller/horizontal_scroller.widget.dart';
+import 'package:rst/common/widgets/horizontal_scroller/horizontal_scroller.widget.dart';
 import 'package:rst/modules/home/views/widgets/sidebar/suboptions/suboption.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 //import 'package:rst/utils/constants/constants.util.dart';
@@ -99,7 +99,7 @@ class _MainAppbarState extends ConsumerState<MainAppbar> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 40,
-            child: AppBarHorizontalScroller(
+            child: HorizontalScroller(
               children: selectedSidebarOption.subOptions
                   .map(
                     (subOption) =>

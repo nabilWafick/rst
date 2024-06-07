@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
+import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 
 // used for storing settlement name (form)
 final settlementNumberProvider = StateProvider<int>(
@@ -21,6 +22,38 @@ final settlementsListParametersProvider =
     'take': 15,
   };
 });
+
+/// **** MULTIPLE SETTLEMENTS PROVIDERS ****
+
+// for managing Types inputs, add,hide inputs, identify inputs
+final multipleSettlementsAddedInputsProvider =
+    StateProvider<Map<int, bool>>((ref) {
+  return {};
+});
+
+// store selected items so as to reduce items for the remain dropdowns
+final multipleSettlementsSelectedTypesProvider =
+    StateProvider<Map<String, Type>>(
+  (ref) {
+    return {};
+  },
+);
+
+final multipleSettlementsSelectedCustomerCardsProvider =
+    StateProvider<Map<String, Card>>(
+  (ref) {
+    return {};
+  },
+);
+
+final multipleSettlementsSettlementNumberProvider =
+    StateProvider.family<int, int>(
+  (ref, settlementIndex) {
+    return 0;
+  },
+);
+
+/// **** MULTIPLE SETTLEMENTS PROVIDERS ****
 
 // used for storing added filter tool
 final settlementsListFilterParametersAddedProvider =

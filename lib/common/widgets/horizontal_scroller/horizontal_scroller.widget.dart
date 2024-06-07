@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class AppBarHorizontalScroller extends StatefulHookConsumerWidget {
+class HorizontalScroller extends StatefulHookConsumerWidget {
   final List<Widget> children;
 
-  const AppBarHorizontalScroller({super.key, required this.children});
+  const HorizontalScroller({super.key, required this.children});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AppBarHorizontalScrollerState();
+      _HorizontalScrollerState();
 }
 
-class _AppBarHorizontalScrollerState
-    extends ConsumerState<AppBarHorizontalScroller> {
+class _HorizontalScrollerState extends ConsumerState<HorizontalScroller> {
   final ScrollController _scrollController = ScrollController();
 
   @override
