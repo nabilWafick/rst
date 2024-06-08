@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
-import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
+import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/providers/card_settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/functions/crud/crud.function.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/deletion/deletion.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/toggle%20_validation/toggle_validation.widget.dart';
@@ -14,16 +14,16 @@ import 'package:rst/modules/cash/settlements/views/widgets/forms/update/settleme
 import 'package:rst/modules/cash/settlements/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CashOperationsSettlementsCardBody extends StatefulHookConsumerWidget {
-  const CashOperationsSettlementsCardBody({super.key});
+class CardSettlementsOverviewBody extends StatefulHookConsumerWidget {
+  const CardSettlementsOverviewBody({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CashOperationsSettlementsCardBodyState();
+      _CardSettlementsOverviewBodyState();
 }
 
-class _CashOperationsSettlementsCardBodyState
-    extends ConsumerState<CashOperationsSettlementsCardBody> {
+class _CardSettlementsOverviewBodyState
+    extends ConsumerState<CardSettlementsOverviewBody> {
   @override
   void initState() {
     super.initState();
@@ -32,8 +32,7 @@ class _CashOperationsSettlementsCardBodyState
 
   @override
   Widget build(BuildContext context) {
-    final settlementsList =
-        ref.watch(cashOperationsSelectedCardSettlementsProvider);
+    final settlementsList = ref.watch(cardSettlementsOverviewProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -53,8 +52,8 @@ class _CashOperationsSettlementsCardBodyState
             rightHandSideColumnWidth: MediaQuery.of(context).size.width + 232,
             itemCount: data.length,
             isFixedHeader: true,
-            leftHandSideColBackgroundColor: RSTColors.backgroundColor,
-            rightHandSideColBackgroundColor: RSTColors.backgroundColor,
+            leftHandSideColBackgroundColor: Colors.transparent,
+            rightHandSideColBackgroundColor: Colors.transparent,
             headerWidgets: [
               Container(
                 width: 200.0,

@@ -79,7 +79,7 @@ Future<void> generateSettlementsExcelFile({
             CellIndex.indexByString("C${i + 2}"),
           )
           .value = TextCellValue(
-        settlements[i].isValidated ? 'Oui' : 'Faux',
+        settlements[i].isValidated ? 'Oui' : 'Non',
       );
 
       sheet

@@ -55,7 +55,9 @@ class _CashOperationsCustomerInfosState
           Wrap(
             runSpacing: 20.0,
             spacing: 20.0,
-            runAlignment: WrapAlignment.center,
+            alignment: WrapAlignment.spaceBetween,
+            runAlignment: WrapAlignment.spaceBetween,
+            // runAlignment: WrapAlignment.center,
             //  alignment: WrapAlignment.center,
             //  crossAxisAlignment: WrapCrossAlignment.center,
             children: [
@@ -70,7 +72,7 @@ class _CashOperationsCustomerInfosState
               LabelValue(
                 label: 'CNI/NPI',
                 value: cashOperationsSelectedCustomer != null
-                    ? cashOperationsSelectedCustomer.nicNumber.toString()
+                    ? cashOperationsSelectedCustomer.nicNumber?.toString() ?? ''
                     : '',
               ),
               LabelValue(

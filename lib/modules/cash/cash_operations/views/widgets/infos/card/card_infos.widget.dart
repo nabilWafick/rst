@@ -7,6 +7,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
+import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/card_settlements.widget.dart';
 import 'package:rst/modules/cash/cash_operations/views/widgets/infos/card/card_box/card_box.widget.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.dart';
@@ -40,6 +41,9 @@ class _CashOperationsCustomerCardInfosState
         ref.watch(cashOperationsSelectedCustomerCardsProvider);
     final cashOperationsShowAllCustomerCards =
         ref.watch(cashOperationsShowAllCustomerCardsProvider);
+
+    final cashOperationsSelectedCardTotalSettlementsNumbers =
+        ref.watch(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -122,70 +126,59 @@ class _CashOperationsCustomerCardInfosState
                       ? cashOperationsSelectedCustomerCard.type.name
                       : '',
                 ),
-                Consumer(
-                  builder: (context, ref, child) =>
-                      cashOperationsSelectedCustomerCard != null
-                          ? const LabelValue(
-                              label: 'Total Règlements',
-                              value: '372',
-                            )
-                          : const LabelValue(
-                              label: 'Total Règlements',
-                              value: '',
-                            ),
+                LabelValue(
+                  label: 'Mise',
+                  value: cashOperationsSelectedCustomerCard != null
+                      ? '${cashOperationsSelectedCustomerCard.type.stake.toInt()}f'
+                      : '',
                 ),
-                cashOperationsSelectedCustomerCard != null
-                    ? Consumer(
-                        builder: (context, ref, child) {
-                          return const LabelValue(
-                            label: 'Règlements Effectués',
-                            value: '1',
-                          );
-                        },
-                      )
-                    : const LabelValue(
-                        label: 'Règlements Effectués',
-                        value: '',
-                      ),
-                cashOperationsSelectedCustomerCard != null
-                    ? Consumer(
-                        builder: (context, ref, child) {
-                          return const LabelValue(
-                            label: 'Montant Payé',
-                            value: '1',
-                          );
-                        },
-                      )
-                    : const LabelValue(
-                        label: 'Montant Payé',
-                        value: '',
-                      ),
-                cashOperationsSelectedCustomerCard != null
-                    ? Consumer(
-                        builder: (context, ref, child) {
-                          return const LabelValue(
-                            label: 'Règlements Restants',
-                            value: '',
-                          );
-                        },
-                      )
-                    : const LabelValue(
-                        label: 'Règlements Restants',
-                        value: '',
-                      ),
-                cashOperationsSelectedCustomerCard != null
-                    ? Consumer(
-                        builder: (context, ref, child) {
-                          return const LabelValue(
-                            label: 'Reste à Payer',
-                            value: '1',
-                          );
-                        },
-                      )
-                    : const LabelValue(
-                        label: 'Reste à Payer',
-                        value: '',
-                      ),
+                LabelValue(
+                  label: 'Total Règlements',
+                  value:
+                      cashOperationsSelectedCustomerCard != null ? '372' : '',
+                ),
+                LabelValue(
+                  label: 'Règlements Effectués',
+                  value: cashOperationsSelectedCustomerCard != null
+                      ? cashOperationsSelectedCardTotalSettlementsNumbers.when(
+                          data: (data) => data.toString(),
+                          error: (error, stackTrace) => '',
+                          loading: () => '',
+                        )
+                      : '',
+                ),
+                LabelValue(
+                  label: 'Montant Payé',
+                  value: cashOperationsSelectedCustomerCard != null
+                      ? cashOperationsSelectedCardTotalSettlementsNumbers.when(
+                          data: (data) =>
+                              '${(cashOperationsSelectedCustomerCard.typesNumber * cashOperationsSelectedCustomerCard.type.stake * data).toInt()}f',
+                          error: (error, stackTrace) => '',
+                          loading: () => '',
+                        )
+                      : '',
+                ),
+                LabelValue(
+                  label: 'Règlements Restants',
+                  value: cashOperationsSelectedCustomerCard != null
+                      ? cashOperationsSelectedCardTotalSettlementsNumbers.when(
+                          data: (data) => (372 - data).toString(),
+                          error: (error, stackTrace) => '',
+                          loading: () => '',
+                        )
+                      : '',
+                ),
+                LabelValue(
+                  label: 'Reste à Payer',
+                  value: cashOperationsSelectedCustomerCard != null
+                      ? cashOperationsSelectedCardTotalSettlementsNumbers.when(
+                          data: (data) =>
+                              '${((372 - data) * cashOperationsSelectedCustomerCard.typesNumber * cashOperationsSelectedCustomerCard.type.stake).toInt()}f',
+                          error: (error, stackTrace) => '',
+                          loading: () => '',
+                        )
+                      : '',
+                ),
               ],
             ),
           ),
@@ -203,7 +196,9 @@ class _CashOperationsCustomerCardInfosState
                         vertical: .0,
                       ),
                       splashRadius: .0,
-                      value: false,
+                      value: cashOperationsSelectedCustomerCard != null
+                          ? cashOperationsSelectedCustomerCard.repaidAt != null
+                          : false,
                       title: const RSTText(
                         text: 'Remboursée',
                         fontSize: 12.0,
@@ -215,15 +210,13 @@ class _CashOperationsCustomerCardInfosState
                   ),
                   LabelValue(
                     label: 'Date de Remboursement',
-                    value: /* customerCardRepaymentDate != null &&
-                                          isRepaid */
-                        cashOperationsSelectedCustomerCard != null &&
-                                cashOperationsSelectedCustomerCard.repaidAt !=
-                                    null
-                            ? format.format(
-                                cashOperationsSelectedCustomerCard.repaidAt!,
-                              )
-                            : '',
+                    value: cashOperationsSelectedCustomerCard != null &&
+                            cashOperationsSelectedCustomerCard.repaidAt != null
+                        ? format.format(
+                            cashOperationsSelectedCustomerCard.repaidAt!,
+                          )
+                        : '',
+                    isColumnFormat: true,
                   ),
                 ],
               ),
@@ -238,7 +231,10 @@ class _CashOperationsCustomerCardInfosState
                         vertical: .0,
                       ),
                       splashRadius: .0,
-                      value: false,
+                      value: cashOperationsSelectedCustomerCard != null
+                          ? cashOperationsSelectedCustomerCard.satisfiedAt !=
+                              null
+                          : false,
                       title: const RSTText(
                         text: 'Satisfaite',
                         fontSize: 12.0,
@@ -250,16 +246,14 @@ class _CashOperationsCustomerCardInfosState
                   ),
                   LabelValue(
                     label: 'Date de Satisfaction',
-                    value: /* customerCardRepaymentDate != null &&
-                                          isRepaid */
-                        cashOperationsSelectedCustomerCard != null &&
-                                cashOperationsSelectedCustomerCard
-                                        .satisfiedAt !=
-                                    null
-                            ? format.format(
-                                cashOperationsSelectedCustomerCard.satisfiedAt!,
-                              )
-                            : '',
+                    value: cashOperationsSelectedCustomerCard != null &&
+                            cashOperationsSelectedCustomerCard.satisfiedAt !=
+                                null
+                        ? format.format(
+                            cashOperationsSelectedCustomerCard.satisfiedAt!,
+                          )
+                        : '',
+                    isColumnFormat: true,
                   ),
                 ],
               ),
@@ -274,7 +268,10 @@ class _CashOperationsCustomerCardInfosState
                         vertical: .0,
                       ),
                       splashRadius: .0,
-                      value: false,
+                      value: cashOperationsSelectedCustomerCard != null
+                          ? cashOperationsSelectedCustomerCard.transferredAt !=
+                              null
+                          : false,
                       title: const RSTText(
                         text: 'Transférée',
                         fontSize: 12.0,
@@ -286,17 +283,14 @@ class _CashOperationsCustomerCardInfosState
                   ),
                   LabelValue(
                     label: 'Date de Transfert',
-                    value: /* customerCardRepaymentDate != null &&
-                                          isRepaid */
-                        cashOperationsSelectedCustomerCard != null &&
-                                cashOperationsSelectedCustomerCard
-                                        .transferredAt !=
-                                    null
-                            ? format.format(
-                                cashOperationsSelectedCustomerCard
-                                    .transferredAt!,
-                              )
-                            : '',
+                    value: cashOperationsSelectedCustomerCard != null &&
+                            cashOperationsSelectedCustomerCard.transferredAt !=
+                                null
+                        ? format.format(
+                            cashOperationsSelectedCustomerCard.transferredAt!,
+                          )
+                        : '',
+                    isColumnFormat: true,
                   ),
                 ],
               ),
@@ -311,11 +305,10 @@ class _CashOperationsCustomerCardInfosState
                 onTap: cashOperationsSelectedCustomer != null &&
                         cashOperationsSelectedCustomerCard != null
                     ? () async {
-                        /*  await FunctionsController.showAlertDialog(
+                        await FunctionsController.showAlertDialog(
                           context: context,
-                          alertDialog:
-                              const CustomerCardSettlementsDetailsPrintingPreview(),
-                        );*/
+                          alertDialog: const CardSettlementsOverview(),
+                        );
                       }
                     : () {},
               ),

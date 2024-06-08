@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
+import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/providers/card_settlements.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CashOperationsSettlementsCardFooter extends ConsumerWidget {
-  const CashOperationsSettlementsCardFooter({super.key});
+class CardSettlementsOverviewFooter extends ConsumerWidget {
+  const CardSettlementsOverviewFooter({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: const BoxDecoration(
-        color: RSTColors.backgroundColor,
+        color: Colors.transparent,
       ),
       width: double.maxFinite,
       height: 50.0,
@@ -32,8 +33,8 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count = ref.watch(
-                        cashOperationsSelectedCardSettlementsCountProvider);
+                    final count =
+                        ref.watch(cardSettlementsOverviewCountProvider);
 
                     return RSTText(
                       text: count.when(
@@ -54,7 +55,7 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
             Consumer(
               builder: (context, ref, child) {
                 final count = ref.watch(
-                    cashOperationsSelectedCardSpecificSettlementsCountProvider);
+                    cardSettlementsOverviewSpecificSettlementsCountProvider);
                 return count.when(
                   data: (data) {
                     return Row(
@@ -62,14 +63,14 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final settlementsListParameters = ref.watch(
-                                cashOperationsSelectedCardSettlementsListParametersProvider);
+                                cardSettlementsOverviewListParametersProvider);
 
                             return settlementsListParameters['skip'] != 0
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              cashOperationsSelectedCardSettlementsListParametersProvider
+                                              cardSettlementsOverviewListParametersProvider
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
@@ -94,7 +95,7 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final settlementsListParameters = ref.watch(
-                                cashOperationsSelectedCardSettlementsListParametersProvider);
+                                cardSettlementsOverviewListParametersProvider);
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
@@ -113,14 +114,14 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
                         Consumer(
                           builder: (context, ref, child) {
                             final settlementsListParameters = ref.watch(
-                                cashOperationsSelectedCardSettlementsListParametersProvider);
+                                cardSettlementsOverviewListParametersProvider);
 
                             return settlementsListParameters['skip'] + 15 < data
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              cashOperationsSelectedCardSettlementsListParametersProvider
+                                              cardSettlementsOverviewListParametersProvider
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
@@ -157,8 +158,8 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final settlementsListParameters = ref.watch(
-                        cashOperationsSelectedCardSettlementsListParametersProvider);
+                    final settlementsListParameters = ref
+                        .watch(cardSettlementsOverviewListParametersProvider);
                     final settlementList = ref
                         .watch(cashOperationsSelectedCardSettlementsProvider);
                     return RSTText(
@@ -181,8 +182,8 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final settlementsListParameters = ref.watch(
-                        cashOperationsSelectedCardSettlementsListParametersProvider);
+                    final settlementsListParameters = ref
+                        .watch(cardSettlementsOverviewListParametersProvider);
                     final settlementList = ref
                         .watch(cashOperationsSelectedCardSettlementsProvider);
                     return RSTText(
@@ -205,7 +206,7 @@ class CashOperationsSettlementsCardFooter extends ConsumerWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final count = ref.watch(
-                        cashOperationsSelectedCardSpecificSettlementsCountProvider);
+                        cardSettlementsOverviewSpecificSettlementsCountProvider);
 
                     return RSTText(
                       text: count.when(

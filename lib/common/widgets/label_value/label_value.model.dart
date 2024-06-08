@@ -6,6 +6,7 @@ import 'package:rst/common/widgets/common.widgets.dart';
 class LabelValue extends ConsumerWidget {
   final String label;
   final String value;
+  final bool? isColumnFormat;
   final double? width;
   final double? labelSize;
   final double? valueSize;
@@ -15,6 +16,7 @@ class LabelValue extends ConsumerWidget {
     super.key,
     required this.label,
     required this.value,
+    this.isColumnFormat,
     this.width,
     this.labelSize,
     this.valueSize,
@@ -26,25 +28,45 @@ class LabelValue extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: width,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          RSTText(
-            text: '$label: ',
-            fontSize: labelSize ?? 12,
-            fontWeight: labelFontWeight ?? FontWeight.normal,
-          ),
-          Flexible(
-            child: RSTText(
-              text: value,
-              fontSize: valueSize ?? 12,
-              textOverflow: TextOverflow.ellipsis,
-              fontWeight: valueFontWeight ?? FontWeight.w500,
+      child: isColumnFormat != null || isColumnFormat != true
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RSTText(
+                  text: '$label: ',
+                  fontSize: labelSize ?? 12,
+                  fontWeight: labelFontWeight ?? FontWeight.normal,
+                ),
+                Flexible(
+                  child: RSTText(
+                    text: value,
+                    fontSize: valueSize ?? 12,
+                    textOverflow: TextOverflow.ellipsis,
+                    fontWeight: valueFontWeight ?? FontWeight.w500,
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RSTText(
+                  text: '$label: ',
+                  fontSize: labelSize ?? 12,
+                  fontWeight: labelFontWeight ?? FontWeight.normal,
+                ),
+                Flexible(
+                  child: RSTText(
+                    text: value,
+                    fontSize: valueSize ?? 12,
+                    textOverflow: TextOverflow.ellipsis,
+                    fontWeight: valueFontWeight ?? FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

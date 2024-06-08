@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/common/widgets/selection_tools/collector/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/customer/dialog/selection_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
@@ -68,6 +69,29 @@ class _CustomerSelectionToolCardState
             ? () async {
                 // invalidate customer selection list parameters
                 ref.invalidate(customersSelectionListParametersProvider);
+
+                // show only customers of the selected collector of cash operations (if his is seleclected)
+                final cashOperationsSelectedCollector = ref
+                    .watch(collectorSelectionToolProvider('cash-operations'));
+
+                if (widget.toolName == 'cash-operations' &&
+                    cashOperationsSelectedCollector != null) {
+                  ref
+                      .read(customersSelectionListParametersProvider(
+                              'cash-operations')
+                          .notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'collectorId': cashOperationsSelectedCollector.id,
+                        },
+                      ]
+                    }
+                  };
+                }
 
                 FunctionsController.showAlertDialog(
                   context: context,

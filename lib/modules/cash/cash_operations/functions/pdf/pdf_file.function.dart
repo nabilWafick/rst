@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -15,12 +15,14 @@ import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
+import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/utils/utils.dart';
 import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
-Future<void> generateSettlementsPdf({
+Future<void> generateCardSettlementsPdf({
   required BuildContext context,
   required WidgetRef ref,
+  required Card card,
   required Map<String, dynamic> listParameters,
   required ValueNotifier<bool> showPrintButton,
 }) async {
@@ -119,15 +121,64 @@ Future<void> generateSettlementsPdf({
             ],
           ),
           pw.SizedBox(
-            height: 25.0,
+            height: 15.0,
           ),
           pw.Text(
-            'LISTE DES REGLEMENTS',
+            'SITUATION CLIENT',
             style: pw.TextStyle(
               font: mediumFont,
               fontSize: 10.0,
               fontWeight: pw.FontWeight.bold,
             ),
+          ),
+          pw.SizedBox(
+            height: 10.0,
+          ),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
+            children: [
+              PdfInfos(
+                label: 'Client',
+                value: '${card.customer.name} ${card.customer.firstnames}',
+              ),
+            ],
+          ),
+          pw.SizedBox(
+            height: 10.0,
+          ),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  PdfInfos(
+                    label: 'Carte',
+                    value: card.label,
+                  ),
+                  pw.SizedBox(height: 3.0),
+                  PdfInfos(
+                    label: 'Type',
+                    value: card.type.name,
+                  )
+                ],
+              ),
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  PdfInfos(
+                    label: 'Nombre Types',
+                    value: card.typesNumber.toString(),
+                  ),
+                  pw.SizedBox(height: 3.0),
+                  PdfInfos(
+                    label: 'Mise',
+                    value: '${card.type.stake.toInt()}f',
+                  )
+                ],
+              ),
+            ],
           ),
         ],
       );
@@ -176,7 +227,7 @@ Future<void> generateSettlementsPdf({
                   horizontal: 5.0,
                 ),
                 child: pw.Text(
-                  'Est Validé',
+                  'Montant',
                   style: pw.TextStyle(
                     font: mediumFont,
                     fontSize: 7,
@@ -190,7 +241,7 @@ Future<void> generateSettlementsPdf({
                   horizontal: 5.0,
                 ),
                 child: pw.Text(
-                  'Client',
+                  'Est Validé',
                   style: pw.TextStyle(
                     font: mediumFont,
                     fontSize: 7,
@@ -277,7 +328,9 @@ Future<void> generateSettlementsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    settlements[i].isValidated ? 'Oui' : 'Non',
+                    (card.typesNumber * settlements[i].number * card.type.stake)
+                        .toInt()
+                        .toString(),
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -290,7 +343,7 @@ Future<void> generateSettlementsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    '${settlements[i].card.customer.name} ${settlements[i].card.customer.firstnames}',
+                    settlements[i].isValidated ? 'Oui' : 'Non',
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,

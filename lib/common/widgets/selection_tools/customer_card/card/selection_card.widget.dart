@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/dialog/selection_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
@@ -64,6 +65,29 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
             ? () async {
                 // invalidate card selection list parameters
                 ref.invalidate(cardsSelectionListParametersProvider);
+
+                // show only cards of the selected customer of cash operations (if his is seleclected)
+                final cashOperationsSelectedCustomer =
+                    ref.watch(customerSelectionToolProvider('cash-operations'));
+
+                if (widget.toolName == 'cash-operations' &&
+                    cashOperationsSelectedCustomer != null) {
+                  ref
+                      .read(cardsSelectionListParametersProvider(
+                              'cash-operations')
+                          .notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'customerId': cashOperationsSelectedCustomer.id,
+                        },
+                      ]
+                    }
+                  };
+                }
 
                 FunctionsController.showAlertDialog(
                   context: context,
@@ -132,8 +156,7 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
               ),
               RSTText(
                 text: FunctionsController.truncateText(
-                  text:
-                      selectedCard != null ? '${selectedCard.label}}' : 'Carte',
+                  text: selectedCard != null ? selectedCard.label : 'Carte',
                   maxLength: widget.textLimit ?? 15,
                 ),
                 fontSize: 10.0,

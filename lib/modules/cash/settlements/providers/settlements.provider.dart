@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/cash/collections/models/collections.model.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
@@ -11,6 +12,10 @@ final settlementNumberProvider = StateProvider<int>(
 );
 
 final settlementCollectionDateProvider = StateProvider<DateTime?>((ref) {
+  return;
+});
+
+final settlementCollectorCollectionProvider = StateProvider<Collection?>((ref) {
   return;
 });
 

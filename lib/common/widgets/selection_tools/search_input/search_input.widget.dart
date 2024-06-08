@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/models/field/field.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
+import 'package:yaru_icons/yaru_icons.dart';
 
 class RSTSelectionSearchInput extends ConsumerStatefulWidget {
   final String hintText;
@@ -69,7 +70,7 @@ class _RSTSelectionSearchInputState
               borderSide: BorderSide.none,
             ),
             prefixIcon: const Icon(
-              Icons.search,
+              YaruIcons.search,
               color: RSTColors.primaryColor,
             ),
             suffixIcon: IconButton(

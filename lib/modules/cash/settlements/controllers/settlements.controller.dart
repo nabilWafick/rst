@@ -101,6 +101,24 @@ class SettlementsController {
     );
   }
 
+  static Future<ControllerResponse> sumOfNumberForCard({
+    required int cardId,
+  }) async {
+    final serviceResponse = await SettlementsServices.sumOfNomberForCard(
+      cardId: cardId,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
   static Future<ControllerResponse> update({
     required int settlementId,
     required Settlement settlement,

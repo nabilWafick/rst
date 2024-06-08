@@ -210,6 +210,44 @@ class SettlementsServices {
     }
   }
 
+  static Future<ServiceResponse> sumOfNomberForCard({
+    required int cardId,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/sum-number/card/$cardId',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
   static Future<ServiceResponse> update({
     required int settlementId,
     required Settlement settlement,

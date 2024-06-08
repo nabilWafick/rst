@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' as material;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
@@ -33,8 +34,9 @@ class CardBox extends ConsumerWidget {
           : RSTColors.primaryColor,
       child: material.InkWell(
         onTap: () async {
-          ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
-              card;
+          ref
+              .read(cardSelectionToolProvider('cash-operations').notifier)
+              .state = card;
         },
         child: Padding(
             padding: const EdgeInsets.symmetric(

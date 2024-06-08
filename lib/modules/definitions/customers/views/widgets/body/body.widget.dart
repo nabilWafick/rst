@@ -256,7 +256,7 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                             ref.invalidate(
                                 customerCardsInputsAddedVisibilityProvider);
 
-                            // fetch all cards of customer cars
+                            // fetch all cards of customer cards
                             List<Card> customerCards = [];
                             try {
                               // get customer cards number
