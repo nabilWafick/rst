@@ -13,7 +13,7 @@ onCashOperationsCustomerChange({
   Customer? previousCustomer,
   Customer? newCustomer,
 }) async {
-  if (newCustomer != null && newCustomer != previousCustomer) {
+  if (newCustomer != null && newCustomer.id != previousCustomer?.id) {
     Future.delayed(
         const Duration(
           milliseconds: 100,
@@ -48,7 +48,7 @@ onCashOperationsCustomerChange({
           'where': {
             'AND': [
               {
-                'collectorId': newCustomer.id,
+                'customerId': newCustomer.id,
               },
             ]
           }

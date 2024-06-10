@@ -25,38 +25,24 @@ final settlementsListParametersProvider =
   return {
     'skip': 0,
     'take': 15,
+    'orderBy': {
+      'id': 'desc',
+    }
   };
 });
 
 /// **** MULTIPLE SETTLEMENTS PROVIDERS ****
 
 // for managing Types inputs, add,hide inputs, identify inputs
-final multipleSettlementsAddedInputsProvider =
-    StateProvider<Map<int, bool>>((ref) {
+final multipleSettlementsAddedInputsVisibilityProvider =
+    StateProvider<Map<String, bool>>((ref) {
   return {};
 });
 
-// store selected items so as to reduce items for the remain dropdowns
-final multipleSettlementsSelectedTypesProvider =
-    StateProvider<Map<String, Type>>(
-  (ref) {
-    return {};
-  },
-);
-
 final multipleSettlementsSelectedCustomerCardsProvider =
-    StateProvider<Map<String, Card>>(
-  (ref) {
-    return {};
-  },
-);
-
-final multipleSettlementsSettlementNumberProvider =
-    StateProvider.family<int, int>(
-  (ref, settlementIndex) {
-    return 0;
-  },
-);
+    StateProvider<Map<String, Card>>((ref) {
+  return {};
+});
 
 /// **** MULTIPLE SETTLEMENTS PROVIDERS ****
 

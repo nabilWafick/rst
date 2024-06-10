@@ -319,6 +319,9 @@ class _CashOperationsCustomerCardInfosState
                   ref.read(settlementNumberProvider.notifier).state = 0;
                   ref.read(settlementCollectionDateProvider.notifier).state =
                       null;
+                  ref
+                      .read(settlementCollectorCollectionProvider.notifier)
+                      .state = null;
                   cashOperationsSelectedCustomerCard != null
                       ? FunctionsController.showAlertDialog(
                           context: context,

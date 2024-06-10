@@ -56,6 +56,59 @@ class SettlementsServices {
     }
   }
 
+  static Future<ServiceResponse> createMultiple({
+    required List<Settlement> settlements,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.post(
+        '$route/multiple/addition',
+        data: {
+          'settlements': settlements
+              .map(
+                (settlement) => settlement.toMap(),
+              )
+              .toList()
+        },
+      );
+
+      return ServiceResponse(
+        statusCode: 201,
+        data: response.data,
+        result: ServiceResult(
+          en: 'Added',
+          fr: 'Ajouté',
+        ),
+        message: ServiceMessage(
+          en: 'The settlements have been added successfully',
+          fr: 'Les règlements ont été ajoutés avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
   static Future<ServiceResponse> getOne({
     required int settlementId,
   }) async {

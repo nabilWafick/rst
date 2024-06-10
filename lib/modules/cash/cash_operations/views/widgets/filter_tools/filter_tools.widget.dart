@@ -11,6 +11,7 @@ import 'package:rst/common/widgets/selection_tools/selection_tools.widget.dart';
 import 'package:rst/modules/cash/cash_operations/functions/listeners/listeners.functions.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
+import 'package:rst/modules/cash/settlements/views/widgets/forms/multiple_addition/multiple_addition.widget.dart';
 
 class CashOperationsFilterTools extends StatefulHookConsumerWidget {
   const CashOperationsFilterTools({super.key});
@@ -92,18 +93,20 @@ class _CashOperationsFilterToolsState
                     // reset collection date provider
                     ref.read(settlementCollectionDateProvider.notifier).state =
                         null;
+
+                    // reset collection amount provider
+                    ref
+                        .read(settlementCollectorCollectionProvider.notifier)
+                        .state = null;
+
                     // reset added inputs provider
                     ref
                         .read(
-                          multipleSettlementsAddedInputsProvider.notifier,
+                          multipleSettlementsAddedInputsVisibilityProvider
+                              .notifier,
                         )
                         .state = {};
-                    // reset selected types provider
-                    ref
-                        .read(
-                          multipleSettlementsSelectedTypesProvider.notifier,
-                        )
-                        .state = {};
+
                     // reset selected customer cards provider
                     ref
                         .read(
@@ -114,8 +117,7 @@ class _CashOperationsFilterToolsState
 
                     FunctionsController.showAlertDialog(
                       context: context,
-                      alertDialog:
-                          Container() /* const MultipleSettlementsAddingForm()*/,
+                      alertDialog: const MultipleSettlementsAdditionForm(),
                     );
                   },
                 )

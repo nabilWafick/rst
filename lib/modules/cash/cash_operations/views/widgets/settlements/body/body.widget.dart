@@ -186,52 +186,56 @@ class _CashOperationsSettlementsCardBodyState
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: !settlement.isValidated
-                              ? Icons.check
-                              : Icons.close,
-                          iconColor: RSTColors.primaryColor,
-                          name:
-                              !settlement.isValidated ? 'Valider' : 'Invalider',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
+                        if (settlement.collection != null) ...[
+                          RSTToolTipOption(
+                            icon: !settlement.isValidated
+                                ? Icons.check
+                                : Icons.close,
+                            iconColor: RSTColors.primaryColor,
+                            name: !settlement.isValidated
+                                ? 'Valider'
+                                : 'Invalider',
+                            onTap: () async {
+                              FunctionsController.showAlertDialog(
+                                  context: context,
+                                  alertDialog:
+                                      SettlementValidationToggleConfirmationDialog(
+                                    settlement: settlement,
+                                    toggle: SettlementsCRUDFunctions
+                                        .toggleValidation,
+                                  ));
+                            },
+                          ),
+                          RSTToolTipOption(
+                            icon: Icons.edit,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Modifier',
+                            onTap: () async {
+                              FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: SettlementUpdateForm(
+                                  settlement: settlement,
+                                ),
+                              );
+                            },
+                          ),
+                          RSTToolTipOption(
+                            icon: Icons.delete,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Supprimer',
+                            onTap: () {
+                              FunctionsController.showAlertDialog(
                                 context: context,
                                 alertDialog:
-                                    SettlementValidationToggleConfirmationDialog(
+                                    SettlementDeletionConfirmationDialog(
                                   settlement: settlement,
-                                  toggle:
-                                      SettlementsCRUDFunctions.toggleValidation,
-                                ));
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: SettlementUpdateForm(
-                                settlement: settlement,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: SettlementDeletionConfirmationDialog(
-                                settlement: settlement,
-                                confirmToDelete:
-                                    SettlementsCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                                  confirmToDelete:
+                                      SettlementsCRUDFunctions.delete,
+                                ),
+                              );
+                            },
+                          ),
+                        ]
                       ],
                     ),
                   ),

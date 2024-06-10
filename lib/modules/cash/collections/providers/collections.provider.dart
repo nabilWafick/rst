@@ -25,6 +25,9 @@ final collectionsListParametersProvider =
     'include': {
       'collector': true,
       'agent': true,
+    },
+    'orderBy': {
+      'id': 'desc',
     }
   };
 });

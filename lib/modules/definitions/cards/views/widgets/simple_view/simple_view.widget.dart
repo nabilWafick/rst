@@ -27,7 +27,7 @@ class CardSimpleView extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const RSTText(
-            text: 'Collecte',
+            text: 'Carte',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
           ),

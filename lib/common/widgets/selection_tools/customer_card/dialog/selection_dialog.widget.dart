@@ -21,7 +21,7 @@ class CardSelectionDialog extends StatefulHookConsumerWidget {
 class _CardSelectionDialogState extends ConsumerState<CardSelectionDialog> {
   @override
   Widget build(BuildContext context) {
-    const dialogWidth = 732.0;
+    const dialogWidth = 900.0;
     const dialogHeight = 500.0;
     final selectedCard = ref.watch(cardSelectionToolProvider(widget.toolName));
     return AlertDialog(

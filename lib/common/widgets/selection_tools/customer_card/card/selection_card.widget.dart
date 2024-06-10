@@ -8,6 +8,7 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/dialog/selection_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
+import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
@@ -66,7 +67,8 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                 // invalidate card selection list parameters
                 ref.invalidate(cardsSelectionListParametersProvider);
 
-                // show only cards of the selected customer of cash operations (if his is seleclected)
+                /// ****  CASH OPERARTIONS CARDS FILTERING **** ///
+                // show only cards of the selected customer of cash operations (if his is selected)
                 final cashOperationsSelectedCustomer =
                     ref.watch(customerSelectionToolProvider('cash-operations'));
 
@@ -89,9 +91,223 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                   };
                 }
 
+                /// ****  CASH OPERARTIONS MULTIPLE SETTLEMENTS CARDS FILTERING **** ///
+                // show only card that are not stored in multipleSettlementSelectedCards and are usable
+                final multipleSettlementsSelectedCustomerCards =
+                    ref.watch(multipleSettlementsSelectedCustomerCardsProvider);
+
+                List<int> selectedCardIds =
+                    multipleSettlementsSelectedCustomerCards.values
+                        .toList()
+                        .map(
+                          (card) => card.id!,
+                        )
+                        .toList();
+
+                if (widget.toolName.contains('multiple-settlement-input-') &&
+                    cashOperationsSelectedCustomer != null) {
+                  ref
+                      .read(cardsSelectionListParametersProvider(
+                        'multiple-settlement-input-${widget.toolName.split('multiple-settlement-input-').last}',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'notIn': selectedCardIds,
+                          },
+                        },
+                        {
+                          'customerId': cashOperationsSelectedCustomer.id,
+                        },
+                        // null is transformed to correct null value in backend
+                        {
+                          'repaidAt': 'null',
+                        },
+                        {
+                          'satisfiedAt': 'null',
+                        },
+                        {
+                          'transferredAt': 'null',
+                        }
+                      ]
+                    }
+                  };
+                }
+
+                /// ****  TRANSFER BETWEEN CUSTOMER CARDS FILTERING **** ///
+                // read the slected customer, issuing and rceiving card
+                final transferBCCCustomer = ref.watch(
+                    customerSelectionToolProvider('transfer-bcc-customer'));
+                final transferBCCIssuingCard = ref.watch(
+                  cardSelectionToolProvider('transfer-bcc-issuing-card'),
+                );
+                final transferBCCReceivingCard = ref.watch(
+                    cardSelectionToolProvider('transfer-bcc-receiving-card'));
+
+                if (transferBCCCustomer != null &&
+                    (widget.toolName == 'transfer-bcc-issuing-card' ||
+                        widget.toolName == 'transfer-bcc-receiving-card')) {
+                  // filter issuing card list
+                  ref
+                      .read(cardsSelectionListParametersProvider(
+                        'transfer-bcc-issuing-card',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'not': transferBCCIssuingCard?.id ?? 0,
+                          },
+                        },
+                        {
+                          'customerId': transferBCCCustomer.id,
+                        },
+                        // null is transformed to correct null value in backend
+                        {
+                          'repaidAt': 'null',
+                        },
+                        {
+                          'satisfiedAt': 'null',
+                        },
+                        {
+                          'transferredAt': 'null',
+                        }
+                      ]
+                    }
+                  };
+
+                  // filter receiving card list
+                  ref
+                      .read(cardsSelectionListParametersProvider(
+                        'transfer-bcc-receiving-card',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'not': transferBCCReceivingCard?.id ?? 0,
+                          },
+                        },
+                        {
+                          'customerId': transferBCCCustomer.id,
+                        },
+                        // null is transformed to correct null value in backend
+                        {
+                          'repaidAt': 'null',
+                        },
+                        {
+                          'satisfiedAt': 'null',
+                        },
+                        {
+                          'transferredAt': 'null',
+                        }
+                      ]
+                    }
+                  };
+                }
+
+                /// ****  TRANSFER BETWEEN CUSTOMERS CARDS FILTERING **** ///
+                // read the slected customer, issuing and rceiving card
+                final transferBCIssuingCustomer = ref.watch(
+                    customerSelectionToolProvider(
+                        'transfer-bc-issuing-customer'));
+
+                final transferBCReceivingCustomer = ref.watch(
+                    customerSelectionToolProvider(
+                        'transfer-bc-receiving-customer'));
+                final transferBCIssuingCard = ref.watch(
+                  cardSelectionToolProvider('transfer-bc-issuing-card'),
+                );
+                final transferBCReceivingCard = ref.watch(
+                    cardSelectionToolProvider('transfer-bc-receiving-card'));
+
+                // filter issuing customer card
+                if (transferBCIssuingCustomer != null &&
+                    (widget.toolName == 'transfer-bc-issuing-card')) {
+                  // filter issuing card list
+                  ref
+                      .read(cardsSelectionListParametersProvider(
+                        'transfer-bc-issuing-card',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'not': transferBCIssuingCard?.id ?? 0,
+                          },
+                        },
+                        {
+                          'customerId': transferBCIssuingCustomer.id,
+                        },
+                        // null is transformed to correct null value in backend
+                        {
+                          'repaidAt': 'null',
+                        },
+                        {
+                          'satisfiedAt': 'null',
+                        },
+                        {
+                          'transferredAt': 'null',
+                        }
+                      ]
+                    }
+                  };
+                }
+
+                // filter receiving customer card
+                if (transferBCReceivingCustomer != null &&
+                    (widget.toolName == 'transfer-bc-receiving-card')) {
+                  // filter receiving card list
+                  ref
+                      .read(cardsSelectionListParametersProvider(
+                        'transfer-bc-receiving-card',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'not': transferBCReceivingCard?.id ?? 0,
+                          },
+                        },
+                        {
+                          'customerId': transferBCReceivingCustomer.id,
+                        },
+                        // null is transformed to correct null value in backend
+                        {
+                          'repaidAt': 'null',
+                        },
+                        {
+                          'satisfiedAt': 'null',
+                        },
+                        {
+                          'transferredAt': 'null',
+                        }
+                      ]
+                    }
+                  };
+                }
+
                 FunctionsController.showAlertDialog(
                   context: context,
-                  alertDialog: CardSelectionDialog(toolName: widget.toolName),
+                  alertDialog: CardSelectionDialog(
+                    toolName: widget.toolName,
+                  ),
                 );
               }
             : null,
@@ -144,7 +360,7 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                   ref.invalidate(cardSelectionToolProvider(widget.toolName));
                 },
                 child: Icon(
-                  material.Icons.supervised_user_circle_outlined,
+                  material.Icons.credit_card,
                   size: 15,
                   color: focusOn.value
                       ? RSTColors.primaryColor

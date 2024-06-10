@@ -9,12 +9,10 @@ import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/textformfield/textformfield.widget.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
-import 'package:rst/modules/cash/collections/controllers/collections.controller.dart';
-import 'package:rst/modules/cash/collections/models/collection/collection.model.dart';
 import 'package:rst/modules/cash/settlements/controllers/forms/forms.controller.dart';
 import 'package:rst/modules/cash/settlements/functions/crud/crud.function.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
-import 'package:rst/modules/definitions/collectors/models/collector/collector.model.dart';
+import 'package:rst/modules/cash/settlements/views/widgets/forms/functions/collector_collection.function.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class SettlementAdditionForm extends StatefulHookConsumerWidget {
@@ -34,67 +32,6 @@ class _SettlementAdditionFormState
 
   final formKey = GlobalKey<FormState>();
 
-  void collectionOfCollectorOf({
-    required Collector collector,
-    required DateTime dateTime,
-  }) {
-    Collection? collectorCollection;
-
-    try {
-      Future.delayed(
-        const Duration(
-          milliseconds: 100,
-        ),
-        () async {
-          final searchDate = DateTime(
-            dateTime.year,
-            dateTime.month,
-            dateTime.day,
-            0,
-            0,
-            0,
-          );
-
-          final collectionsData =
-              await CollectionsController.getMany(listParameters: {
-            'skip': 0,
-            'take': 4,
-            'where': {
-              'AND': [
-                {
-                  'collectorId': collector.id,
-                },
-                {
-                  'collectedAt': {
-                    'gte': FunctionsController.getTimestamptzDateString(
-                      dateTime: searchDate,
-                    ),
-                    'lt': FunctionsController.getTimestamptzDateString(
-                      dateTime: searchDate.add(
-                        const Duration(
-                          hours: 23,
-                          minutes: 59,
-                          seconds: 59,
-                        ),
-                      ),
-                    )
-                  }
-                }
-              ]
-            }
-          });
-
-          final List<Collection> collections =
-              List<Collection>.from(collectionsData.data);
-          ref.read(settlementCollectorCollectionProvider.notifier).state =
-              collections.isNotEmpty ? collections.first : null;
-        },
-      );
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final showValidatedButton = useState<bool>(true);
@@ -102,17 +39,21 @@ class _SettlementAdditionFormState
     final settlementCollectionDate =
         ref.watch(settlementCollectionDateProvider);
 
+    final cashOperationsSelectedCustomerCard =
+        ref.watch(cashOperationsSelectedCustomerCardProvider);
+
     final cashOperationsSelectedCollector =
         ref.watch(cashOperationsSelectedCollectorProvider);
-
     final settlementCollectorCollection =
         ref.watch(settlementCollectorCollectionProvider);
+    final settlementNumber = ref.watch(settlementNumberProvider);
 
     ref.listen(
       settlementCollectionDateProvider,
       (previous, next) {
         if (next != null) {
           collectionOfCollectorOf(
+            ref: ref,
             collector: cashOperationsSelectedCollector!,
             dateTime: next,
           );
@@ -176,6 +117,20 @@ class _SettlementAdditionFormState
               Container(
                 margin: const EdgeInsets.symmetric(
                   horizontal: 10.0,
+                  vertical: 5.0,
+                ),
+                alignment: Alignment.centerRight,
+                width: formCardWidth,
+                child: RSTText(
+                  text:
+                      'Montant: ${(cashOperationsSelectedCustomerCard!.typesNumber * settlementNumber * cashOperationsSelectedCustomerCard.type.stake).toInt()}f',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
                   vertical: 15.0,
                 ),
                 child: Row(
@@ -222,7 +177,7 @@ class _SettlementAdditionFormState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const RSTText(
-                      text: 'Montant Restant',
+                      text: 'Montant Collecte Restant',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w500,
                     ),

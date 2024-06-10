@@ -9,7 +9,8 @@ onCashOperationsCustomerCardChange({
   Card? previousCustomerCard,
   Card? newCustomerCard,
 }) async {
-  if (newCustomerCard != null && newCustomerCard != previousCustomerCard) {
+  if (newCustomerCard != null &&
+      newCustomerCard.id != previousCustomerCard?.id) {
     Future.delayed(
         const Duration(
           milliseconds: 100,

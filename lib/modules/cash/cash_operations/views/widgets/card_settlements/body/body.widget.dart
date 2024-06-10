@@ -5,14 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
-import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
 import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/providers/card_settlements.provider.dart';
-import 'package:rst/modules/cash/settlements/functions/crud/crud.function.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/deletion/deletion.widget.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/toggle%20_validation/toggle_validation.widget.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/forms/update/settlement_update.widget.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/simple_view/simple_view.widget.dart';
-import 'package:rst/utils/colors/colors.util.dart';
 
 class CardSettlementsOverviewBody extends StatefulHookConsumerWidget {
   const CardSettlementsOverviewBody({super.key});
@@ -65,12 +58,6 @@ class _CardSettlementsOverviewBodyState
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
                 ),
-              ),
-              Container(
-                width: 100.0,
-                height: 50.0,
-                alignment: Alignment.center,
-                child: const SizedBox(),
               ),
               Container(
                 width: 300.0,
@@ -166,74 +153,6 @@ class _CardSettlementsOverviewBodyState
               final settlement = data[index];
               return Row(
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    width: 100.0,
-                    height: 30.0,
-                    child: RSTTooltip(
-                      options: [
-                        RSTToolTipOption(
-                          icon: Icons.aspect_ratio,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Vue Simple',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: SettlementSimpleView(
-                                settlement: settlement,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: !settlement.isValidated
-                              ? Icons.check
-                              : Icons.close,
-                          iconColor: RSTColors.primaryColor,
-                          name:
-                              !settlement.isValidated ? 'Valider' : 'Invalider',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog:
-                                    SettlementValidationToggleConfirmationDialog(
-                                  settlement: settlement,
-                                  toggle:
-                                      SettlementsCRUDFunctions.toggleValidation,
-                                ));
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: SettlementUpdateForm(
-                                settlement: settlement,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: SettlementDeletionConfirmationDialog(
-                                settlement: settlement,
-                                confirmToDelete:
-                                    SettlementsCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     width: 300.0,

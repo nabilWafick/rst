@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
+import 'package:rst/common/models/field/field.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/functions/on_changed/on_changed.function.dart';
@@ -23,6 +24,83 @@ class CardSelectionDialogBody extends StatefulHookConsumerWidget {
 
 class _CardSelectionDialogBodyState
     extends ConsumerState<CardSelectionDialogBody> {
+  static void typeNameInput({
+    required WidgetRef ref,
+    required Field field,
+    required String value,
+    required StateProvider<Map<String, dynamic>>
+        selectionListParametersProvider,
+  }) {
+    final parameters = ref.read(selectionListParametersProvider);
+
+    if (parameters.containsKey('where') &&
+        parameters['where'].containsKey('AND')) {
+      ref.read(selectionListParametersProvider.notifier).update((state) {
+        List<Map<String, dynamic>> filters = state['where']['AND'];
+
+        // remove field filter
+        filters.removeWhere(
+          (filter) => filter.entries.first.key == field.back,
+        );
+
+        if (value != '') {
+          Map<String, dynamic> newFieldFilter = {
+            'type': {
+              'name': {
+                'contains': value,
+                'mode': 'insensitive',
+              },
+            }
+          };
+
+          // update state
+          state = {
+            ...state,
+            'where': {
+              'AND': [
+                ...filters,
+                newFieldFilter,
+              ],
+            }
+          };
+        } else {
+          // update state
+          state = {
+            ...state,
+            'where': {
+              'AND': filters,
+            }
+          };
+        }
+
+        return state;
+      });
+    } else {
+      if (value != '') {
+        ref.read(selectionListParametersProvider.notifier).update((state) {
+          // update state
+          state = {
+            ...state,
+            'where': {
+              'AND': [
+                {
+                  'type': {
+                    'name': {
+                      'contains': value,
+                      'mode': 'insensitive',
+                    },
+                  },
+                },
+              ],
+            }
+          };
+
+          return state;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cardsList =
@@ -53,6 +131,10 @@ class _CardSelectionDialogBodyState
                       fontSize: 12.0,
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                  const SizedBox(
+                    width: 400.0,
+                    height: 50.0,
                   ),
                   const SizedBox(
                     width: 400.0,
@@ -95,7 +177,20 @@ class _CardSelectionDialogBodyState
                           child: RSTText(
                             text: FunctionsController.truncateText(
                               text: card.label,
-                              maxLength: 45,
+                              maxLength: 30,
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: 400.0,
+                          height: 30.0,
+                          child: RSTText(
+                            text: FunctionsController.truncateText(
+                              text: card.type.name,
+                              maxLength: 30,
                             ),
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,
@@ -108,7 +203,7 @@ class _CardSelectionDialogBodyState
                           child: RSTText(
                             text: FunctionsController.truncateText(
                               text: card.typesNumber.toString(),
-                              maxLength: 45,
+                              maxLength: 30,
                             ),
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,
@@ -148,6 +243,14 @@ class _CardSelectionDialogBodyState
                     selectionListParametersProvider:
                         cardsSelectionListParametersProvider(widget.toolName),
                     onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                  ),
+                  RSTSelectionSearchInput(
+                    width: 400.0,
+                    hintText: 'Type',
+                    field: CardStructure.type,
+                    selectionListParametersProvider:
+                        cardsSelectionListParametersProvider(widget.toolName),
+                    onChanged: typeNameInput,
                   ),
                   RSTSelectionSearchInput(
                     width: 200.0,

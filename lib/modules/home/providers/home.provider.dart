@@ -107,19 +107,14 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Activités',
         subOptions: [
           SidebarSubOptionModel(
+            index: 14,
+            icon: Icons.analytics_outlined,
+            name: 'Client',
+          ),
+          SidebarSubOptionModel(
             index: 15,
             icon: Icons.analytics_outlined,
-            name: ' Client',
-          ),
-          SidebarSubOptionModel(
-            index: 16,
-            icon: Icons.analytics_outlined,
             name: 'Chargé de Compte',
-          ),
-          SidebarSubOptionModel(
-            index: 17,
-            icon: Icons.analytics_outlined,
-            name: 'Cartes Satisfaites',
           ),
         ],
         showSubOptions: true,
@@ -129,17 +124,17 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Statistiques',
         subOptions: [
           SidebarSubOptionModel(
-            index: 18,
+            index: 16,
             icon: Icons.stacked_line_chart_outlined,
             name: 'Types',
           ),
           SidebarSubOptionModel(
-            index: 19,
+            index: 17,
             icon: Icons.stacked_line_chart_outlined,
             name: 'Produits',
           ),
           SidebarSubOptionModel(
-            index: 20,
+            index: 18,
             icon: Icons.query_stats_outlined,
             name: 'Prévisions',
           ),
@@ -151,17 +146,17 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Transferts',
         subOptions: [
           SidebarSubOptionModel(
-            index: 21,
+            index: 19,
             icon: Icons.swap_vert_outlined,
             name: 'Entre Cartes',
           ),
           SidebarSubOptionModel(
-            index: 22,
+            index: 20,
             icon: Icons.swap_vert_outlined,
             name: 'Entre Comptes',
           ),
           SidebarSubOptionModel(
-            index: 23,
+            index: 21,
             icon: Icons.published_with_changes_outlined,
             name: 'Validations',
           ),
@@ -173,7 +168,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Stocks',
         subOptions: [
           SidebarSubOptionModel(
-            index: 24,
+            index: 22,
             icon: Icons.stacked_bar_chart_outlined,
             name: 'Stocks',
           ),

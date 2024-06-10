@@ -93,6 +93,125 @@ class _CustomerSelectionToolCardState
                   };
                 }
 
+                /// ****  TRANSFER BETWEEN CUSTOMERS CARDS FILTERING **** ///
+
+                final transferBCCCustomer = ref.watch(
+                    customerSelectionToolProvider('transfer-bcc-customer'));
+
+                if (widget.toolName == 'transfer-bcc-customer') {
+                  ref
+                      .read(customersSelectionListParametersProvider(
+                        'transfer-bcc-customer',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'not': transferBCCCustomer?.id ?? 0,
+                          },
+                        },
+                        // show customer  which have at least two cards usable
+
+                        {
+                          'cards': {
+                            'some': {
+                              'repaidAt': 'null',
+                              'satisfiedAt': 'null',
+                              'transferredAt': 'null',
+                            },
+                          },
+                        }
+                      ]
+                    }
+                  };
+                }
+
+                /// ****  TRANSFER BETWEEN CUSTOMERS  FILTERING **** ///
+                // read the slected customers
+                final transferBCIssuingCustomer = ref.watch(
+                    customerSelectionToolProvider(
+                        'transfer-bc-issuing-customer'));
+
+                final transferBCReceivingCustomer = ref.watch(
+                    customerSelectionToolProvider(
+                        'transfer-bc-receiving-customer'));
+
+                final transferBCCustomersIds =
+                    [transferBCIssuingCustomer, transferBCReceivingCustomer]
+                        .where(
+                          (customer) => customer != null,
+                        )
+                        .toList()
+                        .map(
+                          (customer) => customer!.id!,
+                        )
+                        .toList();
+
+                // filter the customers list
+                if (widget.toolName == 'transfer-bc-issuing-customer' ||
+                    widget.toolName == 'transfer-bc-receiving-customer') {
+                  ref
+                      .read(customersSelectionListParametersProvider(
+                        'transfer-bc-issuing-customer',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'notIn': transferBCCustomersIds,
+                          },
+                        },
+                        // show customer  which have at least two cards usable
+
+                        {
+                          'cards': {
+                            'some': {
+                              'repaidAt': 'null',
+                              'satisfiedAt': 'null',
+                              'transferredAt': 'null',
+                            },
+                          },
+                        }
+                      ]
+                    }
+                  };
+
+                  ref
+                      .read(customersSelectionListParametersProvider(
+                        'transfer-bc-issuing-customer',
+                      ).notifier)
+                      .state = {
+                    'skip': 0,
+                    'take': 15,
+                    'where': {
+                      'AND': [
+                        {
+                          'id': {
+                            'notIn': transferBCCustomersIds,
+                          },
+                        },
+                        // show customer  which have at least two cards usable
+
+                        {
+                          'cards': {
+                            'some': {
+                              'repaidAt': 'null',
+                              'satisfiedAt': 'null',
+                              'transferredAt': 'null',
+                            },
+                          },
+                        }
+                      ]
+                    }
+                  };
+                }
+
                 FunctionsController.showAlertDialog(
                   context: context,
                   alertDialog:

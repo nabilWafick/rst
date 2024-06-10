@@ -49,18 +49,17 @@ class Settlement {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'number': number,
       'isValidated': isValidated,
-      'card': card.id,
-      'collection': collection?.id,
-      'agent': agent.id,
+      'cardId': card.id,
+      'collectionId': collection!.id,
+      'agentId': agent.id,
     };
   }
 
   factory Settlement.fromMap(Map<String, dynamic> map) {
     // clear all type products for improving speed and performance (display)
-    map['card']['type']['typeProducts'] = [];
+    map['card']?['type']?['typeProducts'] = [];
 
     return Settlement(
       id: map['id'] != null ? map['id'] as int : null,

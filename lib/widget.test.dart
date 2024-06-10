@@ -50,6 +50,10 @@ class _WidgetTestState extends ConsumerState<WidgetTest> {
               toolName: 'test',
               roundedStyle: RoundedStyle.full,
             ),
+            const CardSelectionToolCard(
+              toolName: 'test',
+              roundedStyle: RoundedStyle.full,
+            ),
             const LocalitySelectionToolCard(
               toolName: 'test',
               roundedStyle: RoundedStyle.full,

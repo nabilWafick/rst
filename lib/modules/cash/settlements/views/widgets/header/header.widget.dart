@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
-import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/dialogs/dialogs.widget.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/forms/addition/settlement_addition.widget.dart';
 
 class SettlementsPageHeader extends StatefulHookConsumerWidget {
   const SettlementsPageHeader({super.key});
@@ -125,15 +123,8 @@ class _SettlementsPageHeaderState extends ConsumerState<SettlementsPageHeader> {
                   );
                 },
               ),
-              RSTAddButton(
-                onTap: () {
-                  ref.read(settlementCollectionDateProvider.notifier).state =
-                      null;
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const SettlementAdditionForm(),
-                  );
-                },
+              const SizedBox(
+                width: 1.0,
               ),
             ],
           ),

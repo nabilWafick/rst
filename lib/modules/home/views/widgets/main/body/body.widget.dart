@@ -14,6 +14,9 @@ import 'package:rst/modules/definitions/personal_status/views/page/personal_stat
 import 'package:rst/modules/definitions/products/views/page/products.page.dart';
 import 'package:rst/modules/definitions/types/views/page/types.page.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
+import 'package:rst/modules/transfers/between_customer_cards/views/page/transfers_bcc.page.dart';
+import 'package:rst/modules/transfers/between_customers/views/page/transfers_bc.page.dart';
+import 'package:rst/modules/transfers/validations/views/page/validations.page.dart';
 import 'package:rst/widget.test.dart';
 
 class MainBody extends ConsumerStatefulWidget {
@@ -39,16 +42,21 @@ class _MainBodyState extends ConsumerState<MainBody> {
     CollectionsPage(),
     CashOperationsPage(),
     SettlementsPage(),
-    /*CustomerPeriodicActivityPage(),
-    CollectorPeriodicActivityPage(),
-    SatisfiedCustomersCardsPage(),
-    CustomersTypesPage(),
-    CustomersProductsPage(),
-    ProductsForecastsPage(),
-    TransfersBetweenCustomerCardsPage(),
-    TransfersBetweenCustomersAccountsPage(),
-    TransfersValidationsPage(),
-    StocksPage(),*/
+    //  CustomerPeriodicActivityPage(),
+    WidgetTest(),
+    //  CollectorPeriodicActivityPage(),
+    WidgetTest(),
+    //  CustomersTypesPage(),
+    WidgetTest(),
+    // CustomersProductsPage(),
+    WidgetTest(),
+    //  ProductsForecastsPage(),
+    WidgetTest(),
+    TransfersBCCPage(),
+    TransfersBCPage(),
+    TransfersValidationPage(),
+    /* StocksPage(),*/
+    WidgetTest(),
     //  EntriesPage(),
     //  FilesPage(),
     //  LogoutPage(),

@@ -49,7 +49,9 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              if (feedbackResponse.error != null) {
+                Navigator.of(context).pop();
+              }
             },
             icon: const Icon(
               Icons.close_rounded,

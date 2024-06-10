@@ -8,10 +8,11 @@ import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/textformfield/textformfield.widget.dart';
-import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
-import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/controllers/forms/forms.controller.dart';
 import 'package:rst/modules/cash/settlements/functions/crud/crud.function.dart';
+import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
+import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
+import 'package:rst/modules/cash/settlements/views/widgets/forms/functions/collector_collection.function.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
@@ -38,6 +39,11 @@ class _SettlementUpdateFormState extends ConsumerState<SettlementUpdateForm> {
       () {
         ref.read(settlementCollectionDateProvider.notifier).state =
             widget.settlement.collection?.collectedAt;
+        collectionOfCollectorOf(
+          ref: ref,
+          collector: widget.settlement.collection!.collector,
+          dateTime: widget.settlement.collection!.collectedAt,
+        );
       },
     );
 
@@ -53,6 +59,9 @@ class _SettlementUpdateFormState extends ConsumerState<SettlementUpdateForm> {
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
+    final settlementNumber = ref.watch(settlementNumberProvider);
+    final settlementCollectorCollection =
+        ref.watch(settlementCollectorCollectionProvider);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
         vertical: 20.0,
@@ -108,6 +117,20 @@ class _SettlementUpdateFormState extends ConsumerState<SettlementUpdateForm> {
               Container(
                 margin: const EdgeInsets.symmetric(
                   horizontal: 10.0,
+                  vertical: 5.0,
+                ),
+                alignment: Alignment.centerRight,
+                width: formCardWidth,
+                child: RSTText(
+                  text:
+                      'Montant: ${(widget.settlement.card.typesNumber * settlementNumber * widget.settlement.card.type.stake).toInt()}f',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
                   vertical: 15.0,
                 ),
                 child: Row(
@@ -117,14 +140,7 @@ class _SettlementUpdateFormState extends ConsumerState<SettlementUpdateForm> {
                     RSTIconButton(
                       icon: Icons.date_range,
                       text: 'Date de Collecte',
-                      onTap: () {
-                        /*   FunctionsController.showDate(
-                          isNullable: true,
-                          context: context,
-                          ref: ref,
-                          stateProvider: settlementDateProvider,
-                        );*/
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(
                       width: 10.0,
@@ -135,6 +151,37 @@ class _SettlementUpdateFormState extends ConsumerState<SettlementUpdateForm> {
                             ? format.format(settlementDate)
                             : '',
                         fontSize: 12.5,
+                        fontWeight: FontWeight.w500,
+                        textOverflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    //   const SizedBox(),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 15.0,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const RSTText(
+                      text: 'Montant Collecte Restant',
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Flexible(
+                      child: RSTText(
+                        text: settlementCollectorCollection != null
+                            ? '${settlementCollectorCollection.rest.toInt()}f'
+                            : '0f',
+                        fontSize: 14.0,
                         fontWeight: FontWeight.w500,
                         textOverflow: TextOverflow.ellipsis,
                       ),

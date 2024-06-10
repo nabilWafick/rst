@@ -11,7 +11,7 @@ onCashOperationsCollectorChange({
   Collector? previousCollector,
   Collector? newCollector,
 }) async {
-  if (newCollector != null && newCollector != previousCollector) {
+  if (newCollector != null && newCollector.id != previousCollector?.id) {
     Future.delayed(
         const Duration(
           milliseconds: 100,

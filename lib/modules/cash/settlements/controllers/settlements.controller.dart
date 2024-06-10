@@ -25,6 +25,28 @@ class SettlementsController {
     );
   }
 
+  static Future<ControllerResponse> createMultiple({
+    required List<Settlement> settlements,
+  }) async {
+    final serviceResponse = await SettlementsServices.createMultiple(
+      settlements: settlements,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (settlementMap) => Settlement.fromMap(
+              settlementMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
   static Future<ControllerResponse> getOne({
     required int settlementId,
   }) async {
