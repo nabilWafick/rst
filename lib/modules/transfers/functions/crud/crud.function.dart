@@ -141,7 +141,7 @@ class TransfersCRUDFunctions {
     );
 
     // launch transfer update
-    final transferAdditionResponse = await TransfersController.update(
+    final transferValidationResponse = await TransfersController.update(
       transferId: transfer.id!,
       transfer: newTransfer,
     );
@@ -149,14 +149,13 @@ class TransfersCRUDFunctions {
     // store response
     ref.read(feedbackDialogResponseProvider.notifier).state =
         FeedbackDialogResponse(
-      result: transferAdditionResponse.result?.fr,
-      error: transferAdditionResponse.error?.fr,
-      message: transferAdditionResponse.message!.fr,
+      result: transferValidationResponse.result?.fr,
+      error: transferValidationResponse.error?.fr,
+      message: transferValidationResponse.message!.fr,
     );
 
     // hide addition form if the the transfer have been added
-    // will be execute in error
-    if (transferAdditionResponse.error == null) {
+    if (transferValidationResponse.error == null) {
       Navigator.of(context).pop();
     }
 
@@ -167,7 +166,7 @@ class TransfersCRUDFunctions {
     );
   }
 
-  static Future<void> discarde({
+  static Future<void> reject({
     required BuildContext context,
     required WidgetRef ref,
     required Transfer transfer,
@@ -180,7 +179,7 @@ class TransfersCRUDFunctions {
     );
 
     // launch transfer update
-    final transferAdditionResponse = await TransfersController.update(
+    final transferRejectionResponse = await TransfersController.update(
       transferId: transfer.id!,
       transfer: newTransfer,
     );
@@ -188,14 +187,13 @@ class TransfersCRUDFunctions {
     // store response
     ref.read(feedbackDialogResponseProvider.notifier).state =
         FeedbackDialogResponse(
-      result: transferAdditionResponse.result?.fr,
-      error: transferAdditionResponse.error?.fr,
-      message: transferAdditionResponse.message!.fr,
+      result: transferRejectionResponse.result?.fr,
+      error: transferRejectionResponse.error?.fr,
+      message: transferRejectionResponse.message!.fr,
     );
 
     // hide addition form if the the transfer have been added
-    // will be execute in error
-    if (transferAdditionResponse.error == null) {
+    if (transferRejectionResponse.error == null) {
       Navigator.of(context).pop();
     }
 

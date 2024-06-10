@@ -7,7 +7,7 @@ import 'package:rst/utils/colors/colors.util.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 
-class TransferDiscardationConfirmationDialog extends HookConsumerWidget {
+class TransferRejectionConfirmationDialog extends HookConsumerWidget {
   final Transfer transfer;
   final Future<void> Function({
     required BuildContext context,
@@ -15,7 +15,7 @@ class TransferDiscardationConfirmationDialog extends HookConsumerWidget {
     required Transfer transfer,
   }) confirmToReject;
 
-  const TransferDiscardationConfirmationDialog({
+  const TransferRejectionConfirmationDialog({
     super.key,
     required this.transfer,
     required this.confirmToReject,

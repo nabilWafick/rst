@@ -10,6 +10,7 @@ import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.d
 import 'package:rst/modules/transfers/functions/crud/crud.function.dart';
 import 'package:rst/modules/transfers/validations/providers/validations.provider.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/forms/actions_confirmations/deletion/deletion.widget.dart';
+import 'package:rst/modules/transfers/validations/views/widgets/forms/actions_confirmations/rejection/rejection.widget.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/validations.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
@@ -246,15 +247,15 @@ class _TransfersValidationPageBodyState
                           RSTToolTipOption(
                             icon: Icons.close,
                             iconColor: RSTColors.primaryColor,
-                            name: 'Annuler',
+                            name: 'Rejeter',
                             onTap: () async {
                               FunctionsController.showAlertDialog(
                                 context: context,
                                 alertDialog:
-                                    TransferValidationConfirmationDialog(
+                                    TransferRejectionConfirmationDialog(
                                   transfer: transfer,
-                                  confirmToValidate:
-                                      TransfersCRUDFunctions.discarde,
+                                  confirmToReject:
+                                      TransfersCRUDFunctions.reject,
                                 ),
                               );
                             },
