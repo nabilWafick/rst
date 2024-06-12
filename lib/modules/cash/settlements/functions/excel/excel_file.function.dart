@@ -47,12 +47,14 @@ Future<void> generateSettlementsExcelFile({
     sheet.cell(CellIndex.indexByString("C1")).value =
         const TextCellValue("Est Validé");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Client");
+        const TextCellValue("Type");
     sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Agent");
+        const TextCellValue("Client");
     sheet.cell(CellIndex.indexByString("F1")).value =
-        const TextCellValue("Insertion");
+        const TextCellValue("Agent");
     sheet.cell(CellIndex.indexByString("G1")).value =
+        const TextCellValue("Insertion");
+    sheet.cell(CellIndex.indexByString("H1")).value =
         const TextCellValue("Dernière Modification");
 
     // cast data to settlement model list
@@ -81,13 +83,12 @@ Future<void> generateSettlementsExcelFile({
           .value = TextCellValue(
         settlements[i].isValidated ? 'Oui' : 'Non',
       );
-
       sheet
           .cell(
             CellIndex.indexByString("D${i + 2}"),
           )
           .value = TextCellValue(
-        '${settlements[i].card.customer.name} ${settlements[i].card.customer.firstnames}',
+        settlements[i].collection != null ? 'Normal' : 'Non',
       );
 
       sheet
@@ -95,18 +96,26 @@ Future<void> generateSettlementsExcelFile({
             CellIndex.indexByString("E${i + 2}"),
           )
           .value = TextCellValue(
-        '${settlements[i].agent.name} ${settlements[i].agent.firstnames}',
+        '${settlements[i].card.customer.name} ${settlements[i].card.customer.firstnames}',
       );
 
       sheet
           .cell(
             CellIndex.indexByString("F${i + 2}"),
           )
-          .value = TextCellValue(format.format(settlements[i].createdAt));
+          .value = TextCellValue(
+        '${settlements[i].agent.name} ${settlements[i].agent.firstnames}',
+      );
 
       sheet
           .cell(
             CellIndex.indexByString("G${i + 2}"),
+          )
+          .value = TextCellValue(format.format(settlements[i].createdAt));
+
+      sheet
+          .cell(
+            CellIndex.indexByString("H${i + 2}"),
           )
           .value = TextCellValue(format.format(settlements[i].updatedAt));
     }

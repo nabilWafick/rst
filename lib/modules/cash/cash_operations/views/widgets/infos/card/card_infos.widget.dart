@@ -6,9 +6,10 @@ import 'package:intl/intl.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
 import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/card_settlements.widget.dart';
-import 'package:rst/modules/cash/cash_operations/views/widgets/infos/card/card_box/card_box.widget.dart';
+import 'package:rst/common/widgets/card_box/card_box.widget.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
@@ -93,6 +94,8 @@ class _CashOperationsCustomerCardInfosState
                           .map(
                             (customerCard) => CardBox(
                               card: customerCard,
+                              selectedCustomerCardProvider:
+                                  cardSelectionToolProvider('cash-operations'),
                             ),
                           )
                           .toList(),
@@ -322,7 +325,12 @@ class _CashOperationsCustomerCardInfosState
                   ref
                       .read(settlementCollectorCollectionProvider.notifier)
                       .state = null;
-                  cashOperationsSelectedCustomerCard != null
+                  cashOperationsSelectedCustomerCard != null &&
+                          cashOperationsSelectedCustomerCard.repaidAt == null &&
+                          cashOperationsSelectedCustomerCard.transferredAt ==
+                              null &&
+                          cashOperationsSelectedCustomerCard.transferredAt ==
+                              null
                       ? FunctionsController.showAlertDialog(
                           context: context,
                           alertDialog: const SettlementAdditionForm(),

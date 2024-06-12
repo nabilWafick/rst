@@ -190,6 +190,20 @@ Future<void> generateSettlementsPdf({
                   horizontal: 5.0,
                 ),
                 child: pw.Text(
+                  'Type',
+                  style: pw.TextStyle(
+                    font: mediumFont,
+                    fontSize: 7,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+              ),
+              pw.Container(
+                margin: const pw.EdgeInsets.symmetric(
+                  vertical: 5.0,
+                  horizontal: 5.0,
+                ),
+                child: pw.Text(
                   'Client',
                   style: pw.TextStyle(
                     font: mediumFont,
@@ -278,6 +292,19 @@ Future<void> generateSettlementsPdf({
                   ),
                   child: pw.Text(
                     settlements[i].isValidated ? 'Oui' : 'Non',
+                    style: pw.TextStyle(
+                      font: regularFont,
+                      fontSize: 7,
+                    ),
+                  ),
+                ),
+                pw.Container(
+                  margin: const pw.EdgeInsets.symmetric(
+                    vertical: 5.0,
+                    horizontal: 5.0,
+                  ),
+                  child: pw.Text(
+                    settlements[i].collection != null ? 'Normal' : 'Transfert',
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:rst/modules/cash/collections/models/collections.model.dart';
 import 'package:rst/modules/definitions/agents/models/agents.model.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
+import 'package:rst/modules/transfers/models/transfer/transfer.model.dart';
 
 class Settlement {
   final int? id;
@@ -11,6 +12,7 @@ class Settlement {
   final bool isValidated;
   final Card card;
   final Collection? collection;
+  final Transfer? transfer;
   final Agent agent;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -20,6 +22,7 @@ class Settlement {
     required this.isValidated,
     required this.card,
     this.collection,
+    this.transfer,
     required this.agent,
     required this.createdAt,
     required this.updatedAt,
@@ -31,6 +34,7 @@ class Settlement {
     bool? isValidated,
     Card? card,
     Collection? collection,
+    Transfer? transfer,
     Agent? agent,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -41,6 +45,7 @@ class Settlement {
       isValidated: isValidated ?? this.isValidated,
       card: card ?? this.card,
       collection: collection ?? this.collection,
+      transfer: transfer ?? this.transfer,
       agent: agent ?? this.agent,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -52,7 +57,8 @@ class Settlement {
       'number': number,
       'isValidated': isValidated,
       'cardId': card.id,
-      'collectionId': collection!.id,
+      'collectionId': collection?.id,
+      'transferId': transfer?.id,
       'agentId': agent.id,
     };
   }
@@ -60,6 +66,10 @@ class Settlement {
   factory Settlement.fromMap(Map<String, dynamic> map) {
     // clear all type products for improving speed and performance (display)
     map['card']?['type']?['typeProducts'] = [];
+    if (map.containsKey('transfer')) {
+      map['transfer']?['issuingCard']?['type']?['typeProducts'] = [];
+      map['transfer']?['receivingCard']?['type']?['typeProducts'] = [];
+    }
 
     return Settlement(
       id: map['id'] != null ? map['id'] as int : null,
@@ -68,6 +78,9 @@ class Settlement {
       card: Card.fromMap(map['card'] as Map<String, dynamic>),
       collection: map['collection'] != null
           ? Collection.fromMap(map['collection'] as Map<String, dynamic>)
+          : null,
+      transfer: map['transfer'] != null
+          ? Transfer.fromMap(map['transfer'] as Map<String, dynamic>)
           : null,
       agent: Agent.fromMap(map['agent'] as Map<String, dynamic>),
       createdAt: DateTime.parse(map['createdAt']),

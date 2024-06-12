@@ -42,7 +42,7 @@ class _CardSettlementsOverviewBodyState
           ),
           child: HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 232,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 432,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: Colors.transparent,
@@ -98,6 +98,17 @@ class _CardSettlementsOverviewBodyState
                 alignment: Alignment.centerLeft,
                 child: const RSTText(
                   text: 'Est Validé',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Container(
+                width: 200.0,
+                height: 50.0,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Type',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
@@ -199,6 +210,18 @@ class _CardSettlementsOverviewBodyState
                     height: 30.0,
                     child: RSTText(
                       text: settlement.isValidated ? 'Oui' : 'Non',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 200.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: settlement.collection != null
+                          ? 'Normal'
+                          : 'Transfert',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),

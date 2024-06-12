@@ -63,13 +63,15 @@ class Type {
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] as String,
       stake: double.tryParse(map['stake']) ?? .0,
-      typeProducts: List<TypeProduct>.from(
-        (map['typeProducts'] as List<dynamic>).map<TypeProduct>(
-          (typeProduct) => TypeProduct.fromMap(
-            typeProduct as Map<String, dynamic>,
-          ),
-        ),
-      ),
+      typeProducts: map['typeProducts'].isNotEmpty
+          ? List<TypeProduct>.from(
+              (map['typeProducts'] as List<dynamic>).map<TypeProduct>(
+                (typeProduct) => TypeProduct.fromMap(
+                  typeProduct as Map<String, dynamic>,
+                ),
+              ),
+            )
+          : [],
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );

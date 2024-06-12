@@ -41,7 +41,7 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
         child: settlementsList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 632,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 832,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
@@ -103,6 +103,17 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
                 alignment: Alignment.centerLeft,
                 child: const RSTText(
                   text: 'Est Validé',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Container(
+                width: 200.0,
+                height: 50.0,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Type',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
@@ -188,7 +199,10 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
                             );
                           },
                         ),
-                        if (settlement.collection != null) ...[
+                        if (settlement.collection != null &&
+                            settlement.card.repaidAt == null &&
+                            settlement.card.transferredAt == null &&
+                            settlement.card.transferredAt == null) ...[
                           RSTToolTipOption(
                             icon: !settlement.isValidated
                                 ? Icons.check
@@ -209,35 +223,41 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
                               );
                             },
                           ),
-                          RSTToolTipOption(
-                            icon: Icons.edit,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Modifier',
-                            onTap: () async {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog: SettlementUpdateForm(
-                                  settlement: settlement,
-                                ),
-                              );
-                            },
-                          ),
-                          RSTToolTipOption(
-                            icon: Icons.delete,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Supprimer',
-                            onTap: () {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog:
-                                    SettlementDeletionConfirmationDialog(
-                                  settlement: settlement,
-                                  confirmToDelete:
-                                      SettlementsCRUDFunctions.delete,
-                                ),
-                              );
-                            },
-                          ),
+                          if (settlement.card.repaidAt == null &&
+                              settlement.card.transferredAt == null &&
+                              settlement.card.transferredAt == null)
+                            RSTToolTipOption(
+                              icon: Icons.edit,
+                              iconColor: RSTColors.primaryColor,
+                              name: 'Modifier',
+                              onTap: () async {
+                                FunctionsController.showAlertDialog(
+                                  context: context,
+                                  alertDialog: SettlementUpdateForm(
+                                    settlement: settlement,
+                                  ),
+                                );
+                              },
+                            ),
+                          if (settlement.card.repaidAt == null &&
+                              settlement.card.transferredAt == null &&
+                              settlement.card.transferredAt == null)
+                            RSTToolTipOption(
+                              icon: Icons.delete,
+                              iconColor: RSTColors.primaryColor,
+                              name: 'Supprimer',
+                              onTap: () {
+                                FunctionsController.showAlertDialog(
+                                  context: context,
+                                  alertDialog:
+                                      SettlementDeletionConfirmationDialog(
+                                    settlement: settlement,
+                                    confirmToDelete:
+                                        SettlementsCRUDFunctions.delete,
+                                  ),
+                                );
+                              },
+                            ),
                         ]
                       ],
                     ),
@@ -288,6 +308,17 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
                     height: 30.0,
                     child: RSTText(
                       text: settlement.isValidated ? 'Oui' : 'Non',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 200.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text:
+                          settlement.collection != null ? 'Normal' : 'Tranfert',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),

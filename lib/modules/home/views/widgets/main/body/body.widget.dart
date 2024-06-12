@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/activities/customer/views/page/customer_activities.page.dart';
 import 'package:rst/modules/cash/cash_operations/views/page/cash_operations.page.dart';
 import 'package:rst/modules/cash/collections/views/page/collections.page.dart';
 import 'package:rst/modules/cash/settlements/views/page/settlements.page.dart';
@@ -14,6 +15,7 @@ import 'package:rst/modules/definitions/personal_status/views/page/personal_stat
 import 'package:rst/modules/definitions/products/views/page/products.page.dart';
 import 'package:rst/modules/definitions/types/views/page/types.page.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
+import 'package:rst/modules/stocks/stocks/views/page/stocks.page.dart';
 import 'package:rst/modules/transfers/between_customer_cards/views/page/transfers_bcc.page.dart';
 import 'package:rst/modules/transfers/between_customers/views/page/transfers_bc.page.dart';
 import 'package:rst/modules/transfers/validations/views/page/validations.page.dart';
@@ -42,8 +44,8 @@ class _MainBodyState extends ConsumerState<MainBody> {
     CollectionsPage(),
     CashOperationsPage(),
     SettlementsPage(),
-    //  CustomerPeriodicActivityPage(),
-    WidgetTest(),
+    CustomerActivitiesPage(),
+
     //  CollectorPeriodicActivityPage(),
     WidgetTest(),
     //  CustomersTypesPage(),
@@ -55,8 +57,8 @@ class _MainBodyState extends ConsumerState<MainBody> {
     TransfersBCCPage(),
     TransfersBCPage(),
     TransfersValidationPage(),
-    /* StocksPage(),*/
-    WidgetTest(),
+    StocksPage(),
+
     //  EntriesPage(),
     //  FilesPage(),
     //  LogoutPage(),

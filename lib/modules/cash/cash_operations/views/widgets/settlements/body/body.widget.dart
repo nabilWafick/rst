@@ -35,6 +35,9 @@ class _CashOperationsSettlementsCardBodyState
     final settlementsList =
         ref.watch(cashOperationsSelectedCardSettlementsProvider);
 
+    final cashOperationsSelectedCustomerCard =
+        ref.watch(cashOperationsSelectedCustomerCardProvider);
+
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return settlementsList.when(
@@ -50,7 +53,7 @@ class _CashOperationsSettlementsCardBodyState
           ),
           child: HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 232,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 432,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
@@ -112,6 +115,17 @@ class _CashOperationsSettlementsCardBodyState
                 alignment: Alignment.centerLeft,
                 child: const RSTText(
                   text: 'Est Validé',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Container(
+                width: 200.0,
+                height: 50.0,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Type',
                   textAlign: TextAlign.center,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w600,
@@ -186,7 +200,14 @@ class _CashOperationsSettlementsCardBodyState
                             );
                           },
                         ),
-                        if (settlement.collection != null) ...[
+                        if (settlement.collection != null &&
+                            cashOperationsSelectedCustomerCard != null &&
+                            cashOperationsSelectedCustomerCard.repaidAt ==
+                                null &&
+                            cashOperationsSelectedCustomerCard.transferredAt ==
+                                null &&
+                            cashOperationsSelectedCustomerCard.transferredAt ==
+                                null) ...[
                           RSTToolTipOption(
                             icon: !settlement.isValidated
                                 ? Icons.check
@@ -197,44 +218,61 @@ class _CashOperationsSettlementsCardBodyState
                                 : 'Invalider',
                             onTap: () async {
                               FunctionsController.showAlertDialog(
-                                  context: context,
-                                  alertDialog:
-                                      SettlementValidationToggleConfirmationDialog(
-                                    settlement: settlement,
-                                    toggle: SettlementsCRUDFunctions
-                                        .toggleValidation,
-                                  ));
-                            },
-                          ),
-                          RSTToolTipOption(
-                            icon: Icons.edit,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Modifier',
-                            onTap: () async {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog: SettlementUpdateForm(
-                                  settlement: settlement,
-                                ),
-                              );
-                            },
-                          ),
-                          RSTToolTipOption(
-                            icon: Icons.delete,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Supprimer',
-                            onTap: () {
-                              FunctionsController.showAlertDialog(
                                 context: context,
                                 alertDialog:
-                                    SettlementDeletionConfirmationDialog(
+                                    SettlementValidationToggleConfirmationDialog(
                                   settlement: settlement,
-                                  confirmToDelete:
-                                      SettlementsCRUDFunctions.delete,
+                                  toggle:
+                                      SettlementsCRUDFunctions.toggleValidation,
                                 ),
                               );
                             },
                           ),
+                          if (cashOperationsSelectedCustomerCard.repaidAt ==
+                                  null &&
+                              cashOperationsSelectedCustomerCard
+                                      .transferredAt ==
+                                  null &&
+                              cashOperationsSelectedCustomerCard
+                                      .transferredAt ==
+                                  null)
+                            RSTToolTipOption(
+                              icon: Icons.edit,
+                              iconColor: RSTColors.primaryColor,
+                              name: 'Modifier',
+                              onTap: () async {
+                                FunctionsController.showAlertDialog(
+                                  context: context,
+                                  alertDialog: SettlementUpdateForm(
+                                    settlement: settlement,
+                                  ),
+                                );
+                              },
+                            ),
+                          if (cashOperationsSelectedCustomerCard.repaidAt ==
+                                  null &&
+                              cashOperationsSelectedCustomerCard
+                                      .transferredAt ==
+                                  null &&
+                              cashOperationsSelectedCustomerCard
+                                      .transferredAt ==
+                                  null)
+                            RSTToolTipOption(
+                              icon: Icons.delete,
+                              iconColor: RSTColors.primaryColor,
+                              name: 'Supprimer',
+                              onTap: () {
+                                FunctionsController.showAlertDialog(
+                                  context: context,
+                                  alertDialog:
+                                      SettlementDeletionConfirmationDialog(
+                                    settlement: settlement,
+                                    confirmToDelete:
+                                        SettlementsCRUDFunctions.delete,
+                                  ),
+                                );
+                              },
+                            ),
                         ]
                       ],
                     ),
@@ -285,6 +323,18 @@ class _CashOperationsSettlementsCardBodyState
                     height: 30.0,
                     child: RSTText(
                       text: settlement.isValidated ? 'Oui' : 'Non',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 200.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: settlement.collection != null
+                          ? 'Normal'
+                          : 'Transfert',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),

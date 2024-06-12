@@ -28,7 +28,7 @@ class LabelValue extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: width,
-      child: isColumnFormat != null || isColumnFormat != true
+      child: isColumnFormat == null || isColumnFormat == false
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
