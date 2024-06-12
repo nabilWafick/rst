@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -15,17 +15,14 @@ import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
-import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/utils/utils.dart';
 import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
-Future<void> generateCardSettlementsPdf({
+Future<void> generateCollectorActivitiesPdf({
   required BuildContext context,
   required WidgetRef ref,
-  required Card card,
   required Map<String, dynamic> listParameters,
   required ValueNotifier<bool> showPrintButton,
-  bool? popAfterPrint,
 }) async {
 // hide Export button
   showPrintButton.value = false;
@@ -122,64 +119,15 @@ Future<void> generateCardSettlementsPdf({
             ],
           ),
           pw.SizedBox(
-            height: 15.0,
+            height: 25.0,
           ),
           pw.Text(
-            'SITUATION CLIENT',
+            'LISTE DES REGLEMENTS',
             style: pw.TextStyle(
               font: mediumFont,
               fontSize: 10.0,
               fontWeight: pw.FontWeight.bold,
             ),
-          ),
-          pw.SizedBox(
-            height: 10.0,
-          ),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.center,
-            children: [
-              PdfInfos(
-                label: 'Client',
-                value: '${card.customer.name} ${card.customer.firstnames}',
-              ),
-            ],
-          ),
-          pw.SizedBox(
-            height: 10.0,
-          ),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  PdfInfos(
-                    label: 'Carte',
-                    value: card.label,
-                  ),
-                  pw.SizedBox(height: 3.0),
-                  PdfInfos(
-                    label: 'Type',
-                    value: card.type.name,
-                  )
-                ],
-              ),
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  PdfInfos(
-                    label: 'Nombre Types',
-                    value: card.typesNumber.toString(),
-                  ),
-                  pw.SizedBox(height: 3.0),
-                  PdfInfos(
-                    label: 'Mise',
-                    value: '${card.type.stake.toInt()}f',
-                  )
-                ],
-              ),
-            ],
           ),
         ],
       );
@@ -200,6 +148,48 @@ Future<void> generateCardSettlementsPdf({
                   horizontal: 5.0,
                 ),
                 child: pw.Text(
+                  'Date Collecte',
+                  style: pw.TextStyle(
+                    font: mediumFont,
+                    fontSize: 7,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+              ),
+              pw.Container(
+                margin: const pw.EdgeInsets.symmetric(
+                  vertical: 5.0,
+                  horizontal: 5.0,
+                ),
+                child: pw.Text(
+                  'Client',
+                  style: pw.TextStyle(
+                    font: mediumFont,
+                    fontSize: 7,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+              ),
+              pw.Container(
+                margin: const pw.EdgeInsets.symmetric(
+                  vertical: 5.0,
+                  horizontal: 5.0,
+                ),
+                child: pw.Text(
+                  'Collecteur',
+                  style: pw.TextStyle(
+                    font: mediumFont,
+                    fontSize: 7,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+              ),
+              pw.Container(
+                margin: const pw.EdgeInsets.symmetric(
+                  vertical: 5.0,
+                  horizontal: 5.0,
+                ),
+                child: pw.Text(
                   'Carte',
                   style: pw.TextStyle(
                     font: mediumFont,
@@ -214,7 +204,7 @@ Future<void> generateCardSettlementsPdf({
                   horizontal: 5.0,
                 ),
                 child: pw.Text(
-                  'Nombre',
+                  'Règlement',
                   style: pw.TextStyle(
                     font: mediumFont,
                     fontSize: 7,
@@ -229,34 +219,6 @@ Future<void> generateCardSettlementsPdf({
                 ),
                 child: pw.Text(
                   'Montant',
-                  style: pw.TextStyle(
-                    font: mediumFont,
-                    fontSize: 7,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
-                ),
-              ),
-              pw.Container(
-                margin: const pw.EdgeInsets.symmetric(
-                  vertical: 5.0,
-                  horizontal: 5.0,
-                ),
-                child: pw.Text(
-                  'Est Validé',
-                  style: pw.TextStyle(
-                    font: mediumFont,
-                    fontSize: 7,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
-                ),
-              ),
-              pw.Container(
-                margin: const pw.EdgeInsets.symmetric(
-                  vertical: 5.0,
-                  horizontal: 5.0,
-                ),
-                child: pw.Text(
-                  'Type',
                   style: pw.TextStyle(
                     font: mediumFont,
                     fontSize: 7,
@@ -317,6 +279,45 @@ Future<void> generateCardSettlementsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
+                    format.format(settlements[i].collection!.collectedAt),
+                    style: pw.TextStyle(
+                      font: regularFont,
+                      fontSize: 7,
+                    ),
+                  ),
+                ),
+                pw.Container(
+                  margin: const pw.EdgeInsets.symmetric(
+                    vertical: 5.0,
+                    horizontal: 5.0,
+                  ),
+                  child: pw.Text(
+                    '${settlements[i].card.customer.name} ${settlements[i].card.customer.firstnames}',
+                    style: pw.TextStyle(
+                      font: regularFont,
+                      fontSize: 7,
+                    ),
+                  ),
+                ),
+                pw.Container(
+                  margin: const pw.EdgeInsets.symmetric(
+                    vertical: 5.0,
+                    horizontal: 5.0,
+                  ),
+                  child: pw.Text(
+                    '${settlements[i].collection!.collector.name} ${settlements[i].collection!.collector.firstnames}',
+                    style: pw.TextStyle(
+                      font: regularFont,
+                      fontSize: 7,
+                    ),
+                  ),
+                ),
+                pw.Container(
+                  margin: const pw.EdgeInsets.symmetric(
+                    vertical: 5.0,
+                    horizontal: 5.0,
+                  ),
+                  child: pw.Text(
                     settlements[i].card.label.toString(),
                     style: pw.TextStyle(
                       font: regularFont,
@@ -330,7 +331,7 @@ Future<void> generateCardSettlementsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    settlements[i].number.toString(),
+                    '${settlements[i].number} * ${settlements[i].card.type.name}',
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -343,35 +344,7 @@ Future<void> generateCardSettlementsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    (card.typesNumber * settlements[i].number * card.type.stake)
-                        .toInt()
-                        .toString(),
-                    style: pw.TextStyle(
-                      font: regularFont,
-                      fontSize: 7,
-                    ),
-                  ),
-                ),
-                pw.Container(
-                  margin: const pw.EdgeInsets.symmetric(
-                    vertical: 5.0,
-                    horizontal: 5.0,
-                  ),
-                  child: pw.Text(
-                    settlements[i].isValidated ? 'Oui' : 'Non',
-                    style: pw.TextStyle(
-                      font: regularFont,
-                      fontSize: 7,
-                    ),
-                  ),
-                ),
-                pw.Container(
-                  margin: const pw.EdgeInsets.symmetric(
-                    vertical: 5.0,
-                    horizontal: 5.0,
-                  ),
-                  child: pw.Text(
-                    settlements[i].collection != null ? 'Normal' : 'Transfert',
+                    '${(settlements[i].card.typesNumber * settlements[i].number * settlements[i].card.type.stake).toInt()}',
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -444,7 +417,7 @@ Future<void> generateCardSettlementsPdf({
 
     // Save and open the PDF
     final output = await getApplicationDocumentsDirectory();
-    final file = File('${output.path}/activites_carte_${card.label}.pdf');
+    final file = File('${output.path}/reglements.pdf');
     await file.writeAsBytes(
       await pdf.save(),
     );
@@ -462,10 +435,8 @@ Future<void> generateCardSettlementsPdf({
     // show Export button
     showPrintButton.value = true;
 
-    if (popAfterPrint == null || popAfterPrint) {
-      // hide dialog
-      Navigator.of(context).pop();
-    }
+    // hide dialog
+    Navigator.of(context).pop();
 
     // show response
     FunctionsController.showAlertDialog(

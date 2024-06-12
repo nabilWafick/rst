@@ -155,7 +155,9 @@ class SettlementsServices {
     try {
       final response = await RSTApiConstants.dio.get(
         route,
-        queryParameters: listParameters,
+        queryParameters: {
+          ...listParameters,
+        },
       );
 
       return ServiceResponse(

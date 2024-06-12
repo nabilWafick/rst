@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/activities/collector/views/page/collector_activities.page.dart';
 import 'package:rst/modules/activities/customer/views/page/customer_activities.page.dart';
 import 'package:rst/modules/cash/cash_operations/views/page/cash_operations.page.dart';
 import 'package:rst/modules/cash/collections/views/page/collections.page.dart';
@@ -45,15 +46,15 @@ class _MainBodyState extends ConsumerState<MainBody> {
     CashOperationsPage(),
     SettlementsPage(),
     CustomerActivitiesPage(),
+    CollectorActivitiesPage(),
 
-    //  CollectorPeriodicActivityPage(),
-    WidgetTest(),
     //  CustomersTypesPage(),
     WidgetTest(),
     // CustomersProductsPage(),
     WidgetTest(),
     //  ProductsForecastsPage(),
     WidgetTest(),
+
     TransfersBCCPage(),
     TransfersBCPage(),
     TransfersValidationPage(),
