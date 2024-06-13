@@ -16,6 +16,7 @@ import 'package:rst/modules/definitions/personal_status/views/page/personal_stat
 import 'package:rst/modules/definitions/products/views/page/products.page.dart';
 import 'package:rst/modules/definitions/types/views/page/types.page.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
+import 'package:rst/modules/statistics/types_stat/views/page/types_stat.page.dart';
 import 'package:rst/modules/stocks/stocks/views/page/stocks.page.dart';
 import 'package:rst/modules/transfers/between_customer_cards/views/page/transfers_bcc.page.dart';
 import 'package:rst/modules/transfers/between_customers/views/page/transfers_bc.page.dart';
@@ -48,8 +49,8 @@ class _MainBodyState extends ConsumerState<MainBody> {
     CustomerActivitiesPage(),
     CollectorActivitiesPage(),
 
-    //  CustomersTypesPage(),
-    WidgetTest(),
+    TypesStatsPage(),
+
     // CustomersProductsPage(),
     WidgetTest(),
     //  ProductsForecastsPage(),

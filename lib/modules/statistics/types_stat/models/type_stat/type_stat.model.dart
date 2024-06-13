@@ -1,40 +1,39 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
 
-import 'package:rst/modules/definitions/types/models/type_product/type_product.model.dart';
+import 'package:rst/modules/statistics/types_stat/models/card_stat/card_stat.model.dart';
 
-class Type {
+class TypeStat {
   final int? id;
   final String name;
   final double stake;
-  final List<TypeProduct> typeProducts;
+  final List<CardStat> cards;
   final DateTime createdAt;
   final DateTime updatedAt;
-
-  Type({
+  TypeStat({
     this.id,
     required this.name,
     required this.stake,
-    required this.typeProducts,
+    required this.cards,
     required this.createdAt,
     required this.updatedAt,
   });
 
-  Type copyWith({
+  TypeStat copyWith({
     int? id,
     String? name,
     double? stake,
-    List<TypeProduct>? typeProducts,
+    List<CardStat>? cards,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
-    return Type(
+    return TypeStat(
       id: id ?? this.id,
       name: name ?? this.name,
       stake: stake ?? this.stake,
-      typeProducts: typeProducts ?? this.typeProducts,
+      cards: cards ?? this.cards,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -45,34 +44,28 @@ class Type {
       'id': id,
       'name': name,
       'stake': stake,
-      'productsIds': typeProducts
+      'cards': cards
           .map(
-            (typeProduct) => typeProduct.product.id,
-          )
-          .toList(),
-      'productsNumbers': typeProducts
-          .map(
-            (typeProduct) => typeProduct.productNumber,
+            (card) => card.toMap(),
           )
           .toList(),
     };
   }
 
-  factory Type.fromMap(Map<String, dynamic> map) {
-    return Type(
+  factory TypeStat.fromMap(Map<String, dynamic> map) {
+    return TypeStat(
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] as String,
-      stake: double.tryParse(map['stake']) ?? .0,
-      typeProducts:
-          map['typeProducts'].isNotEmpty || map['typeProducts'] != null
-              ? List<TypeProduct>.from(
-                  (map['typeProducts'] as List<dynamic>).map<TypeProduct>(
-                    (typeProduct) => TypeProduct.fromMap(
-                      typeProduct as Map<String, dynamic>,
-                    ),
-                  ),
-                )
-              : [],
+      stake: double.tryParse(map['stake']) ?? 0,
+      cards: map['cards'].isNotEmpty
+          ? List<CardStat>.from(
+              (map['cards'] as List<dynamic>).map<CardStat>(
+                (card) => CardStat.fromMap(
+                  card,
+                ),
+              ),
+            )
+          : [],
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );
@@ -80,22 +73,23 @@ class Type {
 
   String toJson() => json.encode(toMap());
 
-  factory Type.fromJson(String source) =>
-      Type.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TypeStat.fromJson(String source) =>
+      TypeStat.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'Type(id: $id, name: $name, stake: $stake, typeProducts: $typeProducts, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'TypeStat(id: $id, name: $name, stake: $stake, cards: $cards, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
-  bool operator ==(covariant Type other) {
+  bool operator ==(covariant TypeStat other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other.id == id &&
         other.name == name &&
         other.stake == stake &&
-        listEquals(other.typeProducts, typeProducts) &&
+        listEquals(other.cards, cards) &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt;
   }
@@ -105,7 +99,7 @@ class Type {
     return id.hashCode ^
         name.hashCode ^
         stake.hashCode ^
-        typeProducts.hashCode ^
+        cards.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode;
   }

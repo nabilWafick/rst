@@ -10,7 +10,6 @@ import 'package:rst/common/widgets/family_textformfield/validator/family_form_fi
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/selection_tools.widget.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
-import 'package:rst/common/widgets/type_box/type_box.widget.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/modules/definitions/types/models/types.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';

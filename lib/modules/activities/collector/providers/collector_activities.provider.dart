@@ -18,18 +18,6 @@ final collectorActivitiesListParametersProvider =
         {
           'isValidated': true,
         },
-        {
-          'card': {
-            'customer': {
-              'collector': {
-                'name': {
-                  "contains": "t",
-                  "mode": "insensitive",
-                }
-              }
-            }
-          }
-        }
       ],
     },
     'orderBy': {

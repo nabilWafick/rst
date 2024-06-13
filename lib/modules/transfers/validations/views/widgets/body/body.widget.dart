@@ -9,7 +9,6 @@ import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
 import 'package:rst/modules/transfers/functions/crud/crud.function.dart';
 import 'package:rst/modules/transfers/validations/providers/validations.provider.dart';
-import 'package:rst/modules/transfers/validations/views/widgets/forms/actions_confirmations/deletion/deletion.widget.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/forms/actions_confirmations/rejection/rejection.widget.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/validations.widget.dart';

@@ -1,6 +1,7 @@
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/definitions/types/models/types.model.dart';
 import 'package:rst/modules/definitions/types/services/types.service.dart';
+import 'package:rst/modules/statistics/types_stat/models/type_stat/type_stat.model.dart';
 
 class TypesController {
   static Future<ControllerResponse> create({
@@ -59,6 +60,28 @@ class TypesController {
       data: serviceResponse.data
           ?.map(
             (typeMap) => Type.fromMap(
+              typeMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getGlobalStats({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await TypesServices.getGlobalStats(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (typeMap) => TypeStat.fromMap(
               typeMap,
             ),
           )
