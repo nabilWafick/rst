@@ -7,6 +7,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/statistics/types_stat/functions/perfom_data/perform_data.function.dart';
 import 'package:rst/modules/statistics/types_stat/providers/types_stat.provider.dart';
 import 'package:rst/modules/statistics/types_stat/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
@@ -144,10 +145,16 @@ class _TypesStatsPageBodyState extends ConsumerState<TypesStatsPageBody> {
                           iconColor: RSTColors.primaryColor,
                           name: 'Vue Simple',
                           onTap: () {
+                            final collectorsCollectors = performTypeStatsData(
+                              typeStake: typeStat.stake,
+                              cardsStat: typeStat.cards,
+                            );
+
                             FunctionsController.showAlertDialog(
                               context: context,
                               alertDialog: TypeStatSimpleView(
-                                typeStat: typeStat,
+                                typeName: typeStat.name,
+                                collectorsStats: collectorsCollectors,
                               ),
                             );
                           },

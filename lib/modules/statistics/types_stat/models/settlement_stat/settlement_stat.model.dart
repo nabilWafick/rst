@@ -4,26 +4,18 @@ import 'dart:convert';
 class SettlementStat {
   final int? id;
   final int number;
-  final DateTime createdAt;
-  final DateTime updatedAt;
   SettlementStat({
     this.id,
     required this.number,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   SettlementStat copyWith({
     int? id,
     int? number,
-    DateTime? createdAt,
-    DateTime? updatedAt,
   }) {
     return SettlementStat(
       id: id ?? this.id,
       number: number ?? this.number,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -38,8 +30,6 @@ class SettlementStat {
     return SettlementStat(
       id: map['id'] != null ? map['id'] as int : null,
       number: map['number'] as int,
-      createdAt: DateTime.parse(map['createdAt']),
-      updatedAt: DateTime.parse(map['updatedAt']),
     );
   }
 
@@ -49,25 +39,15 @@ class SettlementStat {
       SettlementStat.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() {
-    return 'SettlementStat(id: $id, number: $number, createdAt: $createdAt, updatedAt: $updatedAt)';
-  }
+  String toString() => 'SettlementStat(id: $id, number: $number)';
 
   @override
   bool operator ==(covariant SettlementStat other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
-        other.number == number &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+    return other.id == id && other.number == number;
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        number.hashCode ^
-        createdAt.hashCode ^
-        updatedAt.hashCode;
-  }
+  int get hashCode => id.hashCode ^ number.hashCode;
 }

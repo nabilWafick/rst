@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
-import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
 import 'package:rst/modules/definitions/types/views/widgets/dialogs/dialogs.widget.dart';
-import 'package:rst/modules/definitions/types/views/widgets/forms/addition/type_addition.widget.dart';
+import 'package:rst/modules/statistics/types_stat/providers/types_stat.provider.dart';
 
 class TypesStatsPageHeader extends StatefulHookConsumerWidget {
   const TypesStatsPageHeader({super.key});
@@ -35,9 +34,9 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
                 text: 'Rafraichir',
                 onTap: () {
                   // refresh providers counts and the types list
-                  ref.invalidate(typesListStreamProvider);
-                  ref.invalidate(typesCountProvider);
-                  ref.invalidate(specifictypesCountProvider);
+                  ref.invalidate(typesStatsListStreamProvider);
+                  ref.invalidate(typesStatsCountProvider);
+                  ref.invalidate(specificTypesStatsCountProvider);
                 },
               ),
               RSTIconButton(
@@ -113,27 +112,8 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TypeExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  ref
-                      .read(typeProductsInputsAddedVisibilityProvider.notifier)
-                      .state = {};
-                  //  ref.read(typeSelectedProductsProvider.notifier).state = {};
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TypeAdditionForm(),
-                  );
-                },
+              const SizedBox(
+                width: 1.0,
               ),
             ],
           ),
