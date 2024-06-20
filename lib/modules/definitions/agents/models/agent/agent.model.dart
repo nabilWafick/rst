@@ -79,9 +79,12 @@ class Agent {
       email: map['email'] as String,
       address: map['address'] as String,
       profile: map['profile'] != null ? map['profile'] as String : null,
-      permissions:
-          Map<String, dynamic>.from(map['permissions'] as Map<String, dynamic>),
-      views: Map<String, dynamic>.from(map['views'] as Map<String, dynamic>),
+      permissions: Map<String, dynamic>.from(
+        map['permissions'] as Map<String, dynamic>,
+      ),
+      views: Map<String, dynamic>.from(
+        map['views'] as Map<String, dynamic>,
+      ),
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/home/models/sidebar_option/sidebar_option.model.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
@@ -18,7 +19,10 @@ class LogoutSidebarOption extends ConsumerWidget {
     final selectedSidebarOption = ref.watch(selectedSidebarOptionProvider);
     return InkWell(
       onTap: () async {
-        //  await AuthFunctions.logout();
+        await AuthFunctions.disconnect(
+          ref: ref,
+          context: context,
+        );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 12.0),

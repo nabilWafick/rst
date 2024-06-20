@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rst/utils/colors/colors.util.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 
 class RSTLogo extends ConsumerWidget {
   final double fontSize;
-  final Color bankColor;
+  final FontWeight fontWeight;
+  final Color color;
+
   const RSTLogo({
     super.key,
     required this.fontSize,
-    required this.bankColor,
+    required this.fontWeight,
+    required this.color,
   });
 
   @override
@@ -26,26 +28,13 @@ class RSTLogo extends ConsumerWidget {
         );*/
       },
       */
-      child: Wrap(
-        runSpacing: 5.0,
-        spacing: .0,
-        children: [
-          RSTText(
-            text: 'Community',
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-            color: RSTColors.primaryColor,
-          ),
-          const SizedBox(
-            width: 10.0,
-          ),
-          RSTText(
-            text: 'Bank',
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-            color: bankColor,
-          ),
-        ],
+      child: Center(
+        child: RSTText(
+          text: 'R S T',
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+        ),
       ),
     );
   }

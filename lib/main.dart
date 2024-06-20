@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/home/views/page/home.page.dart';
+import 'package:rst/routes/routes.dart';
 import 'package:rst/utils/theme/theme_data.util.dart';
 
 Future<void> main() async {
@@ -31,7 +31,25 @@ class RSTApp extends ConsumerWidget {
       title: 'RST App',
       theme: RSTThemeData.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      initialRoute: RoutesManager.main,
+      onGenerateRoute: RoutesManager.onGenerateRoute,
+      home: const MainPage(),
+    );
+  }
+}
+
+class MainPage extends StatefulHookConsumerWidget {
+  const MainPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MainPageState();
+}
+
+class _MainPageState extends ConsumerState<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: HomePage(),
     );
   }
 }

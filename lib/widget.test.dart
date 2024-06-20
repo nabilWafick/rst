@@ -6,11 +6,7 @@ import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/common/widgets/selection_tools/selection_tools.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
-import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
-import 'package:rst/modules/definitions/cards/models/cards.model.dart';
-import 'package:rst/modules/definitions/cards/services/cards.service.dart';
-import 'package:rst/modules/definitions/types/models/types.model.dart';
-import 'package:rst/modules/definitions/customers/models/customers.model.dart';
+import 'package:rst/modules/auth/services/auth.service.dart';
 
 class WidgetTest extends StatefulHookConsumerWidget {
   const WidgetTest({super.key});
@@ -42,7 +38,7 @@ class _WidgetTestState extends ConsumerState<WidgetTest> {
               fontSize: 12.0,
               fontWeight: FontWeight.w500,
             ),
-            const ProductSelectionToolCard(
+            /*    const ProductSelectionToolCard(
               toolName: 'test',
               roundedStyle: RoundedStyle.full,
             ),
@@ -77,37 +73,15 @@ class _WidgetTestState extends ConsumerState<WidgetTest> {
             const CollectorSelectionToolCard(
               toolName: 'test',
               roundedStyle: RoundedStyle.full,
-            ),
+            ),*/
             RSTIconButton(
               onTap: () async {
                 try {
-                  await CardsServices.create(
-                    card: Card(
-                      label: 'label',
-                      type: Type(
-                        id: 70,
-                        name: 'name',
-                        stake: 10,
-                        typeProducts: [],
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now(),
-                      ),
-                      typesNumber: 1,
-                      customer: Customer(
-                        id: 835,
-                        name: 'name',
-                        firstnames: 'firstnames',
-                        phoneNumber: '',
-                        address: 'address',
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now(),
-                      ),
-                      createdAt: DateTime.now(),
-                      updatedAt: DateTime.now(),
-                    ),
-                  );
+                  await AuthServices.protectedRoute();
                 } catch (e) {
-                  debugPrint(e.toString());
+                  debugPrint(
+                    e.toString(),
+                  );
                 }
               },
               icon: material.Icons.telegram_outlined,

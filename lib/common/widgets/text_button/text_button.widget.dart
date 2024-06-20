@@ -21,9 +21,8 @@ class RSTTextButton extends RSTText {
         text,
         textAlign: textAlign,
         style: TextStyle(
-          fontSize: fontSize,
-          fontFamily: 'Poppins',
-          fontWeight: fontWeight,
+          fontSize: fontSize ?? 12.0,
+          fontWeight: fontWeight ?? FontWeight.w600,
           color: color,
         ),
       ),
