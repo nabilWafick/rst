@@ -4,19 +4,19 @@ import 'dart:convert';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
 import 'package:rst/modules/statistics/types_stat/models/card_data_stat/card_data_stat.model.dart';
 
-class CustomerStat {
+class CustomerStatType {
   final Customer customer;
-  final CardDataStat cardData;
-  CustomerStat({
+  final CardDataStatType cardData;
+  CustomerStatType({
     required this.customer,
     required this.cardData,
   });
 
-  CustomerStat copyWith({
+  CustomerStatType copyWith({
     Customer? customer,
-    CardDataStat? cardData,
+    CardDataStatType? cardData,
   }) {
-    return CustomerStat(
+    return CustomerStatType(
       customer: customer ?? this.customer,
       cardData: cardData ?? this.cardData,
     );
@@ -29,23 +29,25 @@ class CustomerStat {
     };
   }
 
-  factory CustomerStat.fromMap(Map<String, dynamic> map) {
-    return CustomerStat(
+  factory CustomerStatType.fromMap(Map<String, dynamic> map) {
+    return CustomerStatType(
       customer: Customer.fromMap(map['customer'] as Map<String, dynamic>),
-      cardData: CardDataStat.fromMap(map['cardData'] as Map<String, dynamic>),
+      cardData:
+          CardDataStatType.fromMap(map['cardData'] as Map<String, dynamic>),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory CustomerStat.fromJson(String source) =>
-      CustomerStat.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CustomerStatType.fromJson(String source) =>
+      CustomerStatType.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'CustomerStat(customer: $customer, cardData: $cardData)';
+  String toString() =>
+      'CustomerStatType(customer: $customer, cardData: $cardData)';
 
   @override
-  bool operator ==(covariant CustomerStat other) {
+  bool operator ==(covariant CustomerStatType other) {
     if (identical(this, other)) return true;
 
     return other.customer == customer && other.cardData == cardData;

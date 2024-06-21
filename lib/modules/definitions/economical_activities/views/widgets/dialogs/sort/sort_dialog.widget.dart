@@ -74,6 +74,7 @@ class EconomicalActivitySortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: EconomicalActivityStructure.fields,
                                     listParametersProvider:
                                         economicalActivitiesListParametersProvider,
                                   ),

@@ -73,6 +73,7 @@ class PersonalStatusSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: PersonalStatusStructure.fields,
                                     listParametersProvider:
                                         personalStatusListParametersProvider,
                                   ),

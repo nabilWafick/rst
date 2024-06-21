@@ -6,19 +6,19 @@ import 'package:rst/modules/definitions/collectors/models/collector/collector.mo
 
 import 'package:rst/modules/statistics/types_stat/models/customer_stat/customer_stat.model.dart';
 
-class CollectorStat {
+class CollectorStatType {
   final Collector collector;
-  final List<CustomerStat> customersStats;
-  CollectorStat({
+  final List<CustomerStatType> customersStats;
+  CollectorStatType({
     required this.collector,
     required this.customersStats,
   });
 
-  CollectorStat copyWith({
+  CollectorStatType copyWith({
     Collector? collector,
-    List<CustomerStat>? customersStats,
+    List<CustomerStatType>? customersStats,
   }) {
-    return CollectorStat(
+    return CollectorStatType(
       collector: collector ?? this.collector,
       customersStats: customersStats ?? this.customersStats,
     );
@@ -33,12 +33,12 @@ class CollectorStat {
     };
   }
 
-  factory CollectorStat.fromMap(Map<String, dynamic> map) {
-    return CollectorStat(
+  factory CollectorStatType.fromMap(Map<String, dynamic> map) {
+    return CollectorStatType(
       collector: Collector.fromMap(map['collector'] as Map<String, dynamic>),
-      customersStats: List<CustomerStat>.from(
-        (map['customersStats'] as List<int>).map<CustomerStat>(
-          (x) => CustomerStat.fromMap(x as Map<String, dynamic>),
+      customersStats: List<CustomerStatType>.from(
+        (map['customersStats'] as List<int>).map<CustomerStatType>(
+          (x) => CustomerStatType.fromMap(x as Map<String, dynamic>),
         ),
       ),
     );
@@ -46,15 +46,15 @@ class CollectorStat {
 
   String toJson() => json.encode(toMap());
 
-  factory CollectorStat.fromJson(String source) =>
-      CollectorStat.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CollectorStatType.fromJson(String source) =>
+      CollectorStatType.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>
-      'CollectorStat(collector: $collector, customersStats: $customersStats)';
+      'CollectorStatType(collector: $collector, customersStats: $customersStats)';
 
   @override
-  bool operator ==(covariant CollectorStat other) {
+  bool operator ==(covariant CollectorStatType other) {
     if (identical(this, other)) return true;
 
     return other.collector == collector &&

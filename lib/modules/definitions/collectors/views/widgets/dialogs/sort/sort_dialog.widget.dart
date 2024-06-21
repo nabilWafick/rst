@@ -74,6 +74,7 @@ class CollectorSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: CollectorStructure.fields,
                                     listParametersProvider:
                                         collectorsListParametersProvider,
                                   ),

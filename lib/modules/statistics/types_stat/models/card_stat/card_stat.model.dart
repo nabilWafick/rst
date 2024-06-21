@@ -6,7 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
 import 'package:rst/modules/statistics/types_stat/models/settlement_stat/settlement_stat.model.dart';
 
-class CardStat {
+class CardStatType {
   final int? id;
   final String label;
   final int typesNumber;
@@ -14,10 +14,10 @@ class CardStat {
   final DateTime? satisfiedAt;
   final DateTime? repaidAt;
   final DateTime? transferredAt;
-  final List<SettlementStat> settlements;
+  final List<SettlementStatType> settlements;
   final DateTime createdAt;
   final DateTime updatedAt;
-  CardStat({
+  CardStatType({
     this.id,
     required this.label,
     required this.typesNumber,
@@ -30,7 +30,7 @@ class CardStat {
     required this.updatedAt,
   });
 
-  CardStat copyWith({
+  CardStatType copyWith({
     int? id,
     String? label,
     int? typesNumber,
@@ -38,11 +38,11 @@ class CardStat {
     DateTime? satisfiedAt,
     DateTime? repaidAt,
     DateTime? transferredAt,
-    List<SettlementStat>? settlements,
+    List<SettlementStatType>? settlements,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
-    return CardStat(
+    return CardStatType(
       id: id ?? this.id,
       label: label ?? this.label,
       typesNumber: typesNumber ?? this.typesNumber,
@@ -70,8 +70,8 @@ class CardStat {
     };
   }
 
-  factory CardStat.fromMap(Map<String, dynamic> map) {
-    return CardStat(
+  factory CardStatType.fromMap(Map<String, dynamic> map) {
+    return CardStatType(
       id: map['id'] != null ? map['id'] as int : null,
       label: map['label'] as String,
       typesNumber: map['typesNumber'] as int,
@@ -84,9 +84,9 @@ class CardStat {
       transferredAt: map['transferredAt'] != null
           ? DateTime.parse(map['transferredAt'])
           : null,
-      settlements: List<SettlementStat>.from(
-        (map['settlements'] as List<dynamic>).map<SettlementStat>(
-          (settlement) => SettlementStat.fromMap(
+      settlements: List<SettlementStatType>.from(
+        (map['settlements'] as List<dynamic>).map<SettlementStatType>(
+          (settlement) => SettlementStatType.fromMap(
             settlement as Map<String, dynamic>,
           ),
         ),
@@ -98,16 +98,16 @@ class CardStat {
 
   String toJson() => json.encode(toMap());
 
-  factory CardStat.fromJson(String source) =>
-      CardStat.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CardStatType.fromJson(String source) =>
+      CardStatType.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'CardStat(id: $id, label: $label, typesNumber: $typesNumber, customer: $customer, satisfiedAt: $satisfiedAt, repaidAt: $repaidAt, transferredAt: $transferredAt, settlements: $settlements, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CardStatType(id: $id, label: $label, typesNumber: $typesNumber, customer: $customer, satisfiedAt: $satisfiedAt, repaidAt: $repaidAt, transferredAt: $transferredAt, settlements: $settlements, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
-  bool operator ==(covariant CardStat other) {
+  bool operator ==(covariant CardStatType other) {
     if (identical(this, other)) return true;
     final listEquals = const DeepCollectionEquality().equals;
 

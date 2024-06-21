@@ -7,6 +7,7 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/modules/cash/settlements/models/settlements.model.dart';
 import 'package:rst/modules/cash/settlements/models/structure/structure.model.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
+import 'package:rst/modules/definitions/collectors/models/structure/structure.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CollectorActivitiesSortDialog extends HookConsumerWidget {
@@ -74,6 +75,7 @@ class CollectorActivitiesSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: CollectorStructure.fields,
                                     listParametersProvider:
                                         settlementsListParametersProvider,
                                   ),

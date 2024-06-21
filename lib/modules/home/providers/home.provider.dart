@@ -3,6 +3,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/home/models/sidebar_option/sidebar_option.model.dart';
 import 'package:rst/modules/home/models/suboption/suboption.model.dart';
 
+final authEmailProvider = StateProvider<String?>((ref) {
+  return;
+});
+
+final authNameProvider = StateProvider<String?>((ref) {
+  return;
+});
+final authFirstnamesProvider = StateProvider<String?>((ref) {
+  return;
+});
+final authAccesTokenProvider = StateProvider<String?>((ref) {
+  return;
+});
+
 final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
   (ref) {
     return [

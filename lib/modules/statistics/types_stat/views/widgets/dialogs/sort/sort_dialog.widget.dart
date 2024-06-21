@@ -73,6 +73,7 @@ class TypeSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: TypeStructure.fields,
                                     listParametersProvider:
                                         typesListParametersProvider,
                                   ),

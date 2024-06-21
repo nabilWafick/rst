@@ -1,14 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/modules/auth/connection/views/page/connection.page.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/home/views/page/home.page.dart';
 import 'package:rst/routes/routes.dart';
+import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
 import 'package:rst/utils/theme/theme_data.util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+
   runApp(
     const ProviderScope(
       child: RSTApp(),
@@ -47,9 +54,35 @@ class MainPage extends StatefulHookConsumerWidget {
 
 class _MainPageState extends ConsumerState<MainPage> {
   @override
+  void initState() {
+    _loadAuthData();
+    super.initState();
+  }
+
+  Future<void> _loadAuthData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final authEmail = prefs.getString(RSTPreferencesKeys.email);
+    final authName = prefs.getString(RSTPreferencesKeys.name);
+    final authFirstnames = prefs.getString(RSTPreferencesKeys.firstnames);
+    final authAccesToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+    Future.delayed(
+        const Duration(
+          milliseconds: 100,
+        ), () {
+      ref.read(authEmailProvider.notifier).state = authEmail ?? '';
+      ref.read(authNameProvider.notifier).state = authName ?? '';
+      ref.read(authFirstnamesProvider.notifier).state = authFirstnames ?? '';
+      ref.read(authAccesTokenProvider.notifier).state = authAccesToken ?? '';
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: HomePage(),
+    final authEmail = ref.watch(authEmailProvider);
+
+    return Scaffold(
+      body: authEmail != null ? const HomePage() : const ConnectionPage(),
     );
   }
 }

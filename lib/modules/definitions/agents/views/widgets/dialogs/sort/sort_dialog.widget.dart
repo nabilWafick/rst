@@ -73,6 +73,7 @@ class AgentSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: AgentStructure.fields,
                                     listParametersProvider:
                                         agentsListParametersProvider,
                                   ),

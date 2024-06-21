@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
+import 'package:rst/common/models/field/field.model.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class SortParameterTool extends HookConsumerWidget {
   final Map<String, String> sortParameter;
+  final List<Field> fields;
   final StateProvider<Map<String, dynamic>> listParametersProvider;
   const SortParameterTool({
     super.key,
     required this.sortParameter,
+    required this.fields,
     required this.listParametersProvider,
   });
 
@@ -20,7 +23,7 @@ class SortParameterTool extends HookConsumerWidget {
     final showWidget = useState<bool>(true);
 
     // get the field of the sort option
-    final field = ProductStructure.fields.firstWhere(
+    final field = fields.firstWhere(
       (field) {
         return field.back == sortParameter.entries.first.key;
       },

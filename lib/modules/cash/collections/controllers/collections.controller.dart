@@ -83,10 +83,74 @@ class CollectionsController {
     );
   }
 
+  static Future<ControllerResponse> sumAll() async {
+    final serviceResponse = await CollectionsServices.sumAll();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> sumAllRest() async {
+    final serviceResponse = await CollectionsServices.sumAllRest();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
   static Future<ControllerResponse> countSpecific({
     required Map<String, dynamic> listParameters,
   }) async {
     final serviceResponse = await CollectionsServices.countSpecific(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> sumSpecific({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await CollectionsServices.sumSpecific(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> sumSpecificRest({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await CollectionsServices.sumSpecificRest(
       listParameters: listParameters,
     );
 

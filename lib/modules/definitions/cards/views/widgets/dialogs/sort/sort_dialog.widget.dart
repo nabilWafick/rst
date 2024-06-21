@@ -73,6 +73,7 @@ class CardSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: CardStructure.fields,
                                     listParametersProvider:
                                         cardsListParametersProvider,
                                   ),

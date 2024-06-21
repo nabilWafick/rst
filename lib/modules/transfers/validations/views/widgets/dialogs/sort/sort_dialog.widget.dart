@@ -72,6 +72,7 @@ class TransferSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: TransferStructure.fields,
                                     listParametersProvider:
                                         transfersListParametersProvider,
                                   ),

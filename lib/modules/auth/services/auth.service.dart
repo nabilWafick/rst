@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rst/common/models/common.model.dart';
@@ -164,11 +162,11 @@ class AuthServices {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      final auth = prefs.getString(RSTPreferencesKeys.auth);
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
 
-      final headers = {
-        'Authorization': 'Bearer ${jsonDecode(auth ?? '').accessToken}'
-      };
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      debugPrint('headers: $headers');
 
       final response = await Dio(
         BaseOptions(

@@ -74,6 +74,7 @@ class SettlementSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: SettlementStructure.fields,
                                     listParametersProvider:
                                         settlementsListParametersProvider,
                                   ),

@@ -3,20 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/common/widgets/horizontal_scroller/horizontal_scroller.widget.dart';
 import 'package:rst/modules/home/views/widgets/sidebar/suboptions/suboption.widget.dart';
-import 'package:rst/utils/colors/colors.util.dart';
 //import 'package:rst/utils/constants/constants.util.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
-
-final authenticatedAgentNameProvider = FutureProvider<String>((ref) async {
-  //  set user data in shared preferences
-  // final prefs = await SharedPreferences.getInstance();
-  const agentFistnames =
-      'TESTER'; // prefs.getString(RSTConstants.agentFirstnamesPrefKey);
-  const agentName = 'Tester'; // prefs.getString(RSTConstants.agentNamePrefKey);
-
-  return '$agentFistnames $agentName';
-});
+import 'package:rst/utils/utils.dart';
 
 class MainAppbar extends ConsumerStatefulWidget {
   const MainAppbar({super.key});
@@ -30,7 +19,8 @@ class _MainAppbarState extends ConsumerState<MainAppbar> {
 
   @override
   Widget build(BuildContext context) {
-    final authenticatedAgentName = ref.watch(authenticatedAgentNameProvider);
+    final authenticatedAgentName = ref.watch(authNameProvider);
+    final authenticatedAgentFirstnames = ref.watch(authFirstnamesProvider);
     final screenSize = MediaQuery.of(context).size;
     final selectedSidebarOption = ref.watch(selectedSidebarOptionProvider);
 
@@ -61,10 +51,8 @@ class _MainAppbarState extends ConsumerState<MainAppbar> {
                     width: 30.0,
                   ),*/
                   RSTText(
-                    text: authenticatedAgentName.when(
-                        data: (data) => data,
-                        error: (error, stakTrace) => '',
-                        loading: () => ''),
+                    text:
+                        '$authenticatedAgentName $authenticatedAgentFirstnames',
                     fontSize: 12.0,
                     fontWeight: FontWeight.w600,
                   ),

@@ -1,25 +1,25 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class CardDataStat {
+class CardDataStatType {
   final String label;
   final int typesNumber;
   final int totalSettlementNumber;
   final double totalSettlementAmount;
-  CardDataStat({
+  CardDataStatType({
     required this.label,
     required this.typesNumber,
     required this.totalSettlementNumber,
     required this.totalSettlementAmount,
   });
 
-  CardDataStat copyWith({
+  CardDataStatType copyWith({
     String? label,
     int? typesNumber,
     int? totalSettlementNumber,
     double? totalSettlementAmount,
   }) {
-    return CardDataStat(
+    return CardDataStatType(
       label: label ?? this.label,
       typesNumber: typesNumber ?? this.typesNumber,
       totalSettlementNumber:
@@ -38,8 +38,8 @@ class CardDataStat {
     };
   }
 
-  factory CardDataStat.fromMap(Map<String, dynamic> map) {
-    return CardDataStat(
+  factory CardDataStatType.fromMap(Map<String, dynamic> map) {
+    return CardDataStatType(
       label: map['label'] as String,
       typesNumber: map['typesNumber'] as int,
       totalSettlementNumber: map['totalSettlementNumber'] as int,
@@ -49,16 +49,16 @@ class CardDataStat {
 
   String toJson() => json.encode(toMap());
 
-  factory CardDataStat.fromJson(String source) =>
-      CardDataStat.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CardDataStatType.fromJson(String source) =>
+      CardDataStatType.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'CardDataStat(label: $label, typesNumber: $typesNumber, totalSettlementNumber: $totalSettlementNumber, totalSettlementAmount: $totalSettlementAmount)';
+    return 'CardDataStatType(label: $label, typesNumber: $typesNumber, totalSettlementNumber: $totalSettlementNumber, totalSettlementAmount: $totalSettlementAmount)';
   }
 
   @override
-  bool operator ==(covariant CardDataStat other) {
+  bool operator ==(covariant CardDataStatType other) {
     if (identical(this, other)) return true;
 
     return other.label == label &&

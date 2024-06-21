@@ -82,25 +82,46 @@ class Auth {
   }
 
   factory Auth.fromMap(Map<String, dynamic> map) {
-    return Auth(
-      id: map['id']?.toInt() ?? 0,
-      agent: Agent.fromMap(map['agent']),
-      password: map['password'] ?? '',
-      securityQuestions: json.decode(map['securityQuestions'])
+    try {
+      return Auth(
+        id: map['id']?.toInt() ?? 0,
+        agent: Agent.fromMap(map['agent']),
+        password: map['password'] ?? '',
+        securityQuestions: json.decode(map['securityQuestions']),
+        lastLoginAt: map['lastLoginAt'] != null
+            ? DateTime.parse(map['lastLoginAt'])
+            : null,
+        passwordResetedAt: map['passwordResetedAt'] != null
+            ? DateTime.parse(map['passwordResetedAt'])
+            : null,
+        accessToken: map['accessToken'] ?? '',
+        createdAt: DateTime.parse(map['createdAt']),
+        updatedAt: DateTime.parse(map['updatedAt']),
+      );
+    } catch (error) {
+      debugPrint('parsing error: $error');
+    }
 
-      /*  Map<String, dynamic>.from(
-        map['securityQuestions'] as Map<String, dynamic>,
-      )*/
-      ,
-      lastLoginAt: map['lastLoginAt'] != null
-          ? DateTime.parse(map['lastLoginAt'])
-          : null,
-      passwordResetedAt: map['passwordResetedAt'] != null
-          ? DateTime.parse(map['passwordResetedAt'])
-          : null,
-      accessToken: map['accessToken'] ?? '',
-      createdAt: DateTime.parse(map['createdAt']),
-      updatedAt: DateTime.parse(map['updatedAt']),
+    return Auth(
+      id: 0,
+      agent: Agent(
+        name: 'name',
+        firstnames: 'firstnames',
+        phoneNumber: 'phoneNumber',
+        email: 'email',
+        address: 'address',
+        permissions: {},
+        views: {},
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      ),
+      password: '',
+      securityQuestions: {},
+      lastLoginAt: DateTime.now(),
+      passwordResetedAt: null,
+      accessToken: '',
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
   }
 

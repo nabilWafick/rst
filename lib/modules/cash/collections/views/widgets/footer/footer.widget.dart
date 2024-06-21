@@ -21,6 +21,7 @@ class CollectionsPageFooter extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const RSTText(
                   text: 'Total: ',
@@ -39,6 +40,59 @@ class CollectionsPageFooter extends ConsumerWidget {
                           return ' collectes';
                         },
                         loading: () => ' collectes',
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    );
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const RSTText(
+                  text: 'Montant: ',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final collectionsSum = ref.watch(collectionsSumProvider);
+
+                    return RSTText(
+                      text: collectionsSum.when(
+                        data: (data) => '${data}f',
+                        error: (error, stackTrace) {
+                          return 'f';
+                        },
+                        loading: () => 'f',
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    );
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const RSTText(
+                  text: 'Reste: ',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final collectionsRestSum =
+                        ref.watch(collectionsRestSumProvider);
+
+                    return RSTText(
+                      text: collectionsRestSum.when(
+                        data: (data) => '${data}f',
+                        error: (error, stackTrace) {
+                          return 'f';
+                        },
+                        loading: () => 'f',
                       ),
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
@@ -147,6 +201,60 @@ class CollectionsPageFooter extends ConsumerWidget {
                   loading: () => const SizedBox(),
                 );
               },
+            ),
+            Row(
+              children: [
+                const RSTText(
+                  text: 'Montant: ',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final specificCollectionsSum =
+                        ref.watch(specificCollectionsSumProvider);
+
+                    return RSTText(
+                      text: specificCollectionsSum.when(
+                        data: (data) => '${data}f',
+                        error: (error, stackTrace) {
+                          return 'f';
+                        },
+                        loading: () => 'f',
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    );
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const RSTText(
+                  text: 'Reste: ',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final specificCollectionsRestSum =
+                        ref.watch(specificCollectionsRestSumProvider);
+
+                    return RSTText(
+                      text: specificCollectionsRestSum.when(
+                        data: (data) => '${data}f',
+                        error: (error, stackTrace) {
+                          return 'f';
+                        },
+                        loading: () => 'f',
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    );
+                  },
+                ),
+              ],
             ),
             Row(
               children: [

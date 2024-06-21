@@ -9,7 +9,7 @@ class TypeStat {
   final int? id;
   final String name;
   final double stake;
-  final List<CardStat> cards;
+  final List<CardStatType> cards;
   final DateTime createdAt;
   final DateTime updatedAt;
   TypeStat({
@@ -25,7 +25,7 @@ class TypeStat {
     int? id,
     String? name,
     double? stake,
-    List<CardStat>? cards,
+    List<CardStatType>? cards,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -58,9 +58,9 @@ class TypeStat {
       name: map['name'] as String,
       stake: double.tryParse(map['stake']) ?? 0,
       cards: map['cards'].isNotEmpty
-          ? List<CardStat>.from(
-              (map['cards'] as List<dynamic>).map<CardStat>(
-                (card) => CardStat.fromMap(
+          ? List<CardStatType>.from(
+              (map['cards'] as List<dynamic>).map<CardStatType>(
+                (card) => CardStatType.fromMap(
                   card,
                 ),
               ),

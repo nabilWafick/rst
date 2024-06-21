@@ -22,13 +22,11 @@ final collectionsListParametersProvider =
   return {
     'skip': 0,
     'take': 25,
-    'include': {
-      'collector': true,
-      'agent': true,
-    },
-    'orderBy': {
-      'id': 'desc',
-    }
+    'orderBy': [
+      {
+        'id': 'desc',
+      }
+    ]
   };
 });
 
@@ -61,11 +59,51 @@ final collectionsCountProvider = FutureProvider<int>((ref) async {
       : 0;
 });
 
+final collectionsSumProvider = FutureProvider<num>((ref) async {
+  final controllerResponse = await CollectionsController.sumAll();
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
+final collectionsRestSumProvider = FutureProvider<num>((ref) async {
+  final controllerResponse = await CollectionsController.sumAllRest();
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
 // used for storing fetched collections (collections respecting filter options) count
 final specificCollectionsCountProvider = FutureProvider<int>((ref) async {
   final listParameters = ref.watch(collectionsListParametersProvider);
 
   final controllerResponse = await CollectionsController.countSpecific(
+    listParameters: listParameters,
+  );
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
+final specificCollectionsSumProvider = FutureProvider<num>((ref) async {
+  final listParameters = ref.watch(collectionsListParametersProvider);
+
+  final controllerResponse = await CollectionsController.sumSpecific(
+    listParameters: listParameters,
+  );
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
+final specificCollectionsRestSumProvider = FutureProvider<num>((ref) async {
+  final listParameters = ref.watch(collectionsListParametersProvider);
+
+  final controllerResponse = await CollectionsController.sumSpecificRest(
     listParameters: listParameters,
   );
 

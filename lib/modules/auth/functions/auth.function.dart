@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -131,10 +129,28 @@ class AuthFunctions {
 
           final Auth? auth = userConnectionResponse.data[0];
 
-          // store auth
+          // store email
           await prefs.setString(
-            RSTPreferencesKeys.auth,
-            jsonEncode(auth),
+            RSTPreferencesKeys.email,
+            auth?.agent.email ?? '',
+          );
+
+          // store name
+          await prefs.setString(
+            RSTPreferencesKeys.name,
+            auth?.agent.name ?? '',
+          );
+
+          // store firstnames
+          await prefs.setString(
+            RSTPreferencesKeys.firstnames,
+            auth?.agent.firstnames ?? '',
+          );
+
+          // store accesToken
+          await prefs.setString(
+            RSTPreferencesKeys.accesToken,
+            auth?.accessToken ?? '',
           );
 
           // navigate to home page
@@ -162,11 +178,11 @@ class AuthFunctions {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      final auth = prefs.getString(RSTPreferencesKeys.auth) ?? '';
+      final userEmail = prefs.getString(RSTPreferencesKeys.email) ?? '';
 
       // launch agent disconnection
       final userDisconnectionResponse = await AuthController.disconnect(
-        userEmail: jsonDecode(auth).agent.email,
+        userEmail: userEmail,
       );
 
       // store response
@@ -181,8 +197,17 @@ class AuthFunctions {
       if (userDisconnectionResponse.error == null) {
         // remove all user data stored
 
-        // remove auth
-        await prefs.remove(RSTPreferencesKeys.auth);
+        // remove email
+        await prefs.remove(RSTPreferencesKeys.email);
+
+        // remove name
+        await prefs.remove(RSTPreferencesKeys.name);
+
+        // remove firstnames
+        await prefs.remove(RSTPreferencesKeys.firstnames);
+
+        // remove accessToken
+        await prefs.remove(RSTPreferencesKeys.accesToken);
 
         // navigate to connection page
         Navigator.of(context).pushReplacementNamed(

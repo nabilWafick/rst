@@ -74,6 +74,7 @@ class LocalitySortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: LocalityStructure.fields,
                                     listParametersProvider:
                                         localitiesListParametersProvider,
                                   ),

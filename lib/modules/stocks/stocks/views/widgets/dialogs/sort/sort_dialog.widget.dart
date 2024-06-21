@@ -73,6 +73,7 @@ class StockSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
+                                    fields: StockStructure.fields,
                                     listParametersProvider:
                                         stocksListParametersProvider,
                                   ),
