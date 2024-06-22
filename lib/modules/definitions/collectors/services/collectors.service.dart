@@ -135,6 +135,201 @@ class CollectorsServices {
     }
   }
 
+  static Future<ServiceResponse> getGlobalCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/global/collections',
+        queryParameters: listParameters,
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getDayCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/day/collections',
+        queryParameters: listParameters,
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getWeekCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/week/collections',
+        queryParameters: listParameters,
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getMonthCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/month/collections',
+        queryParameters: listParameters,
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getYearCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/year/collections',
+        queryParameters: listParameters,
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
   static Future<ServiceResponse> countAll() async {
     try {
       final response = await RSTApiConstants.dio.get(

@@ -134,18 +134,18 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         showSubOptions: true,
       ),
       SidebarOptionModel(
-        icon: Icons.stacked_line_chart_outlined,
+        icon: Icons.language,
         name: 'Statistiques',
         subOptions: [
           SidebarSubOptionModel(
             index: 16,
-            icon: Icons.stacked_line_chart_outlined,
+            icon: Icons.cases_rounded,
             name: 'Types',
           ),
           SidebarSubOptionModel(
             index: 17,
-            icon: Icons.stacked_line_chart_outlined,
-            name: 'Produits',
+            icon: Icons.money,
+            name: 'Collectes Périodiques',
           ),
           SidebarSubOptionModel(
             index: 18,

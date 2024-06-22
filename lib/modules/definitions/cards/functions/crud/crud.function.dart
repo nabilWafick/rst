@@ -137,7 +137,7 @@ class CardsCRUDFunctions {
         // delay due response dialog
         Future.delayed(
           const Duration(
-            milliseconds: 1500,
+            milliseconds: 1300,
           ),
           () {
             // pop confirmation dialog
@@ -154,6 +154,136 @@ class CardsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
     }
+  }
+
+  static Future<void> updateRepaymentStatus({
+    required BuildContext context,
+    required WidgetRef ref,
+    required Card card,
+    required ValueNotifier<bool> showValidatedButton,
+  }) async {
+    // hide validated button
+    showValidatedButton.value = false;
+
+    final cardRepaymentDate = ref.watch(cardRepaymentDateProvider);
+
+    // instanciate the card
+    Card newCard;
+
+    if (card.repaidAt != null) {
+      newCard = Card(
+        label: card.label,
+        type: card.type,
+        typesNumber: card.typesNumber,
+        customer: card.customer,
+        repaidAt: null,
+        createdAt: card.createdAt,
+        updatedAt: card.updatedAt,
+      );
+    } else {
+      newCard = Card(
+        label: card.label,
+        type: card.type,
+        typesNumber: card.typesNumber,
+        customer: card.customer,
+        repaidAt: cardRepaymentDate,
+        createdAt: card.createdAt,
+        updatedAt: card.updatedAt,
+      );
+    }
+
+    // debugPrint('newCard: $newCard');
+
+    // launch card update
+    final cardUpdateResponse = await CardsController.update(
+      cardId: card.id!,
+      card: newCard,
+    );
+
+    // store response
+    ref.read(feedbackDialogResponseProvider.notifier).state =
+        FeedbackDialogResponse(
+      result: cardUpdateResponse.result?.fr,
+      error: cardUpdateResponse.error?.fr,
+      message: cardUpdateResponse.message!.fr,
+    );
+
+    // show validated button
+    showValidatedButton.value = true;
+
+    // hide update form if the the card have been updated
+    if (cardUpdateResponse.error == null) {
+      // delay due response dialog
+      Future.delayed(
+        const Duration(
+          milliseconds: 1300,
+        ),
+        () {
+          // pop confirmation dialog
+          Navigator.of(context).pop();
+        },
+      );
+    }
+
+    // show response
+    FunctionsController.showAlertDialog(
+      context: context,
+      alertDialog: const FeedbackDialog(),
+    );
+  }
+
+  static Future<void> updateSatisfactionStatus({
+    required BuildContext context,
+    required WidgetRef ref,
+    required Card card,
+    required ValueNotifier<bool> showValidatedButton,
+  }) async {
+    // hide validated button
+    showValidatedButton.value = false;
+
+    final cardSatisfactionDate = ref.watch(cardSatisfactionDateProvider);
+
+    // instanciate the card
+    final newCard = card.copyWith(
+      satisfiedAt: card.satisfiedAt != null ? null : cardSatisfactionDate,
+    );
+
+    // launch card update
+    final cardUpdateResponse = await CardsController.update(
+      cardId: card.id!,
+      card: newCard,
+    );
+
+    // store response
+    ref.read(feedbackDialogResponseProvider.notifier).state =
+        FeedbackDialogResponse(
+      result: cardUpdateResponse.result?.fr,
+      error: cardUpdateResponse.error?.fr,
+      message: cardUpdateResponse.message!.fr,
+    );
+
+    // show validated button
+    showValidatedButton.value = true;
+
+    // hide update form if the the card have been updated
+    if (cardUpdateResponse.error == null) {
+      // delay due response dialog
+      Future.delayed(
+        const Duration(
+          milliseconds: 1300,
+        ),
+        () {
+          // pop confirmation dialog
+          Navigator.of(context).pop();
+        },
+      );
+    }
+
+    // show response
+    FunctionsController.showAlertDialog(
+      context: context,
+      alertDialog: const FeedbackDialog(),
+    );
   }
 
   static Future<void> delete({

@@ -111,3 +111,35 @@ final specificCollectionsRestSumProvider = FutureProvider<num>((ref) async {
       ? controllerResponse.data.count as int
       : 0;
 });
+
+final dayCollectionProvider = FutureProvider<num>((ref) async {
+  final controllerResponse = await CollectionsController.getDayCollection();
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
+final monthCollectionProvider = FutureProvider<num>((ref) async {
+  final controllerResponse = await CollectionsController.getMonthCollection();
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
+final weekCollectionProvider = FutureProvider<num>((ref) async {
+  final controllerResponse = await CollectionsController.getWeekCollection();
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});
+
+final yearCollectionProvider = FutureProvider<num>((ref) async {
+  final controllerResponse = await CollectionsController.getYearCollection();
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as int
+      : 0;
+});

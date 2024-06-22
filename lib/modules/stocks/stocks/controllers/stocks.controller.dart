@@ -171,48 +171,18 @@ class StocksController {
     );
   }
 
-  static Future<ControllerResponse> increase({
-    required int stockId,
-    required Map<String, double> amount,
+  static Future<ControllerResponse> checkCardProductAvailability({
+    required int cardId,
   }) async {
-    final serviceResponse = await StocksServices.increase(
-      stockId: stockId,
-      amount: amount,
+    final serviceResponse = await StocksServices.checkCardProductAvailability(
+      cardId: cardId,
     );
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
-      data: serviceResponse.data
-          ?.map(
-            (stockMap) => Stock.fromMap(
-              stockMap,
-            ),
-          )
-          .toList(),
-      result: serviceResponse.result,
-      error: serviceResponse.error,
-      message: serviceResponse.message,
-    );
-  }
-
-  static Future<ControllerResponse> decrease({
-    required int stockId,
-    required Map<String, double> amount,
-  }) async {
-    final serviceResponse = await StocksServices.decrease(
-      stockId: stockId,
-      amount: amount,
-    );
-
-    return ControllerResponse(
-      statusCode: serviceResponse.statusCode,
-      data: serviceResponse.data
-          ?.map(
-            (stockMap) => Stock.fromMap(
-              stockMap,
-            ),
-          )
-          .toList(),
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
       result: serviceResponse.result,
       error: serviceResponse.error,
       message: serviceResponse.message,

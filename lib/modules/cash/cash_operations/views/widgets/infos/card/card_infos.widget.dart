@@ -11,6 +11,12 @@ import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provi
 import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/card_settlements.widget.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.dart';
+import 'package:rst/modules/definitions/cards/functions/cards.function.dart';
+import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
+import 'package:rst/modules/definitions/cards/views/widgets/cards.widget.dart';
+import 'package:rst/modules/definitions/cards/views/widgets/forms/actions_confirmations/repayment/repayment.widget.dart';
+import 'package:rst/modules/stocks/stocks/controllers/stocks.controller.dart';
+import 'package:rst/modules/stocks/stocks/models/stock/stock.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CashOperationsCustomerCardInfos extends ConsumerStatefulWidget {
@@ -207,7 +213,47 @@ class _CashOperationsCustomerCardInfosState
                         fontWeight: FontWeight.w500,
                       ),
                       hoverColor: material.Colors.transparent,
-                      onChanged: (value) async {},
+                      onChanged: (value) async {
+                        // reset repayment
+                        ref.read(cardRepaymentDateProvider.notifier).state =
+                            null;
+
+                        if (cashOperationsSelectedCustomerCard != null) {
+                          if (value == false) {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog:
+                                  CardRepaymentUpdateConfirmationDialog(
+                                card: cashOperationsSelectedCustomerCard,
+                                update:
+                                    CardsCRUDFunctions.updateRepaymentStatus,
+                              ),
+                            );
+                          } else {
+                            Future.delayed(
+                              Duration.zero,
+                              () async {
+                                FunctionsController.showDate(
+                                  context: context,
+                                  ref: ref,
+                                  stateProvider: cardRepaymentDateProvider,
+                                  isNullable: false,
+                                );
+                              },
+                            );
+
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog:
+                                  CardRepaymentUpdateConfirmationDialog(
+                                card: cashOperationsSelectedCustomerCard,
+                                update:
+                                    CardsCRUDFunctions.updateRepaymentStatus,
+                              ),
+                            );
+                          }
+                        }
+                      },
                     ),
                   ),
                   LabelValue(
@@ -243,7 +289,56 @@ class _CashOperationsCustomerCardInfosState
                         fontWeight: FontWeight.w500,
                       ),
                       hoverColor: material.Colors.transparent,
-                      onChanged: (value) async {},
+                      onChanged: (value) async {
+                        // reset satisfaction date
+                        ref.read(cardSatisfactionDateProvider.notifier).state =
+                            null;
+
+                        if (cashOperationsSelectedCustomerCard != null) {
+                          try {
+                            final controllerResponse = await StocksController
+                                .checkCardProductAvailability(
+                                    cardId:
+                                        cashOperationsSelectedCustomerCard.id!);
+
+                            debugPrint(
+                                'Cards poducts are available: ${controllerResponse.data.count}');
+                          } catch (error) {
+                            debugPrint(error.toString());
+                          }
+
+                          /* if (value == false) {
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog:
+                                  CardSatisfactionUpdateConfirmationDialog(
+                                card: cashOperationsSelectedCustomerCard,
+                                update:
+                                    CardsCRUDFunctions.updateSatisfactionStatus,
+                              ),
+                            );
+                          } else {
+                            Future.delayed(Duration.zero, () async{
+                              FunctionsController.showDate(
+                                context: context,
+                                ref: ref,
+                                stateProvider: cardSatisfactionDateProvider,
+                                isNullable: false,
+                              );
+                            });
+
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog:
+                                  CardSatisfactionUpdateConfirmationDialog(
+                                card: cashOperationsSelectedCustomerCard,
+                                update:
+                                    CardsCRUDFunctions.updateSatisfactionStatus,
+                              ),
+                            );
+                          }*/
+                        }
+                      },
                     ),
                   ),
                   LabelValue(

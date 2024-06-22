@@ -5,6 +5,7 @@ import 'package:rst/modules/activities/customer/views/page/customer_activities.p
 import 'package:rst/modules/cash/cash_operations/views/page/cash_operations.page.dart';
 import 'package:rst/modules/cash/collections/views/page/collections.page.dart';
 import 'package:rst/modules/cash/settlements/views/page/settlements.page.dart';
+import 'package:rst/modules/dashboard/views/page/dashboard.page.dart';
 import 'package:rst/modules/definitions/agents/views/page/agents.page.dart';
 import 'package:rst/modules/definitions/cards/views/page/cards.page.dart';
 import 'package:rst/modules/definitions/categories/views/page/categories.page.dart';
@@ -16,6 +17,7 @@ import 'package:rst/modules/definitions/personal_status/views/page/personal_stat
 import 'package:rst/modules/definitions/products/views/page/products.page.dart';
 import 'package:rst/modules/definitions/types/views/page/types.page.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
+import 'package:rst/modules/statistics/collectors_collections/views/page/collectors_collections.page.dart';
 import 'package:rst/modules/statistics/types_stat/views/page/types_stat.page.dart';
 import 'package:rst/modules/stocks/stocks/views/page/stocks.page.dart';
 import 'package:rst/modules/transfers/between_customer_cards/views/page/transfers_bcc.page.dart';
@@ -31,8 +33,7 @@ class MainBody extends ConsumerStatefulWidget {
 
 class _MainBodyState extends ConsumerState<MainBody> {
   final pages = const <Widget>[
-    WidgetTest(),
-    // DashboardPage(),
+    DashboardPage(),
     ProductsPage(),
     TypesPage(),
     CategoriesPage(),
@@ -51,8 +52,7 @@ class _MainBodyState extends ConsumerState<MainBody> {
 
     TypesStatsPage(),
 
-    // CustomersProductsPage(),
-    WidgetTest(),
+    CollectorsCollectionsPage(),
     //  ProductsForecastsPage(),
     WidgetTest(),
 

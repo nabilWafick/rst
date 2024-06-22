@@ -1,0 +1,117 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/modules/statistics/collectors_collections/models/collectors_collections.dart';
+import 'package:rst/utils/colors/colors.util.dart';
+
+class CollectorsCollectionsSimpleView extends ConsumerWidget {
+  final CollectorCollection collectorCollection;
+
+  const CollectorsCollectionsSimpleView({
+    super.key,
+    required this.collectorCollection,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    const formCardWidth = 500.0;
+
+    return AlertDialog(
+      contentPadding: const EdgeInsetsDirectional.symmetric(
+        vertical: 20.0,
+        horizontal: 5.0,
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const RSTText(
+            text: 'Collecteur',
+            fontSize: 20.0,
+            fontWeight: FontWeight.w600,
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.close_rounded,
+              color: RSTColors.primaryColor,
+              size: 30.0,
+            ),
+          ),
+        ],
+      ),
+      content: Container(
+        // color: Colors.blueGrey,
+        padding: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.symmetric(
+          vertical: 20.0,
+        ),
+        width: formCardWidth,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsetsDirectional.symmetric(
+                vertical: 5.0,
+              ),
+              child: LabelValue(
+                label: 'Nom',
+                value: collectorCollection.name,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsetsDirectional.symmetric(
+                vertical: 5.0,
+              ),
+              child: LabelValue(
+                label: 'Prénoms',
+                value: collectorCollection.firstnames,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsetsDirectional.symmetric(
+                vertical: 5.0,
+              ),
+              child: LabelValue(
+                label: 'Téléphone',
+                value: collectorCollection.phoneNumber,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsetsDirectional.symmetric(
+                vertical: 5.0,
+              ),
+              child: LabelValue(
+                label: 'Nombre collectes',
+                value: collectorCollection.totalCollections.toString(),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsetsDirectional.symmetric(
+                vertical: 5.0,
+              ),
+              child: LabelValue(
+                label: 'Collecte Totale',
+                value: '${collectorCollection.totalAmount}',
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        SizedBox(
+          width: 170.0,
+          child: RSTElevatedButton(
+            text: 'Fermer',
+            onPressed: () async {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+      ],
+      actionsAlignment: MainAxisAlignment.center,
+    );
+  }
+}

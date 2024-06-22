@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/field/field.model.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
-import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class SortParameterTool extends HookConsumerWidget {

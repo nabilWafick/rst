@@ -258,4 +258,60 @@ class CollectionsController {
       message: serviceResponse.message,
     );
   }
+
+  static Future<ControllerResponse> getDayCollection() async {
+    final serviceResponse = await CollectionsServices.getDayCollection();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getWeekCollection() async {
+    final serviceResponse = await CollectionsServices.getWeekCollection();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getMonthCollection() async {
+    final serviceResponse = await CollectionsServices.getMonthCollection();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getYearCollection() async {
+    final serviceResponse = await CollectionsServices.getYearCollection();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
 }

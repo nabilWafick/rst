@@ -359,79 +359,20 @@ class StocksServices {
     }
   }
 
-  static Future<ServiceResponse> increase({
-    required int stockId,
-    required Map<String, double> amount,
+  static Future<ServiceResponse> checkCardProductAvailability({
+    required int cardId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.patch(
-        '$route/amount/increase/$stockId',
-        data: amount,
+      final response = await RSTApiConstants.dio.get(
+        '$route/card/products/availability',
+        data: {
+          'cardId': cardId,
+        },
       );
 
       return ServiceResponse(
-        statusCode: 201,
-        data: [
-          response.data,
-        ],
-        result: ServiceResult(
-          en: 'Increased',
-          fr: 'Incrémenté',
-        ),
-        message: ServiceMessage(
-          en: 'The stock have been increased successfully',
-          fr: 'Le montant de le stock a été incrémenté avec succès',
-        ),
-      );
-    } on DioException catch (error) {
-      if (error.response != null) {
-        // server error
-        debugPrint(error.response?.data.toString());
-
-        return ServiceResponse.fromMap(error.response?.data);
-      } else {
-        // connection error
-        debugPrint(error.response.toString());
-
-        return ServiceResponse(
-          statusCode: 503,
-          data: null,
-          error: ServiceError(
-            en: 'Service Unavailable',
-            fr: 'Service Indisponible',
-          ),
-          message: ServiceMessage(
-            en: 'Unable to communicate with server',
-            fr: 'Impossible de communiquer avec le serveur',
-          ),
-        );
-      }
-    }
-  }
-
-  static Future<ServiceResponse> decrease({
-    required int stockId,
-    required Map<String, double> amount,
-  }) async {
-    try {
-      final response = await RSTApiConstants.dio.patch(
-        '$route/amount/decrease/$stockId',
-        data: amount,
-      );
-
-      return ServiceResponse(
-        statusCode: 201,
-        data: [
-          response.data,
-        ],
-        result: ServiceResult(
-          en: 'Increased',
-          fr: 'Incrémenté',
-        ),
-        message: ServiceMessage(
-          en: 'The stock have been decreased successfully',
-          fr: 'La montant de le stock a été décrémenté avec succès',
-        ),
+        statusCode: 200,
+        data: response.data,
       );
     } on DioException catch (error) {
       if (error.response != null) {

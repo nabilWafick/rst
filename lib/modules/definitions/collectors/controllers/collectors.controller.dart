@@ -1,6 +1,7 @@
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/definitions/collectors/models/collectors.model.dart';
 import 'package:rst/modules/definitions/collectors/services/collectors.service.dart';
+import 'package:rst/modules/statistics/collectors_collections/models/collector_collection/collector_collection.model.dart';
 
 class CollectorsController {
   static Future<ControllerResponse> create({
@@ -59,6 +60,116 @@ class CollectorsController {
       data: serviceResponse.data
           ?.map(
             (collectorMap) => Collector.fromMap(
+              collectorMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getGlobalCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await CollectorsServices.getGlobalCollections(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (collectorMap) => CollectorCollection.fromMap(
+              collectorMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getDayCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await CollectorsServices.getDayCollections(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (collectorMap) => CollectorCollection.fromMap(
+              collectorMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getWeekCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await CollectorsServices.getWeekCollections(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (collectorMap) => CollectorCollection.fromMap(
+              collectorMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getMonthCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await CollectorsServices.getMonthCollections(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (collectorMap) => CollectorCollection.fromMap(
+              collectorMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getYearCollections({
+    required Map<String, dynamic> listParameters,
+  }) async {
+    final serviceResponse = await CollectorsServices.getYearCollections(
+      listParameters: listParameters,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (collectorMap) => CollectorCollection.fromMap(
               collectorMap,
             ),
           )
