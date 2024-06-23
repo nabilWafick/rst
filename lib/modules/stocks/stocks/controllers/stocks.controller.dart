@@ -47,6 +47,83 @@ class StocksController {
     );
   }
 
+  static Future<ControllerResponse> createNormalOutput({
+    required int cardId,
+    required int agentId,
+    required DateTime satisfiedAt,
+  }) async {
+    final serviceResponse = await StocksServices.createStockNormalOutput(
+        cardId: cardId, agentId: agentId, satisfiedAt: satisfiedAt);
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (stockMap) => Stock.fromMap(
+              stockMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> createStockConstrainedOutput({
+    required int cardId,
+    required List<int> productsIds,
+    required List<int> productsOutputQuantities,
+    required int agentId,
+    required DateTime satisfiedAt,
+  }) async {
+    final serviceResponse = await StocksServices.createStockConstrainedOutput(
+      cardId: cardId,
+      productsIds: productsIds,
+      productsOutputQuantities: productsOutputQuantities,
+      agentId: agentId,
+      satisfiedAt: satisfiedAt,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (stockMap) => Stock.fromMap(
+              stockMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> createStockRetrocession({
+    required int cardId,
+    required int agentId,
+  }) async {
+    final serviceResponse = await StocksServices.createStockRetrocession(
+      cardId: cardId,
+      agentId: agentId,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (stockMap) => Stock.fromMap(
+              stockMap,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
   static Future<ControllerResponse> getOne({
     required int stockId,
   }) async {

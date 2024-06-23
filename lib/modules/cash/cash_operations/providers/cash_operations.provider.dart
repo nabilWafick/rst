@@ -27,6 +27,12 @@ final cashOperationsShowAllCustomerCardsProvider = StateProvider<bool>((ref) {
   return false;
 });
 
+// for managing products inputs, add,hide inputs, identify inputs
+final cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider =
+    StateProvider<Map<String, bool>>((ref) {
+  return {};
+});
+
 final cashOperationsSelectedCardTotalSettlementsNumbersProvider =
     FutureProvider<int>((ref) async {
   final cashOperationsSelectedCard =

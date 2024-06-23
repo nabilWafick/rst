@@ -13,6 +13,7 @@ import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/customers/models/customers.model.dart';
 import 'package:rst/modules/definitions/types/models/types.model.dart';
+import 'package:rst/modules/stocks/stocks/controllers/stocks.controller.dart';
 
 class CardsCRUDFunctions {
   static Future<void> create({
@@ -232,7 +233,7 @@ class CardsCRUDFunctions {
     );
   }
 
-  static Future<void> updateSatisfactionStatus({
+  static Future<void> makeNormaleSatisfaction({
     required BuildContext context,
     required WidgetRef ref,
     required Card card,
@@ -243,15 +244,55 @@ class CardsCRUDFunctions {
 
     final cardSatisfactionDate = ref.watch(cardSatisfactionDateProvider);
 
-    // instanciate the card
-    final newCard = card.copyWith(
-      satisfiedAt: card.satisfiedAt != null ? null : cardSatisfactionDate,
+    // launch card update
+    final cardUpdateResponse = await StocksController.createNormalOutput(
+        cardId: card.id!, agentId: 7, satisfiedAt: cardSatisfactionDate!);
+
+    // store response
+    ref.read(feedbackDialogResponseProvider.notifier).state =
+        FeedbackDialogResponse(
+      result: cardUpdateResponse.result?.fr,
+      error: cardUpdateResponse.error?.fr,
+      message: cardUpdateResponse.message!.fr,
     );
 
+    // show validated button
+    showValidatedButton.value = true;
+
+    // hide update form if the the card have been updated
+    if (cardUpdateResponse.error == null) {
+      // delay due response dialog
+      Future.delayed(
+        const Duration(
+          milliseconds: 1300,
+        ),
+        () {
+          // pop confirmation dialog
+          Navigator.of(context).pop();
+        },
+      );
+    }
+
+    // show response
+    FunctionsController.showAlertDialog(
+      context: context,
+      alertDialog: const FeedbackDialog(),
+    );
+  }
+
+  static Future<void> makeRetrocession({
+    required BuildContext context,
+    required WidgetRef ref,
+    required Card card,
+    required ValueNotifier<bool> showValidatedButton,
+  }) async {
+    // hide validated button
+    showValidatedButton.value = false;
+
     // launch card update
-    final cardUpdateResponse = await CardsController.update(
+    final cardUpdateResponse = await StocksController.createStockRetrocession(
       cardId: card.id!,
-      card: newCard,
+      agentId: 7,
     );
 
     // store response

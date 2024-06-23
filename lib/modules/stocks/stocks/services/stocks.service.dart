@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/stocks/stocks/models/stock/stock.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
@@ -77,6 +78,171 @@ class StocksServices {
         message: ServiceMessage(
           en: 'The stock have been added successfully',
           fr: 'Le stock a été ajouté avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> createStockNormalOutput({
+    required int cardId,
+    required int agentId,
+    required DateTime satisfiedAt,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/card/normal/satisfaction',
+        queryParameters: {
+          'cardId': cardId,
+          'agentId': agentId,
+          'satisfiedAt': FunctionsController.getTimestamptzDateString(
+            dateTime: satisfiedAt,
+          ),
+        },
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+        result: ServiceResult(
+          en: 'Satisfied',
+          fr: 'Satisfaite',
+        ),
+        message: ServiceMessage(
+          en: 'The card have been satisfied successfully',
+          fr: 'La carte a été satisfaite avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> createStockConstrainedOutput({
+    required int cardId,
+    required List<int> productsIds,
+    required List<int> productsOutputQuantities,
+    required int agentId,
+    required DateTime satisfiedAt,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/card/constrained/satisfaction',
+        queryParameters: {
+          'cardId': cardId,
+          'productsIds': productsIds,
+          'productsOutputQuantities': productsOutputQuantities,
+          'agentId': agentId,
+          'satisfiedAt': FunctionsController.getTimestamptzDateString(
+            dateTime: satisfiedAt,
+          ),
+        },
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+        result: ServiceResult(
+          en: 'Satisfied',
+          fr: 'Satisfaite',
+        ),
+        message: ServiceMessage(
+          en: 'The card have been satisfied successfully',
+          fr: 'La carte a été satisfaite avec succès',
+        ),
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> createStockRetrocession({
+    required int cardId,
+    required int agentId,
+  }) async {
+    try {
+      final response = await RSTApiConstants.dio.get(
+        '$route/card/retrocession',
+        queryParameters: {
+          'cardId': cardId,
+          'agentId': agentId,
+        },
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+        result: ServiceResult(
+          en: 'Retroceded',
+          fr: 'Retrocédé',
+        ),
+        message: ServiceMessage(
+          en: 'The card have been updated and the products have retroceded successfully',
+          fr: 'La carte a été modifiée et les produits ont été rétrocédés avec succès',
         ),
       );
     } on DioException catch (error) {
