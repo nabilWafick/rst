@@ -9,8 +9,10 @@ onCashOperationsCustomerCardChange({
   Card? previousCustomerCard,
   Card? newCustomerCard,
 }) async {
-  if (newCustomerCard != null &&
-      newCustomerCard.id != previousCustomerCard?.id) {
+  if (newCustomerCard !=
+          null /* &&
+      newCustomerCard.id != previousCustomerCard?.id*/
+      ) {
     Future.delayed(
         const Duration(
           milliseconds: 100,
@@ -50,5 +52,14 @@ onCashOperationsCustomerCardChange({
         debugPrint(e.toString());
       }
     });
+  } else /* if (newCustomerCard == null) */ {
+    // set selected card to null
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state = null;
+
+    // reset total settlement number
+    ref.invalidate(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
+
+    // reset settlements provider
+    ref.invalidate(cashOperationsSelectedCardSettlementsListParametersProvider);
   }
 }

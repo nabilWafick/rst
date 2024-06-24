@@ -238,7 +238,7 @@ class _CashOperationsCustomerCardInfosState
                             Future.delayed(
                               Duration.zero,
                               () async {
-                                FunctionsController.showDate(
+                                FunctionsController.showDateTime(
                                   context: context,
                                   ref: ref,
                                   stateProvider: cardRepaymentDateProvider,
@@ -299,6 +299,10 @@ class _CashOperationsCustomerCardInfosState
                         ref.read(cardSatisfactionDateProvider.notifier).state =
                             null;
 
+                        // reset constrained output products providers
+                        ref.invalidate(
+                            cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider);
+
                         if (cashOperationsSelectedCustomerCard != null) {
                           // check if all settlements on the card have done
 
@@ -336,7 +340,7 @@ class _CashOperationsCustomerCardInfosState
                                   Future.delayed(
                                       const Duration(milliseconds: 1),
                                       () async {
-                                    FunctionsController.showDate(
+                                    FunctionsController.showDateTime(
                                       context: context,
                                       ref: ref,
                                       stateProvider:
@@ -358,7 +362,7 @@ class _CashOperationsCustomerCardInfosState
                                   Future.delayed(
                                       const Duration(milliseconds: 1),
                                       () async {
-                                    FunctionsController.showDate(
+                                    FunctionsController.showDateTime(
                                       context: context,
                                       ref: ref,
                                       stateProvider:

@@ -170,7 +170,7 @@ class AuthServices {
 
       final response = await Dio(
         BaseOptions(
-          baseUrl: RSTApiConstants.baseUrl ?? '',
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
           headers: headers,
         ),
       ).get(

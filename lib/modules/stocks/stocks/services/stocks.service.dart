@@ -112,9 +112,9 @@ class StocksServices {
     required DateTime satisfiedAt,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final response = await RSTApiConstants.dio.post(
         '$route/card/normal/satisfaction',
-        queryParameters: {
+        data: {
           'cardId': cardId,
           'agentId': agentId,
           'satisfiedAt': FunctionsController.getTimestamptzDateString(
@@ -169,9 +169,9 @@ class StocksServices {
     required DateTime satisfiedAt,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final response = await RSTApiConstants.dio.post(
         '$route/card/constrained/satisfaction',
-        queryParameters: {
+        data: {
           'cardId': cardId,
           'productsIds': productsIds,
           'productsOutputQuantities': productsOutputQuantities,
@@ -225,9 +225,9 @@ class StocksServices {
     required int agentId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final response = await RSTApiConstants.dio.post(
         '$route/card/retrocession',
-        queryParameters: {
+        data: {
           'cardId': cardId,
           'agentId': agentId,
         },

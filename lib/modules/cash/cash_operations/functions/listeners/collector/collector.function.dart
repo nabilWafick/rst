@@ -11,7 +11,7 @@ onCashOperationsCollectorChange({
   Collector? previousCollector,
   Collector? newCollector,
 }) async {
-  if (newCollector != null && newCollector.id != previousCollector?.id) {
+  if (newCollector != null /*&& newCollector.id != previousCollector?.id*/) {
     Future.delayed(
         const Duration(
           milliseconds: 100,
@@ -76,5 +76,12 @@ onCashOperationsCollectorChange({
         debugPrint(e.toString());
       }
     });
+  } else /*if (newCollector == null) */ {
+    // set selected collector to null
+    ref.read(cashOperationsSelectedCollectorProvider.notifier).state = null;
+
+    // set selected customer to null
+    ref.read(customerSelectionToolProvider('cash-operations').notifier).state =
+        null;
   }
 }

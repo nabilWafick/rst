@@ -64,7 +64,10 @@ class _CashOperationsFilterToolsState
           RSTIconButton(
             icon: Icons.refresh,
             text: 'Rafraichir',
-            onTap: () {},
+            onTap: () {
+              // invalidate collector tool provider
+              ref.invalidate(collectorSelectionToolProvider('cash-operations'));
+            },
           ),
           const CustomerSelectionToolCard(
             toolName: 'cash-operations',

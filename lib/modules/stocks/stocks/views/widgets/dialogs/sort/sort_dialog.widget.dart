@@ -70,6 +70,10 @@ class StockSortDialog extends HookConsumerWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: sortConditions
+                                .where(
+                                  (sortParameter) =>
+                                      sortParameter.entries.first.key != 'id',
+                                )
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,

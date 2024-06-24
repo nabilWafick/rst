@@ -6,9 +6,9 @@ import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
+import 'package:rst/modules/definitions/cards/functions/cards.function.dart';
 import 'package:rst/modules/definitions/cards/views/widgets/forms/actions_confirmations/constrained_satisfaction/constrained_satisfaction.widget.dart';
 import 'package:rst/modules/definitions/types/views/widgets/forms/type_product_input/type_product_input.widget.dart';
-import 'package:rst/modules/stocks/stocks/functions/crud/crud.function.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class ConstrainedCardSatisfactionForm extends StatefulHookConsumerWidget {
@@ -179,7 +179,7 @@ class _ConstrainedCardSatisfactionFormState
                               CardConstrainedSatisfactionUpdateConfirmationDialog(
                             card: cashOperationsSelectedCustomerCard!,
                             formKey: formKey,
-                            update: StocksCRUDFunctions.createConstrainedOutput,
+                            update: CardsCRUDFunctions.makeConstrainedOutput,
                           ),
                         );
                       },

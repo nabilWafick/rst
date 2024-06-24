@@ -14,6 +14,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
 
+  // run the app
   runApp(
     const ProviderScope(
       child: RSTApp(),

@@ -13,7 +13,7 @@ onCashOperationsCustomerChange({
   Customer? previousCustomer,
   Customer? newCustomer,
 }) async {
-  if (newCustomer != null && newCustomer.id != previousCustomer?.id) {
+  if (newCustomer != null /*&& newCustomer.id != previousCustomer?.id*/) {
     Future.delayed(
         const Duration(
           milliseconds: 100,
@@ -115,5 +115,18 @@ onCashOperationsCustomerChange({
         debugPrint(e.toString());
       }
     });
+  } else /* if (newCustomer == null) */ {
+    // reset selected customer
+    ref.invalidate(cashOperationsSelectedCustomerProvider);
+
+    // set customers card to empty
+    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state = [];
+
+    // set card tool to null
+    ref.read(cardSelectionToolProvider('cash-operations').notifier).state =
+        null;
+
+    // set selected card to null
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state = null;
   }
 }

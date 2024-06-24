@@ -139,17 +139,17 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         subOptions: [
           SidebarSubOptionModel(
             index: 16,
-            icon: Icons.cases_rounded,
+            icon: Icons.language,
             name: 'Types',
           ),
           SidebarSubOptionModel(
             index: 17,
-            icon: Icons.money,
+            icon: Icons.language,
             name: 'Collectes Périodiques',
           ),
           SidebarSubOptionModel(
             index: 18,
-            icon: Icons.query_stats_outlined,
+            icon: Icons.language,
             name: 'Prévisions',
           ),
         ],
@@ -183,7 +183,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         subOptions: [
           SidebarSubOptionModel(
             index: 22,
-            icon: Icons.stacked_bar_chart_outlined,
+            icon: Icons.widgets_outlined,
             name: 'Stocks',
           ),
         ],

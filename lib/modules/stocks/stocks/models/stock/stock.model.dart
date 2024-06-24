@@ -84,9 +84,9 @@ class Stock {
       stockQuantity: map['stockQuantity'] as int,
       movementType:
           map['movementType'] != null ? map['movementType'] as String : null,
-      /*  card: map['card'] != null
+      card: map['card'] != null
           ? Card.fromMap(map['card'] as Map<String, dynamic>)
-          : null,*/
+          : null,
       agent: Agent.fromMap(map['agent'] as Map<String, dynamic>),
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),

@@ -23,39 +23,41 @@ class _CashOperationsSettlementsState
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(
-          15.0,
-        ),
-        topRight: Radius.circular(
-          15.0,
-        ),
-      ),
-      child: Container(
-        alignment: Alignment.center,
-        height: 350.0,
-        margin: const EdgeInsets.only(top: 30.0),
-        decoration: BoxDecoration(
-          //  color: Colors.blueAccent,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(
-              15.0,
-            ),
-            topRight: Radius.circular(
-              15.0,
-            ),
+    return Expanded(
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(
+            15.0,
           ),
-          border: Border.all(
-            color: RSTColors.sidebarTextColor.withOpacity(.5),
-            width: 2,
+          topRight: Radius.circular(
+            15.0,
           ),
         ),
-        child: const Column(
-          children: [
-            CashOperationsSettlementsCardBody(),
-            CashOperationsSettlementsCardFooter(),
-          ],
+        child: Container(
+          alignment: Alignment.center,
+          //  height: 350.0,
+          margin: const EdgeInsets.only(top: 30.0),
+          decoration: BoxDecoration(
+            //  color: Colors.blueAccent,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(
+                15.0,
+              ),
+              topRight: Radius.circular(
+                15.0,
+              ),
+            ),
+            border: Border.all(
+              color: RSTColors.sidebarTextColor.withOpacity(.5),
+              width: 2,
+            ),
+          ),
+          child: const Column(
+            children: [
+              CashOperationsSettlementsCardBody(),
+              CashOperationsSettlementsCardFooter(),
+            ],
+          ),
         ),
       ),
     );
