@@ -22,11 +22,15 @@ import 'package:rst/utils/utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketService {
+  static WebSocketService? _instance;
   final WidgetRef ref;
 
-  WebSocketService({
-    required this.ref,
-  });
+  factory WebSocketService({required WidgetRef ref}) {
+    _instance ??= WebSocketService._internal(ref);
+    return _instance!;
+  }
+
+  WebSocketService._internal(this.ref);
 
   WebSocketChannel? _channel;
   Timer? _reconnectTimer;

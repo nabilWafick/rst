@@ -18,6 +18,8 @@ class _HomePageState extends ConsumerState<HomePage>
   void initState() {
     super.initState();
 
+    debugPrint('HomePage initState called');
+
     // instanciate webSocketService
     _webSocketService = WebSocketService(ref: ref);
 
@@ -28,7 +30,18 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    debugPrint('App lifecycle state changed to: $state');
+    if (state == AppLifecycleState.resumed) {
+      _webSocketService.connect();
+    } else if (state == AppLifecycleState.paused) {
+      _webSocketService.disconnect();
+    }
+  }
+
+  @override
   void dispose() {
+    debugPrint('HomePage dispose called');
     WidgetsBinding.instance.removeObserver(this);
     _webSocketService.disconnect();
     super.dispose();
