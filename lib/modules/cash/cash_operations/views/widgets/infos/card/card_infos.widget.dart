@@ -20,7 +20,6 @@ import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.da
 import 'package:rst/modules/definitions/cards/functions/cards.function.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/cards/views/widgets/cards.widget.dart';
-import 'package:rst/modules/definitions/cards/views/widgets/forms/actions_confirmations/repayment/repayment.widget.dart';
 import 'package:rst/modules/stocks/stocks/controllers/stocks.controller.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 

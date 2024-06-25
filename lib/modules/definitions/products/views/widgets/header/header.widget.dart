@@ -42,9 +42,11 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !productsListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: productsListParameters.containsKey('where') &&
+                        productsListParameters['where'].containsKey('AND') &&
+                        productsListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(productsListFilterParametersAddedProvider);
@@ -57,8 +59,6 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
                             .entries
                             .first
                             .value) {
-                      debugPrint('saved fiter : $filterParameter \n');
-
                       // create a filterToolIndex
                       final filterToolIndex =
                           DateTime.now().millisecondsSinceEpoch;

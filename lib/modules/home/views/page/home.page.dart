@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/service/websocket/websocket.service.dart';
 import 'package:rst/modules/home/views/widgets/home.widget.dart';
-import 'package:rst/utils/constants/api/api.constant.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({super.key});
@@ -16,12 +12,19 @@ class HomePage extends StatefulHookConsumerWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with WidgetsBindingObserver {
-  final WebSocketService _webSocketService = WebSocketService();
+  late WebSocketService _webSocketService;
+
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    _webSocketService.connect();
     super.initState();
+
+    // instanciate webSocketService
+    _webSocketService = WebSocketService(ref: ref);
+
+    WidgetsBinding.instance.addObserver(this);
+
+    // try connection
+    _webSocketService.connect();
   }
 
   @override

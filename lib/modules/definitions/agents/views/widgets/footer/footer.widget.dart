@@ -49,7 +49,7 @@ class AgentsPageFooter extends ConsumerWidget {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final count = ref.watch(specificagentsCountProvider);
+                final count = ref.watch(specificAgentsCountProvider);
                 return count.when(
                   data: (data) {
                     return Row(
@@ -195,7 +195,7 @@ class AgentsPageFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count = ref.watch(specificagentsCountProvider);
+                    final count = ref.watch(specificAgentsCountProvider);
 
                     return RSTText(
                       text: count.when(

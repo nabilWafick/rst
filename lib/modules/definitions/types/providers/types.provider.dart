@@ -65,7 +65,7 @@ final typesCountProvider = FutureProvider<int>((ref) async {
 });
 
 // used for storing fetched types (types respecting filter options) count
-final specifictypesCountProvider = FutureProvider<int>((ref) async {
+final specificTypesCountProvider = FutureProvider<int>((ref) async {
   final listParameters = ref.watch(typesListParametersProvider);
 
   final controllerResponse = await TypesController.countSpecific(

@@ -37,7 +37,7 @@ class _TypesPageHeaderState extends ConsumerState<TypesPageHeader> {
                   // refresh providers counts and the types list
                   ref.invalidate(typesListStreamProvider);
                   ref.invalidate(typesCountProvider);
-                  ref.invalidate(specifictypesCountProvider);
+                  ref.invalidate(specificTypesCountProvider);
                 },
               ),
               RSTIconButton(

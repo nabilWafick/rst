@@ -165,218 +165,185 @@ class FilterParameterTool extends StatefulHookConsumerWidget {
 
 class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
   @override
-  Widget build(BuildContext context) {
-    // for show or hide the filter tool
-    final showWidget = useState<bool>(true);
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeFilterTool();
+    });
+  }
 
-    // use for detecting the last subField in order
-    // to display the correspording operator
+  void _initializeFilterTool() {
+    final filterToolParameter =
+        ref.read(widget.filterParametersAddedProvider)[widget.index] ?? {};
+
+    tryBuildFieldDropDown(
+      ref: ref,
+      filterToolIndex: widget.index,
+      subFieldIndex: 0,
+      fields: widget.fields,
+      filterToolFieldsDropdowns: filterToolFieldsDropdowns,
+      subEntryValue: filterToolParameter,
+      filterParametersAddedProvider: widget.filterParametersAddedProvider,
+    );
+  }
+
+  final filterToolFieldsDropdowns =
+      ValueNotifier<List<RSTFilterToolFieldDropdown>>([]);
+
+  @override
+  Widget build(BuildContext context) {
+    final showWidget = useState<bool>(true);
     final lastSubField =
         ref.watch(filterToolLastSubFieldProvider(widget.index));
-
-    // use to store all fields dropdowns
-    final filterToolFieldsDropdowns =
-        useState<List<RSTFilterToolFieldDropdown>>([]);
-
-    final filterToolParameter =
-        ref.watch(widget.filterParametersAddedProvider)[widget.index] ?? {};
+    //  final filterToolParameter =
+    //      ref.watch(widget.filterParametersAddedProvider)[widget.index] ?? {};
 
     return showWidget.value
         ? Container(
-            margin: const EdgeInsets.only(
-              bottom: 10.0,
-            ),
+            margin: const EdgeInsets.only(bottom: 10.0),
             child: Wrap(
               runSpacing: 5,
               spacing: 5,
               children: [
-                /*   RSTText(
-                  text:
-                      'subField Number: ${filterToolFieldsDropdowns.value.length}',
-                  fontSize: 12,
-                ),*/
-                // build subfields dropdowns
                 Consumer(
                   builder: (context, ref, child) {
-                    Future.delayed(
-                      const Duration(milliseconds: 100),
-                      () {
-                        tryBuildFieldDropDown(
-                          ref: ref,
-                          filterToolIndex: widget.index,
-                          subFieldIndex: 0,
-
-                          fields: widget.fields,
-                          filterToolFieldsDropdowns: filterToolFieldsDropdowns,
-                          // due initState state update stability problems,
-                          // prefer watch the filter parameters added instead of
-                          // of the tool provider
-                          subEntryValue: filterToolParameter,
-
-                          filterParametersAddedProvider:
-                              widget.filterParametersAddedProvider,
+                    return ValueListenableBuilder<
+                        List<RSTFilterToolFieldDropdown>>(
+                      valueListenable: filterToolFieldsDropdowns,
+                      builder: (context, dropdowns, child) {
+                        return Wrap(
+                          runSpacing: 5,
+                          spacing: 5,
+                          children: dropdowns,
                         );
                       },
                     );
-
-                    // force building
-                    Future.delayed(
-                        const Duration(
-                          milliseconds: 120,
-                        ), () {
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    });
-
-                    return Wrap(
-                      runSpacing: 5,
-                      spacing: 5,
-                      children: filterToolFieldsDropdowns.value,
-                    );
                   },
                 ),
-
-                // build operator dropdown
-                Consumer(
-                  builder: (context, ref, child) {
-                    List<Operator> filterParameterToolOperators = [];
-
-                    // necessary in case of update
-                    final filterToolOperator = ref.watch(
-                        operatorDropdownProvider(
-                            'filter_parameter_tool_operator_${widget.index}'));
-
-                    // check lastSubFiled type and add equivalent operators
-                    // to common type operators
-
-                    if (lastSubField.type == int ||
-                        lastSubField.type == double ||
-                        lastSubField.type == num) {
-                      filterParameterToolOperators = [
-                        ...FilterOperators.commonOperators,
-                        ...FilterOperators.numberOperators,
-                      ];
-                    }
-
-                    if (lastSubField.type == String) {
-                      filterParameterToolOperators = [
-                        ...FilterOperators.commonOperators,
-                        ...FilterOperators.stringOperators,
-                      ];
-                    }
-
-                    if (lastSubField.type == DateTime) {
-                      filterParameterToolOperators = [
-                        ...FilterOperators.commonOperators,
-                        ...FilterOperators.datesOperators,
-                      ];
-                    }
-
-                    if (FilterOperators.allOperators
-                        .contains(filterToolOperator)) {
-                      filterParameterToolOperators = {
-                        filterToolOperator,
-                        ...filterParameterToolOperators,
-                      }.toList();
-                    } else {
-                      // remove repeated operators
-                      filterParameterToolOperators =
-                          filterParameterToolOperators.toSet().toList();
-                    }
-
-                    return RSTOperatorDropdown(
-                      width: 250.0,
-                      menuHeigth: 300.0,
-                      label: 'Opération',
-                      providerName:
-                          'filter_parameter_tool_operator_${widget.index}',
-                      dropdownMenuEntriesLabels: filterParameterToolOperators,
-                      dropdownMenuEntriesValues: filterParameterToolOperators,
-                    );
-                  },
-                ),
-                SizedBox(
-                  width: 250.0,
-                  child: Consumer(
-                    builder: (context, ref, child) {
-                      final filterToolValue =
-                          ref.watch(filterToolValueProvider(widget.index));
-                      if (lastSubField.type == bool) {
-                        return FilterParameterToolBoolField(
-                          initialValue: filterToolValue,
-                          providerName:
-                              'filter_parameter_tool_bool_input_${widget.index}',
-                        );
-                      }
-                      if ((lastSubField.runtimeType == double ||
-                              lastSubField.runtimeType == int) ||
-                          (filterToolValue.runtimeType == double ||
-                              filterToolValue.runtimeType == int)) {
-                        return FilterParameterToolTextFormField(
-                          initialValue: filterToolValue?.toString(),
-                          inputProvider:
-                              'filter_parameter_tool_number_input_${widget.index}',
-                          label: 'Nombre',
-                          hintText: 'Nombre',
-                          textInputType: TextInputType.number,
-                          validator:
-                              FilterParameterToolValidator.textFieldValue,
-                          onChanged:
-                              FilterParameterToolOnChanged.textFieldValue,
-                        );
-                      } else if (lastSubField.type == DateTime) {
-                        return FilterParameterToolDateTimeField(
-                          initialValue: filterToolValue,
-                          providerName:
-                              'filter_parameter_tool_datetime_input_${widget.index}',
-                        );
-                      }
-
-                      return FilterParameterToolTextFormField(
-                        initialValue: filterToolValue,
-                        inputProvider:
-                            'filter_parameter_tool_text_input_${widget.index}',
-                        label: 'Texte',
-                        hintText: 'Texte',
-                        textInputType: TextInputType.text,
-                        validator: FilterParameterToolValidator.textFieldValue,
-                        onChanged: FilterParameterToolOnChanged.textFieldValue,
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: IconButton(
-                    onPressed: () {
-                      // hide the widget
-                      showWidget.value = false;
-
-                      // empty the filter tool parameter
-                      ref
-                          .read(widget.filterParametersAddedProvider.notifier)
-                          .update(
-                        (state) {
-                          state = {
-                            ...state,
-                            widget.index: {},
-                          };
-
-                          return state;
-                        },
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.close_rounded,
-                      color: RSTColors.primaryColor,
-                      size: 25.0,
-                    ),
-                  ),
-                ),
+                _buildOperatorDropdown(lastSubField),
+                _buildInputField(lastSubField),
+                _buildCloseButton(showWidget),
               ],
             ),
           )
         : const SizedBox();
+  }
+
+  Widget _buildOperatorDropdown(Field lastSubField) {
+    return Consumer(
+      builder: (context, ref, child) {
+        List<Operator> filterParameterToolOperators =
+            _getOperatorsForField(lastSubField);
+        final filterToolOperator = ref.watch(operatorDropdownProvider(
+            'filter_parameter_tool_operator_${widget.index}'));
+
+        if (FilterOperators.allOperators.contains(filterToolOperator)) {
+          filterParameterToolOperators =
+              {filterToolOperator, ...filterParameterToolOperators}.toList();
+        } else {
+          filterParameterToolOperators =
+              filterParameterToolOperators.toSet().toList();
+        }
+
+        return RSTOperatorDropdown(
+          width: 250.0,
+          menuHeigth: 300.0,
+          label: 'Opération',
+          providerName: 'filter_parameter_tool_operator_${widget.index}',
+          dropdownMenuEntriesLabels: filterParameterToolOperators,
+          dropdownMenuEntriesValues: filterParameterToolOperators,
+        );
+      },
+    );
+  }
+
+  List<Operator> _getOperatorsForField(Field field) {
+    if (field.type == int || field.type == double || field.type == num) {
+      return [
+        ...FilterOperators.commonOperators,
+        ...FilterOperators.numberOperators
+      ];
+    } else if (field.type == String) {
+      return [
+        ...FilterOperators.commonOperators,
+        ...FilterOperators.stringOperators
+      ];
+    } else if (field.type == DateTime) {
+      return [
+        ...FilterOperators.commonOperators,
+        ...FilterOperators.datesOperators
+      ];
+    }
+    return FilterOperators.commonOperators;
+  }
+
+  Widget _buildInputField(Field lastSubField) {
+    return SizedBox(
+      width: 250.0,
+      child: Consumer(
+        builder: (context, ref, child) {
+          final filterToolValue =
+              ref.watch(filterToolValueProvider(widget.index));
+          if (lastSubField.type == bool) {
+            return FilterParameterToolBoolField(
+              initialValue: filterToolValue,
+              providerName: 'filter_parameter_tool_bool_input_${widget.index}',
+            );
+          }
+          if (lastSubField.type == int || lastSubField.type == double) {
+            return FilterParameterToolTextFormField(
+              initialValue: filterToolValue?.toString(),
+              inputProvider:
+                  'filter_parameter_tool_number_input_${widget.index}',
+              label: 'Nombre',
+              hintText: 'Nombre',
+              textInputType: TextInputType.number,
+              validator: FilterParameterToolValidator.textFieldValue,
+              onChanged: FilterParameterToolOnChanged.textFieldValue,
+            );
+          } else if (lastSubField.type == DateTime) {
+            return FilterParameterToolDateTimeField(
+              initialValue: filterToolValue,
+              providerName:
+                  'filter_parameter_tool_datetime_input_${widget.index}',
+            );
+          }
+          return FilterParameterToolTextFormField(
+            initialValue: filterToolValue,
+            inputProvider: 'filter_parameter_tool_text_input_${widget.index}',
+            label: 'Texte',
+            hintText: 'Texte',
+            textInputType: TextInputType.text,
+            validator: FilterParameterToolValidator.textFieldValue,
+            onChanged: FilterParameterToolOnChanged.textFieldValue,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildCloseButton(ValueNotifier<bool> showWidget) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: IconButton(
+        onPressed: () {
+          showWidget.value = false;
+          ref.read(widget.filterParametersAddedProvider.notifier).update(
+                (state) => {...state, widget.index: {}},
+              );
+        },
+        icon: const Icon(
+          Icons.close_rounded,
+          color: RSTColors.primaryColor,
+          size: 25.0,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    filterToolFieldsDropdowns.dispose();
+    super.dispose();
   }
 }

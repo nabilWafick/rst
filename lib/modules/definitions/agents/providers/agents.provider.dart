@@ -95,7 +95,7 @@ final agentsCountProvider = FutureProvider<int>((ref) async {
 });
 
 // used for storing fetched agents (agents respecting filter options) count
-final specificagentsCountProvider = FutureProvider<int>((ref) async {
+final specificAgentsCountProvider = FutureProvider<int>((ref) async {
   final listParameters = ref.watch(agentsListParametersProvider);
 
   final controllerResponse = await AgentsController.countSpecific(

@@ -75,7 +75,7 @@ final cashOperationsSelectedCardSettlementsProvider =
       : <Settlement>[];
 });
 
-// used for storing all settlements of selected card count
+// used for storing all settlements number of selected card
 final cashOperationsSelectedCardSettlementsCountProvider =
     FutureProvider<int>((ref) async {
   final cashOperationsSelectedCustomerCard =

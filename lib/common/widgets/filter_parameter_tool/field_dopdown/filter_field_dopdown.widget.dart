@@ -74,163 +74,116 @@ class RSTFilterToolFieldDropdown extends RSTFieldDropdown {
 class _RSTFilterToolFieldDropdownState
     extends ConsumerState<RSTFilterToolFieldDropdown> {
   @override
-  void initState() {
-    Future.delayed(
-      const Duration(
-        milliseconds: 100,
-      ),
-      () {
-        // check if dropdown item is not empty so as to avoid error
-        // while setting the  the first item as the selectedItem
-        if (widget.dropdownMenuEntriesValues.isNotEmpty) {
-          ref
-              .read(
-                  filterToolFieldDropdownProvider(widget.providerName).notifier)
-              .state = widget.dropdownMenuEntriesValues[0];
-        }
-      },
-    );
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final selectedDropdownItem =
         ref.watch(filterToolFieldDropdownProvider(widget.providerName));
 
+    // Set initial value if not set
+    if (selectedDropdownItem.back.isEmpty &&
+        widget.dropdownMenuEntriesValues.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(filterToolFieldDropdownProvider(widget.providerName).notifier)
+            .state = widget.dropdownMenuEntriesValues[0];
+      });
+    }
+
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 5.0,
-      ),
-      child: DropdownMenu(
+      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: DropdownMenu<Field>(
         width: widget.width,
         menuHeight: widget.menuHeigth,
         enabled: widget.enabled ?? true,
         enableFilter: true,
-        label: RSTText(
-          text: widget.label,
-        ),
+        label: RSTText(text: widget.label),
         hintText: widget.label,
         initialSelection: selectedDropdownItem,
-        dropdownMenuEntries: widget.dropdownMenuEntriesLabels
-            .map(
-              (dropdownMenuEntryLabel) => DropdownMenuEntry(
-                value: widget.dropdownMenuEntriesValues[widget
-                    .dropdownMenuEntriesLabels
-                    .indexOf(dropdownMenuEntryLabel)],
-                label: dropdownMenuEntryLabel.front,
-                style: const ButtonStyle(
-                  textStyle: MaterialStatePropertyAll(
-                    TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+        dropdownMenuEntries: widget.dropdownMenuEntriesLabels.map((field) {
+          return DropdownMenuEntry<Field>(
+            value: field,
+            label: field.front,
+            style: const ButtonStyle(
+              textStyle: MaterialStatePropertyAll(
+                TextStyle(fontWeight: FontWeight.w500),
               ),
-            )
-            .toList(),
-        trailingIcon: const Icon(
-          Icons.arrow_drop_down,
-        ),
+            ),
+          );
+        }).toList(),
+        trailingIcon: const Icon(Icons.arrow_drop_down),
         onSelected: (value) {
+          if (value == null) return;
+
           ref
               .read(
                   filterToolFieldDropdownProvider(widget.providerName).notifier)
-              .state = value!;
+              .state = value;
 
-          ///* MAIN TOOL LOGIC
+          ref
+              .read(widget.filterParametersAddedProvider.notifier)
+              .update((state) {
+            final newState = Map<int, Map<String, dynamic>>.from(state);
+            final newFilterToolMap = value.isRelation
+                ? _handleRelationField(value)
+                : _handleNonRelationField(value);
+            newState[widget.filterToolIndex] = newFilterToolMap;
+            return newState;
+          });
 
-          // check if the the new field is a relation
           if (value.isRelation) {
-            // generate a new nested map
-            final newNestedMap = generateNestedMap(
-              field: value,
-            );
-
-            // split and perfom the filterToolParameter add field  subField
-            // in filterParameter
-            final newFilterToolMap = splitMap(
-              map: ref.watch(
-                    widget.filterParametersAddedProvider,
-                  )[widget.filterToolIndex] ??
-                  {},
-              depth: 0,
-              targetDepth: widget.subFieldIndex,
-              newNestedMap: newNestedMap,
-              isRelation: true,
-            );
-
-            // update added filter tools parameters
-            ref
-                .read(
-              widget.filterParametersAddedProvider.notifier,
-            )
-                .update((state) {
-              state = {
-                ...state,
-                widget.filterToolIndex: newFilterToolMap,
-              };
-              return state;
-            });
-
-            // build nested field dropdown
-            tryBuildFieldDropDown(
-              ref: ref,
-              filterToolIndex: widget.filterToolIndex,
-              subFieldIndex: widget.subFieldIndex + 1,
-              fields: value.fields!,
-              filterToolFieldsDropdowns: widget.filterToolFieldsDropdowns,
-              // newNestedMap[value.back] because nested is generated
-              // containing value but on subField is need
-              subEntryValue: newNestedMap[value.back],
-              filterParametersAddedProvider:
-                  widget.filterParametersAddedProvider,
-            );
+            _buildNestedFieldDropdown(value);
           } else {
-            // set the field as the lastSelected of the tool
-            ref
-                .read(
-                  filterToolLastSubFieldProvider(widget.filterToolIndex)
-                      .notifier,
-                )
-                .state = value;
-
-            // split and perfom the filterToolParameter
-            final newFilterToolMap = splitMap(
-              map: ref.watch(
-                    widget.filterParametersAddedProvider,
-                  )[widget.filterToolIndex] ??
-                  {},
-              depth: 0,
-              targetDepth: widget.subFieldIndex,
-              newNestedMap: generateNestedMap(
-                field: value,
-              ),
-              isRelation: false,
-            );
-
-            // update added filter tools parameters
-            ref
-                .read(
-              widget.filterParametersAddedProvider.notifier,
-            )
-                .update(
-              (state) {
-                state = {...state, widget.filterToolIndex: newFilterToolMap};
-                return state;
-              },
-            );
-
-            // reduce the subField dropdowns and stop at this one
-
-            widget.filterToolFieldsDropdowns.value = widget
-                .filterToolFieldsDropdowns.value
-                .take(widget.subFieldIndex + 1)
-                .toList();
+            _updateLastSelectedField(value);
           }
         },
       ),
     );
+  }
+
+  Map<String, dynamic> _handleRelationField(Field value) {
+    final newNestedMap = generateNestedMap(field: value);
+    return splitMap(
+      map: ref.read(
+              widget.filterParametersAddedProvider)[widget.filterToolIndex] ??
+          {},
+      depth: 0,
+      targetDepth: widget.subFieldIndex,
+      newNestedMap: newNestedMap,
+      isRelation: true,
+    );
+  }
+
+  Map<String, dynamic> _handleNonRelationField(Field value) {
+    return splitMap(
+      map: ref.read(
+              widget.filterParametersAddedProvider)[widget.filterToolIndex] ??
+          {},
+      depth: 0,
+      targetDepth: widget.subFieldIndex,
+      newNestedMap: generateNestedMap(field: value),
+      isRelation: false,
+    );
+  }
+
+  void _buildNestedFieldDropdown(Field value) {
+    final newNestedMap = generateNestedMap(field: value);
+    tryBuildFieldDropDown(
+      ref: ref,
+      filterToolIndex: widget.filterToolIndex,
+      subFieldIndex: widget.subFieldIndex + 1,
+      fields: value.fields!,
+      filterToolFieldsDropdowns: widget.filterToolFieldsDropdowns,
+      subEntryValue: newNestedMap[value.back],
+      filterParametersAddedProvider: widget.filterParametersAddedProvider,
+    );
+  }
+
+  void _updateLastSelectedField(Field value) {
+    ref
+        .read(filterToolLastSubFieldProvider(widget.filterToolIndex).notifier)
+        .state = value;
+    widget.filterToolFieldsDropdowns.value = widget
+        .filterToolFieldsDropdowns.value
+        .take(widget.subFieldIndex + 1)
+        .toList();
   }
 }

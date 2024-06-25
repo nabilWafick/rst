@@ -37,7 +37,7 @@ class _AgentsPageHeaderState extends ConsumerState<AgentsPageHeader> {
                   // refresh providers counts and the agents list
                   ref.invalidate(agentsListStreamProvider);
                   ref.invalidate(agentsCountProvider);
-                  ref.invalidate(specificagentsCountProvider);
+                  ref.invalidate(specificAgentsCountProvider);
                 },
               ),
               RSTIconButton(

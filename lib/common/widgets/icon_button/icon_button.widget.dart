@@ -6,12 +6,14 @@ import 'package:rst/common/widgets/text/text.widget.dart';
 class RSTIconButton extends ConsumerWidget {
   final IconData icon;
   final String text;
+  final bool? light;
   final Function() onTap;
 
   const RSTIconButton({
     super.key,
     required this.icon,
     required this.text,
+    this.light,
     required this.onTap,
   });
   @override
@@ -25,7 +27,9 @@ class RSTIconButton extends ConsumerWidget {
         onTap: onTap,
         child: Card(
           elevation: 5.0,
-          color: RSTColors.primaryColor,
+          color: light != null && light == true
+              ? RSTColors.backgroundColor
+              : RSTColors.primaryColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 10.0,
@@ -34,7 +38,9 @@ class RSTIconButton extends ConsumerWidget {
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(
                 icon,
-                color: RSTColors.backgroundColor,
+                color: light != null && light == true
+                    ? RSTColors.primaryColor
+                    : RSTColors.backgroundColor,
               ),
               const SizedBox(
                 width: 15.0,
@@ -43,7 +49,9 @@ class RSTIconButton extends ConsumerWidget {
                 text: text,
                 fontSize: 12.0,
                 fontWeight: FontWeight.w500,
-                color: RSTColors.backgroundColor,
+                color: light != null && light == true
+                    ? RSTColors.primaryColor
+                    : RSTColors.backgroundColor,
               )
             ]),
           ),

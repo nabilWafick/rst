@@ -196,7 +196,7 @@ class TypesStatsPageFooter extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, ref, child) {
-                    final count = ref.watch(specifictypesCountProvider);
+                    final count = ref.watch(specificTypesCountProvider);
 
                     return RSTText(
                       text: count.when(

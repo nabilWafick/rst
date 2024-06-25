@@ -1,18 +1,41 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
+import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/providers/card_settlements.provider.dart';
+import 'package:rst/modules/cash/collections/providers/collections.provider.dart';
+import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/agents.provider.dart';
+import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
+import 'package:rst/modules/definitions/categories/providers/categories.provider.dart';
+import 'package:rst/modules/definitions/collectors/providers/collectors.provider.dart';
+import 'package:rst/modules/definitions/customers/providers/customers.provider.dart';
+import 'package:rst/modules/definitions/economical_activities/providers/economical_activities.provider.dart';
+import 'package:rst/modules/definitions/localities/providers/localities.provider.dart';
+import 'package:rst/modules/definitions/personal_status/providers/personal_status.provider.dart';
+import 'package:rst/modules/definitions/products/providers/products.provider.dart';
+import 'package:rst/modules/definitions/types/providers/types.provider.dart';
+import 'package:rst/modules/stocks/stocks/providers/stocks.provider.dart';
+import 'package:rst/modules/transfers/validations/providers/validations.provider.dart';
 import 'package:rst/utils/utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketService {
+  final WidgetRef ref;
+
+  WebSocketService({
+    required this.ref,
+  });
+
   WebSocketChannel? _channel;
   Timer? _reconnectTimer;
   bool _isConnected = false;
-  final String _wsUrl = RSTApiConstants.wsBaseUrl ?? ''; // Adjust as needed
+  final String _wsUrl = RSTApiConstants.wsBaseUrl ?? '';
 
   // Reconnection parameters
-  final int _reconnectInterval = 1500; // 5 seconds
-  final int _maxReconnectAttempts = 10;
+  final int _reconnectInterval = 2000;
+  final int _maxReconnectAttempts = 5;
   int _reconnectAttempts = 0;
 
   void connect() {
@@ -39,21 +62,129 @@ class WebSocketService {
     debugPrint('Received WebSocket message: $message');
     try {
       final data = jsonDecode(message);
-      final eventType = data['event'];
-      final eventData = data['data'];
+      final eventType = data['event'] as String;
+      //  final eventData = data['data'] as String;
 
-      switch (eventType) {
-        case 'addition':
-          debugPrint('Addition data: $eventData');
+      // get the module name since the event name is like
+      // agent-addition, agent-update, agent-deletion, ...
+      final module = eventType.split('-')[0];
+
+      // reset fetching providers when a data have added, updated or deleted
+      switch (module) {
+        case 'agent':
+          ref.invalidate(agentsListStreamProvider);
+          ref.invalidate(agentsCountProvider);
+          ref.invalidate(specificAgentsCountProvider);
           break;
-        case 'update':
-          debugPrint('Update data: $eventData');
+
+        case 'card':
+          ref.invalidate(cardsListStreamProvider);
+          ref.invalidate(cardsCountProvider);
+          ref.invalidate(specificCardsCountProvider);
           break;
-        case 'deletion':
-          debugPrint('Deletion data: $eventData');
+
+        case 'category':
+          ref.invalidate(categoriesListStreamProvider);
+          ref.invalidate(categoriesCountProvider);
+          ref.invalidate(specificCategoriesCountProvider);
           break;
+
+        case 'collection':
+          ref.invalidate(collectionsListStreamProvider);
+          ref.invalidate(collectionsCountProvider);
+          ref.invalidate(collectionsSumProvider);
+          ref.invalidate(collectionsRestSumProvider);
+          ref.invalidate(specificCollectionsCountProvider);
+          ref.invalidate(specificCollectionsSumProvider);
+          ref.invalidate(specificCollectionsRestSumProvider);
+
+          ref.invalidate(dayCollectionProvider);
+          ref.invalidate(weekCollectionProvider);
+          ref.invalidate(monthCollectionProvider);
+          ref.invalidate(yearCollectionProvider);
+
+          // ref.refresh(provider)
+          break;
+
+        case 'collector':
+          ref.invalidate(collectorsListStreamProvider);
+          ref.invalidate(collectorsCountProvider);
+          ref.invalidate(specificCollectorsCountProvider);
+          break;
+
+        case 'customer':
+          ref.invalidate(customersListStreamProvider);
+          ref.invalidate(customersCountProvider);
+          ref.invalidate(specificCustomersCountProvider);
+          break;
+
+        case 'economicalActivity':
+          ref.invalidate(economicalActivitiesListStreamProvider);
+          ref.invalidate(economicalActivitiesCountProvider);
+          ref.invalidate(specificEconomicalActivitiesCountProvider);
+          break;
+
+        case 'locality':
+          ref.invalidate(localitiesListStreamProvider);
+          ref.invalidate(localitiesCountProvider);
+          ref.invalidate(specificLocalitiesCountProvider);
+          break;
+
+        case 'modification':
+          //   ref.invalidate(categoriesListStreamProvider);
+          //    ref.invalidate(categoriesCountProvider);
+          //    ref.invalidate(specificCategoriesCountProvider);
+          break;
+
+        case 'personalStatus':
+          ref.invalidate(personalStatusListStreamProvider);
+          ref.invalidate(personalStatusCountProvider);
+          ref.invalidate(specificPersonalStatusCountProvider);
+          break;
+
+        case 'product':
+          ref.invalidate(productsListStreamProvider);
+          ref.invalidate(productsCountProvider);
+          ref.invalidate(specificProductsCountProvider);
+          break;
+
+        case 'settlement':
+          ref.invalidate(settlementsListStreamProvider);
+          ref.invalidate(settlementsCountProvider);
+          ref.invalidate(specificSettlementsCountProvider);
+
+          ref.invalidate(
+              cashOperationsSelectedCardTotalSettlementsNumbersProvider);
+          ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
+          ref.invalidate(cashOperationsSelectedCardSettlementsCountProvider);
+          ref.invalidate(
+              cashOperationsSelectedCardSpecificSettlementsCountProvider);
+
+          ref.invalidate(cardSettlementsOverviewProvider);
+          ref.invalidate(cardSettlementsOverviewCountProvider);
+          ref.invalidate(
+              cardSettlementsOverviewSpecificSettlementsCountProvider);
+          break;
+
+        case 'stock':
+          ref.invalidate(stocksListStreamProvider);
+          ref.invalidate(stocksCountProvider);
+          ref.invalidate(specificStocksCountProvider);
+          break;
+
+        case 'transfer':
+          ref.invalidate(transfersListStreamProvider);
+          ref.invalidate(transfersCountProvider);
+          ref.invalidate(specificTransfersCountProvider);
+          break;
+
+        case 'type':
+          ref.invalidate(typesListStreamProvider);
+          ref.invalidate(typesCountProvider);
+          ref.invalidate(specificTypesCountProvider);
+          break;
+
         default:
-          debugPrint('Unknown event type: $eventType');
       }
     } catch (e) {
       debugPrint('Error processing WebSocket message: $e');
