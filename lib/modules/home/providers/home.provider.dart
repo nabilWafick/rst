@@ -8,6 +8,7 @@ import 'package:rst/modules/cash/cash_operations/views/page/cash_operations.page
 import 'package:rst/modules/cash/collections/views/page/collections.page.dart';
 import 'package:rst/modules/cash/settlements/views/page/settlements.page.dart';
 import 'package:rst/modules/dashboard/views/page/dashboard.page.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/agents/views/page/agents.page.dart';
 import 'package:rst/modules/definitions/cards/views/page/cards.page.dart';
 import 'package:rst/modules/definitions/categories/views/page/categories.page.dart';
@@ -51,30 +52,32 @@ final modulesVisibilityConditionsProvider = Provider<Map<int, bool>>((ref) {
   final authPermissions = ref.watch(authPermissionsProvider);
   final primaryModulesVisibilityConditions = {
     // Dashboard
-    0: authPermissions!['admin'],
+    0: authPermissions![PermissionsValues.admin],
 
     // Definitions
     1: true,
 
     // Cash
-    2: authPermissions['admin'] || authPermissions['add-collection'],
+    2: authPermissions[PermissionsValues.admin] ||
+        authPermissions[PermissionsValues.addCollection],
 
     // Activities
-    3: authPermissions['admin'] ||
-        authPermissions['show-customers-activities'] ||
-        authPermissions['show-collectors-activities'],
+    3: authPermissions[PermissionsValues.admin] ||
+        authPermissions[PermissionsValues.showCustomersActivities] ||
+        authPermissions[PermissionsValues.showCollectorsActivities],
 
     // Statistiques
-    4: authPermissions['admin'] ||
-        authPermissions['show-types-statistics'] ||
-        authPermissions['show-collectors-statistics'] ||
-        authPermissions['show-products-forecasts'],
+    4: authPermissions[PermissionsValues.admin] ||
+        authPermissions[PermissionsValues.showTypesStatistics] ||
+        authPermissions[PermissionsValues.showCollectorsStatistics] ||
+        authPermissions[PermissionsValues.showProductsForecasts],
 
     // Transfers
-    5: authPermissions['admin'] || authPermissions['add-transfer'],
+    5: authPermissions[PermissionsValues.admin] ||
+        authPermissions[PermissionsValues.addTransfer],
 
     // Stocks
-    6: authPermissions['admin'] || authPermissions['add-stock']
+    6: authPermissions[PermissionsValues.admin] || authPermissions['add-stock']
   };
 
   return {
@@ -106,7 +109,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
           ),
         ],
         subOptionsVisibility: {
-          0: authPermissions!['admin'],
+          0: authPermissions![PermissionsValues.admin],
         },
       ),
       SidebarOptionModel(
@@ -171,36 +174,44 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Products
-          0: authPermissions['admin'] || authPermissions['read-product'],
+          0: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readProduct],
 
           // Types
-          1: authPermissions['admin'] || authPermissions['read-type'],
+          1: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readType],
 
           // Categories
-          2: authPermissions['admin'] || authPermissions['read-category'],
+          2: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readCategory],
 
           // Economical Activities
-          3: authPermissions['admin'] ||
-              authPermissions['read-economical-activity'],
+          3: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readEconomicalActivity],
 
           // Personal Status
-          4: authPermissions['admin'] ||
-              authPermissions['read-personal-status'],
+          4: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readPersonalStatus],
 
           // Localities
-          5: authPermissions['admin'] || authPermissions['read-locality'],
+          5: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readLocality],
 
           // Cards
-          6: authPermissions['admin'] || authPermissions['read-card'],
+          6: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readCard],
 
           // Customers
-          7: authPermissions['admin'] || authPermissions['read-customer'],
+          7: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readCustomer],
 
           // Collectors
-          8: authPermissions['admin'] || authPermissions['read-collector'],
+          8: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readCollector],
 
           // Agents
-          9: authPermissions['admin'] || authPermissions['read-agent']
+          9: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readAgent]
         },
       ),
       SidebarOptionModel(
@@ -225,13 +236,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Collection
-          0: authPermissions['admin'] || authPermissions['read-collection'],
+          0: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readCollection],
 
           // Cash
-          1: authPermissions['admin'] || authPermissions['show-cash'],
+          1: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.showCash],
 
           // Settlement
-          2: authPermissions['admin'] || authPermissions['read-settlement']
+          2: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readSettlement]
         },
       ),
       SidebarOptionModel(
@@ -251,12 +265,12 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Customers activities
-          0: authPermissions['admin'] ||
-              authPermissions['show-customers-activities'],
+          0: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.showCustomersActivities],
 
           // Collectors activities
-          1: authPermissions['admin'] ||
-              authPermissions['show-collectors-activities'],
+          1: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.showCollectorsActivities],
         },
       ),
       SidebarOptionModel(
@@ -281,16 +295,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Types
-          0: authPermissions['admin'] ||
-              authPermissions['show-types-statistics'],
+          0: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.showTypesStatistics],
 
           // Periodic Collections
-          1: authPermissions['admin'] ||
-              authPermissions['show-collectors-statistics'],
+          1: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.showCollectorsStatistics],
 
           // Products Forecast
-          2: authPermissions['admin'] ||
-              authPermissions['show-products-forecasts'],
+          2: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.showProductsForecasts],
         },
       ),
       SidebarOptionModel(
@@ -315,13 +329,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // transfer between card
-          0: authPermissions['admin'] || authPermissions['add-transfer'],
+          0: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.addTransfer],
 
           // transfer between account
-          1: authPermissions['admin'] || authPermissions['add-transfer'],
+          1: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.addTransfer],
 
           // transfers validations
-          2: authPermissions['admin'] || authPermissions['read-transfer'],
+          2: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readTransfer],
         },
       ),
       SidebarOptionModel(
@@ -336,7 +353,8 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // stock
-          0: authPermissions['admin'] || authPermissions['read-stock'],
+          0: authPermissions[PermissionsValues.admin] ||
+              authPermissions[PermissionsValues.readStock],
         },
       ),
       SidebarOptionModel(
