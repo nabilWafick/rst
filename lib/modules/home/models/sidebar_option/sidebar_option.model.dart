@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:rst/modules/home/models/suboption/suboption.model.dart';
 
@@ -8,26 +8,26 @@ class SidebarOptionModel {
   final IconData icon;
   final String name;
   final List<SidebarSubOptionModel> subOptions;
-  final bool
-      showSubOptions; //In the case where the suboptions won't be showed like dashboard otion, because the suboption is one. In other case, the unique suoptions should have been show like guide in File
+  final List<bool> subOptionsVisibility;
+
   SidebarOptionModel({
     required this.icon,
     required this.name,
     required this.subOptions,
-    required this.showSubOptions,
+    required this.subOptionsVisibility,
   });
 
   SidebarOptionModel copyWith({
     IconData? icon,
     String? name,
     List<SidebarSubOptionModel>? subOptions,
-    bool? showSubOptions,
+    List<bool>? subOptionsVisibility,
   }) {
     return SidebarOptionModel(
       icon: icon ?? this.icon,
       name: name ?? this.name,
       subOptions: subOptions ?? this.subOptions,
-      showSubOptions: showSubOptions ?? this.showSubOptions,
+      subOptionsVisibility: subOptionsVisibility ?? this.subOptionsVisibility,
     );
   }
 
@@ -36,7 +36,7 @@ class SidebarOptionModel {
       'icon': icon.codePoint,
       'name': name,
       'subOptions': subOptions.map((x) => x.toMap()).toList(),
-      'showSubOptions': showSubOptions,
+      'subOptionsVisibility': subOptionsVisibility,
     };
   }
 
@@ -46,7 +46,7 @@ class SidebarOptionModel {
       name: map['name'] ?? '',
       subOptions: List<SidebarSubOptionModel>.from(
           map['subOptions']?.map((x) => SidebarSubOptionModel.fromMap(x))),
-      showSubOptions: map['showSubOptions'] ?? false,
+      subOptionsVisibility: List<bool>.from(map['subOptionsVisibility']),
     );
   }
 
@@ -57,18 +57,19 @@ class SidebarOptionModel {
 
   @override
   String toString() {
-    return 'SidebarOptionModel(icon: $icon, name: $name, subOptions: $subOptions, showSubOptions: $showSubOptions)';
+    return 'SidebarOptionModel(icon: $icon, name: $name, subOptions: $subOptions, subOptionsVisibility: $subOptionsVisibility)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other is SidebarOptionModel &&
         other.icon == icon &&
         other.name == name &&
         listEquals(other.subOptions, subOptions) &&
-        other.showSubOptions == showSubOptions;
+        listEquals(other.subOptionsVisibility, subOptionsVisibility);
   }
 
   @override
@@ -76,6 +77,6 @@ class SidebarOptionModel {
     return icon.hashCode ^
         name.hashCode ^
         subOptions.hashCode ^
-        showSubOptions.hashCode;
+        subOptionsVisibility.hashCode;
   }
 }

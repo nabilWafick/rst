@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -145,6 +147,12 @@ class AuthFunctions {
           await prefs.setString(
             RSTPreferencesKeys.firstnames,
             auth?.agent.firstnames ?? '',
+          );
+
+          // store permissions
+          await prefs.setString(
+            RSTPreferencesKeys.permissions,
+            jsonEncode(auth?.agent.permissions),
           );
 
           // store accesToken

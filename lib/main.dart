@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -40,7 +42,7 @@ class RSTApp extends ConsumerWidget {
       initialRoute: RoutesManager.main,
       onGenerateRoute: RoutesManager.onGenerateRoute,
       home: // const MainPage(),
-          const HomePage(),
+          const MainPage(),
     );
   }
 }
@@ -64,6 +66,7 @@ class _MainPageState extends ConsumerState<MainPage> {
     final authEmail = prefs.getString(RSTPreferencesKeys.email);
     final authName = prefs.getString(RSTPreferencesKeys.name);
     final authFirstnames = prefs.getString(RSTPreferencesKeys.firstnames);
+    final authPermissions = prefs.getString(RSTPreferencesKeys.permissions);
     final authAccesToken = prefs.getString(RSTPreferencesKeys.accesToken);
 
     Future.delayed(
@@ -73,6 +76,9 @@ class _MainPageState extends ConsumerState<MainPage> {
       ref.read(authEmailProvider.notifier).state = authEmail ?? '';
       ref.read(authNameProvider.notifier).state = authName ?? '';
       ref.read(authFirstnamesProvider.notifier).state = authFirstnames ?? '';
+      ref.read(authPermissionsProvider.notifier).state = authPermissions != null
+          ? jsonDecode(authPermissions) as Map<String, dynamic>
+          : {};
       ref.read(authAccesTokenProvider.notifier).state = authAccesToken ?? '';
     });
   }

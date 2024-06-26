@@ -1,7 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/modules/activities/collector/views/page/collector_activities.page.dart';
+import 'package:rst/modules/activities/customer/views/page/customer_activities.page.dart';
+import 'package:rst/modules/auth/empty/views/page/empty.page.dart';
+import 'package:rst/modules/cash/cash_operations/views/page/cash_operations.page.dart';
+import 'package:rst/modules/cash/collections/views/page/collections.page.dart';
+import 'package:rst/modules/cash/settlements/views/page/settlements.page.dart';
+import 'package:rst/modules/dashboard/views/page/dashboard.page.dart';
+import 'package:rst/modules/definitions/agents/views/page/agents.page.dart';
+import 'package:rst/modules/definitions/cards/views/page/cards.page.dart';
+import 'package:rst/modules/definitions/categories/views/page/categories.page.dart';
+import 'package:rst/modules/definitions/collectors/views/page/collectors.page.dart';
+import 'package:rst/modules/definitions/customers/views/page/customers.page.dart';
+import 'package:rst/modules/definitions/economical_activities/views/page/economical_activities.page.dart';
+import 'package:rst/modules/definitions/localities/views/page/localities.page.dart';
+import 'package:rst/modules/definitions/personal_status/views/page/personal_status.page.dart';
+import 'package:rst/modules/definitions/products/views/page/products.page.dart';
+import 'package:rst/modules/definitions/types/views/page/types.page.dart';
 import 'package:rst/modules/home/models/sidebar_option/sidebar_option.model.dart';
 import 'package:rst/modules/home/models/suboption/suboption.model.dart';
+import 'package:rst/modules/statistics/collectors_collections/views/page/collectors_collections.page.dart';
+import 'package:rst/modules/statistics/types_stat/views/page/types_stat.page.dart';
+import 'package:rst/modules/stocks/stocks/views/page/stocks.page.dart';
+import 'package:rst/modules/transfers/between_customer_cards/views/page/transfers_bcc.page.dart';
+import 'package:rst/modules/transfers/between_customers/views/page/transfers_bc.page.dart';
+import 'package:rst/modules/transfers/validations/views/page/validations.page.dart';
+import 'package:rst/widget.test.dart';
 
 final authEmailProvider = StateProvider<String?>((ref) {
   return;
@@ -13,13 +37,63 @@ final authNameProvider = StateProvider<String?>((ref) {
 final authFirstnamesProvider = StateProvider<String?>((ref) {
   return;
 });
+
+final authPermissionsProvider = StateProvider<Map<String, dynamic>?>((ref) {
+  return;
+});
+
 final authAccesTokenProvider = StateProvider<String?>((ref) {
   return;
 });
 
+final modulesVisibilityConditionsProvider = Provider<List<bool>>((ref) {
+  final authPermissions = ref.watch(authPermissionsProvider);
+  final primaryModulesVisibilityConditions = [
+    // Dashboard
+    authPermissions!['admin'],
+
+    // Definitions
+    true,
+
+    // Cash
+    authPermissions['admin'] || authPermissions['add-collection'],
+
+    // Activities
+    authPermissions['admin'] ||
+        authPermissions['show-customers-activities'] ||
+        authPermissions['show-collectors-activities'],
+
+    // Statistiques
+    authPermissions['admin'] ||
+        authPermissions['show-types-statistics'] ||
+        authPermissions['show-collectors-statistics'] ||
+        authPermissions['show-products-forecasts'],
+
+    // Transfers
+    authPermissions['admin'] || authPermissions['add-transfer'],
+
+    // Stocks
+    authPermissions['admin'] || authPermissions['add-stock']
+  ];
+
+  return [
+    ...primaryModulesVisibilityConditions,
+
+    // Empty
+    primaryModulesVisibilityConditions.every(
+      (condition) => !condition,
+    ),
+  ];
+});
+
 final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
   (ref) {
-    return [
+    final modulesVisibilityConditions =
+        ref.watch(modulesVisibilityConditionsProvider);
+
+    final authPermissions = ref.watch(authPermissionsProvider);
+
+    final modulesSidebarOptionModel = [
       SidebarOptionModel(
         icon: Icons.dashboard_outlined,
         name: 'Dashboard',
@@ -30,7 +104,9 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Dashboard',
           ),
         ],
-        showSubOptions: false,
+        subOptionsVisibility: [
+          authPermissions!['admin'],
+        ],
       ),
       SidebarOptionModel(
         icon: Icons.table_chart_outlined,
@@ -92,7 +168,38 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Agents',
           ),
         ],
-        showSubOptions: true,
+        subOptionsVisibility: [
+          // Products
+          authPermissions['admin'] || authPermissions['read-product'],
+
+          // Types
+          authPermissions['admin'] || authPermissions['read-type'],
+
+          // Categories
+          authPermissions['admin'] || authPermissions['read-category'],
+
+          // Economical Activities
+          authPermissions['admin'] ||
+              authPermissions['read-economical-activity'],
+
+          // Personal Status
+          authPermissions['admin'] || authPermissions['read-personal-status'],
+
+          // Localities
+          authPermissions['admin'] || authPermissions['read-locality'],
+
+          // Cards
+          authPermissions['admin'] || authPermissions['read-card'],
+
+          // Customers
+          authPermissions['admin'] || authPermissions['read-customer'],
+
+          // Collectors
+          authPermissions['admin'] || authPermissions['read-collector'],
+
+          // Agents
+          authPermissions['admin'] || authPermissions['read-agent']
+        ],
       ),
       SidebarOptionModel(
         icon: Icons.account_balance_outlined,
@@ -114,7 +221,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Règlements',
           ),
         ],
-        showSubOptions: true,
+        subOptionsVisibility: [
+          // Collection
+          authPermissions['admin'] || authPermissions['read-collection'],
+
+          // Cash
+          authPermissions['admin'] || authPermissions['show-cash'],
+
+          // Settlement
+          authPermissions['admin'] || authPermissions['read-settlement']
+        ],
       ),
       SidebarOptionModel(
         icon: Icons.analytics_outlined,
@@ -131,7 +247,15 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Chargé de Compte',
           ),
         ],
-        showSubOptions: true,
+        subOptionsVisibility: [
+          // Customers activities
+          authPermissions['admin'] ||
+              authPermissions['show-customers-activities'],
+
+          // Collectors activities
+          authPermissions['admin'] ||
+              authPermissions['show-collectors-activities'],
+        ],
       ),
       SidebarOptionModel(
         icon: Icons.language,
@@ -153,7 +277,18 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Prévisions',
           ),
         ],
-        showSubOptions: true,
+        subOptionsVisibility: [
+          // Types
+          authPermissions['admin'] || authPermissions['show-types-statistics'],
+
+          // Periodic Collections
+          authPermissions['admin'] ||
+              authPermissions['show-collectors-statistics'],
+
+          // Products Forecast
+          authPermissions['admin'] ||
+              authPermissions['show-products-forecasts'],
+        ],
       ),
       SidebarOptionModel(
         icon: Icons.swap_vert_outlined,
@@ -175,7 +310,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Validations',
           ),
         ],
-        showSubOptions: true,
+        subOptionsVisibility: [
+          // transfer between card
+          authPermissions['admin'] || authPermissions['add-transfer'],
+
+          // transfer between account
+          authPermissions['admin'] || authPermissions['add-transfer'],
+
+          // transfers validations
+          authPermissions['admin'] || authPermissions['read-transfer'],
+        ],
       ),
       SidebarOptionModel(
         icon: Icons.widgets_outlined,
@@ -187,19 +331,103 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Stocks',
           ),
         ],
-        showSubOptions: false,
+        subOptionsVisibility: [
+          // stock
+          authPermissions['admin'] || authPermissions['read-stock'],
+        ],
       ),
+      SidebarOptionModel(
+        icon: Icons.hourglass_empty,
+        name: 'Empty',
+        subOptions: [
+          SidebarSubOptionModel(
+            index: 23,
+            icon: Icons.hourglass_empty,
+            name: 'Empty',
+          ),
+        ],
+        subOptionsVisibility: [true],
+      )
     ];
+    // return only modules where display condition is true,
+    return modulesVisibilityConditions
+        .where(
+          (modulesDisplayCondition) => modulesDisplayCondition,
+        )
+        .map(
+          (modulesDisplayCondition) => modulesSidebarOptionModel[
+              modulesVisibilityConditions.indexOf(modulesDisplayCondition)],
+        )
+        .toList();
   },
 );
 
+final pagesProvider = Provider<List<Widget>>((ref) {
+  return [
+    const DashboardPage(),
+    const ProductsPage(),
+    const TypesPage(),
+    const CategoriesPage(),
+    const EconomicalActivitiesPage(),
+    const PersonalStatusPage(),
+    const LocalitiesPage(),
+    const CardsPage(),
+    const CustomersPage(),
+    const CollectorsPage(),
+    const AgentsPage(),
+    const CollectionsPage(),
+    const CashOperationsPage(),
+    const SettlementsPage(),
+    const CustomerActivitiesPage(),
+    const CollectorActivitiesPage(),
+
+    const TypesStatsPage(),
+
+    const CollectorsCollectionsPage(),
+    //  ProductsForecastsPage(),
+    const WidgetTest(),
+
+    const TransfersBCCPage(),
+    const TransfersBCPage(),
+    const TransfersValidationPage(),
+    const StocksPage(),
+    const EmptyPage()
+  ];
+});
+
 final selectedSidebarOptionProvider = StateProvider<SidebarOptionModel>((ref) {
-  final sidebarOption = ref.watch(sidebarOptionsProvider)[0];
+  final sidebarOption = ref.watch(sidebarOptionsProvider).firstOrNull ??
+      SidebarOptionModel(
+        icon: Icons.hourglass_empty,
+        name: 'Empty',
+        subOptions: [
+          SidebarSubOptionModel(
+            index: 23,
+            icon: Icons.hourglass_empty,
+            name: 'Empty',
+          ),
+        ],
+        subOptionsVisibility: [true],
+      );
+
+  // check null because at least definition can be displayed
   return sidebarOption;
 });
 
 final selectedSidebarSubOptionProvider =
     StateProvider<SidebarSubOptionModel>((ref) {
-  final sidebarSubOption = ref.watch(sidebarOptionsProvider)[0].subOptions[0];
-  return sidebarSubOption;
+  final sidebarOption = ref.watch(selectedSidebarOptionProvider);
+
+  return sidebarOption.subOptions.firstWhere(
+    (subOption) {
+      final subOptionIndex = sidebarOption.subOptions.indexOf(subOption);
+
+      return sidebarOption.subOptionsVisibility[subOptionIndex];
+    },
+    orElse: () => SidebarSubOptionModel(
+      index: 23,
+      icon: Icons.hourglass_empty,
+      name: 'Empty',
+    ),
+  );
 });

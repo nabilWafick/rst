@@ -468,6 +468,11 @@ final agentsPermissionsGroupsProvider =
       permissions: [
         Permission(
           isGranted: false,
+          front: 'Afficher la caisse',
+          back: 'show-cash',
+        ),
+        Permission(
+          isGranted: false,
           front: 'Afficher toutes les cartes (satisfaites ou non)',
           back: 'show-all-customer-cards-cash',
         ),
@@ -562,7 +567,35 @@ final agentsPermissionsGroupsProvider =
       ],
     ),
 
-    /// * TYPES STATISTICS
+    /// * COLLECTORS STATISTICS
+    PermissionsGroup(
+      name: 'Statistiques Collecteurs',
+      permissions: [
+        Permission(
+          isGranted: false,
+          front: 'Afficher les statistiques des collecteurs',
+          back: 'show-collectors-statistics',
+        ),
+        Permission(
+          isGranted: false,
+          front: 'Imprimer les statistiques des collecteurs',
+          back: 'print-collectors-statistics',
+        ),
+        Permission(
+          isGranted: false,
+          front: 'Exporter les statistiques des collecteurs',
+          back: 'export-collectors-statistics',
+        ),
+        Permission(
+          isGranted: false,
+          front:
+              'Afficher les infos supplémentaires des statistiques des types',
+          back: 'show-types-statistics-more-infos',
+        ),
+      ],
+    ),
+
+    /// * PRODUCTS STATISTICS
     PermissionsGroup(
       name: 'Prévisions Produits',
       permissions: [

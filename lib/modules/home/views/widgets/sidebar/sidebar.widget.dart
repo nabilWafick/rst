@@ -60,7 +60,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                         name: 'Déconnexion',
                       )
                     ],
-                    showSubOptions: true,
+                    subOptionsVisibility: [],
                   ),
                 )
               ],
