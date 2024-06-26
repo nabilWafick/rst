@@ -88,15 +88,14 @@ class _MainAppbarState extends ConsumerState<MainAppbar> {
             width: MediaQuery.of(context).size.width,
             height: 40,
             child: HorizontalScroller(
-              children: selectedSidebarOption.subOptionsVisibility
+              children: selectedSidebarOption.subOptionsVisibility.entries
                   .where(
-                    (subOptionVisibility) => subOptionVisibility,
+                    (subOptionVisibility) => subOptionVisibility.value,
                   )
                   .map(
-                    (subOptionVisibility) => SidebarSubOption(
-                      sidebarSubOptionData: selectedSidebarOption.subOptions[
-                          selectedSidebarOption.subOptionsVisibility
-                              .indexOf(subOptionVisibility)],
+                    (subOptionVisibility1) => SidebarSubOption(
+                      sidebarSubOptionData: selectedSidebarOption
+                          .subOptions[subOptionVisibility1.key],
                     ),
                   )
                   .toList(),

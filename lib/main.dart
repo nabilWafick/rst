@@ -69,17 +69,16 @@ class _MainPageState extends ConsumerState<MainPage> {
     final authPermissions = prefs.getString(RSTPreferencesKeys.permissions);
     final authAccesToken = prefs.getString(RSTPreferencesKeys.accesToken);
 
-    Future.delayed(
-        const Duration(
-          milliseconds: 100,
-        ), () {
-      ref.read(authEmailProvider.notifier).state = authEmail ?? '';
-      ref.read(authNameProvider.notifier).state = authName ?? '';
-      ref.read(authFirstnamesProvider.notifier).state = authFirstnames ?? '';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      debugPrint('authEmail: $authEmail');
+      debugPrint('authPermissions: $authPermissions');
+      ref.read(authEmailProvider.notifier).state = authEmail;
+      ref.read(authNameProvider.notifier).state = authName;
+      ref.read(authFirstnamesProvider.notifier).state = authFirstnames;
       ref.read(authPermissionsProvider.notifier).state = authPermissions != null
           ? jsonDecode(authPermissions) as Map<String, dynamic>
-          : {};
-      ref.read(authAccesTokenProvider.notifier).state = authAccesToken ?? '';
+          : null;
+      ref.read(authAccesTokenProvider.notifier).state = authAccesToken;
     });
   }
 

@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+
 import 'package:rst/modules/home/models/suboption/suboption.model.dart';
 
 class SidebarOptionModel {
   final IconData icon;
   final String name;
   final List<SidebarSubOptionModel> subOptions;
-  final List<bool> subOptionsVisibility;
+  final Map<int, bool> subOptionsVisibility;
 
   SidebarOptionModel({
     required this.icon,
@@ -21,7 +22,7 @@ class SidebarOptionModel {
     IconData? icon,
     String? name,
     List<SidebarSubOptionModel>? subOptions,
-    List<bool>? subOptionsVisibility,
+    Map<int, bool>? subOptionsVisibility,
   }) {
     return SidebarOptionModel(
       icon: icon ?? this.icon,
@@ -46,7 +47,7 @@ class SidebarOptionModel {
       name: map['name'] ?? '',
       subOptions: List<SidebarSubOptionModel>.from(
           map['subOptions']?.map((x) => SidebarSubOptionModel.fromMap(x))),
-      subOptionsVisibility: List<bool>.from(map['subOptionsVisibility']),
+      subOptionsVisibility: Map<int, bool>.from(map['subOptionsVisibility']),
     );
   }
 
@@ -63,13 +64,13 @@ class SidebarOptionModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
+    final collectionEquals = const DeepCollectionEquality().equals;
 
     return other is SidebarOptionModel &&
         other.icon == icon &&
         other.name == name &&
-        listEquals(other.subOptions, subOptions) &&
-        listEquals(other.subOptionsVisibility, subOptionsVisibility);
+        collectionEquals(other.subOptions, subOptions) &&
+        collectionEquals(other.subOptionsVisibility, subOptionsVisibility);
   }
 
   @override

@@ -12,7 +12,7 @@ class HomePage extends StatefulHookConsumerWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with WidgetsBindingObserver {
-  late WebSocketService _webSocketService;
+  // late WebSocketService _webSocketService;
 
   @override
   void initState() {
@@ -21,21 +21,22 @@ class _HomePageState extends ConsumerState<HomePage>
     debugPrint('HomePage initState called');
 
     // instanciate webSocketService
-    _webSocketService = WebSocketService(ref: ref);
+    // _webSocketService = WebSocketService(ref: ref);
 
     WidgetsBinding.instance.addObserver(this);
 
     // try connection
-    _connectWebSocket();
+    // _connectWebSocket();
   }
 
+  /*
   Future<void> _connectWebSocket() async {
     try {
       await _webSocketService.connect();
     } catch (e) {
       debugPrint('Failed to connect to WebSocket: $e');
     }
-  }
+  }*/
 
 /*
   @override
@@ -49,13 +50,13 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 */
 
-  @override
+/*  @override
   void dispose() {
     debugPrint('HomePage dispose called');
     WidgetsBinding.instance.removeObserver(this);
     _webSocketService.disconnect();
     super.dispose();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

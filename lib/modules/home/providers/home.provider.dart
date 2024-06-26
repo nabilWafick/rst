@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/activities/collector/views/page/collector_activities.page.dart';
@@ -46,44 +47,44 @@ final authAccesTokenProvider = StateProvider<String?>((ref) {
   return;
 });
 
-final modulesVisibilityConditionsProvider = Provider<List<bool>>((ref) {
+final modulesVisibilityConditionsProvider = Provider<Map<int, bool>>((ref) {
   final authPermissions = ref.watch(authPermissionsProvider);
-  final primaryModulesVisibilityConditions = [
+  final primaryModulesVisibilityConditions = {
     // Dashboard
-    authPermissions!['admin'],
+    0: authPermissions!['admin'],
 
     // Definitions
-    true,
+    1: true,
 
     // Cash
-    authPermissions['admin'] || authPermissions['add-collection'],
+    2: authPermissions['admin'] || authPermissions['add-collection'],
 
     // Activities
-    authPermissions['admin'] ||
+    3: authPermissions['admin'] ||
         authPermissions['show-customers-activities'] ||
         authPermissions['show-collectors-activities'],
 
     // Statistiques
-    authPermissions['admin'] ||
+    4: authPermissions['admin'] ||
         authPermissions['show-types-statistics'] ||
         authPermissions['show-collectors-statistics'] ||
         authPermissions['show-products-forecasts'],
 
     // Transfers
-    authPermissions['admin'] || authPermissions['add-transfer'],
+    5: authPermissions['admin'] || authPermissions['add-transfer'],
 
     // Stocks
-    authPermissions['admin'] || authPermissions['add-stock']
-  ];
+    6: authPermissions['admin'] || authPermissions['add-stock']
+  };
 
-  return [
+  return {
     ...primaryModulesVisibilityConditions,
 
     // Empty
-    primaryModulesVisibilityConditions.every(
-      (condition) => !condition,
+    7: primaryModulesVisibilityConditions.values.every(
+      (value) => !value,
     ),
-  ];
+  };
 });
 
 final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
@@ -104,9 +105,9 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Dashboard',
           ),
         ],
-        subOptionsVisibility: [
-          authPermissions!['admin'],
-        ],
+        subOptionsVisibility: {
+          0: authPermissions!['admin'],
+        },
       ),
       SidebarOptionModel(
         icon: Icons.table_chart_outlined,
@@ -168,38 +169,39 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Agents',
           ),
         ],
-        subOptionsVisibility: [
+        subOptionsVisibility: {
           // Products
-          authPermissions['admin'] || authPermissions['read-product'],
+          0: authPermissions['admin'] || authPermissions['read-product'],
 
           // Types
-          authPermissions['admin'] || authPermissions['read-type'],
+          1: authPermissions['admin'] || authPermissions['read-type'],
 
           // Categories
-          authPermissions['admin'] || authPermissions['read-category'],
+          2: authPermissions['admin'] || authPermissions['read-category'],
 
           // Economical Activities
-          authPermissions['admin'] ||
+          3: authPermissions['admin'] ||
               authPermissions['read-economical-activity'],
 
           // Personal Status
-          authPermissions['admin'] || authPermissions['read-personal-status'],
+          4: authPermissions['admin'] ||
+              authPermissions['read-personal-status'],
 
           // Localities
-          authPermissions['admin'] || authPermissions['read-locality'],
+          5: authPermissions['admin'] || authPermissions['read-locality'],
 
           // Cards
-          authPermissions['admin'] || authPermissions['read-card'],
+          6: authPermissions['admin'] || authPermissions['read-card'],
 
           // Customers
-          authPermissions['admin'] || authPermissions['read-customer'],
+          7: authPermissions['admin'] || authPermissions['read-customer'],
 
           // Collectors
-          authPermissions['admin'] || authPermissions['read-collector'],
+          8: authPermissions['admin'] || authPermissions['read-collector'],
 
           // Agents
-          authPermissions['admin'] || authPermissions['read-agent']
-        ],
+          9: authPermissions['admin'] || authPermissions['read-agent']
+        },
       ),
       SidebarOptionModel(
         icon: Icons.account_balance_outlined,
@@ -221,16 +223,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Règlements',
           ),
         ],
-        subOptionsVisibility: [
+        subOptionsVisibility: {
           // Collection
-          authPermissions['admin'] || authPermissions['read-collection'],
+          0: authPermissions['admin'] || authPermissions['read-collection'],
 
           // Cash
-          authPermissions['admin'] || authPermissions['show-cash'],
+          1: authPermissions['admin'] || authPermissions['show-cash'],
 
           // Settlement
-          authPermissions['admin'] || authPermissions['read-settlement']
-        ],
+          2: authPermissions['admin'] || authPermissions['read-settlement']
+        },
       ),
       SidebarOptionModel(
         icon: Icons.analytics_outlined,
@@ -247,15 +249,15 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Chargé de Compte',
           ),
         ],
-        subOptionsVisibility: [
+        subOptionsVisibility: {
           // Customers activities
-          authPermissions['admin'] ||
+          0: authPermissions['admin'] ||
               authPermissions['show-customers-activities'],
 
           // Collectors activities
-          authPermissions['admin'] ||
+          1: authPermissions['admin'] ||
               authPermissions['show-collectors-activities'],
-        ],
+        },
       ),
       SidebarOptionModel(
         icon: Icons.language,
@@ -277,18 +279,19 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Prévisions',
           ),
         ],
-        subOptionsVisibility: [
+        subOptionsVisibility: {
           // Types
-          authPermissions['admin'] || authPermissions['show-types-statistics'],
+          0: authPermissions['admin'] ||
+              authPermissions['show-types-statistics'],
 
           // Periodic Collections
-          authPermissions['admin'] ||
+          1: authPermissions['admin'] ||
               authPermissions['show-collectors-statistics'],
 
           // Products Forecast
-          authPermissions['admin'] ||
+          2: authPermissions['admin'] ||
               authPermissions['show-products-forecasts'],
-        ],
+        },
       ),
       SidebarOptionModel(
         icon: Icons.swap_vert_outlined,
@@ -310,16 +313,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Validations',
           ),
         ],
-        subOptionsVisibility: [
+        subOptionsVisibility: {
           // transfer between card
-          authPermissions['admin'] || authPermissions['add-transfer'],
+          0: authPermissions['admin'] || authPermissions['add-transfer'],
 
           // transfer between account
-          authPermissions['admin'] || authPermissions['add-transfer'],
+          1: authPermissions['admin'] || authPermissions['add-transfer'],
 
           // transfers validations
-          authPermissions['admin'] || authPermissions['read-transfer'],
-        ],
+          2: authPermissions['admin'] || authPermissions['read-transfer'],
+        },
       ),
       SidebarOptionModel(
         icon: Icons.widgets_outlined,
@@ -331,10 +334,10 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Stocks',
           ),
         ],
-        subOptionsVisibility: [
+        subOptionsVisibility: {
           // stock
-          authPermissions['admin'] || authPermissions['read-stock'],
-        ],
+          0: authPermissions['admin'] || authPermissions['read-stock'],
+        },
       ),
       SidebarOptionModel(
         icon: Icons.hourglass_empty,
@@ -346,17 +349,20 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             name: 'Empty',
           ),
         ],
-        subOptionsVisibility: [true],
+        subOptionsVisibility: {
+          0: true,
+        },
       )
     ];
+
     // return only modules where display condition is true,
-    return modulesVisibilityConditions
+    return modulesVisibilityConditions.entries
         .where(
-          (modulesDisplayCondition) => modulesDisplayCondition,
+          (modulesVisibilityCondition) => modulesVisibilityCondition.value,
         )
         .map(
-          (modulesDisplayCondition) => modulesSidebarOptionModel[
-              modulesVisibilityConditions.indexOf(modulesDisplayCondition)],
+          (modulesVisibilityCondition1) =>
+              modulesSidebarOptionModel[modulesVisibilityCondition1.key],
         )
         .toList();
   },
@@ -407,7 +413,7 @@ final selectedSidebarOptionProvider = StateProvider<SidebarOptionModel>((ref) {
             name: 'Empty',
           ),
         ],
-        subOptionsVisibility: [true],
+        subOptionsVisibility: {0: true},
       );
 
   // check null because at least definition can be displayed
@@ -418,16 +424,18 @@ final selectedSidebarSubOptionProvider =
     StateProvider<SidebarSubOptionModel>((ref) {
   final sidebarOption = ref.watch(selectedSidebarOptionProvider);
 
-  return sidebarOption.subOptions.firstWhere(
+  final firstSubOptionVisible =
+      sidebarOption.subOptionsVisibility.entries.firstWhereOrNull(
     (subOption) {
-      final subOptionIndex = sidebarOption.subOptions.indexOf(subOption);
-
-      return sidebarOption.subOptionsVisibility[subOptionIndex];
+      return subOption.value;
     },
-    orElse: () => SidebarSubOptionModel(
-      index: 23,
-      icon: Icons.hourglass_empty,
-      name: 'Empty',
-    ),
   );
+
+  return firstSubOptionVisible != null
+      ? sidebarOption.subOptions[firstSubOptionVisible.key]
+      : SidebarSubOptionModel(
+          index: 23,
+          icon: Icons.hourglass_empty,
+          name: 'Empty',
+        );
 });
