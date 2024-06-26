@@ -30,7 +30,7 @@ class LabelValue extends ConsumerWidget {
       width: width,
       child: isColumnFormat == null || isColumnFormat == false
           ? Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 RSTText(

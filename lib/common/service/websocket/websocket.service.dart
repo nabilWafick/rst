@@ -197,14 +197,22 @@ class WebSocketService {
 
   void _onError(error) {
     debugPrint('WebSocket error: $error');
-    _isConnected = false;
-    _scheduleReconnect();
+    try {
+      _isConnected = false;
+      _scheduleReconnect();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void _onDone() {
     debugPrint('WebSocket connection closed');
-    _isConnected = false;
-    _scheduleReconnect();
+    try {
+      _isConnected = false;
+      _scheduleReconnect();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void _scheduleReconnect() {

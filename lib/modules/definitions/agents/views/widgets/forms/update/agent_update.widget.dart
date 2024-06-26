@@ -9,6 +9,7 @@ import 'package:rst/modules/definitions/agents/controllers/forms/forms.controlle
 import 'package:rst/modules/definitions/agents/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/agents/models/agent/agent.model.dart';
 import 'package:rst/modules/definitions/agents/views/widgets/agents.widget.dart';
+import 'package:rst/modules/definitions/agents/views/widgets/dialogs/permissions/permissions_dialog.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class AgentUpdateForm extends StatefulHookConsumerWidget {
@@ -28,7 +29,7 @@ class _AgentUpdateFormState extends ConsumerState<AgentUpdateForm> {
   @override
   Widget build(BuildContext context) {
     final showValidatedButton = useState<bool>(true);
-    const formCardWidth = 500.0;
+    const formCardWidth = 650.0;
     //  final agentPhoto = ref.watch(agentPhotoProvider);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -207,6 +208,41 @@ class _AgentUpdateFormState extends ConsumerState<AgentUpdateForm> {
                       textInputType: TextInputType.name,
                       validator: AgentValidators.agentAddress,
                       onChanged: AgentOnChanged.agentAddress,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 10.0,
+                    ),
+                    width: formCardWidth / 2.3,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      border: Border.all(
+                        color: RSTColors.tertiaryColor,
+                        width: .5,
+                      ),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: AgentPermissionsDialog(
+                            agent: widget.agent,
+                          ),
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 17.0,
+                        ),
+                        child: RSTText(
+                          text: 'Permissions',
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                 ],

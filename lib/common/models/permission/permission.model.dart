@@ -3,31 +3,64 @@ import 'dart:convert';
 import 'package:rst/common/models/common.model.dart';
 
 class Permission extends Operator {
+  final bool isGranted;
+
   Permission({
+    required this.isGranted,
     required super.front,
     required super.back,
   });
 
-  factory Permission.fromMap(Map<String, dynamic> map) {
+  @override
+  Permission copyWith({
+    bool? isGranted,
+    String? front,
+    String? back,
+  }) {
     return Permission(
-      front: map['front'] as String,
-      back: map['back'] as String,
+      isGranted: isGranted ?? this.isGranted,
+      front: front ?? this.front,
+      back: back ?? this.back,
     );
   }
 
-  factory Permission.fromJson(String source) =>
-      Permission.fromMap(json.decode(source) as Map<String, dynamic>);
-
   @override
-  String toString() => 'Permission(front: $front, back: $back)';
+  Map<String, dynamic> toMap() {
+    return {
+      'isGranted': isGranted,
+      'front': front,
+      'back': back,
+    };
+  }
 
-  @override
-  bool operator ==(covariant Permission other) {
-    if (identical(this, other)) return true;
-
-    return other.front == front && other.back == back;
+  factory Permission.fromMap(Map<String, dynamic> map) {
+    return Permission(
+      isGranted: map['isGranted'] ?? false,
+      front: map['front'] ?? '',
+      back: map['back'] ?? '',
+    );
   }
 
   @override
-  int get hashCode => front.hashCode ^ back.hashCode;
+  String toJson() => json.encode(toMap());
+
+  factory Permission.fromJson(String source) =>
+      Permission.fromMap(json.decode(source));
+
+  @override
+  String toString() =>
+      'Permission(isGranted: $isGranted, front: $front, back: $back)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Permission &&
+        other.isGranted == isGranted &&
+        other.front == front &&
+        other.back == back;
+  }
+
+  @override
+  int get hashCode => isGranted.hashCode ^ front.hashCode ^ back.hashCode;
 }

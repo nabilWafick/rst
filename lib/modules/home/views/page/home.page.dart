@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rst/common/service/websocket/websocket.service.dart';
 import 'package:rst/modules/home/views/widgets/home.widget.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
@@ -12,10 +11,10 @@ class HomePage extends StatefulHookConsumerWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with WidgetsBindingObserver {
-  late WebSocketService _webSocketService;
+//  late WebSocketService _webSocketService;
 
   @override
-  void initState() {
+  /* void initState() {
     super.initState();
 
     debugPrint('HomePage initState called');
@@ -28,7 +27,8 @@ class _HomePageState extends ConsumerState<HomePage>
     // try connection
     _webSocketService.connect();
   }
-
+*/
+/*
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     debugPrint('App lifecycle state changed to: $state');
@@ -38,7 +38,9 @@ class _HomePageState extends ConsumerState<HomePage>
       _webSocketService.disconnect();
     }
   }
+*/
 
+/*
   @override
   void dispose() {
     debugPrint('HomePage dispose called');
@@ -46,7 +48,7 @@ class _HomePageState extends ConsumerState<HomePage>
     _webSocketService.disconnect();
     super.dispose();
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

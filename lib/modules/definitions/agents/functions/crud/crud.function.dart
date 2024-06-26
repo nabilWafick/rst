@@ -29,6 +29,7 @@ class AgentsCRUDFunctions {
       final agentEmail = ref.watch(agentEmailProvider);
       final agentPhoneNumber = ref.watch(agentPhoneNumberProvider);
       final agentAddress = ref.watch(agentAddressProvider);
+      final agentPermissions = ref.watch(agentPermissionsProvider);
 
       // instanciate the agent
       final agent = Agent(
@@ -37,9 +38,7 @@ class AgentsCRUDFunctions {
         email: agentEmail,
         phoneNumber: agentPhoneNumber,
         address: agentAddress,
-        permissions: {
-          'admin': false,
-        },
+        permissions: agentPermissions,
         views: {
           'dashboard': false,
         },
@@ -99,6 +98,7 @@ class AgentsCRUDFunctions {
       final agentEmail = ref.watch(agentEmailProvider);
       final agentPhoneNumber = ref.watch(agentPhoneNumberProvider);
       final agentAddress = ref.watch(agentAddressProvider);
+      final agentPermissions = ref.watch(agentPermissionsProvider);
 
       // instanciate the agent
       final newAgent = Agent(
@@ -107,8 +107,10 @@ class AgentsCRUDFunctions {
         email: agentEmail,
         phoneNumber: agentPhoneNumber,
         address: agentAddress,
-        permissions: {},
-        views: {},
+        permissions: agentPermissions,
+        views: {
+          'dashboard': false,
+        },
         profile: null,
         createdAt: agent.createdAt,
         updatedAt: DateTime.now(),

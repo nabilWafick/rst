@@ -28,7 +28,7 @@ class _CollectorUpdateFormState extends ConsumerState<CollectorUpdateForm> {
   @override
   Widget build(BuildContext context) {
     final showValidatedButton = useState<bool>(true);
-    const formCardWidth = 500.0;
+    const formCardWidth = 570.0;
     //  final collectorPhoto = ref.watch(collectorPhotoProvider);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
