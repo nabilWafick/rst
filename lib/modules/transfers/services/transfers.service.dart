@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/transfers/models/transfer/transfer.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
+import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TransfersServices {
   static const route = '/transfers';
@@ -11,7 +13,20 @@ class TransfersServices {
     required Transfer transfer,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).post(
         route,
         data: transfer.toMap(),
       );
@@ -60,7 +75,20 @@ class TransfersServices {
     required int transferId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/$transferId',
       );
 
@@ -100,7 +128,20 @@ class TransfersServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         route,
         queryParameters: listParameters,
       );
@@ -137,7 +178,20 @@ class TransfersServices {
 
   static Future<ServiceResponse> countAll() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/count/all',
       );
 
@@ -175,7 +229,20 @@ class TransfersServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/count/specific',
         queryParameters: listParameters,
       );
@@ -215,7 +282,20 @@ class TransfersServices {
     required Transfer transfer,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.patch(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).patch(
         '$route/$transferId',
         data: transfer.toMap(),
       );
@@ -264,7 +344,20 @@ class TransfersServices {
     required int transferId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.delete(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).delete(
         '$route/$transferId',
       );
 

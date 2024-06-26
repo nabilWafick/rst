@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/cash/collections/models/collection/collection.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
+import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CollectionsServices {
   static const route = '/collections';
@@ -11,7 +13,20 @@ class CollectionsServices {
     required Collection collection,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).post(
         route,
         data: collection.toMap(),
       );
@@ -60,7 +75,20 @@ class CollectionsServices {
     required int collectionId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/$collectionId',
       );
 
@@ -100,7 +128,20 @@ class CollectionsServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         route,
         queryParameters: listParameters,
       );
@@ -137,7 +178,20 @@ class CollectionsServices {
 
   static Future<ServiceResponse> countAll() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/count/all',
       );
 
@@ -173,7 +227,20 @@ class CollectionsServices {
 
   static Future<ServiceResponse> sumAll() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/sum/all',
       );
 
@@ -209,7 +276,20 @@ class CollectionsServices {
 
   static Future<ServiceResponse> sumAllRest() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/sum/all/rest',
       );
 
@@ -247,7 +327,20 @@ class CollectionsServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/count/specific',
         queryParameters: listParameters,
       );
@@ -286,7 +379,20 @@ class CollectionsServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/sum/specific',
         queryParameters: listParameters,
       );
@@ -325,7 +431,20 @@ class CollectionsServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/sum/specific/rest',
         queryParameters: listParameters,
       );
@@ -365,7 +484,20 @@ class CollectionsServices {
     required Collection collection,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.patch(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).patch(
         '$route/$collectionId',
         data: collection.toMap(),
       );
@@ -415,7 +547,20 @@ class CollectionsServices {
     required Map<String, double> amount,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.patch(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).patch(
         '$route/amount/increase/$collectionId',
         data: amount,
       );
@@ -465,7 +610,20 @@ class CollectionsServices {
     required Map<String, double> amount,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.patch(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).patch(
         '$route/amount/decrease/$collectionId',
         data: amount,
       );
@@ -514,7 +672,20 @@ class CollectionsServices {
     required int collectionId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.delete(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).delete(
         '$route/$collectionId',
       );
 
@@ -560,7 +731,20 @@ class CollectionsServices {
 
   static Future<ServiceResponse> getDayCollection() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/day/collection',
       );
 
@@ -596,7 +780,20 @@ class CollectionsServices {
 
   static Future<ServiceResponse> getWeekCollection() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/week/collection',
       );
 
@@ -632,7 +829,20 @@ class CollectionsServices {
 
   static Future<ServiceResponse> getMonthCollection() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/month/collection',
       );
 
@@ -668,7 +878,20 @@ class CollectionsServices {
 
   static Future<ServiceResponse> getYearCollection() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/year/collection',
       );
 

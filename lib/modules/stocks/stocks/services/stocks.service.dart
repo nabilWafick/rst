@@ -4,6 +4,8 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/stocks/stocks/models/stock/stock.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
+import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StocksServices {
   static const route = '/stocks';
@@ -12,7 +14,20 @@ class StocksServices {
     required Stock stock,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).post(
         '$route/manual/input',
         data: stock.toMap(),
       );
@@ -61,7 +76,20 @@ class StocksServices {
     required Stock stock,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).post(
         '$route/manual/output',
         data: stock.toMap(),
       );
@@ -112,7 +140,20 @@ class StocksServices {
     required DateTime satisfiedAt,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).post(
         '$route/card/normal/satisfaction',
         data: {
           'cardId': cardId,
@@ -169,7 +210,20 @@ class StocksServices {
     required DateTime satisfiedAt,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).post(
         '$route/card/constrained/satisfaction',
         data: {
           'cardId': cardId,
@@ -225,7 +279,20 @@ class StocksServices {
     required int agentId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.post(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).post(
         '$route/card/retrocession',
         data: {
           'cardId': cardId,
@@ -275,7 +342,20 @@ class StocksServices {
     required int stockId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/$stockId',
       );
 
@@ -315,7 +395,20 @@ class StocksServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         route,
         queryParameters: listParameters,
       );
@@ -352,7 +445,20 @@ class StocksServices {
 
   static Future<ServiceResponse> countAll() async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/count/all',
       );
 
@@ -390,7 +496,20 @@ class StocksServices {
     required Map<String, dynamic> listParameters,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/count/specific',
         queryParameters: listParameters,
       );
@@ -430,7 +549,20 @@ class StocksServices {
     required Stock stock,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.patch(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).patch(
         '$route/manual/input/$stockId',
         data: stock.toMap(),
       );
@@ -480,7 +612,20 @@ class StocksServices {
     required Stock stock,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.patch(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).patch(
         '$route/manual/output/$stockId',
         data: stock.toMap(),
       );
@@ -529,7 +674,20 @@ class StocksServices {
     required int cardId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.get(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
         '$route/card/products/availability',
         data: {
           'cardId': cardId,
@@ -570,7 +728,20 @@ class StocksServices {
     required int stockId,
   }) async {
     try {
-      final response = await RSTApiConstants.dio.delete(
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).delete(
         '$route/$stockId',
       );
 

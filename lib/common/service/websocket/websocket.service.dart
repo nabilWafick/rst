@@ -42,12 +42,13 @@ class WebSocketService {
   final int _maxReconnectAttempts = 5;
   int _reconnectAttempts = 0;
 
-  void connect() {
+  Future<void> connect() async {
     if (_isConnected) return;
 
     debugPrint('Attempting to connect to WebSocket...');
     try {
       _channel = WebSocketChannel.connect(Uri.parse(_wsUrl));
+      await _channel!.ready; // Wait for the connection to be established
       _channel!.stream.listen(
         _onMessage,
         onError: _onError,
@@ -58,7 +59,9 @@ class WebSocketService {
       debugPrint('WebSocket connected successfully');
     } catch (e) {
       debugPrint('Error creating WebSocket connection: $e');
+      _isConnected = false;
       _scheduleReconnect();
+      rethrow; // Rethrow the exception so the caller knows the connection failed
     }
   }
 

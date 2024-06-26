@@ -166,12 +166,12 @@ class AuthServices {
 
       final headers = {'Authorization': 'Bearer $accessToken'};
 
-      debugPrint('headers: $headers');
-
       final response = await Dio(
         BaseOptions(
           baseUrl: RSTApiConstants.apiBaseUrl ?? '',
           headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
         ),
       ).get(
         '$route/protected-route',
