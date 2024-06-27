@@ -11,6 +11,8 @@ import 'package:rst/modules/cash/collections/functions/crud/crud.function.dart';
 import 'package:rst/modules/cash/collections/providers/collections.provider.dart';
 import 'package:rst/modules/cash/collections/views/widgets/collections.widget.dart';
 import 'package:rst/modules/cash/collections/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CollectionsPageBody extends StatefulHookConsumerWidget {
@@ -31,7 +33,7 @@ class _CollectionsPageBodyState extends ConsumerState<CollectionsPageBody> {
   @override
   Widget build(BuildContext context) {
     final collectionsList = ref.watch(collectionsListStreamProvider);
-
+    final authPermissions = ref.watch(authPermissionsProvider);
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
@@ -176,60 +178,77 @@ class _CollectionsPageBodyState extends ConsumerState<CollectionsPageBody> {
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.add_rounded,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Incrémenter',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CollectionAmountIncrementForm(
-                                collection: collection,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.remove_rounded,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Décrémenter',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CollectionAmountDecrementForm(
-                                collection: collection,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CollectionUpdateForm(
-                                collection: collection,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CollectionDeletionConfirmationDialog(
-                                collection: collection,
-                                confirmToDelete:
-                                    CollectionsCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.updateCollection]
+                            ? RSTToolTipOption(
+                                icon: Icons.add_rounded,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Incrémenter',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: CollectionAmountIncrementForm(
+                                      collection: collection,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.updateCollection]
+                            ? RSTToolTipOption(
+                                icon: Icons.remove_rounded,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Décrémenter',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: CollectionAmountDecrementForm(
+                                      collection: collection,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.updateCollection]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: CollectionUpdateForm(
+                                      collection: collection,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.deleteCollection]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        CollectionDeletionConfirmationDialog(
+                                      collection: collection,
+                                      confirmToDelete:
+                                          CollectionsCRUDFunctions.delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

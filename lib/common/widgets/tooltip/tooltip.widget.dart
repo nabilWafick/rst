@@ -5,7 +5,7 @@ import 'package:rst/utils/colors/colors.util.dart';
 
 class RSTTooltip extends StatefulHookConsumerWidget {
   final Widget? child;
-  final List<RSTToolTipOption> options;
+  final List<RSTToolTipOption?> options;
   const RSTTooltip({
     super.key,
     this.child,
@@ -84,15 +84,17 @@ class _RSTTooltipState extends ConsumerState<RSTTooltip> {
                         ),
                         // this is done so as to perform onTap function
                         ...widget.options.map(
-                          (option) => RSTToolTipOption(
-                            icon: option.icon,
-                            iconColor: option.iconColor,
-                            name: option.name,
-                            onTap: () {
-                              option.onTap();
-                              hideOverlay();
-                            },
-                          ),
+                          (option) => option != null
+                              ? RSTToolTipOption(
+                                  icon: option.icon,
+                                  iconColor: option.iconColor,
+                                  name: option.name,
+                                  onTap: () {
+                                    option.onTap();
+                                    hideOverlay();
+                                  },
+                                )
+                              : const SizedBox(),
                         ),
                       ],
                     ),

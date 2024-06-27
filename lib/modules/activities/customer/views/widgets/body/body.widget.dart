@@ -8,6 +8,8 @@ import 'package:rst/common/widgets/selection_tools/customer/card/selection_card.
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/modules/activities/customer/functions/listeners/listeners.functions.dart';
 import 'package:rst/modules/activities/customer/providers/customers_activities.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class CustomerActivitiesPageBody extends StatefulHookConsumerWidget {
   const CustomerActivitiesPageBody({super.key});
@@ -61,6 +63,8 @@ class _CustomerActivitiesPageBodyState
 
     final customerActivitiesShowAllCustomerCards =
         ref.watch(customerActivitiesShowAllCustomerCardsProvider);
+
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -124,27 +128,31 @@ class _CustomerActivitiesPageBodyState
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: 220.0,
-                  child: CheckboxListTile(
-                    value: ref.watch(
-                      customerActivitiesShowAllCustomerCardsProvider,
-                    ),
-                    title: const RSTText(
-                      text: 'Toutes les cartes',
-                      fontSize: 12,
-                    ),
-                    hoverColor: Colors.transparent,
-                    onChanged: (value) {
-                      ref
-                          .read(
-                            customerActivitiesShowAllCustomerCardsProvider
-                                .notifier,
-                          )
-                          .state = value!;
-                    },
-                  ),
-                ),
+                authPermissions![PermissionsValues.admin] ||
+                        authPermissions[PermissionsValues
+                            .showAllCustomerCardsCustomersActivities]
+                    ? SizedBox(
+                        width: 220.0,
+                        child: CheckboxListTile(
+                          value: ref.watch(
+                            customerActivitiesShowAllCustomerCardsProvider,
+                          ),
+                          title: const RSTText(
+                            text: 'Toutes les cartes',
+                            fontSize: 12,
+                          ),
+                          hoverColor: Colors.transparent,
+                          onChanged: (value) {
+                            ref
+                                .read(
+                                  customerActivitiesShowAllCustomerCardsProvider
+                                      .notifier,
+                                )
+                                .state = value!;
+                          },
+                        ),
+                      )
+                    : const SizedBox(),
               ],
             ),
           ),

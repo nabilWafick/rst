@@ -5,6 +5,7 @@ import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/definitions/agents/providers/agents.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/agents/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/agents/views/widgets/forms/addition/agent_addition.widget.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
@@ -44,9 +45,14 @@ class _AgentsPageHeaderState extends ConsumerState<AgentsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !agentsListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: agentsListParameters.containsKey('where') &&
+                        agentsListParameters['where'].containsKey('AND') &&
+                        agentsListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: agentsListParameters.containsKey('where') &&
+                    agentsListParameters['where'].containsKey('AND') &&
+                    agentsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(agentsListFilterParametersAddedProvider);
@@ -93,7 +99,8 @@ class _AgentsPageHeaderState extends ConsumerState<AgentsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !agentsListParameters.containsKey('orderBy')
+                text: !agentsListParameters.containsKey('orderBy') ||
+                        !agentsListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
                 onTap: () {
@@ -103,35 +110,44 @@ class _AgentsPageHeaderState extends ConsumerState<AgentsPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const AgentPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const AgentExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  ref.read(agentProfileProvider.notifier).state = null;
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const AgentAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printAgentsList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const AgentPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportAgentsList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const AgentExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addProduct]
+                  ? RSTAddButton(
+                      onTap: () {
+                        ref.read(agentProfileProvider.notifier).state = null;
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const AgentAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

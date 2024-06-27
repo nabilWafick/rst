@@ -10,6 +10,8 @@ import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/
 import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/footer/footer.widget.dart';
 import 'package:rst/modules/cash/cash_operations/views/widgets/card_settlements/providers/card_settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CardSettlementsOverview extends StatefulHookConsumerWidget {
@@ -32,6 +34,8 @@ class _CardSettlementsOverviewState
         ref.watch(cashOperationsSelectedCustomerCardProvider);
     final cashOperationsSelectedCustomer =
         ref.watch(cashOperationsSelectedCustomerProvider);
+
+    final authPermissions = ref.watch(authPermissionsProvider);
     return AlertDialog(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,49 +155,54 @@ class _CardSettlementsOverviewState
               width: 20.0,
             ),
             showPrintButton.value
-                ? SizedBox(
-                    width: 170.0,
-                    child: RSTElevatedButton(
-                      text: 'Imprimer',
-                      onPressed: () async {
-                        // get customer cards selllements number
-                        // because the number can not be knowed without
-                        // asking the database
-                        final customerCardsSettlementsNumberData =
-                            await SettlementsController.countSpecific(
-                          listParameters: {
-                            'skip': 0, // This value is override in backend
-                            'take': 100, // This value is override in backend
-                            'where': {
-                              'card': {
-                                'id': cashOperationsSelectedCustomerCard.id!
-                                    .toInt(),
+                ? authPermissions![PermissionsValues.admin] ||
+                        authPermissions[
+                            PermissionsValues.printCardSituationCash]
+                    ? SizedBox(
+                        width: 170.0,
+                        child: RSTElevatedButton(
+                          text: 'Imprimer',
+                          onPressed: () async {
+                            // get customer cards selllements number
+                            // because the number can not be knowed without
+                            // asking the database
+                            final customerCardsSettlementsNumberData =
+                                await SettlementsController.countSpecific(
+                              listParameters: {
+                                'skip': 0, // This value is override in backend
+                                'take':
+                                    100, // This value is override in backend
+                                'where': {
+                                  'card': {
+                                    'id': cashOperationsSelectedCustomerCard.id!
+                                        .toInt(),
+                                  },
+                                },
                               },
-                            },
-                          },
-                        );
+                            );
 
-                        //generate pdf file
-                        await generateCardSettlementsPdf(
-                          context: context,
-                          ref: ref,
-                          card: cashOperationsSelectedCustomerCard,
-                          listParameters: {
-                            'skip': 0,
-                            'take': customerCardsSettlementsNumberData.data
-                                .count, // This value is override in backend
-                            'where': {
-                              'card': {
-                                'id': cashOperationsSelectedCustomerCard.id!
-                                    .toInt(),
+                            //generate pdf file
+                            await generateCardSettlementsPdf(
+                              context: context,
+                              ref: ref,
+                              card: cashOperationsSelectedCustomerCard,
+                              listParameters: {
+                                'skip': 0,
+                                'take': customerCardsSettlementsNumberData.data
+                                    .count, // This value is override in backend
+                                'where': {
+                                  'card': {
+                                    'id': cashOperationsSelectedCustomerCard.id!
+                                        .toInt(),
+                                  },
+                                },
                               },
-                            },
+                              showPrintButton: showPrintButton,
+                            );
                           },
-                          showPrintButton: showPrintButton,
-                        );
-                      },
-                    ),
-                  )
+                        ),
+                      )
+                    : const SizedBox()
                 : const SizedBox(),
           ],
         ),

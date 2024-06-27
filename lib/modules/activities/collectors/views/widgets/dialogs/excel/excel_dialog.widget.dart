@@ -5,13 +5,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
-import 'package:rst/modules/activities/collector/functions/pdf/pdf_file.function.dart';
+import 'package:rst/modules/activities/collectors/functions/excel/excel_file.function.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CollectorActivitiesPdfGenerationDialog extends HookConsumerWidget {
-  const CollectorActivitiesPdfGenerationDialog({
+class CollectorsActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
+  const CollectorsActivitiesExcelFileGenerationDialog({
     super.key,
   });
   @override
@@ -19,7 +19,7 @@ class CollectorActivitiesPdfGenerationDialog extends HookConsumerWidget {
     const formCardWidth = 500.0;
     final exportAllsettlements = useState<bool>(false);
     final exportSelectionnedsettlements = useState<bool>(true);
-    final showPrintButton = useState<bool>(true);
+    final showExportButton = useState<bool>(true);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
         vertical: 20.0,
@@ -29,7 +29,7 @@ class CollectorActivitiesPdfGenerationDialog extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const RSTText(
-            text: 'Impression',
+            text: 'Exportation',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
           ),
@@ -54,7 +54,6 @@ class CollectorActivitiesPdfGenerationDialog extends HookConsumerWidget {
         width: formCardWidth,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SwitchListTile(
               value: exportAllsettlements.value,
@@ -112,11 +111,11 @@ class CollectorActivitiesPdfGenerationDialog extends HookConsumerWidget {
             const SizedBox(
               width: 20.0,
             ),
-            showPrintButton.value
+            showExportButton.value
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
-                      text: 'Imprimer',
+                      text: 'Exporter',
                       onPressed: () async {
                         // get current settlements filter option
                         final settlementsListParameters =
@@ -128,22 +127,22 @@ class CollectorActivitiesPdfGenerationDialog extends HookConsumerWidget {
                               await SettlementsController.countAll();
 
                           // generate excel file
-                          await generateCollectorActivitiesPdf(
+                          await generateCollectorActivitiesExcelFile(
                             context: context,
                             ref: ref,
                             listParameters: {
                               'skip': 0,
                               'take': settlementsCount.data.count,
                             },
-                            showPrintButton: showPrintButton,
+                            showExportButton: showExportButton,
                           );
                         } else {
                           // generate excel file
-                          await generateCollectorActivitiesPdf(
+                          await generateCollectorActivitiesExcelFile(
                             context: context,
                             ref: ref,
                             listParameters: settlementsListParameters,
-                            showPrintButton: showPrintButton,
+                            showExportButton: showExportButton,
                           );
                         }
                       },
@@ -153,6 +152,7 @@ class CollectorActivitiesPdfGenerationDialog extends HookConsumerWidget {
           ],
         ),
       ],
+      actionsAlignment: MainAxisAlignment.end,
     );
   }
 }

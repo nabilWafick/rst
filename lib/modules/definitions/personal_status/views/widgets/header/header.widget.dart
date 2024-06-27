@@ -4,12 +4,14 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/personal_status/providers/personal_status.provider.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/excel/excel_dialog.widget.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/filter/filter_dialog.widget.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/pdf/pdf_dialog.widget.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/dialogs/sort/sort_dialog.widget.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/forms/addition/personal_status_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class PersonalStatusPageHeader extends StatefulHookConsumerWidget {
   const PersonalStatusPageHeader({super.key});
@@ -25,6 +27,7 @@ class _PersonalStatusPageHeaderState
   Widget build(BuildContext context) {
     final personalStatusListParameters =
         ref.watch(personalStatusListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -47,9 +50,15 @@ class _PersonalStatusPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !personalStatusListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: personalStatusListParameters.containsKey('where') &&
+                        personalStatusListParameters['where']
+                            .containsKey('AND') &&
+                        personalStatusListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: personalStatusListParameters.containsKey('where') &&
+                    personalStatusListParameters['where'].containsKey('AND') &&
+                    personalStatusListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(
@@ -101,9 +110,12 @@ class _PersonalStatusPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !personalStatusListParameters.containsKey('orderBy')
+                text: !personalStatusListParameters.containsKey('orderBy') ||
+                        !personalStatusListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !personalStatusListParameters.containsKey('orderBy') ||
+                    !personalStatusListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -111,35 +123,46 @@ class _PersonalStatusPageHeaderState
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const PersonalStatusPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog:
-                        const PersonalStatusExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const PersonalStatusAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printPersonalStatusList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const PersonalStatusPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[
+                          PermissionsValues.exportPersonalStatusList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const PersonalStatusExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addPersonalStatus]
+                  ? RSTAddButton(
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const PersonalStatusAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

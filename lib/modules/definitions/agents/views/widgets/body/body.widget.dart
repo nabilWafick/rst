@@ -9,8 +9,10 @@ import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
 import 'package:rst/modules/definitions/agents/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/agents/providers/agents.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/agents/views/widgets/agents.widget.dart';
 import 'package:rst/modules/definitions/agents/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class AgentsPageBody extends StatefulHookConsumerWidget {
@@ -30,7 +32,7 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
   @override
   Widget build(BuildContext context) {
     final agentsList = ref.watch(agentsListStreamProvider);
-
+    final authPermissions = ref.watch(authPermissionsProvider);
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
@@ -173,33 +175,41 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: AgentUpdateForm(
-                                agent: agent,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: AgentDeletionConfirmationDialog(
-                                agent: agent,
-                                confirmToDelete: AgentsCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.updateAgent]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: AgentUpdateForm(
+                                      agent: agent,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.deleteAgent]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        AgentDeletionConfirmationDialog(
+                                      agent: agent,
+                                      confirmToDelete:
+                                          AgentsCRUDFunctions.delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

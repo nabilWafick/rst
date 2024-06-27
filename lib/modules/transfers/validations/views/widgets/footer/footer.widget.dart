@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/transfers/validations/providers/validations.provider.dart';
 import 'package:rst/utils/utils.dart';
 
@@ -9,6 +11,7 @@ class TransfersValidationPageFooter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       decoration: const BoxDecoration(
         color: RSTColors.backgroundColor,
@@ -20,33 +23,37 @@ class TransfersValidationPageFooter extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                const RSTText(
-                  text: 'Total: ',
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final count = ref.watch(transfersCountProvider);
-
-                    return RSTText(
-                      text: count.when(
-                        data: (data) =>
-                            data != 1 ? '$data transferts' : '$data transfert',
-                        error: (error, stackTrace) {
-                          return ' transferts';
-                        },
-                        loading: () => ' transferts',
+            authPermissions![PermissionsValues.admin] ||
+                    authPermissions[PermissionsValues.showTransfersMoreInfos]
+                ? Row(
+                    children: [
+                      const RSTText(
+                        text: 'Total: ',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-              ],
-            ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final count = ref.watch(transfersCountProvider);
+
+                          return RSTText(
+                            text: count.when(
+                              data: (data) => data != 1
+                                  ? '$data transferts'
+                                  : '$data transfert',
+                              error: (error, stackTrace) {
+                                return ' transferts';
+                              },
+                              loading: () => ' transferts',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
             Consumer(
               builder: (context, ref, child) {
                 final count = ref.watch(specificTransfersCountProvider);
@@ -146,71 +153,78 @@ class TransfersValidationPageFooter extends ConsumerWidget {
                 );
               },
             ),
-            Row(
-              children: [
-                Consumer(
-                  builder: (context, ref, child) {
-                    final transfersListParameters =
-                        ref.watch(transfersListParametersProvider);
-                    final transferList = ref.watch(transfersListStreamProvider);
-                    return RSTText(
-                      text: transferList.when(
-                        data: (data) => data.isNotEmpty
-                            ? '${transfersListParameters['skip'] + 1}'
-                            : '0',
-                        error: (error, stackTrace) => '',
-                        loading: () => '',
+            authPermissions[PermissionsValues.admin] ||
+                    authPermissions[PermissionsValues.showTransfersMoreInfos]
+                ? Row(
+                    children: [
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final transfersListParameters =
+                              ref.watch(transfersListParametersProvider);
+                          final transferList =
+                              ref.watch(transfersListStreamProvider);
+                          return RSTText(
+                            text: transferList.when(
+                              data: (data) => data.isNotEmpty
+                                  ? '${transfersListParameters['skip'] + 1}'
+                                  : '0',
+                              error: (error, stackTrace) => '',
+                              loading: () => '',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-                const RSTText(
-                  text: ' - ',
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.w400,
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final transfersListParameters =
-                        ref.watch(transfersListParametersProvider);
-                    final transferList = ref.watch(transfersListStreamProvider);
-                    return RSTText(
-                      text: transferList.when(
-                        data: (data) =>
-                            '${transfersListParameters['skip'] + data.length}',
-                        error: (error, stackTrace) => '',
-                        loading: () => '',
+                      const RSTText(
+                        text: ' - ',
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w400,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-                const RSTText(
-                  text: ' sur ',
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.w500,
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final count = ref.watch(specificTransfersCountProvider);
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final transfersListParameters =
+                              ref.watch(transfersListParametersProvider);
+                          final transferList =
+                              ref.watch(transfersListStreamProvider);
+                          return RSTText(
+                            text: transferList.when(
+                              data: (data) =>
+                                  '${transfersListParameters['skip'] + data.length}',
+                              error: (error, stackTrace) => '',
+                              loading: () => '',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
+                      ),
+                      const RSTText(
+                        text: ' sur ',
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final count =
+                              ref.watch(specificTransfersCountProvider);
 
-                    return RSTText(
-                      text: count.when(
-                        data: (data) =>
-                            data != 1 ? '$data transferts' : '$data transfert',
-                        error: (error, stackTrace) => ' transferts',
-                        loading: () => ' transferts',
+                          return RSTText(
+                            text: count.when(
+                              data: (data) => data != 1
+                                  ? '$data transferts'
+                                  : '$data transfert',
+                              error: (error, stackTrace) => ' transferts',
+                              loading: () => ' transferts',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-              ],
-            ),
+                    ],
+                  )
+                : const SizedBox(),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rst/modules/activities/collector/views/widgets/collector_activities.widget.dart';
+import 'package:rst/modules/activities/collectors/views/widgets/collector_activities.widget.dart';
 
 class CollectorActivitiesPage extends ConsumerWidget {
   const CollectorActivitiesPage({super.key});
@@ -9,9 +9,9 @@ class CollectorActivitiesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return const Column(
       children: [
-        CollectorActivitiesPageHeader(),
-        CollectorActivitiesPageBody(),
-        CollectorActivitiesPageFooter(),
+        CollectorsActivitiesPageHeader(),
+        CollectorsActivitiesPageBody(),
+        CollectorsActivitiesPageFooter(),
       ],
     );
   }

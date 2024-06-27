@@ -7,6 +7,8 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/transfers/functions/crud/crud.function.dart';
 import 'package:rst/modules/transfers/validations/providers/validations.provider.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/forms/actions_confirmations/rejection/rejection.widget.dart';
@@ -33,7 +35,7 @@ class _TransfersValidationPageBodyState
   @override
   Widget build(BuildContext context) {
     final transfersList = ref.watch(transfersListStreamProvider);
-
+    final authPermissions = ref.watch(authPermissionsProvider);
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
@@ -227,53 +229,67 @@ class _TransfersValidationPageBodyState
                         ),
                         if (transfer.validatedAt == null &&
                             transfer.rejectedAt == null) ...[
-                          RSTToolTipOption(
-                            icon: Icons.check,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Valider',
-                            onTap: () async {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog:
-                                    TransferValidationConfirmationDialog(
-                                  transfer: transfer,
-                                  confirmToValidate:
-                                      TransfersCRUDFunctions.validate,
-                                ),
-                              );
-                            },
-                          ),
-                          RSTToolTipOption(
-                            icon: Icons.close,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Rejeter',
-                            onTap: () async {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog:
-                                    TransferRejectionConfirmationDialog(
-                                  transfer: transfer,
-                                  confirmToReject:
-                                      TransfersCRUDFunctions.reject,
-                                ),
-                              );
-                            },
-                          ),
+                          authPermissions![PermissionsValues.admin] ||
+                                  authPermissions[
+                                      PermissionsValues.updateTransfer]
+                              ? RSTToolTipOption(
+                                  icon: Icons.check,
+                                  iconColor: RSTColors.primaryColor,
+                                  name: 'Valider',
+                                  onTap: () async {
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog:
+                                          TransferValidationConfirmationDialog(
+                                        transfer: transfer,
+                                        confirmToValidate:
+                                            TransfersCRUDFunctions.validate,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : null,
+                          authPermissions[PermissionsValues.admin] ||
+                                  authPermissions[
+                                      PermissionsValues.updateTransfer]
+                              ? RSTToolTipOption(
+                                  icon: Icons.close,
+                                  iconColor: RSTColors.primaryColor,
+                                  name: 'Rejeter',
+                                  onTap: () async {
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog:
+                                          TransferRejectionConfirmationDialog(
+                                        transfer: transfer,
+                                        confirmToReject:
+                                            TransfersCRUDFunctions.reject,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : null,
                         ],
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: TransferDeletionConfirmationDialog(
-                                transfer: transfer,
-                                confirmToDelete: TransfersCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.deleteTransfer]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        TransferDeletionConfirmationDialog(
+                                      transfer: transfer,
+                                      confirmToDelete:
+                                          TransfersCRUDFunctions.delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

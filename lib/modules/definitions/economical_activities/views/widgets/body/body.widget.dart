@@ -7,10 +7,12 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/economical_activities/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/economical_activities/providers/economical_activities.provider.dart';
 import 'package:rst/modules/definitions/economical_activities/views/widgets/economical_activities.widget.dart';
 import 'package:rst/modules/definitions/economical_activities/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class EconomicalActivitiesPageBody extends StatefulHookConsumerWidget {
@@ -33,6 +35,7 @@ class _EconomicalActivitiesPageBodyState
   Widget build(BuildContext context) {
     final economicalActivitiesList =
         ref.watch(economicalActivitiesListStreamProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -134,35 +137,44 @@ class _EconomicalActivitiesPageBodyState
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: EconomicalActivityUpdateForm(
-                                economicalActivity: economicalActivity,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog:
-                                  EconomicalActivityDeletionConfirmationDialog(
-                                economicalActivity: economicalActivity,
-                                confirmToDelete:
-                                    EconomicalActivitiesCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.updateEconomicalActivity]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: EconomicalActivityUpdateForm(
+                                      economicalActivity: economicalActivity,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.deleteEconomicalActivity]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        EconomicalActivityDeletionConfirmationDialog(
+                                      economicalActivity: economicalActivity,
+                                      confirmToDelete:
+                                          EconomicalActivitiesCRUDFunctions
+                                              .delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

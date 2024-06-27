@@ -4,9 +4,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/localities/providers/localities.provider.dart';
 import 'package:rst/modules/definitions/localities/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/localities/views/widgets/forms/addition/locality_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class LocalitiesPageHeader extends StatefulHookConsumerWidget {
   const LocalitiesPageHeader({super.key});
@@ -21,6 +23,7 @@ class _LocalitiesPageHeaderState extends ConsumerState<LocalitiesPageHeader> {
   Widget build(BuildContext context) {
     final localitiesListParameters =
         ref.watch(localitiesListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -43,9 +46,14 @@ class _LocalitiesPageHeaderState extends ConsumerState<LocalitiesPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !localitiesListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: localitiesListParameters.containsKey('where') &&
+                        localitiesListParameters['where'].containsKey('AND') &&
+                        localitiesListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: localitiesListParameters.containsKey('where') &&
+                    localitiesListParameters['where'].containsKey('AND') &&
+                    localitiesListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(localitiesListFilterParametersAddedProvider);
@@ -95,9 +103,12 @@ class _LocalitiesPageHeaderState extends ConsumerState<LocalitiesPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !localitiesListParameters.containsKey('orderBy')
+                text: !localitiesListParameters.containsKey('orderBy') ||
+                        !localitiesListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !localitiesListParameters.containsKey('orderBy') ||
+                    !localitiesListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -105,34 +116,44 @@ class _LocalitiesPageHeaderState extends ConsumerState<LocalitiesPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const LocalityPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const LocalityExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const LocalityAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printLocalitiesList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const LocalityPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportLocalitiesList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const LocalityExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addLocality]
+                  ? RSTAddButton(
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const LocalityAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

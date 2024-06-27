@@ -7,10 +7,12 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/cards/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/cards/views/widgets/cards.widget.dart';
 import 'package:rst/modules/definitions/cards/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CardsPageBody extends StatefulHookConsumerWidget {
@@ -32,6 +34,8 @@ class _CardsPageBodyState extends ConsumerState<CardsPageBody> {
     final cardsList = ref.watch(cardsListStreamProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
+
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     return Expanded(
       child: Container(
@@ -197,33 +201,40 @@ class _CardsPageBodyState extends ConsumerState<CardsPageBody> {
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CardUpdateForm(
-                                card: card,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CardDeletionConfirmationDialog(
-                                card: card,
-                                confirmToDelete: CardsCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.updateCard]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: CardUpdateForm(
+                                      card: card,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.deleteProduct]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: CardDeletionConfirmationDialog(
+                                      card: card,
+                                      confirmToDelete:
+                                          CardsCRUDFunctions.delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

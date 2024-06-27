@@ -7,10 +7,12 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/localities/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/localities/providers/localities.provider.dart';
 import 'package:rst/modules/definitions/localities/views/widgets/localities.widget.dart';
 import 'package:rst/modules/definitions/localities/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class LocalitiesPageBody extends StatefulHookConsumerWidget {
@@ -31,7 +33,7 @@ class _LocalitiesPageBodyState extends ConsumerState<LocalitiesPageBody> {
   @override
   Widget build(BuildContext context) {
     final localitiesList = ref.watch(localitiesListStreamProvider);
-
+    final authPermissions = ref.watch(authPermissionsProvider);
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
@@ -132,33 +134,43 @@ class _LocalitiesPageBodyState extends ConsumerState<LocalitiesPageBody> {
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: LocalityUpdateForm(
-                                locality: locality,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: LocalityDeletionConfirmationDialog(
-                                locality: locality,
-                                confirmToDelete: LocalitiesCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.updateLocality]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: LocalityUpdateForm(
+                                      locality: locality,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.deleteLocality]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        LocalityDeletionConfirmationDialog(
+                                      locality: locality,
+                                      confirmToDelete:
+                                          LocalitiesCRUDFunctions.delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

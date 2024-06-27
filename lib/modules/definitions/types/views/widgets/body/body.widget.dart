@@ -7,11 +7,13 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/types/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/types/models/types.model.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
 import 'package:rst/modules/definitions/types/views/widgets/types.widget.dart';
 import 'package:rst/modules/definitions/types/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class TypesPageBody extends StatefulHookConsumerWidget {
@@ -31,7 +33,7 @@ class _TypesPageBodyState extends ConsumerState<TypesPageBody> {
   @override
   Widget build(BuildContext context) {
     final typesList = ref.watch(typesListStreamProvider);
-
+    final authPermissions = ref.watch(authPermissionsProvider);
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
@@ -152,54 +154,62 @@ class _TypesPageBodyState extends ConsumerState<TypesPageBody> {
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            // invalidate typeProductsInputsAddedProvider
-                            ref.invalidate(
-                                typeProductsInputsAddedVisibilityProvider);
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.updateType]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  // invalidate typeProductsInputsAddedProvider
+                                  ref.invalidate(
+                                      typeProductsInputsAddedVisibilityProvider);
 
-                            // add the type products inputs
+                                  // add the type products inputs
 
-                            for (TypeProduct typeProduct in type.typeProducts) {
-                              ref
-                                  .read(
-                                      typeProductsInputsAddedVisibilityProvider
-                                          .notifier)
-                                  .update((state) {
-                                state = {
-                                  ...state,
-                                  typeProduct.productId.toString(): true,
-                                };
+                                  for (TypeProduct typeProduct
+                                      in type.typeProducts) {
+                                    ref
+                                        .read(
+                                            typeProductsInputsAddedVisibilityProvider
+                                                .notifier)
+                                        .update((state) {
+                                      state = {
+                                        ...state,
+                                        typeProduct.productId.toString(): true,
+                                      };
 
-                                return state;
-                              });
-                            }
+                                      return state;
+                                    });
+                                  }
 
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: TypeUpdateForm(
-                                type: type,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: TypeDeletionConfirmationDialog(
-                                type: type,
-                                confirmToDelete: TypesCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: TypeUpdateForm(
+                                      type: type,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.deleteType]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: TypeDeletionConfirmationDialog(
+                                      type: type,
+                                      confirmToDelete:
+                                          TypesCRUDFunctions.delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/utils.dart';
 
 class CardsPageFooter extends ConsumerWidget {
@@ -9,6 +11,7 @@ class CardsPageFooter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       decoration: const BoxDecoration(
         color: RSTColors.backgroundColor,
@@ -20,33 +23,36 @@ class CardsPageFooter extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                const RSTText(
-                  text: 'Total: ',
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final count = ref.watch(cardsCountProvider);
-
-                    return RSTText(
-                      text: count.when(
-                        data: (data) =>
-                            data != 1 ? '$data cartes' : '$data carte',
-                        error: (error, stackTrace) {
-                          return ' cartes';
-                        },
-                        loading: () => ' cartes',
+            authPermissions![PermissionsValues.admin] ||
+                    authPermissions[PermissionsValues.showCardsMoreInfos]
+                ? Row(
+                    children: [
+                      const RSTText(
+                        text: 'Total: ',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-              ],
-            ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final count = ref.watch(cardsCountProvider);
+
+                          return RSTText(
+                            text: count.when(
+                              data: (data) =>
+                                  data != 1 ? '$data cartes' : '$data carte',
+                              error: (error, stackTrace) {
+                                return ' cartes';
+                              },
+                              loading: () => ' cartes',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
             Consumer(
               builder: (context, ref, child) {
                 final count = ref.watch(specificCardsCountProvider);
@@ -146,71 +152,74 @@ class CardsPageFooter extends ConsumerWidget {
                 );
               },
             ),
-            Row(
-              children: [
-                Consumer(
-                  builder: (context, ref, child) {
-                    final cardsListParameters =
-                        ref.watch(cardsListParametersProvider);
-                    final cardList = ref.watch(cardsListStreamProvider);
-                    return RSTText(
-                      text: cardList.when(
-                        data: (data) => data.isNotEmpty
-                            ? '${cardsListParameters['skip'] + 1}'
-                            : '0',
-                        error: (error, stackTrace) => '',
-                        loading: () => '',
+            authPermissions[PermissionsValues.admin] ||
+                    authPermissions[PermissionsValues.showCardsMoreInfos]
+                ? Row(
+                    children: [
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final cardsListParameters =
+                              ref.watch(cardsListParametersProvider);
+                          final cardList = ref.watch(cardsListStreamProvider);
+                          return RSTText(
+                            text: cardList.when(
+                              data: (data) => data.isNotEmpty
+                                  ? '${cardsListParameters['skip'] + 1}'
+                                  : '0',
+                              error: (error, stackTrace) => '',
+                              loading: () => '',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-                const RSTText(
-                  text: ' - ',
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.w400,
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final cardsListParameters =
-                        ref.watch(cardsListParametersProvider);
-                    final cardList = ref.watch(cardsListStreamProvider);
-                    return RSTText(
-                      text: cardList.when(
-                        data: (data) =>
-                            '${cardsListParameters['skip'] + data.length}',
-                        error: (error, stackTrace) => '',
-                        loading: () => '',
+                      const RSTText(
+                        text: ' - ',
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w400,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-                const RSTText(
-                  text: ' sur ',
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.w500,
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final count = ref.watch(specificCardsCountProvider);
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final cardsListParameters =
+                              ref.watch(cardsListParametersProvider);
+                          final cardList = ref.watch(cardsListStreamProvider);
+                          return RSTText(
+                            text: cardList.when(
+                              data: (data) =>
+                                  '${cardsListParameters['skip'] + data.length}',
+                              error: (error, stackTrace) => '',
+                              loading: () => '',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
+                      ),
+                      const RSTText(
+                        text: ' sur ',
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final count = ref.watch(specificCardsCountProvider);
 
-                    return RSTText(
-                      text: count.when(
-                        data: (data) =>
-                            data != 1 ? '$data cartes' : '$data carte',
-                        error: (error, stackTrace) => ' cartes',
-                        loading: () => ' cartes',
+                          return RSTText(
+                            text: count.when(
+                              data: (data) =>
+                                  data != 1 ? '$data cartes' : '$data carte',
+                              error: (error, stackTrace) => ' cartes',
+                              loading: () => ' cartes',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    );
-                  },
-                ),
-              ],
-            ),
+                    ],
+                  )
+                : const SizedBox(),
           ],
         ),
       ),

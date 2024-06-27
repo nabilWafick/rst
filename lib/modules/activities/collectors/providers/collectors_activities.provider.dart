@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
 
-// used for storing collectorActivities filter options
-final collectorActivitiesListParametersProvider =
+// used for storing collectorsActivities filter options
+final collectorsActivitiesListParametersProvider =
     StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
@@ -27,15 +27,15 @@ final collectorActivitiesListParametersProvider =
 });
 
 // used for storing added filter tool
-final collectorActivitiesListFilterParametersAddedProvider =
+final collectorsActivitiesListFilterParametersAddedProvider =
     StateProvider<Map<int, Map<String, dynamic>>>((ref) {
   return {};
 });
 
-// used for storing fetched collectorActivities
-final collectorActivitiesListStreamProvider =
+// used for storing fetched collectorsActivities
+final collectorsActivitiesListStreamProvider =
     FutureProvider<List<Settlement>>((ref) async {
-  final listParameters = ref.watch(collectorActivitiesListParametersProvider);
+  final listParameters = ref.watch(collectorsActivitiesListParametersProvider);
 
   final controllerResponse = await SettlementsController.getMany(
     listParameters: listParameters,
@@ -46,8 +46,8 @@ final collectorActivitiesListStreamProvider =
       : <Settlement>[];
 });
 
-// used for storing all collectorActivities of database count
-final collectorActivitiesCountProvider = FutureProvider<int>((ref) async {
+// used for storing all collectorsActivities of database count
+final collectorsActivitiesCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await SettlementsController.countAll();
 
   return controllerResponse.data != null
@@ -55,10 +55,10 @@ final collectorActivitiesCountProvider = FutureProvider<int>((ref) async {
       : 0;
 });
 
-// used for storing fetched collectorActivities (settlements respecting filter options) count
-final specificCollectorActivitiesCountProvider =
+// used for storing fetched collectorsActivities (settlements respecting filter options) count
+final specificCollectorsActivitiesCountProvider =
     FutureProvider<int>((ref) async {
-  final listParameters = ref.watch(collectorActivitiesListParametersProvider);
+  final listParameters = ref.watch(collectorsActivitiesListParametersProvider);
 
   final controllerResponse = await SettlementsController.countSpecific(
     listParameters: listParameters,

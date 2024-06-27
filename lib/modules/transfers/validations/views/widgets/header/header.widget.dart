@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/transfers/validations/providers/validations.provider.dart';
 import 'package:rst/modules/transfers/validations/views/widgets/dialogs/dialogs.widget.dart';
 
@@ -19,6 +21,7 @@ class _TransfersValidationPageHeaderState
   @override
   Widget build(BuildContext context) {
     final transfersListParameters = ref.watch(transfersListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -41,9 +44,14 @@ class _TransfersValidationPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !transfersListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: transfersListParameters.containsKey('where') &&
+                        transfersListParameters['where'].containsKey('AND') &&
+                        transfersListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: transfersListParameters.containsKey('where') &&
+                    transfersListParameters['where'].containsKey('AND') &&
+                    transfersListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(transfersListFilterParametersAddedProvider);
@@ -95,9 +103,12 @@ class _TransfersValidationPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !transfersListParameters.containsKey('orderBy')
+                text: !transfersListParameters.containsKey('orderBy') ||
+                        !transfersListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !transfersListParameters.containsKey('orderBy') ||
+                    !transfersListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -105,26 +116,33 @@ class _TransfersValidationPageHeaderState
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TransferPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TransferExcelFileGenerationDialog(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printTransfersList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const TransferPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportTransfersList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const TransferExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
               const SizedBox(),
             ],
           ),

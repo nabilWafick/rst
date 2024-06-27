@@ -12,16 +12,16 @@ import 'package:rst/modules/cash/settlements/models/structure/structure.model.da
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CollectorActivitiesFilterDialog extends StatefulHookConsumerWidget {
-  const CollectorActivitiesFilterDialog({super.key});
+class CollectorsActivitiesFilterDialog extends StatefulHookConsumerWidget {
+  const CollectorsActivitiesFilterDialog({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CollectorActivitiesFilterDialogState();
+      _CollectorsActivitiesFilterDialogState();
 }
 
-class _CollectorActivitiesFilterDialogState
-    extends ConsumerState<CollectorActivitiesFilterDialog> {
+class _CollectorsActivitiesFilterDialogState
+    extends ConsumerState<CollectorsActivitiesFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {

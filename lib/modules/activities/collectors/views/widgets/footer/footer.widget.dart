@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/modules/activities/collectors/providers/collectors_activities.provider.dart';
 import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
-import 'package:rst/modules/definitions/personal_status/providers/personal_status.provider.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/utils.dart';
 
-class PersonalStatusPageFooter extends ConsumerWidget {
-  const PersonalStatusPageFooter({super.key});
+class CollectorsActivitiesPageFooter extends ConsumerWidget {
+  const CollectorsActivitiesPageFooter({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +25,7 @@ class PersonalStatusPageFooter extends ConsumerWidget {
           children: [
             authPermissions![PermissionsValues.admin] ||
                     authPermissions[
-                        PermissionsValues.showPersonalStatusMoreInfos]
+                        PermissionsValues.showCollectorsActivitiesMoreInfos]
                 ? Row(
                     children: [
                       const RSTText(
@@ -35,17 +35,18 @@ class PersonalStatusPageFooter extends ConsumerWidget {
                       ),
                       Consumer(
                         builder: (context, ref, child) {
-                          final count = ref.watch(personalStatusCountProvider);
+                          final count =
+                              ref.watch(collectorsActivitiesCountProvider);
 
                           return RSTText(
                             text: count.when(
                               data: (data) => data != 1
-                                  ? '$data stat. personnels'
-                                  : '$data stat. personnel',
+                                  ? '$data règlements'
+                                  : '$data règlement',
                               error: (error, stackTrace) {
-                                return ' stat. personnels';
+                                return ' règlements';
                               },
-                              loading: () => ' stat. personnels',
+                              loading: () => ' règlements',
                             ),
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,
@@ -57,28 +58,31 @@ class PersonalStatusPageFooter extends ConsumerWidget {
                 : const SizedBox(),
             Consumer(
               builder: (context, ref, child) {
-                final count = ref.watch(specificPersonalStatusCountProvider);
+                final count =
+                    ref.watch(specificCollectorsActivitiesCountProvider);
                 return count.when(
                   data: (data) {
                     return Row(
                       children: [
                         Consumer(
                           builder: (context, ref, child) {
-                            final personalStatusListParameters =
-                                ref.watch(personalStatusListParametersProvider);
+                            final collectorsActivitiesListParameters =
+                                ref.watch(
+                                    collectorsActivitiesListParametersProvider);
 
-                            return personalStatusListParameters['skip'] != 0
+                            return collectorsActivitiesListParameters['skip'] !=
+                                    0
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              personalStatusListParametersProvider
+                                              collectorsActivitiesListParametersProvider
                                                   .notifier)
                                           .update((state) {
                                         // decrease the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] -= 25,
+                                          'skip': state['skip'] -= 15,
                                         };
 
                                         return state;
@@ -96,15 +100,16 @@ class PersonalStatusPageFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final personalStatusListParameters =
-                                ref.watch(personalStatusListParametersProvider);
+                            final collectorsActivitiesListParameters =
+                                ref.watch(
+                                    collectorsActivitiesListParametersProvider);
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0,
                               ),
                               child: RSTText(
                                 text: data != 0
-                                    ? '${((personalStatusListParameters['skip'] + 25) / 25).toInt()}'
+                                    ? '${((collectorsActivitiesListParameters['skip'] + 15) / 15).toInt()}'
                                     : '0',
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700,
@@ -115,22 +120,24 @@ class PersonalStatusPageFooter extends ConsumerWidget {
                         ),
                         Consumer(
                           builder: (context, ref, child) {
-                            final personalStatusListParameters =
-                                ref.watch(personalStatusListParametersProvider);
+                            final collectorsActivitiesListParameters =
+                                ref.watch(
+                                    collectorsActivitiesListParametersProvider);
 
-                            return personalStatusListParameters['skip'] + 25 <
+                            return collectorsActivitiesListParameters['skip'] +
+                                        15 <
                                     data
                                 ? IconButton(
                                     onPressed: () {
                                       ref
                                           .read(
-                                              personalStatusListParametersProvider
+                                              collectorsActivitiesListParametersProvider
                                                   .notifier)
                                           .update((state) {
                                         // increase the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] += 25,
+                                          'skip': state['skip'] += 15,
                                         };
 
                                         return state;
@@ -159,19 +166,19 @@ class PersonalStatusPageFooter extends ConsumerWidget {
             ),
             authPermissions[PermissionsValues.admin] ||
                     authPermissions[
-                        PermissionsValues.showPersonalStatusMoreInfos]
+                        PermissionsValues.showCollectorsActivitiesMoreInfos]
                 ? Row(
                     children: [
                       Consumer(
                         builder: (context, ref, child) {
-                          final personalStatusListParameters =
-                              ref.watch(personalStatusListParametersProvider);
-                          final personalStatusList =
-                              ref.watch(personalStatusListStreamProvider);
+                          final collectorsActivitiesListParameters = ref.watch(
+                              collectorsActivitiesListParametersProvider);
+                          final collectorActivitieList =
+                              ref.watch(collectorsActivitiesListStreamProvider);
                           return RSTText(
-                            text: personalStatusList.when(
+                            text: collectorActivitieList.when(
                               data: (data) => data.isNotEmpty
-                                  ? '${personalStatusListParameters['skip'] + 1}'
+                                  ? '${collectorsActivitiesListParameters['skip'] + 1}'
                                   : '0',
                               error: (error, stackTrace) => '',
                               loading: () => '',
@@ -188,14 +195,14 @@ class PersonalStatusPageFooter extends ConsumerWidget {
                       ),
                       Consumer(
                         builder: (context, ref, child) {
-                          final personalStatusListParameters =
-                              ref.watch(personalStatusListParametersProvider);
-                          final personalStatusList =
-                              ref.watch(personalStatusListStreamProvider);
+                          final collectorsActivitiesListParameters = ref.watch(
+                              collectorsActivitiesListParametersProvider);
+                          final collectorActivitieList =
+                              ref.watch(collectorsActivitiesListStreamProvider);
                           return RSTText(
-                            text: personalStatusList.when(
+                            text: collectorActivitieList.when(
                               data: (data) =>
-                                  '${personalStatusListParameters['skip'] + data.length}',
+                                  '${collectorsActivitiesListParameters['skip'] + data.length}',
                               error: (error, stackTrace) => '',
                               loading: () => '',
                             ),
@@ -211,16 +218,16 @@ class PersonalStatusPageFooter extends ConsumerWidget {
                       ),
                       Consumer(
                         builder: (context, ref, child) {
-                          final count =
-                              ref.watch(specificPersonalStatusCountProvider);
+                          final count = ref
+                              .watch(specificCollectorsActivitiesCountProvider);
 
                           return RSTText(
                             text: count.when(
                               data: (data) => data != 1
-                                  ? '$data stat. personnels'
-                                  : '$data stat. personnel',
-                              error: (error, stackTrace) => ' stat. personnels',
-                              loading: () => ' stat. personnels',
+                                  ? '$data règlements'
+                                  : '$data règlement',
+                              error: (error, stackTrace) => ' règlements',
+                              loading: () => ' règlements',
                             ),
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,

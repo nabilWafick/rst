@@ -200,7 +200,7 @@ class _CustomerActivitiesSettlementsCardBodyState
                             );
                           },
                         ),
-                        if (settlement.collection != null &&
+                        /*   if (settlement.collection != null &&
                             customerActivitiesSelectedCustomerCard != null &&
                             customerActivitiesSelectedCustomerCard.repaidAt ==
                                 null &&
@@ -277,7 +277,7 @@ class _CustomerActivitiesSettlementsCardBodyState
                                 );
                               },
                             ),
-                        ]
+                        ]*/
                       ],
                     ),
                   ),

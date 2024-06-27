@@ -4,9 +4,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
 import 'package:rst/modules/definitions/products/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/products/views/widgets/forms/addition/product_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class ProductsPageHeader extends StatefulHookConsumerWidget {
   const ProductsPageHeader({super.key});
@@ -20,6 +22,7 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
   @override
   Widget build(BuildContext context) {
     final productsListParameters = ref.watch(productsListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -99,9 +102,12 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !productsListParameters.containsKey('orderBy')
+                text: !productsListParameters.containsKey('orderBy') ||
+                        !productsListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !productsListParameters.containsKey('orderBy') ||
+                    !productsListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -109,35 +115,44 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const ProductPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const ProductExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  ref.read(productPhotoProvider.notifier).state = null;
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const ProductAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printProductsList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const ProductPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportProductsList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const ProductExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addProduct]
+                  ? RSTAddButton(
+                      onTap: () {
+                        ref.read(productPhotoProvider.notifier).state = null;
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const ProductAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

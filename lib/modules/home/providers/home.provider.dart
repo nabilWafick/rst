@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rst/modules/activities/collector/views/page/collector_activities.page.dart';
+import 'package:rst/modules/activities/collectors/views/page/collector_activities.page.dart';
 import 'package:rst/modules/activities/customer/views/page/customer_activities.page.dart';
 import 'package:rst/modules/auth/empty/views/page/empty.page.dart';
 import 'package:rst/modules/cash/cash_operations/views/page/cash_operations.page.dart';

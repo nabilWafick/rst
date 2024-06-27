@@ -12,6 +12,8 @@ import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirm
 import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/toggle%20_validation/toggle_validation.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/forms/update/settlement_update.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CashOperationsSettlementsCardBody extends StatefulHookConsumerWidget {
@@ -37,6 +39,8 @@ class _CashOperationsSettlementsCardBodyState
 
     final cashOperationsSelectedCustomerCard =
         ref.watch(cashOperationsSelectedCustomerCardProvider);
+
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -208,26 +212,30 @@ class _CashOperationsSettlementsCardBodyState
                                 null &&
                             cashOperationsSelectedCustomerCard.transferredAt ==
                                 null) ...[
-                          RSTToolTipOption(
-                            icon: !settlement.isValidated
-                                ? Icons.check
-                                : Icons.close,
-                            iconColor: RSTColors.primaryColor,
-                            name: !settlement.isValidated
-                                ? 'Valider'
-                                : 'Invalider',
-                            onTap: () async {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog:
-                                    SettlementValidationToggleConfirmationDialog(
-                                  settlement: settlement,
-                                  toggle:
-                                      SettlementsCRUDFunctions.toggleValidation,
-                                ),
-                              );
-                            },
-                          ),
+                          authPermissions![PermissionsValues.admin] ||
+                                  authPermissions[
+                                      PermissionsValues.updateSettlement]
+                              ? RSTToolTipOption(
+                                  icon: !settlement.isValidated
+                                      ? Icons.check
+                                      : Icons.close,
+                                  iconColor: RSTColors.primaryColor,
+                                  name: !settlement.isValidated
+                                      ? 'Valider'
+                                      : 'Invalider',
+                                  onTap: () async {
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog:
+                                          SettlementValidationToggleConfirmationDialog(
+                                        settlement: settlement,
+                                        toggle: SettlementsCRUDFunctions
+                                            .toggleValidation,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : null,
                           if (cashOperationsSelectedCustomerCard.repaidAt ==
                                   null &&
                               cashOperationsSelectedCustomerCard
@@ -236,19 +244,23 @@ class _CashOperationsSettlementsCardBodyState
                               cashOperationsSelectedCustomerCard
                                       .transferredAt ==
                                   null)
-                            RSTToolTipOption(
-                              icon: Icons.edit,
-                              iconColor: RSTColors.primaryColor,
-                              name: 'Modifier',
-                              onTap: () async {
-                                FunctionsController.showAlertDialog(
-                                  context: context,
-                                  alertDialog: SettlementUpdateForm(
-                                    settlement: settlement,
-                                  ),
-                                );
-                              },
-                            ),
+                            authPermissions[PermissionsValues.admin] ||
+                                    authPermissions[
+                                        PermissionsValues.updateSettlement]
+                                ? RSTToolTipOption(
+                                    icon: Icons.edit,
+                                    iconColor: RSTColors.primaryColor,
+                                    name: 'Modifier',
+                                    onTap: () async {
+                                      FunctionsController.showAlertDialog(
+                                        context: context,
+                                        alertDialog: SettlementUpdateForm(
+                                          settlement: settlement,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : null,
                           if (cashOperationsSelectedCustomerCard.repaidAt ==
                                   null &&
                               cashOperationsSelectedCustomerCard
@@ -257,22 +269,26 @@ class _CashOperationsSettlementsCardBodyState
                               cashOperationsSelectedCustomerCard
                                       .transferredAt ==
                                   null)
-                            RSTToolTipOption(
-                              icon: Icons.delete,
-                              iconColor: RSTColors.primaryColor,
-                              name: 'Supprimer',
-                              onTap: () {
-                                FunctionsController.showAlertDialog(
-                                  context: context,
-                                  alertDialog:
-                                      SettlementDeletionConfirmationDialog(
-                                    settlement: settlement,
-                                    confirmToDelete:
-                                        SettlementsCRUDFunctions.delete,
-                                  ),
-                                );
-                              },
-                            ),
+                            authPermissions[PermissionsValues.admin] ||
+                                    authPermissions[
+                                        PermissionsValues.deleteSettlement]
+                                ? RSTToolTipOption(
+                                    icon: Icons.delete,
+                                    iconColor: RSTColors.primaryColor,
+                                    name: 'Supprimer',
+                                    onTap: () {
+                                      FunctionsController.showAlertDialog(
+                                        context: context,
+                                        alertDialog:
+                                            SettlementDeletionConfirmationDialog(
+                                          settlement: settlement,
+                                          confirmToDelete:
+                                              SettlementsCRUDFunctions.delete,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : null,
                         ]
                       ],
                     ),

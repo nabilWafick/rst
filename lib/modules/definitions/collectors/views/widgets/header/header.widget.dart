@@ -4,9 +4,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/collectors/providers/collectors.provider.dart';
 import 'package:rst/modules/definitions/collectors/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/collectors/views/widgets/forms/addition/collector_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class CollectorsPageHeader extends StatefulHookConsumerWidget {
   const CollectorsPageHeader({super.key});
@@ -21,6 +23,7 @@ class _CollectorsPageHeaderState extends ConsumerState<CollectorsPageHeader> {
   Widget build(BuildContext context) {
     final collectorsListParameters =
         ref.watch(collectorsListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -43,9 +46,14 @@ class _CollectorsPageHeaderState extends ConsumerState<CollectorsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !collectorsListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: collectorsListParameters.containsKey('where') &&
+                        collectorsListParameters['where'].containsKey('AND') &&
+                        collectorsListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: collectorsListParameters.containsKey('where') &&
+                    collectorsListParameters['where'].containsKey('AND') &&
+                    collectorsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(collectorsListFilterParametersAddedProvider);
@@ -95,9 +103,12 @@ class _CollectorsPageHeaderState extends ConsumerState<CollectorsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !collectorsListParameters.containsKey('orderBy')
+                text: !collectorsListParameters.containsKey('orderBy') ||
+                        !collectorsListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !collectorsListParameters.containsKey('orderBy') ||
+                    !collectorsListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -105,35 +116,46 @@ class _CollectorsPageHeaderState extends ConsumerState<CollectorsPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CollectorPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CollectorExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  ref.read(collectorProfileProvider.notifier).state = null;
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CollectorAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printCollectorsList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CollectorPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportCollectorsList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const CollectorExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addCollector]
+                  ? RSTAddButton(
+                      onTap: () {
+                        ref.read(collectorProfileProvider.notifier).state =
+                            null;
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CollectorAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

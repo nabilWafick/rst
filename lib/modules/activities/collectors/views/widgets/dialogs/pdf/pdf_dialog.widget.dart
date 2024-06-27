@@ -5,13 +5,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
-import 'package:rst/modules/activities/collector/functions/excel/excel_file.function.dart';
+import 'package:rst/modules/activities/collectors/functions/pdf/pdf_file.function.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CollectorActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
-  const CollectorActivitiesExcelFileGenerationDialog({
+class CollectorsActivitiesPdfGenerationDialog extends HookConsumerWidget {
+  const CollectorsActivitiesPdfGenerationDialog({
     super.key,
   });
   @override
@@ -19,7 +19,7 @@ class CollectorActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
     const formCardWidth = 500.0;
     final exportAllsettlements = useState<bool>(false);
     final exportSelectionnedsettlements = useState<bool>(true);
-    final showExportButton = useState<bool>(true);
+    final showPrintButton = useState<bool>(true);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
         vertical: 20.0,
@@ -29,7 +29,7 @@ class CollectorActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const RSTText(
-            text: 'Exportation',
+            text: 'Impression',
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
           ),
@@ -54,6 +54,7 @@ class CollectorActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
         width: formCardWidth,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SwitchListTile(
               value: exportAllsettlements.value,
@@ -111,11 +112,11 @@ class CollectorActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
             const SizedBox(
               width: 20.0,
             ),
-            showExportButton.value
+            showPrintButton.value
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
-                      text: 'Exporter',
+                      text: 'Imprimer',
                       onPressed: () async {
                         // get current settlements filter option
                         final settlementsListParameters =
@@ -127,22 +128,22 @@ class CollectorActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
                               await SettlementsController.countAll();
 
                           // generate excel file
-                          await generateCollectorActivitiesExcelFile(
+                          await generateCollectorActivitiesPdf(
                             context: context,
                             ref: ref,
                             listParameters: {
                               'skip': 0,
                               'take': settlementsCount.data.count,
                             },
-                            showExportButton: showExportButton,
+                            showPrintButton: showPrintButton,
                           );
                         } else {
                           // generate excel file
-                          await generateCollectorActivitiesExcelFile(
+                          await generateCollectorActivitiesPdf(
                             context: context,
                             ref: ref,
                             listParameters: settlementsListParameters,
-                            showExportButton: showExportButton,
+                            showPrintButton: showPrintButton,
                           );
                         }
                       },
@@ -152,7 +153,6 @@ class CollectorActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
           ],
         ),
       ],
-      actionsAlignment: MainAxisAlignment.end,
     );
   }
 }

@@ -7,6 +7,8 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/stocks/stocks/functions/crud/crud.function.dart';
 import 'package:rst/modules/stocks/stocks/providers/stocks.provider.dart';
 import 'package:rst/modules/stocks/stocks/views/widgets/forms/forms.widget.dart';
@@ -30,6 +32,7 @@ class _StocksPageBodyState extends ConsumerState<StocksPageBody> {
   @override
   Widget build(BuildContext context) {
     final stocksList = ref.watch(stocksListStreamProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -230,37 +233,45 @@ class _StocksPageBodyState extends ConsumerState<StocksPageBody> {
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: stock.inputQuantity != null
-                                  ? StockManualInputUpdateForm(
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.updateStock]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: stock.inputQuantity != null
+                                        ? StockManualInputUpdateForm(
+                                            stock: stock,
+                                          )
+                                        : StockManualOutputUpdateForm(
+                                            stock: stock,
+                                          ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.deleteStock]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        StockDeletionConfirmationDialog(
                                       stock: stock,
-                                    )
-                                  : StockManualOutputUpdateForm(
-                                      stock: stock,
+                                      confirmToDelete:
+                                          StocksCRUDFunctions.delete,
                                     ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: StockDeletionConfirmationDialog(
-                                stock: stock,
-                                confirmToDelete: StocksCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

@@ -7,6 +7,8 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/selection_tools/customer/card/selection_card.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/transfers/between_customer_cards/functions/listeners/customer/customer.function.dart';
 import 'package:rst/modules/transfers/between_customer_cards/functions/listeners/issuing_card/issuing_card.function.dart';
 import 'package:rst/modules/transfers/between_customer_cards/functions/listeners/receiving_card/receiving_card.function.dart';
@@ -31,6 +33,7 @@ class _TransfersBCCPageBodyState extends ConsumerState<TransfersBCCPageBody> {
   @override
   Widget build(BuildContext context) {
     final enableTransferButton = useState<bool>(true);
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     ref.listen(customerSelectionToolProvider('transfer-bcc-customer'),
         (previous, next) {
@@ -88,15 +91,19 @@ class _TransfersBCCPageBodyState extends ConsumerState<TransfersBCCPageBody> {
             text: enableTransferButton.value
                 ? "Transférer"
                 : "Veuillez patienter",
-            onPressed: () async {
-              enableTransferButton.value
-                  ? await TransfersCRUDFunctions.createBetweenCustomerCards(
-                      context: context,
-                      ref: ref,
-                      enableTransferButton: enableTransferButton,
-                    )
-                  : () {};
-            },
+            onPressed: !authPermissions![PermissionsValues.admin] ||
+                    !authPermissions[PermissionsValues.addTransfer]
+                ? () {}
+                : () async {
+                    enableTransferButton.value
+                        ? await TransfersCRUDFunctions
+                            .createBetweenCustomerCards(
+                            context: context,
+                            ref: ref,
+                            enableTransferButton: enableTransferButton,
+                          )
+                        : () {};
+                  },
           ),
         ),
       ],

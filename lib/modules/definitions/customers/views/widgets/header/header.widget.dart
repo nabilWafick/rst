@@ -9,9 +9,11 @@ import 'package:rst/common/widgets/selection_tools/collector/providers/selection
 import 'package:rst/common/widgets/selection_tools/economical_activity/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/locality/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/personal_status/providers/selection.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/customers/providers/customers.provider.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/forms/addition/customer_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class CustomersPageHeader extends StatefulHookConsumerWidget {
   const CustomersPageHeader({super.key});
@@ -25,6 +27,7 @@ class _CustomersPageHeaderState extends ConsumerState<CustomersPageHeader> {
   @override
   Widget build(BuildContext context) {
     final customersListParameters = ref.watch(customersListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -47,9 +50,14 @@ class _CustomersPageHeaderState extends ConsumerState<CustomersPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !customersListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: customersListParameters.containsKey('where') &&
+                        customersListParameters['where'].containsKey('AND') &&
+                        customersListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: customersListParameters.containsKey('where') &&
+                    customersListParameters['where'].containsKey('AND') &&
+                    customersListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(customersListFilterParametersAddedProvider);
@@ -99,9 +107,12 @@ class _CustomersPageHeaderState extends ConsumerState<CustomersPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !customersListParameters.containsKey('orderBy')
+                text: !customersListParameters.containsKey('orderBy') ||
+                        !customersListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !customersListParameters.containsKey('orderBy') ||
+                    !customersListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -109,52 +120,64 @@ class _CustomersPageHeaderState extends ConsumerState<CustomersPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CustomerPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CustomerExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  ref.read(customerProfileProvider.notifier).state = null;
-                  ref.read(customerSignatureProvider.notifier).state = null;
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printCustomersList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CustomerPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportCustomersList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const CustomerExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addCustomer]
+                  ? RSTAddButton(
+                      onTap: () {
+                        ref.read(customerProfileProvider.notifier).state = null;
+                        ref.read(customerSignatureProvider.notifier).state =
+                            null;
 
-                  ref
-                      .read(customerCardsInputsAddedVisibilityProvider.notifier)
-                      .state = {};
+                        ref
+                            .read(customerCardsInputsAddedVisibilityProvider
+                                .notifier)
+                            .state = {};
 
-                  ref.invalidate(
-                      collectorSelectionToolProvider('customer-addition'));
-                  ref.invalidate(
-                      categorySelectionToolProvider('customer-addition'));
-                  ref.invalidate(
-                      personalStatusSelectionToolProvider('customer-addition'));
-                  ref.invalidate(economicalActivitySelectionToolProvider(
-                      'customer-addition'));
-                  ref.invalidate(
-                      localitySelectionToolProvider('customer-addition'));
+                        ref.invalidate(collectorSelectionToolProvider(
+                            'customer-addition'));
+                        ref.invalidate(
+                            categorySelectionToolProvider('customer-addition'));
+                        ref.invalidate(personalStatusSelectionToolProvider(
+                            'customer-addition'));
+                        ref.invalidate(economicalActivitySelectionToolProvider(
+                            'customer-addition'));
+                        ref.invalidate(
+                            localitySelectionToolProvider('customer-addition'));
 
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CustomerAdditionForm(),
-                  );
-                },
-              ),
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CustomerAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

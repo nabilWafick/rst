@@ -4,9 +4,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
 import 'package:rst/modules/definitions/types/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/types/views/widgets/forms/addition/type_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class TypesPageHeader extends StatefulHookConsumerWidget {
   const TypesPageHeader({super.key});
@@ -20,6 +22,7 @@ class _TypesPageHeaderState extends ConsumerState<TypesPageHeader> {
   @override
   Widget build(BuildContext context) {
     final typesListParameters = ref.watch(typesListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -42,9 +45,14 @@ class _TypesPageHeaderState extends ConsumerState<TypesPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !typesListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: typesListParameters.containsKey('where') &&
+                        typesListParameters['where'].containsKey('AND') &&
+                        typesListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: typesListParameters.containsKey('where') &&
+                    typesListParameters['where'].containsKey('AND') &&
+                    typesListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(typesListFilterParametersAddedProvider);
@@ -93,9 +101,12 @@ class _TypesPageHeaderState extends ConsumerState<TypesPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !typesListParameters.containsKey('orderBy')
+                text: !typesListParameters.containsKey('orderBy') ||
+                        !typesListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !typesListParameters.containsKey('orderBy') ||
+                    !typesListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -103,38 +114,48 @@ class _TypesPageHeaderState extends ConsumerState<TypesPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TypePdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TypeExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  ref
-                      .read(typeProductsInputsAddedVisibilityProvider.notifier)
-                      .state = {};
-                  //  ref.read(typeSelectedProductsProvider.notifier).state = {};
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TypeAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printTypesList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const TypePdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportTypesList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const TypeExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addType]
+                  ? RSTAddButton(
+                      onTap: () {
+                        ref
+                            .read(typeProductsInputsAddedVisibilityProvider
+                                .notifier)
+                            .state = {};
+                        //  ref.read(typeSelectedtypesProvider.notifier).state = {};
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const TypeAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

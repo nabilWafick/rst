@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
-import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/cards/views/widgets/dialogs/dialogs.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class CardsPageHeader extends StatefulHookConsumerWidget {
   const CardsPageHeader({super.key});
@@ -19,6 +20,7 @@ class _CardsPageHeaderState extends ConsumerState<CardsPageHeader> {
   @override
   Widget build(BuildContext context) {
     final cardsListParameters = ref.watch(cardsListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -41,9 +43,14 @@ class _CardsPageHeaderState extends ConsumerState<CardsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !cardsListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: cardsListParameters.containsKey('where') &&
+                        cardsListParameters['where'].containsKey('AND') &&
+                        cardsListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: cardsListParameters.containsKey('where') &&
+                    cardsListParameters['where'].containsKey('AND') &&
+                    cardsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(cardsListFilterParametersAddedProvider);
@@ -90,9 +97,12 @@ class _CardsPageHeaderState extends ConsumerState<CardsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !cardsListParameters.containsKey('orderBy')
+                text: !cardsListParameters.containsKey('orderBy') ||
+                        !cardsListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !cardsListParameters.containsKey('orderBy') ||
+                    !cardsListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -100,34 +110,40 @@ class _CardsPageHeaderState extends ConsumerState<CardsPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CardPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CardExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printCardsList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CardPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportCardsList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CardExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              /* RSTAddButton(
                 onTap: () {
                   /* FunctionsController.showAlertDialog(
                     context: context,
                     alertDialog: const CardAdditionForm(),
                   );*/
                 },
-              ),
+              ),*/
             ],
           ),
         ],

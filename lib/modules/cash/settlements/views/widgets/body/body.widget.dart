@@ -12,6 +12,8 @@ import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart
 import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/toggle%20_validation/toggle_validation.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class SettlementsPageBody extends StatefulHookConsumerWidget {
@@ -32,7 +34,7 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
   @override
   Widget build(BuildContext context) {
     final settlementsList = ref.watch(settlementsListStreamProvider);
-
+    final authPermissions = ref.watch(authPermissionsProvider);
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
@@ -203,61 +205,73 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
                             settlement.card.repaidAt == null &&
                             settlement.card.transferredAt == null &&
                             settlement.card.transferredAt == null) ...[
-                          RSTToolTipOption(
-                            icon: !settlement.isValidated
-                                ? Icons.check
-                                : Icons.close,
-                            iconColor: RSTColors.primaryColor,
-                            name: !settlement.isValidated
-                                ? 'Valider'
-                                : 'Invalider',
-                            onTap: () async {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog:
-                                    SettlementValidationToggleConfirmationDialog(
-                                  settlement: settlement,
-                                  toggle:
-                                      SettlementsCRUDFunctions.toggleValidation,
-                                ),
-                              );
-                            },
-                          ),
+                          authPermissions![PermissionsValues.admin] ||
+                                  authPermissions[
+                                      PermissionsValues.updateSettlement]
+                              ? RSTToolTipOption(
+                                  icon: !settlement.isValidated
+                                      ? Icons.check
+                                      : Icons.close,
+                                  iconColor: RSTColors.primaryColor,
+                                  name: !settlement.isValidated
+                                      ? 'Valider'
+                                      : 'Invalider',
+                                  onTap: () async {
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog:
+                                          SettlementValidationToggleConfirmationDialog(
+                                        settlement: settlement,
+                                        toggle: SettlementsCRUDFunctions
+                                            .toggleValidation,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : null,
                           if (settlement.card.repaidAt == null &&
                               settlement.card.transferredAt == null &&
                               settlement.card.transferredAt == null)
-                            RSTToolTipOption(
-                              icon: Icons.edit,
-                              iconColor: RSTColors.primaryColor,
-                              name: 'Modifier',
-                              onTap: () async {
-                                FunctionsController.showAlertDialog(
-                                  context: context,
-                                  alertDialog: SettlementUpdateForm(
-                                    settlement: settlement,
-                                  ),
-                                );
-                              },
-                            ),
+                            authPermissions[PermissionsValues.admin] ||
+                                    authPermissions[
+                                        PermissionsValues.updateSettlement]
+                                ? RSTToolTipOption(
+                                    icon: Icons.edit,
+                                    iconColor: RSTColors.primaryColor,
+                                    name: 'Modifier',
+                                    onTap: () async {
+                                      FunctionsController.showAlertDialog(
+                                        context: context,
+                                        alertDialog: SettlementUpdateForm(
+                                          settlement: settlement,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : null,
                           if (settlement.card.repaidAt == null &&
                               settlement.card.transferredAt == null &&
                               settlement.card.transferredAt == null)
-                            RSTToolTipOption(
-                              icon: Icons.delete,
-                              iconColor: RSTColors.primaryColor,
-                              name: 'Supprimer',
-                              onTap: () {
-                                FunctionsController.showAlertDialog(
-                                  context: context,
-                                  alertDialog:
-                                      SettlementDeletionConfirmationDialog(
-                                    settlement: settlement,
-                                    confirmToDelete:
-                                        SettlementsCRUDFunctions.delete,
-                                  ),
-                                );
-                              },
-                            ),
+                            authPermissions[PermissionsValues.admin] ||
+                                    authPermissions[
+                                        PermissionsValues.updateSettlement]
+                                ? RSTToolTipOption(
+                                    icon: Icons.delete,
+                                    iconColor: RSTColors.primaryColor,
+                                    name: 'Supprimer',
+                                    onTap: () {
+                                      FunctionsController.showAlertDialog(
+                                        context: context,
+                                        alertDialog:
+                                            SettlementDeletionConfirmationDialog(
+                                          settlement: settlement,
+                                          confirmToDelete:
+                                              SettlementsCRUDFunctions.delete,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : null,
                         ]
                       ],
                     ),

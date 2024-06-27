@@ -11,6 +11,8 @@ import 'package:rst/modules/cash/cash_operations/functions/listeners/listeners.f
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/forms/multiple_addition/multiple_addition.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class CashOperationsFilterTools extends StatefulHookConsumerWidget {
   const CashOperationsFilterTools({super.key});
@@ -56,6 +58,8 @@ class _CashOperationsFilterToolsState
       );
     });
 
+    final authPermissions = ref.watch(authPermissionsProvider);
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
@@ -88,62 +92,70 @@ class _CashOperationsFilterToolsState
             textLimit: 25,
           ),
           cashOperationsSelectedCustomerCards.length > 1
-              ? RSTIconButton(
-                  icon: Icons.add_circle,
-                  text: 'Régler plusieurs cartes',
-                  onTap: () {
-                    // reset collection date provider
-                    ref.read(settlementCollectionDateProvider.notifier).state =
-                        null;
+              ? authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addSettlement]
+                  ? RSTIconButton(
+                      icon: Icons.add_circle,
+                      text: 'Régler plusieurs cartes',
+                      onTap: () {
+                        // reset collection date provider
+                        ref
+                            .read(settlementCollectionDateProvider.notifier)
+                            .state = null;
 
-                    // reset collection amount provider
-                    ref
-                        .read(settlementCollectorCollectionProvider.notifier)
-                        .state = null;
+                        // reset collection amount provider
+                        ref
+                            .read(
+                                settlementCollectorCollectionProvider.notifier)
+                            .state = null;
 
-                    // reset added inputs provider
-                    ref
-                        .read(
-                          multipleSettlementsAddedInputsVisibilityProvider
-                              .notifier,
-                        )
-                        .state = {};
+                        // reset added inputs provider
+                        ref
+                            .read(
+                              multipleSettlementsAddedInputsVisibilityProvider
+                                  .notifier,
+                            )
+                            .state = {};
 
-                    // reset selected customer cards provider
-                    ref
-                        .read(
-                          multipleSettlementsSelectedCustomerCardsProvider
-                              .notifier,
-                        )
-                        .state = {};
+                        // reset selected customer cards provider
+                        ref
+                            .read(
+                              multipleSettlementsSelectedCustomerCardsProvider
+                                  .notifier,
+                            )
+                            .state = {};
 
-                    FunctionsController.showAlertDialog(
-                      context: context,
-                      alertDialog: const MultipleSettlementsAdditionForm(),
-                    );
-                  },
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const MultipleSettlementsAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox()
+              : const SizedBox(),
+          authPermissions![PermissionsValues.admin] ||
+                  authPermissions[PermissionsValues.showAllCustomerCardsCash]
+              ? SizedBox(
+                  width: 220.0,
+                  child: CheckboxListTile(
+                    value: ref.watch(
+                      cashOperationsShowAllCustomerCardsProvider,
+                    ),
+                    title: const RSTText(
+                      text: 'Toutes les cartes',
+                      fontSize: 12,
+                    ),
+                    hoverColor: Colors.transparent,
+                    onChanged: (value) {
+                      ref
+                          .read(
+                            cashOperationsShowAllCustomerCardsProvider.notifier,
+                          )
+                          .state = value!;
+                    },
+                  ),
                 )
               : const SizedBox(),
-          SizedBox(
-            width: 220.0,
-            child: CheckboxListTile(
-              value: ref.watch(
-                cashOperationsShowAllCustomerCardsProvider,
-              ),
-              title: const RSTText(
-                text: 'Toutes les cartes',
-                fontSize: 12,
-              ),
-              hoverColor: Colors.transparent,
-              onChanged: (value) {
-                ref
-                    .read(
-                      cashOperationsShowAllCustomerCardsProvider.notifier,
-                    )
-                    .state = value!;
-              },
-            ),
-          ),
         ],
       ),
     );

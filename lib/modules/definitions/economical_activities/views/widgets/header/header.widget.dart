@@ -4,9 +4,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/economical_activities/providers/economical_activities.provider.dart';
 import 'package:rst/modules/definitions/economical_activities/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/economical_activities/views/widgets/forms/addition/economical_activity_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class EconomicalActivitiesPageHeader extends StatefulHookConsumerWidget {
   const EconomicalActivitiesPageHeader({super.key});
@@ -22,6 +24,7 @@ class _EconomicalActivitiesPageHeaderState
   Widget build(BuildContext context) {
     final economicalActivitiesListParameters =
         ref.watch(economicalActivitiesListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -44,9 +47,19 @@ class _EconomicalActivitiesPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !economicalActivitiesListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: economicalActivitiesListParameters.containsKey('where') &&
+                        economicalActivitiesListParameters['where']
+                            .containsKey('AND') &&
+                        economicalActivitiesListParameters['where']['AND']
+                            .isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light:
+                    economicalActivitiesListParameters.containsKey('where') &&
+                        economicalActivitiesListParameters['where']
+                            .containsKey('AND') &&
+                        economicalActivitiesListParameters['where']['AND']
+                            .isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(
@@ -98,9 +111,14 @@ class _EconomicalActivitiesPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !economicalActivitiesListParameters.containsKey('orderBy')
+                text: !economicalActivitiesListParameters
+                            .containsKey('orderBy') ||
+                        !economicalActivitiesListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !economicalActivitiesListParameters
+                        .containsKey('orderBy') ||
+                    !economicalActivitiesListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -108,35 +126,47 @@ class _EconomicalActivitiesPageHeaderState
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const EconomicalActivityPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog:
-                        const EconomicalActivityExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const EconomicalActivityAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[
+                          PermissionsValues.printEconomicalActivitesList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const EconomicalActivityPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[
+                          PermissionsValues.exportEconomicalActivitiesList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const EconomicalActivityExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addEconomicalActivity]
+                  ? RSTAddButton(
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const EconomicalActivityAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

@@ -7,11 +7,13 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/personal_status/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/personal_status/providers/personal_status.provider.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/forms/actions_confirmations/actions_confirmations.widget.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/forms/update/personal_status_update.widget.dart';
 import 'package:rst/modules/definitions/personal_status/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class PersonalStatusPageBody extends StatefulHookConsumerWidget {
@@ -33,6 +35,7 @@ class _PersonalStatusPageBodyState
   @override
   Widget build(BuildContext context) {
     final personalStatusList = ref.watch(personalStatusListStreamProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -135,35 +138,43 @@ class _PersonalStatusPageBodyState
                             );
                           },
                         ),
-                        RSTToolTipOption(
-                          icon: Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: PersonalStatusUpdateForm(
-                                personalStatus: personalStatus,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog:
-                                  PersonalStatusDeletionConfirmationDialog(
-                                personalStatus: personalStatus,
-                                confirmToDelete:
-                                    PersonalStatusCRUDFunctions.delete,
-                              ),
-                            );
-                          },
-                        ),
+                        authPermissions![PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.updatePersonalStatus]
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Modifier',
+                                onTap: () async {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog: PersonalStatusUpdateForm(
+                                      personalStatus: personalStatus,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
+                                authPermissions[
+                                    PermissionsValues.deletePersonalStatus]
+                            ? RSTToolTipOption(
+                                icon: Icons.delete,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Supprimer',
+                                onTap: () {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        PersonalStatusDeletionConfirmationDialog(
+                                      personalStatus: personalStatus,
+                                      confirmToDelete:
+                                          PersonalStatusCRUDFunctions.delete,
+                                    ),
+                                  );
+                                },
+                              )
+                            : null,
                       ],
                     ),
                   ),

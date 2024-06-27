@@ -4,6 +4,8 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/common/widgets/selection_tools/product/providers/selection.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/stocks/stocks/providers/stocks.provider.dart';
 import 'package:rst/modules/stocks/stocks/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/stocks/stocks/views/widgets/forms/addition/output/stock_manual_output_addition.widget.dart';
@@ -21,6 +23,7 @@ class _StocksPageHeaderState extends ConsumerState<StocksPageHeader> {
   @override
   Widget build(BuildContext context) {
     final stocksListParameters = ref.watch(stocksListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -43,9 +46,14 @@ class _StocksPageHeaderState extends ConsumerState<StocksPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !stocksListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: stocksListParameters.containsKey('where') &&
+                        stocksListParameters['where'].containsKey('AND') &&
+                        stocksListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: stocksListParameters.containsKey('where') &&
+                    stocksListParameters['where'].containsKey('AND') &&
+                    stocksListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(stocksListFilterParametersAddedProvider);
@@ -92,9 +100,12 @@ class _StocksPageHeaderState extends ConsumerState<StocksPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !stocksListParameters.containsKey('orderBy')
+                text: !stocksListParameters.containsKey('orderBy') ||
+                        !stocksListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !stocksListParameters.containsKey('orderBy') ||
+                    !stocksListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -102,48 +113,62 @@ class _StocksPageHeaderState extends ConsumerState<StocksPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const StockPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const StockExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.call_made_rounded,
-                text: 'Sortie',
-                onTap: () {
-                  ref.invalidate(productSelectionToolProvider('stock-output'));
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const StockManualOutputAdditionForm(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.call_received,
-                text: 'Entrée',
-                onTap: () {
-                  ref.invalidate(productSelectionToolProvider('stock-input'));
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const StockManualInputAdditionForm(),
-                  );
-                },
-              )
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printStocksList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const StockPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportStocksList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const StockExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addStock]
+                  ? RSTIconButton(
+                      icon: Icons.call_made_rounded,
+                      text: 'Sortie',
+                      onTap: () {
+                        ref.invalidate(
+                            productSelectionToolProvider('stock-output'));
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const StockManualOutputAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addStock]
+                  ? RSTIconButton(
+                      icon: Icons.call_received,
+                      text: 'Entrée',
+                      onTap: () {
+                        ref.invalidate(
+                            productSelectionToolProvider('stock-input'));
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const StockManualInputAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],

@@ -7,20 +7,20 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
-import 'package:rst/modules/activities/collector/providers/collector_activities.provider.dart';
-import 'package:rst/modules/activities/collector/views/widgets/simple_view/simple_view.widget.dart';
+import 'package:rst/modules/activities/collectors/providers/collectors_activities.provider.dart';
+import 'package:rst/modules/activities/collectors/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CollectorActivitiesPageBody extends StatefulHookConsumerWidget {
-  const CollectorActivitiesPageBody({super.key});
+class CollectorsActivitiesPageBody extends StatefulHookConsumerWidget {
+  const CollectorsActivitiesPageBody({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CollectorActivitiesPageBodyState();
+      _CollectorsActivitiesPageBodyState();
 }
 
-class _CollectorActivitiesPageBodyState
-    extends ConsumerState<CollectorActivitiesPageBody> {
+class _CollectorsActivitiesPageBodyState
+    extends ConsumerState<CollectorsActivitiesPageBody> {
   @override
   void initState() {
     super.initState();
@@ -29,15 +29,15 @@ class _CollectorActivitiesPageBodyState
 
   @override
   Widget build(BuildContext context) {
-    final collectorActivitiesList =
-        ref.watch(collectorActivitiesListStreamProvider);
+    final collectorsActivitiesList =
+        ref.watch(collectorsActivitiesListStreamProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
     return Expanded(
       child: Container(
         alignment: Alignment.center,
-        child: collectorActivitiesList.when(
+        child: collectorsActivitiesList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
             rightHandSideColumnWidth: MediaQuery.of(context).size.width + 1232,

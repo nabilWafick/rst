@@ -10,8 +10,8 @@ import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart
 import 'package:rst/modules/definitions/collectors/models/structure/structure.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CollectorActivitiesSortDialog extends HookConsumerWidget {
-  const CollectorActivitiesSortDialog({
+class CollectorsActivitiesSortDialog extends HookConsumerWidget {
+  const CollectorsActivitiesSortDialog({
     super.key,
   });
   @override

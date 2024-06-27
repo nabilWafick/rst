@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,9 +18,11 @@ import 'package:rst/modules/cash/cash_operations/views/widgets/forms/constrained
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/settlements.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/cards/functions/cards.function.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/cards/views/widgets/cards.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/stocks/stocks/controllers/stocks.controller.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
@@ -54,6 +57,8 @@ class _CashOperationsCustomerCardInfosState
 
     final cashOperationsSelectedCardTotalSettlementsNumbers =
         ref.watch(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
+
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -217,47 +222,52 @@ class _CashOperationsCustomerCardInfosState
                         fontWeight: FontWeight.w500,
                       ),
                       hoverColor: material.Colors.transparent,
-                      onChanged: (value) async {
-                        // reset repayment
-                        ref.read(cardRepaymentDateProvider.notifier).state =
-                            null;
+                      onChanged: !authPermissions![PermissionsValues.admin] ||
+                              !authPermissions[PermissionsValues.updateCard]
+                          ? null
+                          : (value) async {
+                              // reset repayment
+                              ref
+                                  .read(cardRepaymentDateProvider.notifier)
+                                  .state = null;
 
-                        if (cashOperationsSelectedCustomerCard != null) {
-                          if (value == false) {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog:
-                                  CardRepaymentUpdateConfirmationDialog(
-                                card: cashOperationsSelectedCustomerCard,
-                                update:
-                                    CardsCRUDFunctions.updateRepaymentStatus,
-                              ),
-                            );
-                          } else {
-                            Future.delayed(
-                              Duration.zero,
-                              () async {
-                                FunctionsController.showDateTime(
-                                  context: context,
-                                  ref: ref,
-                                  stateProvider: cardRepaymentDateProvider,
-                                  isNullable: false,
-                                );
-                              },
-                            );
+                              if (cashOperationsSelectedCustomerCard != null) {
+                                if (value == false) {
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        CardRepaymentUpdateConfirmationDialog(
+                                      card: cashOperationsSelectedCustomerCard,
+                                      update: CardsCRUDFunctions
+                                          .updateRepaymentStatus,
+                                    ),
+                                  );
+                                } else {
+                                  Future.delayed(
+                                    Duration.zero,
+                                    () async {
+                                      FunctionsController.showDateTime(
+                                        context: context,
+                                        ref: ref,
+                                        stateProvider:
+                                            cardRepaymentDateProvider,
+                                        isNullable: false,
+                                      );
+                                    },
+                                  );
 
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog:
-                                  CardRepaymentUpdateConfirmationDialog(
-                                card: cashOperationsSelectedCustomerCard,
-                                update:
-                                    CardsCRUDFunctions.updateRepaymentStatus,
-                              ),
-                            );
-                          }
-                        }
-                      },
+                                  FunctionsController.showAlertDialog(
+                                    context: context,
+                                    alertDialog:
+                                        CardRepaymentUpdateConfirmationDialog(
+                                      card: cashOperationsSelectedCustomerCard,
+                                      update: CardsCRUDFunctions
+                                          .updateRepaymentStatus,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
                     ),
                   ),
                   LabelValue(
@@ -293,113 +303,124 @@ class _CashOperationsCustomerCardInfosState
                         fontWeight: FontWeight.w500,
                       ),
                       hoverColor: material.Colors.transparent,
-                      onChanged: (value) async {
-                        // reset satisfaction date
-                        ref.read(cardSatisfactionDateProvider.notifier).state =
-                            null;
+                      onChanged: !authPermissions[PermissionsValues.admin] ||
+                              !authPermissions[PermissionsValues.updateProduct]
+                          ? null
+                          : (value) async {
+                              // reset satisfaction date
+                              ref
+                                  .read(cardSatisfactionDateProvider.notifier)
+                                  .state = null;
 
-                        // reset constrained output products providers
-                        ref.invalidate(
-                            cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider);
+                              // reset constrained output products providers
+                              ref.invalidate(
+                                  cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider);
 
-                        if (cashOperationsSelectedCustomerCard != null) {
-                          // check if all settlements on the card have done
+                              if (cashOperationsSelectedCustomerCard != null) {
+                                // check if all settlements on the card have done
 
-                          final controllerResponse =
-                              await SettlementsController.sumOfNumberForCard(
-                            cardId: cashOperationsSelectedCustomerCard.id!,
-                          );
-
-                          if (controllerResponse.data.count == 372) {
-                            if (value == false) {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog:
-                                    CardSatisfactionUpdateConfirmationDialog(
-                                  card: cashOperationsSelectedCustomerCard,
-                                  update: CardsCRUDFunctions.makeRetrocession,
-                                ),
-                              );
-                            } else {
-                              // the card would be satisfied
-
-                              try {
-                                // check product availability
                                 final controllerResponse =
-                                    await StocksController
-                                        .checkCardProductAvailability(
+                                    await SettlementsController
+                                        .sumOfNumberForCard(
                                   cardId:
                                       cashOperationsSelectedCustomerCard.id!,
                                 );
 
-                                // check if all products are available
-                                // return 1 if true
+                                if (controllerResponse.data.count == 372) {
+                                  if (value == false) {
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog:
+                                          CardSatisfactionUpdateConfirmationDialog(
+                                        card:
+                                            cashOperationsSelectedCustomerCard,
+                                        update:
+                                            CardsCRUDFunctions.makeRetrocession,
+                                      ),
+                                    );
+                                  } else {
+                                    // the card would be satisfied
 
-                                if (controllerResponse.data.count == 1) {
-                                  Future.delayed(
-                                      const Duration(milliseconds: 1),
-                                      () async {
-                                    FunctionsController.showDateTime(
-                                      context: context,
-                                      ref: ref,
-                                      stateProvider:
-                                          cardSatisfactionDateProvider,
-                                      isNullable: false,
-                                    );
-                                  });
-                                  // card products are available, make an normal output from stock
-                                  FunctionsController.showAlertDialog(
-                                    context: context,
-                                    alertDialog:
-                                        CardSatisfactionUpdateConfirmationDialog(
-                                      card: cashOperationsSelectedCustomerCard,
-                                      update: CardsCRUDFunctions
-                                          .makeNormaleSatisfaction,
-                                    ),
-                                  );
+                                    try {
+                                      // check product availability
+                                      final controllerResponse =
+                                          await StocksController
+                                              .checkCardProductAvailability(
+                                        cardId:
+                                            cashOperationsSelectedCustomerCard
+                                                .id!,
+                                      );
+
+                                      // check if all products are available
+                                      // return 1 if true
+
+                                      if (controllerResponse.data.count == 1) {
+                                        Future.delayed(
+                                            const Duration(milliseconds: 1),
+                                            () async {
+                                          FunctionsController.showDateTime(
+                                            context: context,
+                                            ref: ref,
+                                            stateProvider:
+                                                cardSatisfactionDateProvider,
+                                            isNullable: false,
+                                          );
+                                        });
+                                        // card products are available, make an normal output from stock
+                                        FunctionsController.showAlertDialog(
+                                          context: context,
+                                          alertDialog:
+                                              CardSatisfactionUpdateConfirmationDialog(
+                                            card:
+                                                cashOperationsSelectedCustomerCard,
+                                            update: CardsCRUDFunctions
+                                                .makeNormaleSatisfaction,
+                                          ),
+                                        );
+                                      } else {
+                                        Future.delayed(
+                                            const Duration(milliseconds: 1),
+                                            () async {
+                                          FunctionsController.showDateTime(
+                                            context: context,
+                                            ref: ref,
+                                            stateProvider:
+                                                cardSatisfactionDateProvider,
+                                            isNullable: false,
+                                          );
+                                        });
+                                        // all card products are available
+                                        // make an constrained output from stock
+                                        FunctionsController.showAlertDialog(
+                                          context: context,
+                                          alertDialog:
+                                              const ConstrainedCardSatisfactionForm(),
+                                        );
+                                      }
+                                    } catch (error) {
+                                      debugPrint(error.toString());
+                                    }
+                                  }
                                 } else {
-                                  Future.delayed(
-                                      const Duration(milliseconds: 1),
-                                      () async {
-                                    FunctionsController.showDateTime(
-                                      context: context,
-                                      ref: ref,
-                                      stateProvider:
-                                          cardSatisfactionDateProvider,
-                                      isNullable: false,
-                                    );
-                                  });
-                                  // all card products are available
-                                  // make an constrained output from stock
+                                  // store response
+                                  ref
+                                      .read(feedbackDialogResponseProvider
+                                          .notifier)
+                                      .state = FeedbackDialogResponse(
+                                    result: null,
+                                    error: 'Conflit',
+                                    message:
+                                        'Tous les règlements de la carte n\'ont pas été éffectués',
+                                  );
+
+                                  // show response
                                   FunctionsController.showAlertDialog(
                                     context: context,
-                                    alertDialog:
-                                        const ConstrainedCardSatisfactionForm(),
+                                    alertDialog: const FeedbackDialog(),
                                   );
                                 }
-                              } catch (error) {
-                                debugPrint(error.toString());
                               }
-                            }
-                          } else {
-                            // store response
-                            ref
-                                .read(feedbackDialogResponseProvider.notifier)
-                                .state = FeedbackDialogResponse(
-                              result: null,
-                              error: 'Conflit',
-                              message:
-                                  'Tous les règlements de la carte n\'ont pas été éffectués',
-                            );
-
-                            // show response
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: const FeedbackDialog(),
-                            );
-                          }
-                        }
-                      },
+                            },
                     ),
                   ),
                   LabelValue(
@@ -457,42 +478,53 @@ class _CashOperationsCustomerCardInfosState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RSTIconButton(
-                icon: material.Icons.book,
-                text: 'Situation du client',
-                onTap: cashOperationsSelectedCustomer != null &&
-                        cashOperationsSelectedCustomerCard != null
-                    ? () async {
-                        await FunctionsController.showAlertDialog(
-                          context: context,
-                          alertDialog: const CardSettlementsOverview(),
-                        );
-                      }
-                    : () {},
-              ),
-              RSTIconButton(
-                icon: material.Icons.add_circle,
-                text: 'Ajouter un règlement',
-                onTap: () {
-                  ref.read(settlementNumberProvider.notifier).state = 0;
-                  ref.read(settlementCollectionDateProvider.notifier).state =
-                      null;
-                  ref
-                      .read(settlementCollectorCollectionProvider.notifier)
-                      .state = null;
-                  cashOperationsSelectedCustomerCard != null &&
-                          cashOperationsSelectedCustomerCard.repaidAt == null &&
-                          cashOperationsSelectedCustomerCard.transferredAt ==
-                              null &&
-                          cashOperationsSelectedCustomerCard.transferredAt ==
-                              null
-                      ? FunctionsController.showAlertDialog(
-                          context: context,
-                          alertDialog: const SettlementAdditionForm(),
-                        )
-                      : () {};
-                },
-              ),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.showCardSituationCash]
+                  ? RSTIconButton(
+                      icon: material.Icons.book,
+                      text: 'Situation du client',
+                      onTap: cashOperationsSelectedCustomer != null &&
+                              cashOperationsSelectedCustomerCard != null
+                          ? () async {
+                              await FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: const CardSettlementsOverview(),
+                              );
+                            }
+                          : () {},
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addSettlement]
+                  ? RSTIconButton(
+                      icon: material.Icons.add_circle,
+                      text: 'Ajouter un règlement',
+                      onTap: () {
+                        ref.read(settlementNumberProvider.notifier).state = 0;
+                        ref
+                            .read(settlementCollectionDateProvider.notifier)
+                            .state = null;
+                        ref
+                            .read(
+                                settlementCollectorCollectionProvider.notifier)
+                            .state = null;
+                        cashOperationsSelectedCustomerCard != null &&
+                                cashOperationsSelectedCustomerCard.repaidAt ==
+                                    null &&
+                                cashOperationsSelectedCustomerCard
+                                        .transferredAt ==
+                                    null &&
+                                cashOperationsSelectedCustomerCard
+                                        .transferredAt ==
+                                    null
+                            ? FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: const SettlementAdditionForm(),
+                              )
+                            : () {};
+                      },
+                    )
+                  : const SizedBox(),
             ],
           )
         ],

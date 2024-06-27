@@ -5,6 +5,8 @@ import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.f
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/dialogs/dialogs.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class SettlementsPageHeader extends StatefulHookConsumerWidget {
   const SettlementsPageHeader({super.key});
@@ -19,6 +21,7 @@ class _SettlementsPageHeaderState extends ConsumerState<SettlementsPageHeader> {
   Widget build(BuildContext context) {
     final settlementsListParameters =
         ref.watch(settlementsListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -41,9 +44,14 @@ class _SettlementsPageHeaderState extends ConsumerState<SettlementsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !settlementsListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: settlementsListParameters.containsKey('where') &&
+                        settlementsListParameters['where'].containsKey('AND') &&
+                        settlementsListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: settlementsListParameters.containsKey('where') &&
+                    settlementsListParameters['where'].containsKey('AND') &&
+                    settlementsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(settlementsListFilterParametersAddedProvider);
@@ -93,9 +101,12 @@ class _SettlementsPageHeaderState extends ConsumerState<SettlementsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !settlementsListParameters.containsKey('orderBy')
+                text: !settlementsListParameters.containsKey('orderBy') ||
+                        !settlementsListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !settlementsListParameters.containsKey('orderBy') ||
+                    !settlementsListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -103,26 +114,33 @@ class _SettlementsPageHeaderState extends ConsumerState<SettlementsPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const SettlementPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const SettlementExcelFileGenerationDialog(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printSettlementsList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const SettlementPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportSettlementsList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const SettlementExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
               const SizedBox(
                 width: 1.0,
               ),

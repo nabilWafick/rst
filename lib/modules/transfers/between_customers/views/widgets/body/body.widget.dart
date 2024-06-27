@@ -6,6 +6,8 @@ import 'package:rst/common/models/rounded_style/rounded_style.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/selection_tools/customer/card/selection_card.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/transfers/between_customers/functions/listeners/issuing_customer/issuing_customer.function.dart';
 import 'package:rst/modules/transfers/between_customers/functions/listeners/receiving_customer/receiving_customer.function.dart';
 import 'package:rst/modules/transfers/functions/crud/crud.function.dart';
@@ -47,6 +49,8 @@ class _TransfersBCPageBodyState extends ConsumerState<TransfersBCPageBody> {
     });
 
     final enableTransferButton = useState<bool>(true);
+
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -97,15 +101,18 @@ class _TransfersBCPageBodyState extends ConsumerState<TransfersBCPageBody> {
             text: enableTransferButton.value
                 ? "Transférer"
                 : "Veuillez patienter",
-            onPressed: () async {
-              enableTransferButton.value
-                  ? await TransfersCRUDFunctions.createBetweenCustomers(
-                      context: context,
-                      ref: ref,
-                      enableTransferButton: enableTransferButton,
-                    )
-                  : () {};
-            },
+            onPressed: !authPermissions![PermissionsValues.admin] ||
+                    !authPermissions[PermissionsValues.addTransfer]
+                ? () {}
+                : () async {
+                    enableTransferButton.value
+                        ? await TransfersCRUDFunctions.createBetweenCustomers(
+                            context: context,
+                            ref: ref,
+                            enableTransferButton: enableTransferButton,
+                          )
+                        : () {};
+                  },
           ),
         ),
       ],

@@ -4,9 +4,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/add_button/add_button.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/categories/providers/categories.provider.dart';
 import 'package:rst/modules/definitions/categories/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/categories/views/widgets/forms/addition/category_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class CategoriesPageHeader extends StatefulHookConsumerWidget {
   const CategoriesPageHeader({super.key});
@@ -21,6 +23,7 @@ class _CategoriesPageHeaderState extends ConsumerState<CategoriesPageHeader> {
   Widget build(BuildContext context) {
     final categoriesListParameters =
         ref.watch(categoriesListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -43,9 +46,14 @@ class _CategoriesPageHeaderState extends ConsumerState<CategoriesPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !categoriesListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: categoriesListParameters.containsKey('where') &&
+                        categoriesListParameters['where'].containsKey('AND') &&
+                        categoriesListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: categoriesListParameters.containsKey('where') &&
+                    categoriesListParameters['where'].containsKey('AND') &&
+                    categoriesListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(categoriesListFilterParametersAddedProvider);
@@ -95,9 +103,12 @@ class _CategoriesPageHeaderState extends ConsumerState<CategoriesPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !categoriesListParameters.containsKey('orderBy')
+                text: !categoriesListParameters.containsKey('orderBy') ||
+                        !categoriesListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
+                light: !categoriesListParameters.containsKey('orderBy') ||
+                    !categoriesListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -105,34 +116,44 @@ class _CategoriesPageHeaderState extends ConsumerState<CategoriesPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CategoryPdfGenerationDialog(),
-                  );
-                },
-              ),
-              RSTIconButton(
-                icon: Icons.view_module_outlined,
-                text: 'Exporter',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CategoryExcelFileGenerationDialog(),
-                  );
-                },
-              ),
-              RSTAddButton(
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const CategoryAdditionForm(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printCategoriesList]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CategoryPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportCategoriesList]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const CategoryExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.addCategory]
+                  ? RSTAddButton(
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const CategoryAdditionForm(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ],
