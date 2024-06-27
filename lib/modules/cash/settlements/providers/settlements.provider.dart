@@ -25,9 +25,11 @@ final settlementsListParametersProvider =
   return {
     'skip': 0,
     'take': 15,
-    'orderBy': {
-      'id': 'desc',
-    }
+    'orderBy': [
+      {
+        'id': 'desc',
+      },
+    ]
   };
 });
 

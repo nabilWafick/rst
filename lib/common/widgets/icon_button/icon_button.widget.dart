@@ -20,15 +20,23 @@ class RSTIconButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        border: Border.all(
+            color: light != null && light == true
+                ? RSTColors.primaryColor
+                : RSTColors.backgroundColor,
+            width: 1.0),
+      ),
       margin: const EdgeInsets.symmetric(
           //   vertical: 10.0,
           ),
       child: InkWell(
         onTap: onTap,
         child: Card(
-          elevation: 5.0,
+          elevation: 7.0,
           color: light != null && light == true
-              ? RSTColors.backgroundColor
+              ? Colors.white
               : RSTColors.primaryColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(

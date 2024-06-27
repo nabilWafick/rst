@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rst/common/service/websocket/websocket.service.dart';
 import 'package:rst/modules/home/views/widgets/home.widget.dart';
 
 class HomePage extends StatefulHookConsumerWidget {

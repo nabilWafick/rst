@@ -7,6 +7,7 @@ import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
 import 'package:rst/modules/definitions/agents/providers/agents.provider.dart';
 import 'package:rst/modules/definitions/agents/views/widgets/dialogs/dialogs.widget.dart';
 import 'package:rst/modules/definitions/agents/views/widgets/forms/addition/agent_addition.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 
 class AgentsPageHeader extends StatefulHookConsumerWidget {
   const AgentsPageHeader({super.key});
@@ -20,6 +21,7 @@ class _AgentsPageHeaderState extends ConsumerState<AgentsPageHeader> {
   @override
   Widget build(BuildContext context) {
     final agentsListParameters = ref.watch(agentsListParametersProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,

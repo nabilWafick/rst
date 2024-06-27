@@ -47,6 +47,9 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
                         productsListParameters['where']['AND'].isNotEmpty
                     ? 'Filtré'
                     : 'Filtrer',
+                light: productsListParameters.containsKey('where') &&
+                    productsListParameters['where'].containsKey('AND') &&
+                    productsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(productsListFilterParametersAddedProvider);
