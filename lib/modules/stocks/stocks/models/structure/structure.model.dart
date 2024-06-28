@@ -6,6 +6,14 @@ import 'package:rst/modules/definitions/products/models/products.model.dart';
 // structure will help to facilitate sort, filter, and data filelds use case
 
 class StockStructure {
+  static Field id = Field(
+    front: 'ID',
+    back: 'id',
+    type: int,
+    isNullable: false,
+    isRelation: false,
+  );
+
   static Field product = Field(
       front: 'Produit',
       back: 'product',
@@ -89,6 +97,7 @@ class StockStructure {
   );
 
   static List<Field> fields = [
+    id,
     product,
     initialQuantity,
     stockQuantity,

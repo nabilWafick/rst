@@ -104,11 +104,11 @@ class _LocalitiesPageHeaderState extends ConsumerState<LocalitiesPageHeader> {
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
                 text: !localitiesListParameters.containsKey('orderBy') ||
-                        !localitiesListParameters['orderBy'].isNotEmty
+                        !localitiesListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
-                light: !localitiesListParameters.containsKey('orderBy') ||
-                    !localitiesListParameters['orderBy'].isNotEmty,
+                light: localitiesListParameters.containsKey('orderBy') &&
+                    localitiesListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

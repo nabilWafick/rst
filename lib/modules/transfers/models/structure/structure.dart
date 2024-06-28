@@ -5,6 +5,14 @@ import 'package:rst/modules/definitions/cards/models/structure/structure.model.d
 // structure will help to facilitate sort, filter, and data filelds use case
 
 class TransferStructure {
+  static Field id = Field(
+    front: 'ID',
+    back: 'id',
+    type: int,
+    isNullable: false,
+    isRelation: false,
+  );
+
   static Field issuingCard = Field(
     front: 'Carte Émettrice',
     back: 'issuingCard',
@@ -65,6 +73,7 @@ class TransferStructure {
   );
 
   static List<Field> fields = [
+    id,
     issuingCard,
     receivingCard,
     agent,

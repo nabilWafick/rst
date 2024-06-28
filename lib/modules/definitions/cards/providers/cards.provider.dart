@@ -42,10 +42,11 @@ final cardsListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
-    'include': {
-      'collector': true,
-      'agent': true,
-    }
+    'orderBy': [
+      {
+        'id': 'desc',
+      }
+    ]
   };
 });
 

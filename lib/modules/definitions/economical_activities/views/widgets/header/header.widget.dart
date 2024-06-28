@@ -113,12 +113,13 @@ class _EconomicalActivitiesPageHeaderState
                 icon: Icons.format_list_bulleted_sharp,
                 text: !economicalActivitiesListParameters
                             .containsKey('orderBy') ||
-                        !economicalActivitiesListParameters['orderBy'].isNotEmty
+                        !economicalActivitiesListParameters['orderBy']
+                            .isNotEmpty
                     ? 'Trier'
                     : 'Trié',
-                light: !economicalActivitiesListParameters
-                        .containsKey('orderBy') ||
-                    !economicalActivitiesListParameters['orderBy'].isNotEmty,
+                light: economicalActivitiesListParameters
+                        .containsKey('orderBy') &&
+                    economicalActivitiesListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

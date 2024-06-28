@@ -1,6 +1,8 @@
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/modules/definitions/products/services/products.service.dart';
+import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
+import 'package:rst/modules/statistics/products_forecasts/models/product_forecast/product_forecast.model.dart';
 
 class ProductsController {
   static Future<ControllerResponse> create({
@@ -141,6 +143,62 @@ class ProductsController {
             ),
           )
           .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getProductsForecasts({
+    required ProductsForecastsFilter productsForecastsFilter,
+  }) async {
+    final serviceResponse = await ProductsServices.getProductsForecasts(
+      productsForecastsFilter: productsForecastsFilter,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (productForecast) => ProductForecast.fromMap(
+              productForecast,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getProductsForecastsCountAll() async {
+    final serviceResponse =
+        await ProductsServices.getProductsForecastsCountAll();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getProductsForecastsCountSpecific({
+    required ProductsForecastsFilter productsForecastsFilter,
+  }) async {
+    final serviceResponse =
+        await ProductsServices.getProductsForecastsCountSpecific(
+      productsForecastsFilter: productsForecastsFilter,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
       result: serviceResponse.result,
       error: serviceResponse.error,
       message: serviceResponse.message,

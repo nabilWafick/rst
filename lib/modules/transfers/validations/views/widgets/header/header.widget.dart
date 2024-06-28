@@ -104,11 +104,11 @@ class _TransfersValidationPageHeaderState
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
                 text: !transfersListParameters.containsKey('orderBy') ||
-                        !transfersListParameters['orderBy'].isNotEmty
+                        !transfersListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
-                light: !transfersListParameters.containsKey('orderBy') ||
-                    !transfersListParameters['orderBy'].isNotEmty,
+                light: transfersListParameters.containsKey('orderBy') &&
+                    transfersListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

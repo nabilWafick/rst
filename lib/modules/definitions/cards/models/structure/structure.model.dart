@@ -4,6 +4,14 @@ import 'package:rst/modules/definitions/customers/models/customers.model.dart';
 // structure will help to facilitate sort, filter, and data filelds use case
 
 class CardStructure {
+  static Field id = Field(
+    front: 'ID',
+    back: 'id',
+    type: int,
+    isNullable: false,
+    isRelation: false,
+  );
+
   static Field label = Field(
     front: 'Libellé',
     back: 'label',
@@ -86,6 +94,7 @@ class CardStructure {
   );
 
   static List<Field> fields = [
+    id,
     label,
     type,
     typesNumber,

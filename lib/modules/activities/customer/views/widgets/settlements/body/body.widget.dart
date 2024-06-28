@@ -7,10 +7,6 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
 import 'package:rst/modules/activities/customer/providers/customers_activities.provider.dart';
-import 'package:rst/modules/cash/settlements/functions/crud/crud.function.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/deletion/deletion.widget.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/forms/actions_confirmations/toggle%20_validation/toggle_validation.widget.dart';
-import 'package:rst/modules/cash/settlements/views/widgets/forms/update/settlement_update.widget.dart';
 import 'package:rst/modules/cash/settlements/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
@@ -34,9 +30,6 @@ class _CustomerActivitiesSettlementsCardBodyState
   Widget build(BuildContext context) {
     final settlementsList =
         ref.watch(customerActivitiesSelectedCardSettlementsProvider);
-
-    final customerActivitiesSelectedCustomerCard =
-        ref.watch(customerActivitiesSelectedCustomerCardProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 

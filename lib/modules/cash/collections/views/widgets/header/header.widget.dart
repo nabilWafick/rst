@@ -105,11 +105,11 @@ class _CollectionsPageHeaderState extends ConsumerState<CollectionsPageHeader> {
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
                 text: !collectionsListParameters.containsKey('orderBy') ||
-                        !collectionsListParameters['orderBy'].isNotEmty
+                        !collectionsListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
-                light: !collectionsListParameters.containsKey('orderBy') ||
-                    !collectionsListParameters['orderBy'].isNotEmty,
+                light: collectionsListParameters.containsKey('orderBy') &&
+                    collectionsListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

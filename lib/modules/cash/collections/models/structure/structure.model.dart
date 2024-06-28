@@ -5,6 +5,14 @@ import 'package:rst/modules/definitions/collectors/models/collectors.model.dart'
 // structure will help to facilitate sort, filter, and data filelds use case
 
 class CollectionStructure {
+  static Field id = Field(
+    front: 'ID',
+    back: 'id',
+    type: int,
+    isNullable: false,
+    isRelation: false,
+  );
+
   static Field amount = Field(
     front: 'Montant',
     back: 'amount',
@@ -64,6 +72,7 @@ class CollectionStructure {
   );
 
   static List<Field> fields = [
+    id,
     amount,
     rest,
     collectedAt,

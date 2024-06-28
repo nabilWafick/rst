@@ -182,8 +182,12 @@ class AuthFunctions {
   static Future<void> disconnect({
     required WidgetRef ref,
     required BuildContext context,
+    required ValueNotifier<bool> showDisconnectionButton,
   }) async {
     try {
+      // hide disconnection button
+      showDisconnectionButton.value = false;
+
       final prefs = await SharedPreferences.getInstance();
 
       final userEmail = prefs.getString(RSTPreferencesKeys.email) ?? '';
@@ -216,6 +220,12 @@ class AuthFunctions {
 
         // remove accessToken
         await prefs.remove(RSTPreferencesKeys.accesToken);
+
+        // show disconection button
+        showDisconnectionButton.value = true;
+
+        // pop confirmation dialog
+        Navigator.of(context).pop();
 
         // navigate to connection page
         Navigator.of(context).pushReplacementNamed(

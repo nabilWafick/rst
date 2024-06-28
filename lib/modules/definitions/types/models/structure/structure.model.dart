@@ -4,6 +4,14 @@ import 'package:rst/modules/definitions/products/models/products.model.dart';
 // structure will help to facilitate sort, filter, and data filelds use case
 
 class TypeStructure {
+  static Field id = Field(
+    front: 'ID',
+    back: 'id',
+    type: int,
+    isNullable: false,
+    isRelation: false,
+  );
+
   static Field name = Field(
     front: 'Nom',
     back: 'name',
@@ -71,6 +79,7 @@ class TypeStructure {
   );
 
   static List<Field> fields = [
+    id,
     name,
     stake,
     typeProducts,

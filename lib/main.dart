@@ -70,8 +70,8 @@ class _MainPageState extends ConsumerState<MainPage> {
     final authAccesToken = prefs.getString(RSTPreferencesKeys.accesToken);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      debugPrint('authEmail: $authEmail');
-      debugPrint('authPermissions: $authPermissions');
+      //  debugPrint('authEmail: $authEmail');
+      //  debugPrint('authPermissions: $authPermissions');
       ref.read(authEmailProvider.notifier).state = authEmail;
       ref.read(authNameProvider.notifier).state = authName;
       ref.read(authFirstnamesProvider.notifier).state = authFirstnames;

@@ -22,12 +22,12 @@ import 'package:rst/modules/definitions/types/views/page/types.page.dart';
 import 'package:rst/modules/home/models/sidebar_option/sidebar_option.model.dart';
 import 'package:rst/modules/home/models/suboption/suboption.model.dart';
 import 'package:rst/modules/statistics/collectors_collections/views/page/collectors_collections.page.dart';
+import 'package:rst/modules/statistics/products_forecasts/views/page/products_forecasts.page.dart';
 import 'package:rst/modules/statistics/types_stat/views/page/types_stat.page.dart';
 import 'package:rst/modules/stocks/stocks/views/page/stocks.page.dart';
 import 'package:rst/modules/transfers/between_customer_cards/views/page/transfers_bcc.page.dart';
 import 'package:rst/modules/transfers/between_customers/views/page/transfers_bc.page.dart';
 import 'package:rst/modules/transfers/validations/views/page/validations.page.dart';
-import 'package:rst/widget.test.dart';
 
 final authEmailProvider = StateProvider<String?>((ref) {
   return;
@@ -387,35 +387,31 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
 );
 
 final pagesProvider = Provider<List<Widget>>((ref) {
-  return [
-    const DashboardPage(),
-    const ProductsPage(),
-    const TypesPage(),
-    const CategoriesPage(),
-    const EconomicalActivitiesPage(),
-    const PersonalStatusPage(),
-    const LocalitiesPage(),
-    const CardsPage(),
-    const CustomersPage(),
-    const CollectorsPage(),
-    const AgentsPage(),
-    const CollectionsPage(),
-    const CashOperationsPage(),
-    const SettlementsPage(),
-    const CustomerActivitiesPage(),
-    const CollectorActivitiesPage(),
-
-    const TypesStatsPage(),
-
-    const CollectorsCollectionsPage(),
-    //  ProductsForecastsPage(),
-    const WidgetTest(),
-
-    const TransfersBCCPage(),
-    const TransfersBCPage(),
-    const TransfersValidationPage(),
-    const StocksPage(),
-    const EmptyPage()
+  return const [
+    DashboardPage(),
+    ProductsPage(),
+    TypesPage(),
+    CategoriesPage(),
+    EconomicalActivitiesPage(),
+    PersonalStatusPage(),
+    LocalitiesPage(),
+    CardsPage(),
+    CustomersPage(),
+    CollectorsPage(),
+    AgentsPage(),
+    CollectionsPage(),
+    CashOperationsPage(),
+    SettlementsPage(),
+    CustomerActivitiesPage(),
+    CollectorActivitiesPage(),
+    TypesStatsPage(),
+    CollectorsCollectionsPage(),
+    ProductsForecastsPage(),
+    TransfersBCCPage(),
+    TransfersBCPage(),
+    TransfersValidationPage(),
+    StocksPage(),
+    EmptyPage()
   ];
 });
 

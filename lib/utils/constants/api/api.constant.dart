@@ -5,10 +5,10 @@ class RSTApiConstants {
   static final apiBaseUrl = dotenv.env['API_BASE_URL'];
   static final wsBaseUrl = dotenv.env['WS_BASE_URL'];
   static const connectionTimeoutDuration = Duration(
-    seconds: 30,
+    minutes: 2,
   );
   static const receiveTimeoutDuration = Duration(
-    minutes: 2,
+    minutes: 5,
   );
 
   static final dio = Dio(

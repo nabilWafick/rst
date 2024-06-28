@@ -102,11 +102,11 @@ class _SettlementsPageHeaderState extends ConsumerState<SettlementsPageHeader> {
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
                 text: !settlementsListParameters.containsKey('orderBy') ||
-                        !settlementsListParameters['orderBy'].isNotEmty
+                        !settlementsListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
-                light: !settlementsListParameters.containsKey('orderBy') ||
-                    !settlementsListParameters['orderBy'].isNotEmty,
+                light: settlementsListParameters.containsKey('orderBy') &&
+                    settlementsListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

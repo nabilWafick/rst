@@ -24,8 +24,7 @@ class SortParameterTool extends HookConsumerWidget {
     // get the field of the sort option
     final field = fields.firstWhere(
       (field) {
-        return field.back != 'id' &&
-            field.back == sortParameter.entries.first.key;
+        return field.back == sortParameter.entries.first.key;
       },
     );
     return showWidget.value

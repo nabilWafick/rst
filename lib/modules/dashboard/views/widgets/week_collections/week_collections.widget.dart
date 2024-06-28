@@ -41,7 +41,7 @@ class _DashboardWeekCollectionState
               Container(
                 alignment: Alignment.centerLeft,
                 child: const RSTText(
-                  text: 'Collectes Journalières',
+                  text: 'Collectes Hebdomadaires',
                   fontSize: 14.0,
                   fontWeight: FontWeight.w500,
                 ),

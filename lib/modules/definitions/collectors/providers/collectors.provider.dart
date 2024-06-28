@@ -43,6 +43,11 @@ final collectorsListParametersProvider =
   return {
     'skip': 0,
     'take': 25,
+    'orderBy': [
+      {
+        'id': 'desc',
+      }
+    ]
   };
 });
 

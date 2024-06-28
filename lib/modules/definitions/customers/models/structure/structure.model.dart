@@ -8,6 +8,14 @@ import 'package:rst/modules/definitions/personal_status/models/structure/structu
 // structure will help to facilitate sort, filter, and data filelds use case
 
 class CustomerStructure {
+  static Field id = Field(
+    front: 'ID',
+    back: 'id',
+    type: int,
+    isNullable: false,
+    isRelation: false,
+  );
+
   static Field name = Field(
     front: 'Nom',
     back: 'name',
@@ -134,6 +142,7 @@ class CustomerStructure {
   );
 
   static List<Field> fields = [
+    id,
     name,
     firstnames,
     phoneNumber,

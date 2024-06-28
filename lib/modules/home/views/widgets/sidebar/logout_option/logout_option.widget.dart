@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
+import 'package:rst/common/widgets/text/text.widget.dart';
+import 'package:rst/modules/auth/disconnection/views/widgets/disconnection_dialog/disconnection.widget.dart';
 import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/home/models/sidebar_option/sidebar_option.model.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
-import 'package:rst/common/widgets/text/text.widget.dart';
 
 class LogoutSidebarOption extends ConsumerWidget {
   final SidebarOptionModel sidebarOptionData;
@@ -19,9 +21,11 @@ class LogoutSidebarOption extends ConsumerWidget {
     final selectedSidebarOption = ref.watch(selectedSidebarOptionProvider);
     return InkWell(
       onTap: () async {
-        await AuthFunctions.disconnect(
-          ref: ref,
+        FunctionsController.showAlertDialog(
           context: context,
+          alertDialog: const DisconnectionConfirmationDialog(
+            confirmToDisconnect: AuthFunctions.disconnect,
+          ),
         );
       },
       child: Container(

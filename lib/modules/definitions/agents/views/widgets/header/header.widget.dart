@@ -103,6 +103,8 @@ class _AgentsPageHeaderState extends ConsumerState<AgentsPageHeader> {
                         !agentsListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
+                light: agentsListParameters.containsKey('orderBy') &&
+                    agentsListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

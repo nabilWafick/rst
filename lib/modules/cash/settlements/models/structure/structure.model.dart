@@ -6,6 +6,14 @@ import 'package:rst/modules/definitions/cards/models/structure/structure.model.d
 // structure will help to facilitate sort, filter, and data filelds use case
 
 class SettlementStructure {
+  static Field id = Field(
+    front: 'ID',
+    back: 'id',
+    type: int,
+    isNullable: false,
+    isRelation: false,
+  );
+
   static Field number = Field(
     front: 'Nombre',
     back: 'number',
@@ -66,6 +74,7 @@ class SettlementStructure {
   );
 
   static List<Field> fields = [
+    id,
     number,
     isValidated,
     card,
