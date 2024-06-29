@@ -73,7 +73,11 @@ class AgentSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: AgentStructure.fields,
+                                    fields: AgentStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         agentsListParametersProvider,
                                   ),
@@ -137,6 +141,10 @@ class AgentSortDialog extends HookConsumerWidget {
                       children: agentsListParameters.containsKey('orderBy')
                           ? AgentStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       agentsListParameters['orderBy'];
@@ -157,6 +165,10 @@ class AgentSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : AgentStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

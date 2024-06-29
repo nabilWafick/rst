@@ -74,7 +74,11 @@ class SettlementSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: SettlementStructure.fields,
+                                    fields: SettlementStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         settlementsListParametersProvider,
                                   ),
@@ -138,6 +142,10 @@ class SettlementSortDialog extends HookConsumerWidget {
                       children: settlementsListParameters.containsKey('orderBy')
                           ? SettlementStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       settlementsListParameters['orderBy'];
@@ -158,6 +166,10 @@ class SettlementSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : SettlementStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

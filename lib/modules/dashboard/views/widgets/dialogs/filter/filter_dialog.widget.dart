@@ -91,7 +91,11 @@ class _DashboardCollectorsCollectionsFilterDialogState
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: CollectorStructure.fields,
+                          fields: CollectorStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               dashboardCollectorsCollectionsListFilterParametersAddedProvider,
                         ),

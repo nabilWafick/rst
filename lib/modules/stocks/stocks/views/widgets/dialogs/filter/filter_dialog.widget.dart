@@ -88,7 +88,11 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: StockStructure.fields,
+                          fields: StockStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               stocksListFilterParametersAddedProvider,
                         ),

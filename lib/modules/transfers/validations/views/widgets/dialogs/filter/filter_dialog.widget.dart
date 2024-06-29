@@ -87,7 +87,11 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: TransferStructure.fields,
+                          fields: TransferStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               transfersListFilterParametersAddedProvider,
                         ),
@@ -104,23 +108,6 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                   },
                 ),
               ),
-
-              /// * === TEST ===
-              RSTText(
-                text: 'Parameters Added : $transfersListFilterParametersAdded',
-                fontSize: 12.0,
-              ),
-              const SizedBox(
-                height: 5.00,
-              ),
-              RSTText(
-                text:
-                    'List Parameters : ${ref.watch(transfersListParametersProvider)}',
-                fontSize: 12.0,
-              ),
-
-              /// * === TEST ===
-
               Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(

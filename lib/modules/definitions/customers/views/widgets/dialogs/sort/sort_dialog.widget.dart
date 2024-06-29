@@ -73,7 +73,11 @@ class CustomerSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: CustomerStructure.fields,
+                                    fields: CustomerStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         customersListParametersProvider,
                                   ),
@@ -137,6 +141,10 @@ class CustomerSortDialog extends HookConsumerWidget {
                       children: customersListParameters.containsKey('orderBy')
                           ? CustomerStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       customersListParameters['orderBy'];
@@ -157,6 +165,10 @@ class CustomerSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : CustomerStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

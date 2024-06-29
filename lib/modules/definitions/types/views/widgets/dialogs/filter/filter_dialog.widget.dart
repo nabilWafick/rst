@@ -88,7 +88,11 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: TypeStructure.fields,
+                          fields: TypeStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               typesListFilterParametersAddedProvider,
                         ),
@@ -105,23 +109,6 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                   },
                 ),
               ),
-
-              /// * === TEST ===
-              RSTText(
-                text: 'Parameters Added : $typesListFilterParametersAdded',
-                fontSize: 12.0,
-              ),
-              const SizedBox(
-                height: 5.00,
-              ),
-              RSTText(
-                text:
-                    'List Parameters : ${ref.watch(typesListParametersProvider)}',
-                fontSize: 12.0,
-              ),
-
-              /// * === TEST ===
-
               Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(

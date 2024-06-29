@@ -88,7 +88,11 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: AgentStructure.fields,
+                          fields: AgentStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               agentsListFilterParametersAddedProvider,
                         ),

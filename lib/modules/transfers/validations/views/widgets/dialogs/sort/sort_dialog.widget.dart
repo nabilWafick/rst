@@ -72,7 +72,11 @@ class TransferSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: TransferStructure.fields,
+                                    fields: TransferStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         transfersListParametersProvider,
                                   ),
@@ -136,6 +140,10 @@ class TransferSortDialog extends HookConsumerWidget {
                       children: transfersListParameters.containsKey('orderBy')
                           ? TransferStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       transfersListParameters['orderBy'];
@@ -156,6 +164,10 @@ class TransferSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : TransferStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

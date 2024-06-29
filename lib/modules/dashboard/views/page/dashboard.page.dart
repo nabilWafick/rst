@@ -100,10 +100,24 @@ class DashboardPage extends HookConsumerWidget {
                       ),
                       RSTIconButton(
                         icon: Icons.filter_alt_rounded,
-                        text: !dashboardCollectorsCollectionsListParameters
-                                .containsKey('where')
-                            ? 'Filtrer'
-                            : 'Filtré',
+                        text: dashboardCollectorsCollectionsListParameters
+                                    .containsKey('where') &&
+                                dashboardCollectorsCollectionsListParameters[
+                                        'where']
+                                    .containsKey('AND') &&
+                                dashboardCollectorsCollectionsListParameters[
+                                        'where']['AND']
+                                    .isNotEmpty
+                            ? 'Filtré'
+                            : 'Filtrer',
+                        light: dashboardCollectorsCollectionsListParameters
+                                .containsKey('where') &&
+                            dashboardCollectorsCollectionsListParameters[
+                                    'where']
+                                .containsKey('AND') &&
+                            dashboardCollectorsCollectionsListParameters[
+                                    'where']['AND']
+                                .isNotEmpty,
                         onTap: () async {
                           // reset added filter paramters provider
                           ref.invalidate(
@@ -159,9 +173,17 @@ class DashboardPage extends HookConsumerWidget {
                       RSTIconButton(
                         icon: Icons.format_list_bulleted_sharp,
                         text: !dashboardCollectorsCollectionsListParameters
-                                .containsKey('orderBy')
+                                    .containsKey('orderBy') ||
+                                !dashboardCollectorsCollectionsListParameters[
+                                        'orderBy']
+                                    .isNotEmpty
                             ? 'Trier'
                             : 'Trié',
+                        light: dashboardCollectorsCollectionsListParameters
+                                .containsKey('orderBy') &&
+                            dashboardCollectorsCollectionsListParameters[
+                                    'orderBy']
+                                .isNotEmpty,
                         onTap: () {
                           FunctionsController.showAlertDialog(
                             context: context,

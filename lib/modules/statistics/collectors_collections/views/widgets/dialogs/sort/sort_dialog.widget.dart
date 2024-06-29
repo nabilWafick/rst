@@ -73,7 +73,11 @@ class CollectorsCollectionsortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: CollectorStructure.fields,
+                                    fields: CollectorStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         collectorsCollectionsListParametersProvider,
                                   ),
@@ -138,6 +142,10 @@ class CollectorsCollectionsortDialog extends HookConsumerWidget {
                               .containsKey('orderBy')
                           ? CollectorStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       collectorsCollectionsListParameters[
@@ -159,6 +167,10 @@ class CollectorsCollectionsortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : CollectorStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

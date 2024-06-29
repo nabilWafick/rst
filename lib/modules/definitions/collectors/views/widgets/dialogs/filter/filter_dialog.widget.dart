@@ -88,7 +88,11 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: CollectorStructure.fields,
+                          fields: CollectorStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               collectorsListFilterParametersAddedProvider,
                         ),

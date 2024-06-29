@@ -89,7 +89,11 @@ class _CollectorsActivitiesFilterDialogState
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: SettlementStructure.fields,
+                          fields: SettlementStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               settlementsListFilterParametersAddedProvider,
                         ),

@@ -88,7 +88,11 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: CategoryStructure.fields,
+                          fields: CategoryStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               categoriesListFilterParametersAddedProvider,
                         ),

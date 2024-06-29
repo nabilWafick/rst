@@ -117,9 +117,9 @@ class _CollectorsActivitiesPageHeaderState
                         !collectorsActivitiesListParameters['orderBy'].isNotEmty
                     ? 'Trier'
                     : 'Trié',
-                light: !collectorsActivitiesListParameters
-                        .containsKey('orderBy') ||
-                    !collectorsActivitiesListParameters['orderBy'].isNotEmty,
+                light:
+                    collectorsActivitiesListParameters.containsKey('orderBy') &&
+                        collectorsActivitiesListParameters['orderBy'].isNotEmty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

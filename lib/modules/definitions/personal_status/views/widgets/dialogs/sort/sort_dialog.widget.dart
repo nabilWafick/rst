@@ -73,7 +73,11 @@ class PersonalStatusSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: PersonalStatusStructure.fields,
+                                    fields: PersonalStatusStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         personalStatusListParametersProvider,
                                   ),
@@ -138,6 +142,10 @@ class PersonalStatusSortDialog extends HookConsumerWidget {
                               .containsKey('orderBy')
                           ? PersonalStatusStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       personalStatusListParameters['orderBy'];
@@ -158,6 +166,10 @@ class PersonalStatusSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : PersonalStatusStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

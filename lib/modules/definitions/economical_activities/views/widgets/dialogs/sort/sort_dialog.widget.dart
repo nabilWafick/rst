@@ -74,7 +74,11 @@ class EconomicalActivitySortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: EconomicalActivityStructure.fields,
+                                    fields: EconomicalActivityStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         economicalActivitiesListParametersProvider,
                                   ),
@@ -139,6 +143,10 @@ class EconomicalActivitySortDialog extends HookConsumerWidget {
                               .containsKey('orderBy')
                           ? EconomicalActivityStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       economicalActivitiesListParameters[
@@ -160,6 +168,10 @@ class EconomicalActivitySortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : EconomicalActivityStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

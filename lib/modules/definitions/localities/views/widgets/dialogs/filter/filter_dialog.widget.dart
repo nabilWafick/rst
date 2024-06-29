@@ -88,7 +88,11 @@ class _LocalityFilterDialogState extends ConsumerState<LocalityFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: LocalityStructure.fields,
+                          fields: LocalityStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               localitiesListFilterParametersAddedProvider,
                         ),

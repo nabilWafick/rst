@@ -73,7 +73,11 @@ class TypeSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: TypeStructure.fields,
+                                    fields: TypeStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         typesListParametersProvider,
                                   ),
@@ -137,6 +141,10 @@ class TypeSortDialog extends HookConsumerWidget {
                       children: typesListParameters.containsKey('orderBy')
                           ? TypeStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       typesListParameters['orderBy'];
@@ -157,6 +165,10 @@ class TypeSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : TypeStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

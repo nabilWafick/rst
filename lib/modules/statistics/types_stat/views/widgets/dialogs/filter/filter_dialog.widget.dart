@@ -88,7 +88,11 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: TypeStructure.fields,
+                          fields: TypeStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               typesListFilterParametersAddedProvider,
                         ),

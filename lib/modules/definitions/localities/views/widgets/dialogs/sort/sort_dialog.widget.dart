@@ -74,7 +74,11 @@ class LocalitySortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: LocalityStructure.fields,
+                                    fields: LocalityStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         localitiesListParametersProvider,
                                   ),
@@ -138,6 +142,10 @@ class LocalitySortDialog extends HookConsumerWidget {
                       children: localitiesListParameters.containsKey('orderBy')
                           ? LocalityStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       localitiesListParameters['orderBy'];
@@ -158,6 +166,10 @@ class LocalitySortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : LocalityStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

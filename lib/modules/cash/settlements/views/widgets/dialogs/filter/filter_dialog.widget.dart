@@ -89,7 +89,11 @@ class _SettlementFilterDialogState
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: SettlementStructure.fields,
+                          fields: SettlementStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               settlementsListFilterParametersAddedProvider,
                         ),

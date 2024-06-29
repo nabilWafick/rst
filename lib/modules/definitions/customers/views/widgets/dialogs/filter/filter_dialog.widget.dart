@@ -88,7 +88,11 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: CustomerStructure.fields,
+                          fields: CustomerStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               customersListFilterParametersAddedProvider,
                         ),

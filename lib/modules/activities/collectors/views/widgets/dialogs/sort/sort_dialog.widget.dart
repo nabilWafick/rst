@@ -7,7 +7,6 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/modules/cash/settlements/models/settlements.model.dart';
 import 'package:rst/modules/cash/settlements/models/structure/structure.model.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
-import 'package:rst/modules/definitions/collectors/models/structure/structure.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CollectorsActivitiesSortDialog extends HookConsumerWidget {
@@ -75,7 +74,11 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: CollectorStructure.fields,
+                                    fields: SettlementStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         settlementsListParametersProvider,
                                   ),
@@ -139,6 +142,10 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                       children: settlementsListParameters.containsKey('orderBy')
                           ? SettlementStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       settlementsListParameters['orderBy'];
@@ -159,6 +166,10 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : SettlementStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

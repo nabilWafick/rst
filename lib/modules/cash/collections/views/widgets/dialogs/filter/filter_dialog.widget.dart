@@ -89,7 +89,11 @@ class _CollectionFilterDialogState
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: CollectionStructure.fields,
+                          fields: CollectionStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               collectionsListFilterParametersAddedProvider,
                         ),

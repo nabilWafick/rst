@@ -88,7 +88,11 @@ class _CardFilterDialogState extends ConsumerState<CardFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: CardStructure.fields,
+                          fields: CardStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               cardsListFilterParametersAddedProvider,
                         ),

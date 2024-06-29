@@ -88,7 +88,11 @@ class _PersonalStatusFilterDialogState
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: PersonalStatusStructure.fields,
+                          fields: PersonalStatusStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               personalStatusListFilterParametersAddedProvider,
                         ),

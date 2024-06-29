@@ -74,7 +74,11 @@ class DasboardCollectorsCollectionsSortDialog extends HookConsumerWidget {
                                 .map(
                                   (sortParameter) => SortParameterTool(
                                     sortParameter: sortParameter,
-                                    fields: CollectorStructure.fields,
+                                    fields: CollectorStructure.fields
+                                        .where(
+                                          (field) => !field.isRelation,
+                                        )
+                                        .toList(),
                                     listParametersProvider:
                                         dashboardCollectorsCollectionsListParametersProvider,
                                   ),
@@ -138,6 +142,10 @@ class DasboardCollectorsCollectionsSortDialog extends HookConsumerWidget {
                       children: collectorsListParameters.containsKey('orderBy')
                           ? CollectorStructure.fields
                               .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
+                              .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
                                       collectorsListParameters['orderBy'];
@@ -158,6 +166,10 @@ class DasboardCollectorsCollectionsSortDialog extends HookConsumerWidget {
                               )
                               .toList()
                           : CollectorStructure.fields
+                              .where(
+                                (field) => !field.isRelation,
+                              )
+                              .toList()
                               .map(
                                 (field) => SortParameter(
                                   field: field,

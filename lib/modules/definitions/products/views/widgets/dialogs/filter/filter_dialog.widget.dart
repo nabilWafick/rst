@@ -88,7 +88,11 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: ProductStructure.fields,
+                          fields: ProductStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               productsListFilterParametersAddedProvider,
                         ),

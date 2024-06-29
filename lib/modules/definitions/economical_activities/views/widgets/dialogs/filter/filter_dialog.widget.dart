@@ -90,7 +90,11 @@ class _EconomicalActivityFilterDialogState
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
-                          fields: EconomicalActivityStructure.fields,
+                          fields: EconomicalActivityStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
                           filterParametersAddedProvider:
                               economicalActivitiesListFilterParametersAddedProvider,
                         ),
