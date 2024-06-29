@@ -16,6 +16,7 @@ import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
 import 'package:rst/modules/definitions/types/models/type/type.model.dart';
 import 'package:rst/modules/definitions/types/models/types.model.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/utils.dart';
 import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
@@ -38,6 +39,9 @@ Future<void> generateTypesPdf({
     final typesList = await TypesController.getMany(
       listParameters: listParameters,
     );
+
+    final authName = ref.watch(authNameProvider);
+    final authFirstnames = ref.watch(authFirstnamesProvider);
 
     // Create a new pdf docu,ent
     final pdf = pw.Document();
@@ -113,7 +117,7 @@ Future<void> generateTypesPdf({
                   pw.SizedBox(height: 3.0),
                   PdfInfos(
                     label: 'Imprimé par',
-                    value: 'TESTER Tester',
+                    value: '${authName ?? ''} ${authFirstnames ?? ''}',
                   )
                 ],
               ),

@@ -13,6 +13,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/transfers/controllers/transfers.controller.dart';
 import 'package:rst/modules/transfers/models/transfer/transfer.model.dart';
 import 'package:rst/utils/utils.dart';
@@ -37,6 +38,9 @@ Future<void> generateTransfersPdf({
     final transfersList = await TransfersController.getMany(
       listParameters: listParameters,
     );
+
+    final authName = ref.watch(authNameProvider);
+    final authFirstnames = ref.watch(authFirstnamesProvider);
 
     // Create a new pdf docu,ent
     final pdf = pw.Document();
@@ -112,7 +116,7 @@ Future<void> generateTransfersPdf({
                   pw.SizedBox(height: 3.0),
                   PdfInfos(
                     label: 'Imprimé par',
-                    value: 'TESTER Tester',
+                    value: '${authName ?? ''} ${authFirstnames ?? ''}',
                   )
                 ],
               ),

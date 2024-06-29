@@ -17,6 +17,7 @@ import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 import 'package:rst/modules/definitions/collectors/controllers/collectors.controller.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/statistics/collectors_collections/models/collector_collection/collector_collection.model.dart';
 import 'package:rst/modules/statistics/collectors_collections/models/collector_collection_type/collector_collection_type.model.dart';
 import 'package:rst/modules/statistics/collectors_collections/providers/collectors_collections.provider.dart';
@@ -68,6 +69,9 @@ Future<void> generateCollectorsCollectionsPdf({
           listParameters: listParameters,
         );
     }
+
+    final authName = ref.watch(authNameProvider);
+    final authFirstnames = ref.watch(authFirstnamesProvider);
 
     // Create a new pdf docu,ent
     final pdf = pw.Document();
@@ -143,7 +147,7 @@ Future<void> generateCollectorsCollectionsPdf({
                   pw.SizedBox(height: 3.0),
                   PdfInfos(
                     label: 'Imprimé par',
-                    value: 'TESTER Tester',
+                    value: '${authName ?? ''} ${authFirstnames ?? ''}',
                   )
                 ],
               ),

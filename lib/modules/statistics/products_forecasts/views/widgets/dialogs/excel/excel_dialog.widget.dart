@@ -5,20 +5,21 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
-import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
-import 'package:rst/modules/definitions/types/functions/excel/excel_file.function.dart';
-import 'package:rst/modules/definitions/types/providers/types.provider.dart';
+import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
+import 'package:rst/modules/statistics/products_forecasts/functions/excel/excel_file.function.dart';
+import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
+import 'package:rst/modules/statistics/products_forecasts/providers/products_forecasts.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class TypeExcelFileGenerationDialog extends HookConsumerWidget {
-  const TypeExcelFileGenerationDialog({
+class ProductsForecastsExcelFileGenerationDialog extends HookConsumerWidget {
+  const ProductsForecastsExcelFileGenerationDialog({
     super.key,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const formCardWidth = 500.0;
-    final exportAllTypes = useState<bool>(false);
-    final exportSelectionnedTypes = useState<bool>(true);
+    final exportAllProductsForecasts = useState<bool>(false);
+    final exportSelectionnedProductsForecasts = useState<bool>(true);
     final showExportButton = useState<bool>(true);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -56,7 +57,7 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SwitchListTile(
-              value: exportAllTypes.value,
+              value: exportAllProductsForecasts.value,
               title: const RSTText(
                 text: 'Tout',
                 fontSize: 14.0,
@@ -65,16 +66,16 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
               hoverColor: Colors.transparent,
               onChanged: (value) {
                 if (value) {
-                  exportAllTypes.value = value;
-                  exportSelectionnedTypes.value = !value;
+                  exportAllProductsForecasts.value = value;
+                  exportSelectionnedProductsForecasts.value = !value;
                 } else {
-                  exportAllTypes.value = value;
-                  exportSelectionnedTypes.value = !value;
+                  exportAllProductsForecasts.value = value;
+                  exportSelectionnedProductsForecasts.value = !value;
                 }
               },
             ),
             SwitchListTile(
-              value: exportSelectionnedTypes.value,
+              value: exportSelectionnedProductsForecasts.value,
               title: const RSTText(
                 text: 'Groupe sélectionné',
                 fontSize: 14.0,
@@ -83,11 +84,11 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
               hoverColor: Colors.transparent,
               onChanged: (value) {
                 if (value) {
-                  exportSelectionnedTypes.value = value;
-                  exportAllTypes.value = !value;
+                  exportSelectionnedProductsForecasts.value = value;
+                  exportAllProductsForecasts.value = !value;
                 } else {
-                  exportSelectionnedTypes.value = value;
-                  exportAllTypes.value = !value;
+                  exportSelectionnedProductsForecasts.value = value;
+                  exportAllProductsForecasts.value = !value;
                 }
               },
             )
@@ -118,29 +119,31 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current types filter option
-                        final typesListParameters =
-                            ref.read(typesListParametersProvider);
+                        final productsForecastsListParameters =
+                            ref.read(productsForecastsListParametersProvider);
 
-                        if (exportAllTypes.value) {
+                        if (exportAllProductsForecasts.value) {
                           // get all types count
-                          final typesCount = await TypesController.countAll();
+                          final productsForecatsCount = await ProductsController
+                              .getProductsForecastsCountAll();
 
                           // generate excel file
-                          await generateTypesExcelFile(
+                          await generateProductsForecastsExcelFile(
                             context: context,
                             ref: ref,
-                            listParameters: {
-                              'skip': 0,
-                              'take': typesCount.data.count,
-                            },
+                            productsForecastsFilter: ProductsForecastsFilter(
+                              offset: 0,
+                              limit: productsForecatsCount.data.count,
+                            ),
                             showExportButton: showExportButton,
                           );
                         } else {
                           // generate excel file
-                          await generateTypesExcelFile(
+                          await generateProductsForecastsExcelFile(
                             context: context,
                             ref: ref,
-                            listParameters: typesListParameters,
+                            productsForecastsFilter:
+                                productsForecastsListParameters,
                             showExportButton: showExportButton,
                           );
                         }

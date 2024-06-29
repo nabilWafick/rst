@@ -6,19 +6,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
-import 'package:rst/modules/definitions/types/functions/excel/excel_file.function.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
+import 'package:rst/modules/statistics/types_stat/functions/excel/excel_file.function.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class TypeExcelFileGenerationDialog extends HookConsumerWidget {
-  const TypeExcelFileGenerationDialog({
+class TypesStatsExcelFileGenerationDialog extends HookConsumerWidget {
+  const TypesStatsExcelFileGenerationDialog({
     super.key,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const formCardWidth = 500.0;
-    final exportAllTypes = useState<bool>(false);
-    final exportSelectionnedTypes = useState<bool>(true);
+    final exportAllTypesStats = useState<bool>(false);
+    final exportSelectionnedTypesStats = useState<bool>(true);
     final showExportButton = useState<bool>(true);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -56,7 +56,7 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SwitchListTile(
-              value: exportAllTypes.value,
+              value: exportAllTypesStats.value,
               title: const RSTText(
                 text: 'Tout',
                 fontSize: 14.0,
@@ -65,16 +65,16 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
               hoverColor: Colors.transparent,
               onChanged: (value) {
                 if (value) {
-                  exportAllTypes.value = value;
-                  exportSelectionnedTypes.value = !value;
+                  exportAllTypesStats.value = value;
+                  exportSelectionnedTypesStats.value = !value;
                 } else {
-                  exportAllTypes.value = value;
-                  exportSelectionnedTypes.value = !value;
+                  exportAllTypesStats.value = value;
+                  exportSelectionnedTypesStats.value = !value;
                 }
               },
             ),
             SwitchListTile(
-              value: exportSelectionnedTypes.value,
+              value: exportSelectionnedTypesStats.value,
               title: const RSTText(
                 text: 'Groupe sélectionné',
                 fontSize: 14.0,
@@ -83,11 +83,11 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
               hoverColor: Colors.transparent,
               onChanged: (value) {
                 if (value) {
-                  exportSelectionnedTypes.value = value;
-                  exportAllTypes.value = !value;
+                  exportSelectionnedTypesStats.value = value;
+                  exportAllTypesStats.value = !value;
                 } else {
-                  exportSelectionnedTypes.value = value;
-                  exportAllTypes.value = !value;
+                  exportSelectionnedTypesStats.value = value;
+                  exportAllTypesStats.value = !value;
                 }
               },
             )
@@ -121,12 +121,12 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
                         final typesListParameters =
                             ref.read(typesListParametersProvider);
 
-                        if (exportAllTypes.value) {
+                        if (exportAllTypesStats.value) {
                           // get all types count
                           final typesCount = await TypesController.countAll();
 
                           // generate excel file
-                          await generateTypesExcelFile(
+                          await generateTypesStatsExcelFile(
                             context: context,
                             ref: ref,
                             listParameters: {
@@ -137,7 +137,7 @@ class TypeExcelFileGenerationDialog extends HookConsumerWidget {
                           );
                         } else {
                           // generate excel file
-                          await generateTypesExcelFile(
+                          await generateTypesStatsExcelFile(
                             context: context,
                             ref: ref,
                             listParameters: typesListParameters,

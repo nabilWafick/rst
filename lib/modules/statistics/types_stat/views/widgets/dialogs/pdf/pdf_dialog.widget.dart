@@ -6,12 +6,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/elevated_button/elevated_button.widget.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
-import 'package:rst/modules/definitions/types/functions/pdf/pdf_file.function.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
+import 'package:rst/modules/statistics/types_stat/functions/pdf/pdf_file.function.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class TypePdfGenerationDialog extends HookConsumerWidget {
-  const TypePdfGenerationDialog({
+class TypesStatsPdfGenerationDialog extends HookConsumerWidget {
+  const TypesStatsPdfGenerationDialog({
     super.key,
   });
   @override
@@ -127,7 +127,7 @@ class TypePdfGenerationDialog extends HookConsumerWidget {
                           final typesCount = await TypesController.countAll();
 
                           // generate excel file
-                          await generateTypesPdf(
+                          await generateTypesStatsPdf(
                             context: context,
                             ref: ref,
                             listParameters: {
@@ -138,7 +138,7 @@ class TypePdfGenerationDialog extends HookConsumerWidget {
                           );
                         } else {
                           // generate excel file
-                          await generateTypesPdf(
+                          await generateTypesStatsPdf(
                             context: context,
                             ref: ref,
                             listParameters: typesListParameters,

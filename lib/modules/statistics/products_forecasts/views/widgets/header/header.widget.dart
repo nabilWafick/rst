@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/selection_tools/collector/providers/selection.provider.dart';
@@ -12,6 +13,7 @@ import 'package:rst/modules/definitions/agents/providers/permissions_values.dart
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/modules/statistics/products_forecasts/providers/products_forecasts.provider.dart';
+import 'package:rst/modules/statistics/products_forecasts/views/widgets/dialogs/dialogs.widget.dart';
 
 class ProductsForecastsPageHeader extends StatefulHookConsumerWidget {
   const ProductsForecastsPageHeader({super.key});
@@ -223,10 +225,25 @@ class _ProductsForecastsPageHeaderState
                       icon: Icons.print_outlined,
                       text: 'Imprimer',
                       onTap: () {
-                        /*  FunctionsController.showAlertDialog(
+                        FunctionsController.showAlertDialog(
                           context: context,
-                          alertDialog: const TypePdfGenerationDialog(),
-                        );*/
+                          alertDialog:
+                              const ProductsForecastsPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printProductsForecasts]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const ProductsForecastsExcelFileGenerationDialog(),
+                        );
                       },
                     )
                   : const SizedBox(),

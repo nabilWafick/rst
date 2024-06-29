@@ -13,9 +13,9 @@ import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_respo
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
-import 'package:rst/modules/definitions/types/models/types.model.dart';
+import 'package:rst/modules/statistics/types_stat/models/type_stat/type_stat.model.dart';
 
-Future<void> generateTypesExcelFile({
+Future<void> generateTypesStatsExcelFile({
   required BuildContext context,
   required WidgetRef ref,
   required Map<String, dynamic> listParameters,
@@ -30,8 +30,8 @@ Future<void> generateTypesExcelFile({
     // format
     final format = DateFormat.yMMMMEEEEd('fr');
 
-    // Get types list
-    final typesList = await TypesController.getMany(
+    // Get typesStats list
+    final typesStatsList = await TypesController.getGlobalStats(
       listParameters: listParameters,
     );
 
@@ -45,62 +45,50 @@ Future<void> generateTypesExcelFile({
     sheet.cell(CellIndex.indexByString("B1")).value =
         const TextCellValue("Mise");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Produits");
+        const TextCellValue("Nombre Clients");
     sheet.cell(CellIndex.indexByString("D1")).value =
         const TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("E1")).value =
         const TextCellValue("Dernière Modification");
 
     // cast data to type model list
-    final types = List<Type>.from(typesList.data);
+    final typesStats = List<TypeStat>.from(typesStatsList.data);
 
     // Write data rows
-    for (int i = 0; i < types.length; i++) {
+    for (int i = 0; i < typesStats.length; i++) {
       sheet
           .cell(
             CellIndex.indexByString("A${i + 2}"),
           )
-          .value = TextCellValue(types[i].name);
+          .value = TextCellValue(typesStats[i].name);
 
       sheet
           .cell(
             CellIndex.indexByString("B${i + 2}"),
           )
           .value = TextCellValue(
-        types[i].stake.toInt().toString(),
+        typesStats[i].stake.toInt().toString(),
       );
-
-      String typeProducts = '';
-
-      for (int j = 0; j < types[i].typeProducts.length; j++) {
-        if (typeProducts.isEmpty) {
-          typeProducts =
-              '${types[i].typeProducts[j].productNumber} * ${types[i].typeProducts[j].product.name}';
-        } else {
-          typeProducts =
-              '$typeProducts, ${types[i].typeProducts[j].productNumber} * ${types[i].typeProducts[j].product.name}';
-        }
-      }
 
       sheet
           .cell(
             CellIndex.indexByString("C${i + 2}"),
           )
           .value = TextCellValue(
-        typeProducts,
+        typesStats[i].cards.length.toString(),
       );
 
       sheet
           .cell(
             CellIndex.indexByString("D${i + 2}"),
           )
-          .value = TextCellValue(format.format(types[i].createdAt));
+          .value = TextCellValue(format.format(typesStats[i].createdAt));
 
       sheet
           .cell(
             CellIndex.indexByString("E${i + 2}"),
           )
-          .value = TextCellValue(format.format(types[i].updatedAt));
+          .value = TextCellValue(format.format(typesStats[i].updatedAt));
     }
 
     // Assuming excel.save() returns the bytes of the Excel file
@@ -108,7 +96,7 @@ Future<void> generateTypesExcelFile({
     var directory = await getApplicationDocumentsDirectory();
 
     // Specify the output file path
-    String filePath = '${directory.path}/types.xlsx';
+    String filePath = '${directory.path}/typesStats.xlsx';
 
     // Write the bytes to the file
     File(filePath)

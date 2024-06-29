@@ -3,9 +3,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/icon_button/icon_button.widget.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
 import 'package:rst/modules/definitions/types/views/widgets/dialogs/dialogs.widget.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/statistics/types_stat/providers/types_stat.provider.dart';
+import 'package:rst/modules/statistics/types_stat/views/widgets/dialogs/excel/excel_dialog.widget.dart';
+import 'package:rst/modules/statistics/types_stat/views/widgets/dialogs/pdf/pdf_dialog.widget.dart';
 
 class TypesStatsPageHeader extends StatefulHookConsumerWidget {
   const TypesStatsPageHeader({super.key});
@@ -19,6 +23,8 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
   @override
   Widget build(BuildContext context) {
     final typesListParameters = ref.watch(typesListParametersProvider);
+
+    final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20.0,
@@ -102,16 +108,33 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog: const TypePdfGenerationDialog(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.printTypesStatistics]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog: const TypesStatsPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[PermissionsValues.exportTypesStatistics]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const TypesStatsExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
               const SizedBox(
                 width: 1.0,
               ),

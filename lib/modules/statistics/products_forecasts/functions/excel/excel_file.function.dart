@@ -6,19 +6,18 @@ import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
-import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
-import 'package:rst/modules/definitions/types/models/types.model.dart';
+import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
+import 'package:rst/modules/statistics/products_forecasts/models/products_forecasts.model.dart';
 
-Future<void> generateTypesExcelFile({
+Future<void> generateProductsForecastsExcelFile({
   required BuildContext context,
   required WidgetRef ref,
-  required Map<String, dynamic> listParameters,
+  required ProductsForecastsFilter productsForecastsFilter,
   required ValueNotifier<bool> showExportButton,
 }) async {
   // hide Export button
@@ -27,12 +26,9 @@ Future<void> generateTypesExcelFile({
     // hide Export button
     showExportButton.value = false;
 
-    // format
-    final format = DateFormat.yMMMMEEEEd('fr');
-
-    // Get types list
-    final typesList = await TypesController.getMany(
-      listParameters: listParameters,
+    // Get productsForecasts list
+    final productsForecastsList = await ProductsController.getProductsForecasts(
+      productsForecastsFilter: productsForecastsFilter,
     );
 
     // Create a new Excel workbook
@@ -43,64 +39,52 @@ Future<void> generateTypesExcelFile({
     sheet.cell(CellIndex.indexByString("A1")).value =
         const TextCellValue("Nom");
     sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Mise");
+        const TextCellValue("Prévision Nombre");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Produits");
+        const TextCellValue("Prévision Montant");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Insertion");
-    sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Dernière Modification");
-
+        const TextCellValue("Nombre Clients");
     // cast data to type model list
-    final types = List<Type>.from(typesList.data);
+    final productsForecasts =
+        List<ProductForecast>.from(productsForecastsList.data);
 
     // Write data rows
-    for (int i = 0; i < types.length; i++) {
+    for (int i = 0; i < productsForecasts.length; i++) {
       sheet
           .cell(
             CellIndex.indexByString("A${i + 2}"),
           )
-          .value = TextCellValue(types[i].name);
+          .value = TextCellValue(productsForecasts[i].productName);
 
       sheet
           .cell(
             CellIndex.indexByString("B${i + 2}"),
           )
           .value = TextCellValue(
-        types[i].stake.toInt().toString(),
+        productsForecasts[i].forecastNumber.toString(),
       );
-
-      String typeProducts = '';
-
-      for (int j = 0; j < types[i].typeProducts.length; j++) {
-        if (typeProducts.isEmpty) {
-          typeProducts =
-              '${types[i].typeProducts[j].productNumber} * ${types[i].typeProducts[j].product.name}';
-        } else {
-          typeProducts =
-              '$typeProducts, ${types[i].typeProducts[j].productNumber} * ${types[i].typeProducts[j].product.name}';
-        }
-      }
 
       sheet
           .cell(
             CellIndex.indexByString("C${i + 2}"),
           )
           .value = TextCellValue(
-        typeProducts,
+        productsForecasts[i].forecastAmount.toString(),
       );
 
       sheet
           .cell(
             CellIndex.indexByString("D${i + 2}"),
           )
-          .value = TextCellValue(format.format(types[i].createdAt));
-
-      sheet
-          .cell(
-            CellIndex.indexByString("E${i + 2}"),
-          )
-          .value = TextCellValue(format.format(types[i].updatedAt));
+          .value = TextCellValue(
+        productsForecasts[i]
+            .customersIds
+            .where(
+              (customerId) => customerId != null,
+            )
+            .length
+            .toString(),
+      );
     }
 
     // Assuming excel.save() returns the bytes of the Excel file
@@ -108,7 +92,7 @@ Future<void> generateTypesExcelFile({
     var directory = await getApplicationDocumentsDirectory();
 
     // Specify the output file path
-    String filePath = '${directory.path}/types.xlsx';
+    String filePath = '${directory.path}/prevision_produits.xlsx';
 
     // Write the bytes to the file
     File(filePath)

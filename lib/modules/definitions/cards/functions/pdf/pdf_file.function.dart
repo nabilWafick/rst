@@ -16,6 +16,7 @@ import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/utils.dart';
 import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
@@ -39,7 +40,10 @@ Future<void> generateCardsPdf({
       listParameters: listParameters,
     );
 
-    // Create a new pdf docu,ent
+    final authName = ref.watch(authNameProvider);
+    final authFirstnames = ref.watch(authFirstnamesProvider);
+
+    // Create a new pdf document
     final pdf = pw.Document();
 
     // customise font
@@ -113,7 +117,7 @@ Future<void> generateCardsPdf({
                   pw.SizedBox(height: 3.0),
                   PdfInfos(
                     label: 'Imprimé par',
-                    value: 'TESTER Tester',
+                    value: '${authName ?? ''} ${authFirstnames ?? ''}',
                   )
                 ],
               ),

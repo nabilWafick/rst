@@ -14,12 +14,12 @@ import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_respo
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
-import 'package:rst/modules/definitions/types/models/type/type.model.dart';
-import 'package:rst/modules/definitions/types/models/types.model.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
+import 'package:rst/modules/statistics/types_stat/models/type_stat/type_stat.model.dart';
 import 'package:rst/utils/utils.dart';
 import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
-Future<void> generateTypesPdf({
+Future<void> generateTypesStatsPdf({
   required BuildContext context,
   required WidgetRef ref,
   required Map<String, dynamic> listParameters,
@@ -34,10 +34,13 @@ Future<void> generateTypesPdf({
     // format
     final format = DateFormat.yMMMMEEEEd('fr');
 
-    // Get types list
-    final typesList = await TypesController.getMany(
+    // Get typesStats list
+    final typesStatsStatsList = await TypesController.getGlobalStats(
       listParameters: listParameters,
     );
+
+    final authName = ref.watch(authNameProvider);
+    final authFirstnames = ref.watch(authFirstnamesProvider);
 
     // Create a new pdf docu,ent
     final pdf = pw.Document();
@@ -113,7 +116,7 @@ Future<void> generateTypesPdf({
                   pw.SizedBox(height: 3.0),
                   PdfInfos(
                     label: 'Imprimé par',
-                    value: 'TESTER Tester',
+                    value: '${authName ?? ''} ${authFirstnames ?? ''}',
                   )
                 ],
               ),
@@ -123,7 +126,7 @@ Future<void> generateTypesPdf({
             height: 25.0,
           ),
           pw.Text(
-            'LISTE DES TYPES',
+            'LISTE DES STATISTIQUES DES TYPESStats',
             style: pw.TextStyle(
               font: mediumFont,
               fontSize: 10.0,
@@ -136,22 +139,8 @@ Future<void> generateTypesPdf({
 
     // Function to create the table
     pw.Widget buildDataTable({
-      required List<Type> types,
+      required List<TypeStat> typesStats,
     }) {
-      List<String> typeProducts = [];
-
-      for (int i = 0; i < types.length; i++) {
-        for (int j = 0; j < types[i].typeProducts.length; j++) {
-          if (typeProducts[i].isEmpty) {
-            typeProducts[i] =
-                '${types[i].typeProducts[j].productNumber} * ${types[i].typeProducts[j].product.name}';
-          } else {
-            typeProducts[i] =
-                '$typeProducts, ${types[i].typeProducts[j].productNumber} * ${types[i].typeProducts[j].product.name}';
-          }
-        }
-      }
-
       return pw.Table(
         border: pw.TableBorder.all(),
         children: [
@@ -191,7 +180,7 @@ Future<void> generateTypesPdf({
                   horizontal: 5.0,
                 ),
                 child: pw.Text(
-                  'Produits',
+                  'Nombre Clients',
                   style: pw.TextStyle(
                     font: mediumFont,
                     fontSize: 7,
@@ -229,7 +218,7 @@ Future<void> generateTypesPdf({
               ),
             ],
           ),
-          for (int i = 0; i < types.length; ++i)
+          for (int i = 0; i < typesStats.length; ++i)
             pw.TableRow(
               children: [
                 pw.Container(
@@ -238,7 +227,7 @@ Future<void> generateTypesPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    types[i].name,
+                    typesStats[i].name,
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -251,7 +240,7 @@ Future<void> generateTypesPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    types[i].stake.toInt().toString(),
+                    typesStats[i].stake.toInt().toString(),
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -264,7 +253,7 @@ Future<void> generateTypesPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    typeProducts[i],
+                    typesStats[i].cards.length.toString(),
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -277,7 +266,7 @@ Future<void> generateTypesPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    format.format(types[i].createdAt),
+                    format.format(typesStats[i].createdAt),
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -290,7 +279,7 @@ Future<void> generateTypesPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    format.format(types[i].updatedAt),
+                    format.format(typesStats[i].updatedAt),
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -304,7 +293,7 @@ Future<void> generateTypesPdf({
     }
 
     // cast data to type model list
-    final types = List<Type>.from(typesList.data);
+    final typesStats = List<TypeStat>.from(typesStatsStatsList.data);
 
     // Build PDF content
     pdf.addPage(
@@ -316,7 +305,7 @@ Future<void> generateTypesPdf({
             height: 20,
           ),
           buildDataTable(
-            types: types,
+            typesStats: typesStats,
           ),
         ],
       ),
@@ -324,7 +313,7 @@ Future<void> generateTypesPdf({
 
     // Save and open the PDF
     final output = await getApplicationDocumentsDirectory();
-    final file = File('${output.path}/types.pdf');
+    final file = File('${output.path}/statistiques_types.pdf');
     await file.writeAsBytes(
       await pdf.save(),
     );
