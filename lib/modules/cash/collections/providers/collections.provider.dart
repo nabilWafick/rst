@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/collections/controllers/collections.controller.dart';
 import 'package:rst/modules/cash/collections/models/collection/collection.model.dart';
 
@@ -45,6 +46,11 @@ final collectionsListStreamProvider =
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Collection>.from(controllerResponse.data)
       : <Collection>[];
@@ -61,6 +67,11 @@ final collectionsCountProvider = FutureProvider<int>((ref) async {
 
 final collectionsSumProvider = FutureProvider<num>((ref) async {
   final controllerResponse = await CollectionsController.sumAll();
+
+ await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int

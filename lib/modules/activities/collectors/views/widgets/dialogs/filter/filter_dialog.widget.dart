@@ -7,9 +7,9 @@ import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/logical_operator/logical_operator.widget.dart';
+import 'package:rst/modules/activities/collectors/providers/collectors_activities.provider.dart';
 import 'package:rst/modules/cash/settlements/models/settlements.model.dart';
 import 'package:rst/modules/cash/settlements/models/structure/structure.model.dart';
-import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CollectorsActivitiesFilterDialog extends StatefulHookConsumerWidget {
@@ -26,9 +26,9 @@ class _CollectorsActivitiesFilterDialogState
   @override
   Widget build(BuildContext context) {
     const formCardWidth = 880.0;
-    // final settlementsListParameters = ref.watch(settlementsListParametersProvider);
-    final settlementsListFilterParametersAdded =
-        ref.watch(settlementsListFilterParametersAddedProvider);
+    // final collectorsActivitiesListParameters = ref.watch(collectorsActivitiesListParametersProvider);
+    final collectorsActivitiesListFilterParametersAdded =
+        ref.watch(collectorsActivitiesListFilterParametersAddedProvider);
 
     final logicalOperator = useState<String>('AND');
 
@@ -85,19 +85,28 @@ class _CollectorsActivitiesFilterDialogState
                     List<Widget> filterParametersToolsList = [];
 
                     for (MapEntry filterParameter
-                        in settlementsListFilterParametersAdded.entries) {
-                      filterParametersToolsList.add(
-                        FilterParameterTool(
-                          index: filterParameter.key,
-                          fields: SettlementStructure.fields
-                              .where(
-                                (field) => field.back != 'id',
-                              )
-                              .toList(),
-                          filterParametersAddedProvider:
-                              settlementsListFilterParametersAddedProvider,
-                        ),
-                      );
+                        in collectorsActivitiesListFilterParametersAdded
+                            .entries) {
+                      // ensure add only fields as parameter
+                      // why
+                      // add by default in where filter 'collectionId'
+                      // which is not in settlements field
+                      if (SettlementStructure.fields.any(
+                        (field) => filterParameter.key == field.back,
+                      )) {
+                        filterParametersToolsList.add(
+                          FilterParameterTool(
+                            index: filterParameter.key,
+                            fields: SettlementStructure.fields
+                                .where(
+                                  (field) => field.back != 'id',
+                                )
+                                .toList(),
+                            filterParametersAddedProvider:
+                                collectorsActivitiesListFilterParametersAddedProvider,
+                          ),
+                        );
+                      }
                     }
 
                     return SingleChildScrollView(
@@ -120,8 +129,9 @@ class _CollectorsActivitiesFilterDialogState
                   onTap: () {
                     // add new filter parameter
                     ref
-                        .read(settlementsListFilterParametersAddedProvider
-                            .notifier)
+                        .read(
+                            collectorsActivitiesListFilterParametersAddedProvider
+                                .notifier)
                         .update(
                       (state) {
                         state = {
@@ -173,7 +183,7 @@ class _CollectorsActivitiesFilterDialogState
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            settlementsListFilterParametersAdded.isNotEmpty
+            collectorsActivitiesListFilterParametersAdded.isNotEmpty
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
@@ -182,11 +192,12 @@ class _CollectorsActivitiesFilterDialogState
                       onPressed: () {
                         // reset filter tools parameters provider
                         ref.invalidate(
-                            settlementsListFilterParametersAddedProvider);
+                            collectorsActivitiesListFilterParametersAddedProvider);
 
                         // remove the filter parameters
                         ref
-                            .read(settlementsListParametersProvider.notifier)
+                            .read(collectorsActivitiesListParametersProvider
+                                .notifier)
                             .update(
                           (state) {
                             Map<String, dynamic> newState = {};
@@ -214,10 +225,11 @@ class _CollectorsActivitiesFilterDialogState
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: settlementsListFilterParametersAdded.isNotEmpty
+                text: collectorsActivitiesListFilterParametersAdded.isNotEmpty
                     ? 'Valider'
                     : 'Fermer',
-                onPressed: settlementsListFilterParametersAdded.isNotEmpty
+                onPressed: collectorsActivitiesListFilterParametersAdded
+                        .isNotEmpty
                     ? () async {
                         // save in update case
                         formKey.currentState!.save();
@@ -230,7 +242,8 @@ class _CollectorsActivitiesFilterDialogState
                           // perform filter Tool parameter
                           for (MapEntry<int,
                                   Map<String, dynamic>> filterToolParameterEntry
-                              in settlementsListFilterParametersAdded.entries) {
+                              in collectorsActivitiesListFilterParametersAdded
+                                  .entries) {
                             final finalFilterToolParameter =
                                 performFilterParameter(
                               ref: ref,
@@ -242,7 +255,7 @@ class _CollectorsActivitiesFilterDialogState
                             /// update added filter
                             ref
                                 .read(
-                                    settlementsListFilterParametersAddedProvider
+                                    collectorsActivitiesListFilterParametersAddedProvider
                                         .notifier)
                                 .update((state) {
                               state = {
@@ -258,10 +271,11 @@ class _CollectorsActivitiesFilterDialogState
                             }
                           }
 
-                          // add filter parameters to settlementsListParameter
+                          // add filter parameters to collectorsActivitiesListParameter
 
                           ref
-                              .read(settlementsListParametersProvider.notifier)
+                              .read(collectorsActivitiesListParametersProvider
+                                  .notifier)
                               .update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
@@ -274,10 +288,13 @@ class _CollectorsActivitiesFilterDialogState
                               }
                             }
                             state = newState;
-
+                            // all settlements fetch should be a created settlement
                             state = {
                               ...state,
                               'where': {
+                                'collectionId': {
+                                  'not': 'null',
+                                },
                                 logicalOperator.value: filterParameters,
                               }
                             };

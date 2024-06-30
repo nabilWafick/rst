@@ -3,7 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/functions/filter_tool.function.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/statistics/collectors_collections/models/collector_collection_type/collector_collection_type.model.dart';
 import 'package:rst/modules/statistics/collectors_collections/providers/collectors_collections.provider.dart';
 import 'package:rst/modules/statistics/collectors_collections/views/widgets/dialogs/dialogs.widget.dart';
@@ -25,6 +27,7 @@ class _CollectorsCollectionsPageHeaderState
         ref.watch(collectorsCollectionsListParametersProvider);
 
     final collectorCollectionType = ref.watch(collectorCollectionTypeProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     return Container(
       margin: const EdgeInsets.only(
@@ -48,9 +51,20 @@ class _CollectorsCollectionsPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !collectorsCollectionsListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text:
+                    collectorsCollectionsListParameters.containsKey('where') &&
+                            collectorsCollectionsListParameters['where']
+                                .containsKey('AND') &&
+                            collectorsCollectionsListParameters['where']['AND']
+                                .isNotEmpty
+                        ? 'Filtré'
+                        : 'Filtrer',
+                light:
+                    collectorsCollectionsListParameters.containsKey('where') &&
+                        collectorsCollectionsListParameters['where']
+                            .containsKey('AND') &&
+                        collectorsCollectionsListParameters['where']['AND']
+                            .isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(
@@ -104,10 +118,15 @@ class _CollectorsCollectionsPageHeaderState
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text:
-                    !collectorsCollectionsListParameters.containsKey('orderBy')
-                        ? 'Trier'
-                        : 'Trié',
+                text: !collectorsCollectionsListParameters
+                            .containsKey('orderBy') ||
+                        !collectorsCollectionsListParameters['orderBy']
+                            .isNotEmpty
+                    ? 'Trier'
+                    : 'Trié',
+                light: collectorsCollectionsListParameters
+                        .containsKey('orderBy') &&
+                    collectorsCollectionsListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,
@@ -115,17 +134,36 @@ class _CollectorsCollectionsPageHeaderState
                   );
                 },
               ),
-              RSTIconButton(
-                icon: Icons.print_outlined,
-                text: 'Imprimer',
-                onTap: () {
-                  FunctionsController.showAlertDialog(
-                    context: context,
-                    alertDialog:
-                        const CollectorsCollectionsPdfGenerationDialog(),
-                  );
-                },
-              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[
+                          PermissionsValues.printCollectorsStatistics]
+                  ? RSTIconButton(
+                      icon: Icons.print_outlined,
+                      text: 'Imprimer',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const CollectorsCollectionsPdfGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
+              authPermissions[PermissionsValues.admin] ||
+                      authPermissions[
+                          PermissionsValues.exportCollectorsStatistics]
+                  ? RSTIconButton(
+                      icon: Icons.view_module_outlined,
+                      text: 'Exporter',
+                      onTap: () {
+                        FunctionsController.showAlertDialog(
+                          context: context,
+                          alertDialog:
+                              const CollectorsCollectionsExcelFileGenerationDialog(),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
               SizedBox(
                 width: 200.0,
                 child: DropdownButtonFormField(

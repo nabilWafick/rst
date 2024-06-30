@@ -52,7 +52,7 @@ class _MainAppbarState extends ConsumerState<MainAppbar> {
                   ),*/
                   RSTText(
                     text:
-                        '$authenticatedAgentName $authenticatedAgentFirstnames',
+                        '${authenticatedAgentName ?? ''} ${authenticatedAgentFirstnames ?? ''}',
                     fontSize: 12.0,
                     fontWeight: FontWeight.w600,
                   ),

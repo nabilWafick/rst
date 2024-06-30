@@ -36,6 +36,7 @@ final authEmailProvider = StateProvider<String?>((ref) {
 final authNameProvider = StateProvider<String?>((ref) {
   return;
 });
+
 final authFirstnamesProvider = StateProvider<String?>((ref) {
   return;
 });

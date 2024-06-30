@@ -114,12 +114,13 @@ class _CollectorsActivitiesPageHeaderState
                 icon: Icons.format_list_bulleted_sharp,
                 text: !collectorsActivitiesListParameters
                             .containsKey('orderBy') ||
-                        !collectorsActivitiesListParameters['orderBy'].isNotEmty
+                        !collectorsActivitiesListParameters['orderBy']
+                            .isNotEmpty
                     ? 'Trier'
                     : 'Trié',
-                light:
-                    collectorsActivitiesListParameters.containsKey('orderBy') &&
-                        collectorsActivitiesListParameters['orderBy'].isNotEmty,
+                light: collectorsActivitiesListParameters
+                        .containsKey('orderBy') &&
+                    collectorsActivitiesListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

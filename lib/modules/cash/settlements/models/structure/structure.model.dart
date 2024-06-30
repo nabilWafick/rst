@@ -25,7 +25,7 @@ class SettlementStructure {
   static Field isValidated = Field(
     front: 'Est Validé',
     back: 'isValidated',
-    type: int,
+    type: bool,
     isNullable: false,
     isRelation: false,
   );

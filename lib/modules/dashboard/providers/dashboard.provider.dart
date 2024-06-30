@@ -8,7 +8,7 @@ final dashboardCollectorsCollectionsListParametersProvider =
     StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
-    'take': 20,
+    'take': 10,
   };
 });
 

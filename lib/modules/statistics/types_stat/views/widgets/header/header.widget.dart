@@ -22,7 +22,8 @@ class TypesStatsPageHeader extends StatefulHookConsumerWidget {
 class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
   @override
   Widget build(BuildContext context) {
-    final typesListParameters = ref.watch(typesListParametersProvider);
+    final typesStatsListParameters =
+        ref.watch(typesStatsListParametersProvider);
 
     final authPermissions = ref.watch(authPermissionsProvider);
     return Container(
@@ -47,18 +48,26 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
-                text: !typesListParameters.containsKey('where')
-                    ? 'Filtrer'
-                    : 'Filtré',
+                text: typesStatsListParameters.containsKey('where') &&
+                        typesStatsListParameters['where'].containsKey('AND') &&
+                        typesStatsListParameters['where']['AND'].isNotEmpty
+                    ? 'Filtré'
+                    : 'Filtrer',
+                light: typesStatsListParameters.containsKey('where') &&
+                    typesStatsListParameters['where'].containsKey('AND') &&
+                    typesStatsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
                   // reset added filter paramters provider
                   ref.invalidate(typesListFilterParametersAddedProvider);
 
                   // updated added filter parameters with list parameters
 
-                  if (typesListParameters.containsKey('where')) {
+                  if (typesStatsListParameters.containsKey('where')) {
                     for (Map<String, dynamic> filterParameter
-                        in typesListParameters['where'].entries.first.value) {
+                        in typesStatsListParameters['where']
+                            .entries
+                            .first
+                            .value) {
                       debugPrint('saved fiter : $filterParameter \n');
 
                       // create a filterToolIndex
@@ -98,9 +107,12 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
               ),
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
-                text: !typesListParameters.containsKey('orderBy')
+                text: !typesStatsListParameters.containsKey('orderBy') ||
+                        !typesStatsListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
+                light: typesStatsListParameters.containsKey('orderBy') &&
+                    typesStatsListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

@@ -56,6 +56,9 @@ class CollectorsActivitiesPageFooter extends ConsumerWidget {
                     ],
                   )
                 : const SizedBox(),
+            const SizedBox(
+              width: 10.0,
+            ),
             Consumer(
               builder: (context, ref, child) {
                 final count =
@@ -164,6 +167,44 @@ class CollectorsActivitiesPageFooter extends ConsumerWidget {
                 );
               },
             ),
+            authPermissions[PermissionsValues.admin] ||
+                    authPermissions[
+                        PermissionsValues.showCollectorsActivitiesMoreInfos]
+                ? Row(
+                    children: [
+                      const RSTText(
+                        text: 'Montant Réglé: ',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final collectorActivitiesList =
+                              ref.watch(collectorsActivitiesListStreamProvider);
+
+                          return RSTText(
+                            text: collectorActivitiesList.when(
+                              data: (data) {
+                                num totalAmount = 0;
+
+                                for (int i = 0; i < data.length; i++) {
+                                  totalAmount += data[i].number *
+                                      data[i].card.typesNumber *
+                                      data[i].card.type.stake;
+                                }
+                                return '${totalAmount.toInt()}f';
+                              },
+                              error: (error, stackTrace) => ' f',
+                              loading: () => ' f',
+                            ),
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
             authPermissions[PermissionsValues.admin] ||
                     authPermissions[
                         PermissionsValues.showCollectorsActivitiesMoreInfos]

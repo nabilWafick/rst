@@ -64,7 +64,7 @@ class DisconnectionConfirmationDialog extends HookConsumerWidget {
             ),
             const Flexible(
               child: RSTText(
-                text: 'Êtes-vous sûr de vouloir supprimer cet agent ?',
+                text: 'Êtes-vous sûr de vouloir vous déconnecter ?',
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
                 textOverflow: TextOverflow.ellipsis,

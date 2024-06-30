@@ -9,20 +9,20 @@ final collectorsActivitiesListParametersProvider =
     'skip': 0,
     'take': 15,
     'where': {
+      'collectionId': {
+        'not': 'null',
+      },
       'AND': [
-        {
-          'collectionId': {
-            'not': 'null',
-          },
-        },
         {
           'isValidated': true,
         },
       ],
     },
-    'orderBy': {
-      'id': 'asc',
-    }
+    'orderBy': [
+      {
+        'id': 'desc',
+      },
+    ]
   };
 });
 

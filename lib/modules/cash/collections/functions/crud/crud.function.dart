@@ -87,7 +87,7 @@ class CollectionsCRUDFunctions {
           collectedAt: collectionDate!,
           collector: collector!,
           agent: Agent(
-            id: 7,
+            id: null,
             name: 'TESTER',
             firstnames: 'Tester',
             phoneNumber: '+22990909001',

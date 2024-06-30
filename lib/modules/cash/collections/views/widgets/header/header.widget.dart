@@ -42,7 +42,11 @@ class _CollectionsPageHeaderState extends ConsumerState<CollectionsPageHeader> {
                   // refresh providers counts and the collections list
                   ref.invalidate(collectionsListStreamProvider);
                   ref.invalidate(collectionsCountProvider);
+                  ref.invalidate(collectionsSumProvider);
+                  ref.invalidate(collectionsRestSumProvider);
                   ref.invalidate(specificCollectionsCountProvider);
+                  ref.invalidate(specificCollectionsSumProvider);
+                  ref.invalidate(specificCollectionsRestSumProvider);
                 },
               ),
               RSTIconButton(

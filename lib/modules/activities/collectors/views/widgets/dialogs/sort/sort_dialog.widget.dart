@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
+import 'package:rst/modules/activities/collectors/providers/collectors_activities.provider.dart';
 import 'package:rst/modules/cash/settlements/models/settlements.model.dart';
 import 'package:rst/modules/cash/settlements/models/structure/structure.model.dart';
-import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CollectorsActivitiesSortDialog extends HookConsumerWidget {
@@ -17,8 +17,8 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const formCardWidth = 500.0;
     final showSortParameters = useState<bool>(false);
-    final settlementsListParameters =
-        ref.watch(settlementsListParametersProvider);
+    final collectorsActivitiesListParameters =
+        ref.watch(collectorsActivitiesListParametersProvider);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -61,11 +61,11 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                 maxHeight: 280.0,
                 minHeight: .0,
               ),
-              child: settlementsListParameters.containsKey('orderBy')
+              child: collectorsActivitiesListParameters.containsKey('orderBy')
                   ? Consumer(
                       builder: (context, ref, child) {
                         List<Map<String, String>> sortConditions =
-                            settlementsListParameters['orderBy'];
+                            collectorsActivitiesListParameters['orderBy'];
                         return SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
                           child: Column(
@@ -80,7 +80,7 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                                         )
                                         .toList(),
                                     listParametersProvider:
-                                        settlementsListParametersProvider,
+                                        collectorsActivitiesListParametersProvider,
                                   ),
                                 )
                                 .toList(),
@@ -139,7 +139,8 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                       minHeight: .0,
                     ),
                     child: Wrap(
-                      children: settlementsListParameters.containsKey('orderBy')
+                      children: collectorsActivitiesListParameters
+                              .containsKey('orderBy')
                           ? SettlementStructure.fields
                               .where(
                                 (field) => !field.isRelation,
@@ -148,7 +149,8 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                               .where(
                                 (field) {
                                   List<Map<String, String>> sortParameters =
-                                      settlementsListParameters['orderBy'];
+                                      collectorsActivitiesListParameters[
+                                          'orderBy'];
                                   return sortParameters.every(
                                     (sortParameter) =>
                                         sortParameter.entries.first.key !=
@@ -161,7 +163,7 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                                 (field) => SortParameter(
                                   field: field,
                                   listParametersProvider:
-                                      settlementsListParametersProvider,
+                                      collectorsActivitiesListParametersProvider,
                                 ),
                               )
                               .toList()
@@ -174,7 +176,7 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                                 (field) => SortParameter(
                                   field: field,
                                   listParametersProvider:
-                                      settlementsListParametersProvider,
+                                      collectorsActivitiesListParametersProvider,
                                 ),
                               )
                               .toList(),
@@ -188,7 +190,7 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            settlementsListParameters['orderBy']?.isNotEmpty ?? false
+            collectorsActivitiesListParameters['orderBy']?.isNotEmpty ?? false
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
@@ -197,7 +199,8 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
                       onPressed: () {
                         // remove the sort Parameter
                         ref
-                            .read(settlementsListParametersProvider.notifier)
+                            .read(collectorsActivitiesListParametersProvider
+                                .notifier)
                             .update(
                           (state) {
                             Map<String, dynamic> newState = {};
@@ -223,7 +226,8 @@ class CollectorsActivitiesSortDialog extends HookConsumerWidget {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: settlementsListParameters['orderBy']?.isEmpty ?? false
+                text: collectorsActivitiesListParameters['orderBy']?.isEmpty ??
+                        false
                     ? 'Valider'
                     : 'Fermer',
                 onPressed: () async {
