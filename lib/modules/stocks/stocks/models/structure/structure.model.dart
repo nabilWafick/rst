@@ -15,12 +15,17 @@ class StockStructure {
   );
 
   static Field product = Field(
-      front: 'Produit',
-      back: 'product',
-      type: String,
-      isNullable: false,
-      isRelation: true,
-      fields: ProductStructure.fields);
+    front: 'Produit',
+    back: 'product',
+    type: String,
+    isNullable: false,
+    isRelation: true,
+    fields: ProductStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
+  );
 
   static Field initialQuantity = Field(
     front: 'Quantité Initiale',
@@ -68,7 +73,11 @@ class StockStructure {
     type: String,
     isNullable: false,
     isRelation: true,
-    fields: CardStructure.fields,
+    fields: CardStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field agent = Field(
@@ -77,7 +86,11 @@ class StockStructure {
     type: String,
     isNullable: true,
     isRelation: false,
-    fields: AgentStructure.fields,
+    fields: AgentStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field createdAt = Field(

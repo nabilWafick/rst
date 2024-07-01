@@ -70,7 +70,11 @@ class CustomerStructure {
     type: String,
     isNullable: true,
     isRelation: true,
-    fields: CollectorStructure.fields,
+    fields: CollectorStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field locality = Field(
@@ -79,7 +83,11 @@ class CustomerStructure {
     type: String,
     isNullable: true,
     isRelation: true,
-    fields: LocalityStructure.fields,
+    fields: LocalityStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field category = Field(
@@ -88,7 +96,11 @@ class CustomerStructure {
     type: String,
     isNullable: true,
     isRelation: true,
-    fields: CategoryStructure.fields,
+    fields: CategoryStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field economicalActivity = Field(
@@ -97,7 +109,11 @@ class CustomerStructure {
     type: String,
     isNullable: true,
     isRelation: true,
-    fields: EconomicalActivityStructure.fields,
+    fields: EconomicalActivityStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field personalStatus = Field(
@@ -106,7 +122,11 @@ class CustomerStructure {
     type: String,
     isNullable: true,
     isRelation: true,
-    fields: PersonalStatusStructure.fields,
+    fields: PersonalStatusStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field profile = Field(

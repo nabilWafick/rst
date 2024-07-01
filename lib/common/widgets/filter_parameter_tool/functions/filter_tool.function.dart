@@ -30,9 +30,9 @@ Map<String, dynamic> splitMap({
       result[newNestedMap.entries.first.key] = newNestedMap.entries.first.value;
 
       // add include key if it is a relation
-      if (isRelation) {
+      /*  if (isRelation) {
         result['include'] = true;
-      }
+      }*/
     } else if (value is Map) {
       // continue the nesting if the goal is not reached
       result[key] = splitMap(
@@ -77,7 +77,7 @@ Map<String, dynamic> generateNestedMap({
         field.back: generateNestedMap(
           field: field.fields!.first,
         ),
-        'include': true,
+        // 'include': true,
       };
     } else {
       // subField found and isn't a relation
@@ -86,7 +86,7 @@ Map<String, dynamic> generateNestedMap({
         field.back: generateNestedMap(
           field: subField,
         ),
-        'include': true,
+        //  'include': true,
       };
     }
   } else {

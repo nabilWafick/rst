@@ -36,7 +36,11 @@ class SettlementStructure {
     type: String,
     isNullable: false,
     isRelation: true,
-    fields: CardStructure.fields,
+    fields: CardStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field collection = Field(
@@ -45,7 +49,11 @@ class SettlementStructure {
     type: String,
     isNullable: true,
     isRelation: true,
-    fields: CollectionStructure.fields,
+    fields: CollectionStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field agent = Field(
@@ -54,7 +62,11 @@ class SettlementStructure {
     type: String,
     isNullable: true,
     isRelation: false,
-    fields: AgentStructure.fields,
+    fields: AgentStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field createdAt = Field(

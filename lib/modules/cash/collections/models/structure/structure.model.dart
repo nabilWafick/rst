@@ -43,7 +43,11 @@ class CollectionStructure {
     type: String,
     isNullable: false,
     isRelation: true,
-    fields: CollectorStructure.fields,
+    fields: CollectorStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field agent = Field(
@@ -52,7 +56,11 @@ class CollectionStructure {
     type: String,
     isNullable: true,
     isRelation: false,
-    fields: AgentStructure.fields,
+    fields: AgentStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field createdAt = Field(

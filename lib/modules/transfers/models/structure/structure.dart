@@ -19,7 +19,11 @@ class TransferStructure {
     type: String,
     isNullable: false,
     isRelation: true,
-    fields: CardStructure.fields,
+    fields: CardStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field receivingCard = Field(
@@ -28,7 +32,11 @@ class TransferStructure {
     type: String,
     isNullable: false,
     isRelation: true,
-    fields: CardStructure.fields,
+    fields: CardStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field agent = Field(
@@ -37,7 +45,11 @@ class TransferStructure {
     type: String,
     isNullable: false,
     isRelation: true,
-    fields: AgentStructure.fields,
+    fields: AgentStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field validatedAt = Field(
