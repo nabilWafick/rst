@@ -188,9 +188,11 @@ class CollectorsActivitiesPageFooter extends ConsumerWidget {
                                 num totalAmount = 0;
 
                                 for (int i = 0; i < data.length; i++) {
-                                  totalAmount += data[i].number *
-                                      data[i].card.typesNumber *
-                                      data[i].card.type.stake;
+                                  if (data[i].isValidated) {
+                                    totalAmount += data[i].number *
+                                        data[i].card.typesNumber *
+                                        data[i].card.type.stake;
+                                  }
                                 }
                                 return '${totalAmount.toInt()}f';
                               },

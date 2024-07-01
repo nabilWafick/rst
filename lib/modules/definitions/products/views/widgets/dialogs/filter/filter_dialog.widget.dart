@@ -109,23 +109,6 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                   },
                 ),
               ),
-
-              /// * === TEST ===
-              RSTText(
-                text: 'Parameters Added : $productsListFilterParametersAdded',
-                fontSize: 12.0,
-              ),
-              const SizedBox(
-                height: 5.00,
-              ),
-              RSTText(
-                text:
-                    'List Parameters : ${ref.watch(productsListParametersProvider)}',
-                fontSize: 12.0,
-              ),
-
-              /// * === TEST ===
-
               Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(

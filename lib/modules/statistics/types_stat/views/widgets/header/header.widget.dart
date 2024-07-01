@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
@@ -57,6 +59,7 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
                     typesStatsListParameters['where'].containsKey('AND') &&
                     typesStatsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
+                  final random = Random();
                   // reset added filter paramters provider
                   ref.invalidate(typesListFilterParametersAddedProvider);
 
@@ -68,11 +71,10 @@ class _TypesStatsPageHeaderState extends ConsumerState<TypesStatsPageHeader> {
                             .entries
                             .first
                             .value) {
-                      debugPrint('saved fiter : $filterParameter \n');
-
                       // create a filterToolIndex
                       final filterToolIndex =
-                          DateTime.now().millisecondsSinceEpoch;
+                          DateTime.now().millisecondsSinceEpoch +
+                              random.nextInt(100000);
 
                       // add it to added filter parameters
                       ref

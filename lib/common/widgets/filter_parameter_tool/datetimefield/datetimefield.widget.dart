@@ -29,18 +29,17 @@ class _FilterParameterToolDateTimeFieldState
   @override
   void initState() {
     super.initState();
-
-    if (widget.initialValue != null) {
-      Future.delayed(const Duration(milliseconds: 100), () {
+    WidgetsBinding.instance.addPersistentFrameCallback((_) {
+      if (widget.initialValue != null && mounted) {
         final isoStringDate = widget.initialValue!.split('Z')[0];
 
         ref
-            .read(filterParameterToolDateTimeFieldValueProvider(
+            .watch(filterParameterToolDateTimeFieldValueProvider(
                     widget.providerName)
                 .notifier)
             .state = DateTime.parse(isoStringDate);
-      });
-    }
+      }
+    });
   }
 
   @override
@@ -59,7 +58,8 @@ class _FilterParameterToolDateTimeFieldState
             context: context,
             ref: ref,
             stateProvider: filterParameterToolDateTimeFieldValueProvider(
-                widget.providerName),
+              widget.providerName,
+            ),
             isNullable: false,
           );
         } catch (error) {
@@ -77,7 +77,7 @@ class _FilterParameterToolDateTimeFieldState
           ),
           borderRadius: BorderRadius.circular(15.0),
         ),
-        child: RSTText( 
+        child: RSTText(
           text: FunctionsController.truncateText(
             text: '$formatedDate $formatedTime',
             maxLength: 25,

@@ -91,22 +91,19 @@ class _CollectorsActivitiesFilterDialogState
                       // why
                       // add by default in where filter 'collectionId'
                       // which is not in settlements field
-                      if (SettlementStructure.fields.any(
-                        (field) => filterParameter.key == field.back,
-                      )) {
-                        filterParametersToolsList.add(
-                          FilterParameterTool(
-                            index: filterParameter.key,
-                            fields: SettlementStructure.fields
-                                .where(
-                                  (field) => field.back != 'id',
-                                )
-                                .toList(),
-                            filterParametersAddedProvider:
-                                collectorsActivitiesListFilterParametersAddedProvider,
-                          ),
-                        );
-                      }
+
+                      filterParametersToolsList.add(
+                        FilterParameterTool(
+                          index: filterParameter.key,
+                          fields: SettlementStructure.fields
+                              .where(
+                                (field) => field.back != 'id',
+                              )
+                              .toList(),
+                          filterParametersAddedProvider:
+                              collectorsActivitiesListFilterParametersAddedProvider,
+                        ),
+                      );
                     }
 
                     return SingleChildScrollView(
@@ -127,8 +124,6 @@ class _CollectorsActivitiesFilterDialogState
                 ),
                 child: InkWell(
                   onTap: () {
-                    debugPrint('Tap');
-
                     // add new filter parameter
                     ref
                         .read(

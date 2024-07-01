@@ -15,7 +15,9 @@ final collectorsActivitiesListParametersProvider =
       },
       'AND': [
         {
-          'isValidated': true,
+          'isValidated': {
+            'equals': true,
+          },
         },
       ],
     },

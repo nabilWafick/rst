@@ -17,7 +17,7 @@ final filterToolLastSubFieldProvider = StateProvider.family<Field, int>(
     return Field(
       front: '',
       back: '',
-      type: String,
+      type: dynamic,
       isNullable: false,
       isRelation: false,
     );
@@ -284,15 +284,22 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
         builder: (context, ref, child) {
           final filterToolValue =
               ref.watch(filterToolValueProvider(widget.index));
-          if (lastSubField.type == bool) {
+
+          if (lastSubField.type == bool ||
+              filterToolValue.runtimeType == bool) {
             return FilterParameterToolBoolField(
               initialValue: filterToolValue,
               providerName: 'filter_parameter_tool_bool_input_${widget.index}',
             );
           }
-          if (lastSubField.type == int || lastSubField.type == double) {
+          if ((lastSubField.type == int ||
+                  lastSubField.type == double ||
+                  lastSubField.type == num) ||
+              (filterToolValue.runtimeType == int ||
+                  filterToolValue.runtimeType == double ||
+                  filterToolValue.runtimeType == num)) {
             return FilterParameterToolTextFormField(
-              initialValue: filterToolValue?.toString(),
+              initialValue: filterToolValue?.toInt().toString(),
               inputProvider:
                   'filter_parameter_tool_number_input_${widget.index}',
               label: 'Nombre',
@@ -301,7 +308,10 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
               validator: FilterParameterToolValidator.textFieldValue,
               onChanged: FilterParameterToolOnChanged.textFieldValue,
             );
-          } else if (lastSubField.type == DateTime) {
+          } else if ((lastSubField.type == DateTime) ||
+              (filterToolValue.runtimeType == String &&
+                  DateTime.tryParse(filterToolValue.toString()).runtimeType ==
+                      DateTime)) {
             return FilterParameterToolDateTimeField(
               initialValue: filterToolValue,
               providerName:

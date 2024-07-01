@@ -10,7 +10,7 @@ import 'package:rst/modules/home/views/page/home.page.dart';
 import 'package:rst/routes/routes.dart';
 import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
 import 'package:rst/utils/theme/theme_data.util.dart';
-import 'package:rst/widget.test.dart';
+//import 'package:rst/widget.test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -40,8 +40,8 @@ class RSTApp extends ConsumerWidget {
       title: 'RST App',
       theme: RSTThemeData.lightTheme,
       debugShowCheckedModeBanner: false,
-      // initialRoute: RoutesManager.main,
-      // onGenerateRoute: RoutesManager.onGenerateRoute,
+      initialRoute: RoutesManager.main,
+      onGenerateRoute: RoutesManager.onGenerateRoute,
       home: // const MainPage(),
           //   const WidgetTest()
           const MainPage(),

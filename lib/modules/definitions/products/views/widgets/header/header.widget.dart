@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
@@ -54,6 +56,7 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
                     productsListParameters['where'].containsKey('AND') &&
                     productsListParameters['where']['AND'].isNotEmpty,
                 onTap: () async {
+                  final random = Random();
                   // reset added filter paramters provider
                   ref.invalidate(productsListFilterParametersAddedProvider);
 
@@ -67,7 +70,8 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
                             .value) {
                       // create a filterToolIndex
                       final filterToolIndex =
-                          DateTime.now().millisecondsSinceEpoch;
+                          DateTime.now().millisecondsSinceEpoch +
+                              random.nextInt(100000);
 
                       // add it to added filter parameters
                       ref
