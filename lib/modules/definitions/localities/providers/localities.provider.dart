@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/localities/controllers/localities.controller.dart';
 import 'package:rst/modules/definitions/localities/models/locality/locality.model.dart';
 
@@ -38,6 +39,11 @@ final localitiesListStreamProvider =
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Locality>.from(controllerResponse.data)
       : <Locality>[];
@@ -46,6 +52,11 @@ final localitiesListStreamProvider =
 // used for storing all localities of database count
 final localitiesCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await LocalitiesController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -58,6 +69,11 @@ final specificLocalitiesCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await LocalitiesController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

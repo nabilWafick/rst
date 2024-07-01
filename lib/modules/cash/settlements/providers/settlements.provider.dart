@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/collections/models/collections.model.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
@@ -63,6 +64,11 @@ final settlementsListStreamProvider =
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Settlement>.from(controllerResponse.data)
       : <Settlement>[];
@@ -71,6 +77,11 @@ final settlementsListStreamProvider =
 // used for storing all settlements of database count
 final settlementsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await SettlementsController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -83,6 +94,11 @@ final specificSettlementsCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await SettlementsController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/categories/controllers/categories.controller.dart';
 import 'package:rst/modules/definitions/categories/models/category/category.model.dart';
 
@@ -38,6 +39,11 @@ final categoriesListStreamProvider =
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Category>.from(controllerResponse.data)
       : <Category>[];
@@ -46,6 +52,11 @@ final categoriesListStreamProvider =
 // used for storing all categories of database count
 final categoriesCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await CategoriesController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -58,6 +69,11 @@ final specificCategoriesCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await CategoriesController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

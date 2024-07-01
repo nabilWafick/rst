@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
 import 'package:rst/modules/definitions/types/models/type/type.model.dart';
 
@@ -55,6 +56,11 @@ final typesListStreamProvider = FutureProvider<List<Type>>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Type>.from(controllerResponse.data)
       : <Type>[];
@@ -63,6 +69,11 @@ final typesListStreamProvider = FutureProvider<List<Type>>((ref) async {
 // used for storing all types of database count
 final typesCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await TypesController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -75,6 +86,11 @@ final specificTypesCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await TypesController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

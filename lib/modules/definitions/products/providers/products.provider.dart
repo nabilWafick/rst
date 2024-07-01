@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 
@@ -51,6 +52,11 @@ final productsListStreamProvider = FutureProvider<List<Product>>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Product>.from(controllerResponse.data)
       : <Product>[];
@@ -59,6 +65,11 @@ final productsListStreamProvider = FutureProvider<List<Product>>((ref) async {
 // used for storing all products of database count
 final productsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await ProductsController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -71,6 +82,11 @@ final specificProductsCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await ProductsController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

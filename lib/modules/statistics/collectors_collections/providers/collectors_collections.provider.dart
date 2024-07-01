@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/models/common.model.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/collectors/controllers/collectors.controller.dart';
 import 'package:rst/modules/statistics/collectors_collections/models/collector_collection/collector_collection.model.dart';
 import 'package:rst/modules/statistics/collectors_collections/models/collector_collection_type/collector_collection_type.model.dart';
@@ -61,6 +62,11 @@ final collectorsCollectionsListStreamProvider =
       );
   }
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<CollectorCollection>.from(controllerResponse.data)
       : <CollectorCollection>[];
@@ -69,6 +75,11 @@ final collectorsCollectionsListStreamProvider =
 // used for storing all collectorsCollections of database count
 final collectorsCollectionsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await CollectorsController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -82,6 +93,11 @@ final specificCollectorsCollectionsCountProvider =
 
   final controllerResponse = await CollectorsController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

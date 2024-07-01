@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/personal_status/controllers/personal_status.controller.dart';
 import 'package:rst/modules/definitions/personal_status/models/personal_status/personal_status.model.dart';
 
@@ -38,6 +39,11 @@ final personalStatusListStreamProvider =
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<PersonalStatus>.from(controllerResponse.data)
       : <PersonalStatus>[];
@@ -46,6 +52,11 @@ final personalStatusListStreamProvider =
 // used for storing all personalStatus of database count
 final personalStatusCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await PersonalStatusController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -58,6 +69,11 @@ final specificPersonalStatusCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await PersonalStatusController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

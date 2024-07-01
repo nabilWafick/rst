@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/stocks/stocks/controllers/stocks.controller.dart';
 import 'package:rst/modules/stocks/stocks/models/stock/stock.model.dart';
 
@@ -42,6 +43,11 @@ final stocksListStreamProvider = FutureProvider<List<Stock>>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Stock>.from(controllerResponse.data)
       : <Stock>[];
@@ -50,6 +56,11 @@ final stocksListStreamProvider = FutureProvider<List<Stock>>((ref) async {
 // used for storing all stocks of database count
 final stocksCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await StocksController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -62,6 +73,11 @@ final specificStocksCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await StocksController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

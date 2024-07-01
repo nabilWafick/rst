@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/economical_activities/controllers/economical_activities.controller.dart';
 import 'package:rst/modules/definitions/economical_activities/models/economical_activity/economical_activity.model.dart';
 
@@ -38,6 +39,11 @@ final economicalActivitiesListStreamProvider =
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<EconomicalActivity>.from(controllerResponse.data)
       : <EconomicalActivity>[];
@@ -46,6 +52,11 @@ final economicalActivitiesListStreamProvider =
 // used for storing all economicalActivities of database count
 final economicalActivitiesCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await EconomicalActivitiesController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -59,6 +70,11 @@ final specificEconomicalActivitiesCountProvider =
 
   final controllerResponse = await EconomicalActivitiesController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

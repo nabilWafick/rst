@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlements.model.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
@@ -40,6 +41,11 @@ final cashOperationsSelectedCardTotalSettlementsNumbersProvider =
   final controllerResponse = await SettlementsController.sumOfNumberForCard(
       cardId: cashOperationsSelectedCard?.id ?? 0);
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
       : 0;
@@ -70,6 +76,11 @@ final cashOperationsSelectedCardSettlementsProvider =
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Settlement>.from(controllerResponse.data)
       : <Settlement>[];
@@ -94,6 +105,11 @@ final cashOperationsSelectedCardSettlementsCountProvider =
     }
   });
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
       : 0;
@@ -107,6 +123,11 @@ final cashOperationsSelectedCardSpecificSettlementsCountProvider =
 
   final controllerResponse = await SettlementsController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

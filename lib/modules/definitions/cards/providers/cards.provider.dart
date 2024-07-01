@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 
@@ -64,6 +65,11 @@ final cardsListStreamProvider = FutureProvider<List<Card>>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Card>.from(controllerResponse.data)
       : <Card>[];
@@ -72,6 +78,11 @@ final cardsListStreamProvider = FutureProvider<List<Card>>((ref) async {
 // used for storing all cards of database count
 final cardsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await CardsController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -84,6 +95,11 @@ final specificCardsCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await CardsController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/transfers/controllers/transfers.controller.dart';
 import 'package:rst/modules/transfers/models/transfer/transfer.model.dart';
 
@@ -30,6 +31,11 @@ final transfersListStreamProvider = FutureProvider<List<Transfer>>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Transfer>.from(controllerResponse.data)
       : <Transfer>[];
@@ -38,6 +44,11 @@ final transfersListStreamProvider = FutureProvider<List<Transfer>>((ref) async {
 // used for storing all transfers of database count
 final transfersCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await TransfersController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -50,6 +61,11 @@ final specificTransfersCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await TransfersController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

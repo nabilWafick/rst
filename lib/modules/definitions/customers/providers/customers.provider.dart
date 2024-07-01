@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/customers/controllers/customers.controller.dart';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
 
@@ -92,6 +93,11 @@ final customersListStreamProvider = FutureProvider<List<Customer>>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Customer>.from(controllerResponse.data)
       : <Customer>[];
@@ -100,6 +106,11 @@ final customersListStreamProvider = FutureProvider<List<Customer>>((ref) async {
 // used for storing all customers of database count
 final customersCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await CustomersController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -112,6 +123,11 @@ final specificCustomersCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await CustomersController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

@@ -60,6 +60,11 @@ final collectionsListStreamProvider =
 final collectionsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await CollectionsController.countAll();
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
       : 0;
@@ -68,7 +73,7 @@ final collectionsCountProvider = FutureProvider<int>((ref) async {
 final collectionsSumProvider = FutureProvider<num>((ref) async {
   final controllerResponse = await CollectionsController.sumAll();
 
- await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
     ref: ref,
     statusCode: controllerResponse.statusCode,
   );
@@ -80,6 +85,11 @@ final collectionsSumProvider = FutureProvider<num>((ref) async {
 
 final collectionsRestSumProvider = FutureProvider<num>((ref) async {
   final controllerResponse = await CollectionsController.sumAllRest();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -94,6 +104,11 @@ final specificCollectionsCountProvider = FutureProvider<int>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
       : 0;
@@ -104,6 +119,11 @@ final specificCollectionsSumProvider = FutureProvider<num>((ref) async {
 
   final controllerResponse = await CollectionsController.sumSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null
@@ -118,6 +138,11 @@ final specificCollectionsRestSumProvider = FutureProvider<num>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
       : 0;
@@ -125,6 +150,11 @@ final specificCollectionsRestSumProvider = FutureProvider<num>((ref) async {
 
 final dayCollectionProvider = FutureProvider<num>((ref) async {
   final controllerResponse = await CollectionsController.getDayCollection();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -134,6 +164,11 @@ final dayCollectionProvider = FutureProvider<num>((ref) async {
 final monthCollectionProvider = FutureProvider<num>((ref) async {
   final controllerResponse = await CollectionsController.getMonthCollection();
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
       : 0;
@@ -142,6 +177,11 @@ final monthCollectionProvider = FutureProvider<num>((ref) async {
 final weekCollectionProvider = FutureProvider<num>((ref) async {
   final controllerResponse = await CollectionsController.getWeekCollection();
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
       : 0;
@@ -149,6 +189,11 @@ final weekCollectionProvider = FutureProvider<num>((ref) async {
 
 final yearCollectionProvider = FutureProvider<num>((ref) async {
   final controllerResponse = await CollectionsController.getYearCollection();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int

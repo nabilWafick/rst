@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/product_forecast/product_forecast.model.dart';
@@ -23,6 +24,11 @@ final productsForecastsListStreamProvider =
     productsForecastsFilter: productsForecastsFilter,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<ProductForecast>.from(controllerResponse.data)
       : <ProductForecast>[];
@@ -32,6 +38,11 @@ final productsForecastsListStreamProvider =
 final productsForecastsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse =
       await ProductsController.getProductsForecastsCountAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -47,6 +58,11 @@ final specificProductsForecastsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse =
       await ProductsController.getProductsForecastsCountSpecific(
     productsForecastsFilter: productsForecastsFilter,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

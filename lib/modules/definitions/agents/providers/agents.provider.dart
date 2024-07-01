@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/common/models/permissions_group/permissions_group.model.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/agents/controllers/agents.controller.dart';
 import 'package:rst/modules/definitions/agents/models/agent/agent.model.dart';
 import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
@@ -88,6 +89,11 @@ final agentsListStreamProvider = FutureProvider<List<Agent>>((ref) async {
     listParameters: listParameters,
   );
 
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
   return controllerResponse.data != null
       ? List<Agent>.from(controllerResponse.data)
       : <Agent>[];
@@ -96,6 +102,11 @@ final agentsListStreamProvider = FutureProvider<List<Agent>>((ref) async {
 // used for storing all agents of database count
 final agentsCountProvider = FutureProvider<int>((ref) async {
   final controllerResponse = await AgentsController.countAll();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
@@ -108,6 +119,11 @@ final specificAgentsCountProvider = FutureProvider<int>((ref) async {
 
   final controllerResponse = await AgentsController.countSpecific(
     listParameters: listParameters,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
   );
 
   return controllerResponse.data != null

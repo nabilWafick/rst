@@ -127,6 +127,8 @@ class _CollectorsActivitiesFilterDialogState
                 ),
                 child: InkWell(
                   onTap: () {
+                    debugPrint('Tap');
+
                     // add new filter parameter
                     ref
                         .read(
