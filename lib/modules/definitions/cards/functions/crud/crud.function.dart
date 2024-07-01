@@ -10,6 +10,7 @@ import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/product/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/type/providers/selection.provider.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
@@ -84,6 +85,11 @@ class CardsCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: cardAdditionResponse.statusCode,
+      );
     }
   }
 
@@ -156,6 +162,11 @@ class CardsCRUDFunctions {
       FunctionsController.showAlertDialog(
         context: context,
         alertDialog: const FeedbackDialog(),
+      );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: cardUpdateResponse.statusCode,
       );
     }
   }
@@ -234,6 +245,11 @@ class CardsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: cardUpdateResponse.statusCode,
+    );
   }
 
   static Future<void> makeNormaleSatisfaction({
@@ -280,6 +296,11 @@ class CardsCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: cardUpdateResponse.statusCode,
     );
   }
 
@@ -472,6 +493,11 @@ class CardsCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: constrainedOutputResponse.statusCode,
+        );
       }
     }
   }
@@ -521,6 +547,11 @@ class CardsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: cardUpdateResponse.statusCode,
+    );
   }
 
   static Future<void> delete({
@@ -557,6 +588,11 @@ class CardsCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: cardDeletionResponse.statusCode,
     );
   }
 }

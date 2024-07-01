@@ -7,6 +7,7 @@ import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_respo
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/product/providers/selection.provider.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/agents/models/agents.model.dart';
 import 'package:rst/modules/stocks/stocks/controllers/stocks.controller.dart';
 import 'package:rst/modules/stocks/stocks/models/stock/stock.model.dart';
@@ -102,6 +103,11 @@ class StocksCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: stockAdditionResponse.statusCode,
+        );
       }
     }
   }
@@ -194,6 +200,11 @@ class StocksCRUDFunctions {
         FunctionsController.showAlertDialog(
           context: context,
           alertDialog: const FeedbackDialog(),
+        );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: stockAdditionResponse.statusCode,
         );
       }
     }
@@ -303,6 +314,11 @@ class StocksCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: stockUpdateResponse.statusCode,
+        );
       }
     }
   }
@@ -411,6 +427,11 @@ class StocksCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: stockUpdateResponse.statusCode,
+        );
       }
     }
   }
@@ -449,6 +470,11 @@ class StocksCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: stockDeletionResponse.statusCode,
     );
   }
 }

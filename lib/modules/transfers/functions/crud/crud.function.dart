@@ -7,6 +7,7 @@ import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_respo
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/agents/models/agents.model.dart';
 import 'package:rst/modules/transfers/controllers/transfers.controller.dart';
 import 'package:rst/modules/transfers/models/transfer/transfer.model.dart';
@@ -68,6 +69,11 @@ class TransfersCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: transferAdditionResponse.statusCode,
+    );
   }
 
   static Future<void> createBetweenCustomers({
@@ -126,6 +132,11 @@ class TransfersCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: transferAdditionResponse.statusCode,
+    );
   }
 
   static Future<void> validate({
@@ -163,6 +174,11 @@ class TransfersCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: transferValidationResponse.statusCode,
     );
   }
 
@@ -202,6 +218,11 @@ class TransfersCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: transferRejectionResponse.statusCode,
+    );
   }
 
   static Future<void> delete({
@@ -238,6 +259,11 @@ class TransfersCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: transferDeletionResponse.statusCode,
     );
   }
 }

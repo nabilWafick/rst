@@ -6,6 +6,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/collectors/controllers/collectors.controller.dart';
 import 'package:rst/modules/definitions/collectors/models/collector/collector.model.dart';
 import 'package:rst/modules/definitions/collectors/providers/collectors.provider.dart';
@@ -66,6 +67,10 @@ class CollectorsCRUDFunctions {
       FunctionsController.showAlertDialog(
         context: context,
         alertDialog: const FeedbackDialog(),
+      );
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: collectorAdditionResponse.statusCode,
       );
     }
   }
@@ -140,6 +145,11 @@ class CollectorsCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: collectorUpdateResponse.statusCode,
+      );
     }
   }
 
@@ -177,6 +187,11 @@ class CollectorsCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: collectorDeletionResponse.statusCode,
     );
   }
 }

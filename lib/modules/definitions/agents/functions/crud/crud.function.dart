@@ -6,6 +6,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/agents/controllers/agents.controller.dart';
 import 'package:rst/modules/definitions/agents/models/agent/agent.model.dart';
 import 'package:rst/modules/definitions/agents/providers/agents.provider.dart';
@@ -74,6 +75,11 @@ class AgentsCRUDFunctions {
       FunctionsController.showAlertDialog(
         context: context,
         alertDialog: const FeedbackDialog(),
+      );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: agentAdditionResponse.statusCode,
       );
     }
   }
@@ -154,6 +160,11 @@ class AgentsCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: agentUpdateResponse.statusCode,
+      );
     }
   }
 
@@ -191,6 +202,11 @@ class AgentsCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: agentDeletionResponse.statusCode,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/modules/definitions/products/providers/products.provider.dart';
@@ -61,6 +62,11 @@ class ProductsCRUDFunctions {
       FunctionsController.showAlertDialog(
         context: context,
         alertDialog: const FeedbackDialog(),
+      );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: productAdditionResponse.statusCode,
       );
     }
   }
@@ -130,6 +136,11 @@ class ProductsCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: productUpdateResponse.statusCode,
+      );
     }
   }
 
@@ -167,6 +178,11 @@ class ProductsCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: productDeletionResponse.statusCode,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/personal_status/controllers/personal_status.controller.dart';
 import 'package:rst/modules/definitions/personal_status/models/personal_status/personal_status.model.dart';
 import 'package:rst/modules/definitions/personal_status/providers/personal_status.provider.dart';
@@ -59,6 +60,11 @@ class PersonalStatusCRUDFunctions {
       FunctionsController.showAlertDialog(
         context: context,
         alertDialog: const FeedbackDialog(),
+      );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: personalStatusAdditionResponse.statusCode,
       );
     }
   }
@@ -126,6 +132,11 @@ class PersonalStatusCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: personalStatusUpdateResponse.statusCode,
+      );
     }
   }
 
@@ -164,6 +175,11 @@ class PersonalStatusCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: personalStatusDeletionResponse.statusCode,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/localities/controllers/localities.controller.dart';
 import 'package:rst/modules/definitions/localities/models/locality/locality.model.dart';
 import 'package:rst/modules/definitions/localities/providers/localities.provider.dart';
@@ -58,6 +59,11 @@ class LocalitiesCRUDFunctions {
       FunctionsController.showAlertDialog(
         context: context,
         alertDialog: const FeedbackDialog(),
+      );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: localityAdditionResponse.statusCode,
       );
     }
   }
@@ -124,6 +130,11 @@ class LocalitiesCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: localityUpdateResponse.statusCode,
+      );
     }
   }
 
@@ -161,6 +172,11 @@ class LocalitiesCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: localityDeletionResponse.statusCode,
     );
   }
 }

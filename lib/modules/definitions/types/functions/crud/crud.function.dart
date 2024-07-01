@@ -8,6 +8,7 @@ import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/family_textformfield/validator/family_form_field_validator.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/product/providers/selection.provider.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/types/controllers/types.controller.dart';
 import 'package:rst/modules/definitions/types/models/types.model.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
@@ -186,6 +187,11 @@ class TypesCRUDFunctions {
         FunctionsController.showAlertDialog(
           context: context,
           alertDialog: const FeedbackDialog(),
+        );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: typeAdditionResponse.statusCode,
         );
       }
     }
@@ -374,6 +380,11 @@ class TypesCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: typeUpdateResponse.statusCode,
+        );
       }
     }
   }
@@ -412,6 +423,11 @@ class TypesCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: typeDeletionResponse.statusCode,
     );
   }
 }

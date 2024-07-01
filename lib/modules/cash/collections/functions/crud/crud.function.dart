@@ -7,6 +7,7 @@ import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_respo
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/collector/providers/selection.provider.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/collections/controllers/collections.controller.dart';
 import 'package:rst/modules/cash/collections/models/collection/collection.model.dart';
 import 'package:rst/modules/cash/collections/providers/collections.provider.dart';
@@ -127,6 +128,11 @@ class CollectionsCRUDFunctions {
         FunctionsController.showAlertDialog(
           context: context,
           alertDialog: const FeedbackDialog(),
+        );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: collectionAdditionResponse.statusCode,
         );
       }
     }
@@ -250,6 +256,10 @@ class CollectionsCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: collectionUpdateResponse.statusCode,
+        );
       }
     }
   }
@@ -311,6 +321,11 @@ class CollectionsCRUDFunctions {
         FunctionsController.showAlertDialog(
           context: context,
           alertDialog: const FeedbackDialog(),
+        );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: collectionUpdateResponse.statusCode,
         );
       } catch (e) {
         debugPrint(e.toString());
@@ -375,6 +390,11 @@ class CollectionsCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: collectionUpdateResponse.statusCode,
+      );
     }
   }
 
@@ -412,6 +432,11 @@ class CollectionsCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: collectionDeletionResponse.statusCode,
     );
   }
 }

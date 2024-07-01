@@ -8,6 +8,7 @@ import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/family_textformfield/validator/family_form_field_validator.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
@@ -130,6 +131,11 @@ class SettlementsCRUDFunctions {
         FunctionsController.showAlertDialog(
           context: context,
           alertDialog: const FeedbackDialog(),
+        );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: settlementAdditionResponse.statusCode,
         );
       }
     }
@@ -266,6 +272,11 @@ class SettlementsCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: settlementAdditionResponse.statusCode,
+        );
       }
     }
   }
@@ -351,6 +362,11 @@ class SettlementsCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: settlementUpdateResponse.statusCode,
+        );
       }
     }
   }
@@ -434,6 +450,11 @@ class SettlementsCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: settlementDeletionResponse.statusCode,
     );
   }
 }

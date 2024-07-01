@@ -6,6 +6,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/economical_activities/controllers/economical_activities.controller.dart';
 import 'package:rst/modules/definitions/economical_activities/models/economical_activity/economical_activity.model.dart';
 import 'package:rst/modules/definitions/economical_activities/providers/economical_activities.provider.dart';
@@ -59,6 +60,11 @@ class EconomicalActivitiesCRUDFunctions {
       FunctionsController.showAlertDialog(
         context: context,
         alertDialog: const FeedbackDialog(),
+      );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: economicalActivityAdditionResponse.statusCode,
       );
     }
   }
@@ -126,6 +132,11 @@ class EconomicalActivitiesCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+        ref: ref,
+        statusCode: economicalActivityUpdateResponse.statusCode,
+      );
     }
   }
 
@@ -164,6 +175,11 @@ class EconomicalActivitiesCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: economicalActivityDeletionResponse.statusCode,
     );
   }
 }

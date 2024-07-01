@@ -13,6 +13,7 @@ import 'package:rst/common/widgets/selection_tools/economical_activity/providers
 import 'package:rst/common/widgets/selection_tools/locality/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/personal_status/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/type/providers/selection.provider.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/customers/controllers/customers.controller.dart';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
 
@@ -274,6 +275,11 @@ class CustomersCRUDFunctions {
         FunctionsController.showAlertDialog(
           context: context,
           alertDialog: const FeedbackDialog(),
+        );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: customerAdditionResponse.statusCode,
         );
       }
     }
@@ -548,6 +554,11 @@ class CustomersCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+          ref: ref,
+          statusCode: customerUpdateResponse.statusCode,
+        );
       }
     }
   }
@@ -586,6 +597,11 @@ class CustomersCRUDFunctions {
     FunctionsController.showAlertDialog(
       context: context,
       alertDialog: const FeedbackDialog(),
+    );
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: customerDeletionResponse.statusCode,
     );
   }
 }
