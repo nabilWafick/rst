@@ -38,7 +38,7 @@ class WebSocketService {
   final String _wsUrl = RSTApiConstants.wsBaseUrl ?? '';
 
   // Reconnection parameters
-  final int _reconnectInterval = 2000;
+  final int _reconnectInterval = 5000;
   final int _maxReconnectAttempts = 5;
   int _reconnectAttempts = 0;
 
@@ -61,7 +61,6 @@ class WebSocketService {
       debugPrint('Error creating WebSocket connection: $e');
       _isConnected = false;
       _scheduleReconnect();
-      rethrow; // Rethrow the exception so the caller knows the connection failed
     }
   }
 

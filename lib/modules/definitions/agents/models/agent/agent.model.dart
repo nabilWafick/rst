@@ -12,7 +12,6 @@ class Agent {
   final String address;
   final String? profile;
   final Map<String, dynamic> permissions;
-  final Map<String, dynamic> views;
   final DateTime createdAt;
   final DateTime updatedAt;
   Agent({
@@ -24,7 +23,6 @@ class Agent {
     required this.address,
     this.profile,
     required this.permissions,
-    required this.views,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -38,7 +36,6 @@ class Agent {
     String? address,
     String? profile,
     Map<String, dynamic>? permissions,
-    Map<String, dynamic>? views,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -51,7 +48,6 @@ class Agent {
       address: address ?? this.address,
       profile: profile ?? this.profile,
       permissions: permissions ?? this.permissions,
-      views: views ?? this.views,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -66,7 +62,6 @@ class Agent {
       'address': address,
       'profile': profile,
       'permissions': json.encode(permissions),
-      'views': json.encode(views),
     };
   }
 
@@ -82,9 +77,6 @@ class Agent {
       permissions: Map<String, dynamic>.from(
         map['permissions'] as Map<String, dynamic>,
       ),
-      views: Map<String, dynamic>.from(
-        map['views'] as Map<String, dynamic>,
-      ),
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );
@@ -97,7 +89,7 @@ class Agent {
 
   @override
   String toString() {
-    return 'Agent(id: $id, name: $name, firstnames: $firstnames, phoneNumber: $phoneNumber, email: $email, address: $address, profile: $profile, permissions: $permissions, views: $views, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Agent(id: $id, name: $name, firstnames: $firstnames, phoneNumber: $phoneNumber, email: $email, address: $address, profile: $profile, permissions: $permissions, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -112,7 +104,6 @@ class Agent {
         other.address == address &&
         other.profile == profile &&
         mapEquals(other.permissions, permissions) &&
-        mapEquals(other.views, views) &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt;
   }
@@ -127,7 +118,6 @@ class Agent {
         address.hashCode ^
         profile.hashCode ^
         permissions.hashCode ^
-        views.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode;
   }

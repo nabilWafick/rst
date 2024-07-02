@@ -111,7 +111,6 @@ class Auth {
         email: 'email',
         address: 'address',
         permissions: {},
-        views: {},
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       ),

@@ -40,9 +40,6 @@ class AgentsCRUDFunctions {
         phoneNumber: agentPhoneNumber,
         address: agentAddress,
         permissions: agentPermissions,
-        views: {
-          'dashboard': false,
-        },
         profile: null,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -114,9 +111,6 @@ class AgentsCRUDFunctions {
         phoneNumber: agentPhoneNumber,
         address: agentAddress,
         permissions: agentPermissions,
-        views: {
-          'dashboard': false,
-        },
         profile: null,
         createdAt: agent.createdAt,
         updatedAt: DateTime.now(),

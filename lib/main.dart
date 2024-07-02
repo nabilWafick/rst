@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/auth/connection/views/page/connection.page.dart';
-import 'package:rst/modules/auth/registration/views/page/registration.page.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/home/views/page/home.page.dart';
 import 'package:rst/routes/routes.dart';

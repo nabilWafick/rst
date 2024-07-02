@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/common/service/websocket/websocket.service.dart';
 import 'package:rst/modules/home/views/widgets/home.widget.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
@@ -11,7 +12,7 @@ class HomePage extends StatefulHookConsumerWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with WidgetsBindingObserver {
-  // late WebSocketService _webSocketService;
+  late WebSocketService _webSocketService;
 
   @override
   void initState() {
@@ -20,7 +21,7 @@ class _HomePageState extends ConsumerState<HomePage>
     debugPrint('HomePage initState called');
 
     // instanciate webSocketService
-    // _webSocketService = WebSocketService(ref: ref);
+    _webSocketService = WebSocketService(ref: ref);
 
     WidgetsBinding.instance.addObserver(this);
 
