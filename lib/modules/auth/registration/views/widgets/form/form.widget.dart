@@ -8,7 +8,11 @@ import 'package:rst/modules/auth/registration/controllers/forms/validators/regis
 import 'package:rst/routes/routes.dart';
 
 class FormSide extends StatefulHookConsumerWidget {
-  const FormSide({super.key});
+  // final GlobalKey<FormState> formKey;
+  const FormSide({
+    super.key,
+    //  required this.formKey,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _FormSideState();

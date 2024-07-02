@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/auth/registration/views/widgets/form/form.widget.dart';
 import 'package:rst/modules/auth/widgets/logo_side/logo_side.widget.dart';
 
-class RegistrationPage extends ConsumerWidget {
+class RegistrationPage extends StatefulHookConsumerWidget {
   const RegistrationPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RegistrationPageState();
+}
+
+class _RegistrationPageState extends ConsumerState<RegistrationPage> {
+  final formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
     return const Scaffold(
       body: Row(
         children: [
           LogoSide(),
-          FormSide(),
+          FormSide(
+              //   formKey: formKey,
+              ),
+          /*  SecurityQuestionsSide(
+            formKey: formKey,
+          )*/
         ],
       ),
     );
