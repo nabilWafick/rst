@@ -109,8 +109,6 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
     final modulesVisibilityConditions =
         ref.watch(modulesVisibilityConditionsProvider);
 
-    debugPrint('modules visibility: $modulesVisibilityConditions');
-
     final authPermissions = ref.watch(authPermissionsProvider);
 
     final modulesSidebarOptionModel = [

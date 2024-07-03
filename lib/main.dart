@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rst/modules/auth/connection/views/page/connection.page.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/home/views/page/home.page.dart';
 import 'package:rst/routes/routes.dart';
@@ -15,6 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+
+  // disconnect on init
+  await AuthFunctions.disconnectOnInit();
 
   // run the app
   runApp(

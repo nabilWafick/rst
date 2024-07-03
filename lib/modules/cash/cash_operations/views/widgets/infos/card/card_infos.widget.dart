@@ -222,7 +222,7 @@ class _CashOperationsCustomerCardInfosState
                         fontWeight: FontWeight.w500,
                       ),
                       hoverColor: material.Colors.transparent,
-                      onChanged: !authPermissions![PermissionsValues.admin] ||
+                      onChanged: !authPermissions![PermissionsValues.admin] &&
                               !authPermissions[PermissionsValues.updateCard]
                           ? null
                           : (value) async {
@@ -303,7 +303,7 @@ class _CashOperationsCustomerCardInfosState
                         fontWeight: FontWeight.w500,
                       ),
                       hoverColor: material.Colors.transparent,
-                      onChanged: !authPermissions[PermissionsValues.admin] ||
+                      onChanged: !authPermissions[PermissionsValues.admin] &&
                               !authPermissions[PermissionsValues.updateProduct]
                           ? null
                           : (value) async {

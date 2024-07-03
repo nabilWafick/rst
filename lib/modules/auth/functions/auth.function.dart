@@ -269,6 +269,25 @@ class AuthFunctions {
     }
   }
 
+  static Future<void> disconnectOnInit() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final userEmail = prefs.getString(RSTPreferencesKeys.email);
+
+      if (userEmail != null) {
+        await AuthController.disconnect(
+          userEmail: userEmail,
+        );
+
+        // remove stored data
+        removeDataStored();
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
   static void invalidateHomePageProviders({
     required dynamic ref,
   }) {
