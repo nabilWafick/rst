@@ -65,7 +65,9 @@ class _AgentPermissionsDialogState
             ),
             child: LabelValue(
               label: 'Agent',
-              value: '$agentName $agentFirstnames',
+              value: widget.agent != null
+                  ? '${widget.agent?.name ?? ''} ${widget.agent?.firstnames ?? ''}'
+                  : '$agentName $agentFirstnames',
               labelSize: 12.0,
               labelFontWeight: FontWeight.w500,
               valueSize: 15.0,

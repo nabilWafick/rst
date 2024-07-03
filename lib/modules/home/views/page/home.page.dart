@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rst/common/service/websocket/websocket.service.dart';
 import 'package:rst/modules/home/views/widgets/home.widget.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
@@ -10,9 +9,8 @@ class HomePage extends StatefulHookConsumerWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage>
-    with WidgetsBindingObserver {
-  late WebSocketService _webSocketService;
+class _HomePageState extends ConsumerState<HomePage> {
+  // late WebSocketService _webSocketService;
 
   @override
   void initState() {
@@ -21,12 +19,12 @@ class _HomePageState extends ConsumerState<HomePage>
     debugPrint('HomePage initState called');
 
     // instanciate webSocketService
-    _webSocketService = WebSocketService(ref: ref);
+    // _webSocketService = WebSocketService(ref: ref);
 
-    WidgetsBinding.instance.addObserver(this);
+    //  WidgetsBinding.instance.addObserver(this);
 
     // try connection
-    // _connectWebSocket();
+    // _webSocketService.connect();
   }
 
   /*
@@ -50,14 +48,15 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 */
 
-/*  @override
+/*
+  @override
   void dispose() {
     debugPrint('HomePage dispose called');
     WidgetsBinding.instance.removeObserver(this);
     _webSocketService.disconnect();
     super.dispose();
-  }*/
-
+  }
+*/
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

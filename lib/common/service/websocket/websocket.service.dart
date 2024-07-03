@@ -60,7 +60,7 @@ class WebSocketService {
     } catch (e) {
       debugPrint('Error creating WebSocket connection: $e');
       _isConnected = false;
-      _scheduleReconnect();
+      // _scheduleReconnect();
     }
   }
 
@@ -201,7 +201,7 @@ class WebSocketService {
     debugPrint('WebSocket error: $error');
     try {
       _isConnected = false;
-      _scheduleReconnect();
+      // _scheduleReconnect();
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -211,7 +211,7 @@ class WebSocketService {
     debugPrint('WebSocket connection closed');
     try {
       _isConnected = false;
-      _scheduleReconnect();
+      //  _scheduleReconnect();
     } catch (e) {
       debugPrint(e.toString());
     }

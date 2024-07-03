@@ -10,7 +10,6 @@ import 'package:rst/modules/home/views/page/home.page.dart';
 import 'package:rst/routes/routes.dart';
 import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
 import 'package:rst/utils/theme/theme_data.util.dart';
-//import 'package:rst/widget.test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -59,29 +58,37 @@ class MainPage extends StatefulHookConsumerWidget {
 class _MainPageState extends ConsumerState<MainPage> {
   @override
   void initState() {
-    _loadAuthData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadStoredData();
+    });
     super.initState();
   }
 
-  Future<void> _loadAuthData() async {
+  _loadStoredData() async {
     final prefs = await SharedPreferences.getInstance();
-    final authEmail = prefs.getString(RSTPreferencesKeys.email);
+
     final authName = prefs.getString(RSTPreferencesKeys.name);
     final authFirstnames = prefs.getString(RSTPreferencesKeys.firstnames);
     final authPermissions = prefs.getString(RSTPreferencesKeys.permissions);
     final authAccesToken = prefs.getString(RSTPreferencesKeys.accesToken);
+    final authEmail = prefs.getString(RSTPreferencesKeys.email);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //  debugPrint('authEmail: $authEmail');
-      //  debugPrint('authPermissions: $authPermissions');
-      ref.read(authEmailProvider.notifier).state = authEmail;
-      ref.read(authNameProvider.notifier).state = authName;
-      ref.read(authFirstnamesProvider.notifier).state = authFirstnames;
-      ref.read(authPermissionsProvider.notifier).state = authPermissions != null
-          ? jsonDecode(authPermissions) as Map<String, dynamic>
-          : null;
-      ref.read(authAccesTokenProvider.notifier).state = authAccesToken;
-    });
+    ref.read(authNameProvider.notifier).state = authName;
+    ref.read(authFirstnamesProvider.notifier).state = authFirstnames;
+    ref.read(authAccesTokenProvider.notifier).state = authAccesToken;
+    ref.read(authEmailProvider.notifier).state = authEmail;
+
+    if (authPermissions != null) {
+      try {
+        final Map<String, dynamic> permissions = jsonDecode(authPermissions);
+        ref.read(authPermissionsProvider.notifier).state = permissions;
+      } catch (e) {
+        debugPrint('Error parsing permissions: $e');
+        ref.read(authPermissionsProvider.notifier).state = null;
+      }
+    } else {
+      ref.read(authPermissionsProvider.notifier).state = null;
+    }
   }
 
   @override

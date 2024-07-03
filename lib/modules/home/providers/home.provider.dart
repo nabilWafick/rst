@@ -51,34 +51,47 @@ final authAccesTokenProvider = StateProvider<String?>((ref) {
 
 final modulesVisibilityConditionsProvider = Provider<Map<int, bool>>((ref) {
   final authPermissions = ref.watch(authPermissionsProvider);
-  final primaryModulesVisibilityConditions = {
+  Map<int, bool> primaryModulesVisibilityConditions = {
     // Dashboard
-    0: authPermissions![PermissionsValues.admin],
+    0: authPermissions?[PermissionsValues.admin],
 
     // Definitions
-    1: true,
+    1: (authPermissions?[PermissionsValues.admin] ?? false) ||
+        (authPermissions?[PermissionsValues.readProduct] ?? false) ||
+        (authPermissions?[PermissionsValues.readType] ?? false) ||
+        (authPermissions?[PermissionsValues.readCategory] ?? false) ||
+        (authPermissions?[PermissionsValues.readLocality] ?? false) ||
+        (authPermissions?[PermissionsValues.readEconomicalActivity] ?? false) ||
+        (authPermissions?[PermissionsValues.readPersonalStatus] ?? false) ||
+        (authPermissions?[PermissionsValues.readCustomer] ?? false) ||
+        (authPermissions?[PermissionsValues.readCard] ?? false) ||
+        (authPermissions?[PermissionsValues.readCollector] ?? false) ||
+        (authPermissions?[PermissionsValues.readAgent] ?? false),
 
     // Cash
-    2: authPermissions[PermissionsValues.admin] ||
-        authPermissions[PermissionsValues.addCollection],
+    2: (authPermissions?[PermissionsValues.admin] ?? false) ||
+        (authPermissions?[PermissionsValues.readCollection] ?? false),
 
     // Activities
-    3: authPermissions[PermissionsValues.admin] ||
-        authPermissions[PermissionsValues.showCustomersActivities] ||
-        authPermissions[PermissionsValues.showCollectorsActivities],
+    3: (authPermissions?[PermissionsValues.admin] ?? false) ||
+        (authPermissions?[PermissionsValues.showCustomersActivities] ??
+            false) ||
+        (authPermissions?[PermissionsValues.showCollectorsActivities] ?? false),
 
     // Statistiques
-    4: authPermissions[PermissionsValues.admin] ||
-        authPermissions[PermissionsValues.showTypesStatistics] ||
-        authPermissions[PermissionsValues.showCollectorsStatistics] ||
-        authPermissions[PermissionsValues.showProductsForecasts],
+    4: (authPermissions?[PermissionsValues.admin] ?? false) ||
+        (authPermissions?[PermissionsValues.showTypesStatistics] ?? false) ||
+        (authPermissions?[PermissionsValues.showCollectorsStatistics] ??
+            false) ||
+        (authPermissions?[PermissionsValues.showProductsForecasts] ?? false),
 
     // Transfers
-    5: authPermissions[PermissionsValues.admin] ||
-        authPermissions[PermissionsValues.addTransfer],
+    5: (authPermissions?[PermissionsValues.admin] ?? false) ||
+        (authPermissions?[PermissionsValues.addTransfer] ?? false),
 
     // Stocks
-    6: authPermissions[PermissionsValues.admin] || authPermissions['add-stock']
+    6: (authPermissions?[PermissionsValues.admin] ?? false) ||
+        (authPermissions?[PermissionsValues.readStock] ?? false)
   };
 
   return {
@@ -96,6 +109,8 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
     final modulesVisibilityConditions =
         ref.watch(modulesVisibilityConditionsProvider);
 
+    debugPrint('modules visibility: $modulesVisibilityConditions');
+
     final authPermissions = ref.watch(authPermissionsProvider);
 
     final modulesSidebarOptionModel = [
@@ -110,7 +125,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
           ),
         ],
         subOptionsVisibility: {
-          0: authPermissions![PermissionsValues.admin],
+          0: (authPermissions?[PermissionsValues.admin] ?? false),
         },
       ),
       SidebarOptionModel(
@@ -175,44 +190,45 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Products
-          0: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readProduct],
+          0: ((authPermissions?[PermissionsValues.admin] ?? false)) ||
+              (authPermissions?[PermissionsValues.readProduct] ?? false),
 
           // Types
-          1: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readType],
+          1: ((authPermissions?[PermissionsValues.admin] ?? false)) ||
+              (authPermissions?[PermissionsValues.readType] ?? false),
 
           // Categories
-          2: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readCategory],
+          2: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readCategory] ?? false),
 
           // Economical Activities
-          3: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readEconomicalActivity],
+          3: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readEconomicalActivity] ??
+                  false),
 
           // Personal Status
-          4: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readPersonalStatus],
+          4: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readPersonalStatus] ?? false),
 
           // Localities
-          5: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readLocality],
+          5: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readLocality] ?? false),
 
           // Cards
-          6: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readCard],
+          6: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readCard] ?? false),
 
           // Customers
-          7: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readCustomer],
+          7: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readCustomer] ?? false),
 
           // Collectors
-          8: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readCollector],
+          8: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readCollector] ?? false),
 
           // Agents
-          9: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readAgent]
+          9: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readAgent] ?? false),
         },
       ),
       SidebarOptionModel(
@@ -237,16 +253,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Collection
-          0: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readCollection],
+          0: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readCollection] ?? false),
 
           // Cash
-          1: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.showCash],
+          1: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.showCash] ?? false),
 
           // Settlement
-          2: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readSettlement]
+          2: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readSettlement] ?? false)
         },
       ),
       SidebarOptionModel(
@@ -266,12 +282,14 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Customers activities
-          0: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.showCustomersActivities],
+          0: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.showCustomersActivities] ??
+                  false),
 
           // Collectors activities
-          1: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.showCollectorsActivities],
+          1: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.showCollectorsActivities] ??
+                  false),
         },
       ),
       SidebarOptionModel(
@@ -296,16 +314,19 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // Types
-          0: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.showTypesStatistics],
+          0: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.showTypesStatistics] ??
+                  false),
 
           // Periodic Collections
-          1: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.showCollectorsStatistics],
+          1: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.showCollectorsStatistics] ??
+                  false),
 
           // Products Forecast
-          2: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.showProductsForecasts],
+          2: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.showProductsForecasts] ??
+                  false),
         },
       ),
       SidebarOptionModel(
@@ -330,16 +351,16 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // transfer between card
-          0: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.addTransfer],
+          0: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.addTransfer] ?? false),
 
           // transfer between account
-          1: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.addTransfer],
+          1: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.addTransfer] ?? false),
 
           // transfers validations
-          2: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readTransfer],
+          2: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readTransfer] ?? false),
         },
       ),
       SidebarOptionModel(
@@ -354,8 +375,8 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         ],
         subOptionsVisibility: {
           // stock
-          0: authPermissions[PermissionsValues.admin] ||
-              authPermissions[PermissionsValues.readStock],
+          0: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.readStock] ?? false),
         },
       ),
       SidebarOptionModel(
@@ -379,10 +400,8 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         .where(
           (modulesVisibilityCondition) => modulesVisibilityCondition.value,
         )
-        .map(
-          (modulesVisibilityCondition1) =>
-              modulesSidebarOptionModel[modulesVisibilityCondition1.key],
-        )
+        .map((modulesVisibilityCondition1) =>
+            modulesSidebarOptionModel[modulesVisibilityCondition1.key])
         .toList();
   },
 );

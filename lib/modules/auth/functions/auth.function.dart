@@ -191,7 +191,7 @@ class AuthFunctions {
           );
 
           // navigate to home page
-          Navigator.of(context).pushReplacementNamed(RoutesManager.home);
+          Navigator.of(context).pushReplacementNamed(RoutesManager.main);
         }
 
         // show response
@@ -239,10 +239,13 @@ class AuthFunctions {
         // remove preferences data
         removeDataStored();
 
-        // invalidate home providers
-        invalidateHomePageProviders(
-          ref: ref,
-        );
+        ref.read(authNameProvider.notifier).state = null;
+
+        ref.read(authFirstnamesProvider.notifier).state = null;
+
+        ref.read(authEmailProvider.notifier).state = null;
+
+        ref.read(authAccesTokenProvider.notifier).state = null;
 
         // show disconection button
         showDisconnectionButton.value = true;
@@ -252,7 +255,7 @@ class AuthFunctions {
 
         // navigate to connection page
         Navigator.of(context).pushReplacementNamed(
-          RoutesManager.connection,
+          RoutesManager.main,
         );
       }
 
@@ -281,7 +284,15 @@ class AuthFunctions {
 
     ref.read(authAccesTokenProvider.notifier).state = null;
 
-    //  ref.read(authPermissionsProvider.notifier).state = null;
+    ref.read(authPermissionsProvider.notifier).state = null;
+
+    ref.invalidate(modulesVisibilityConditionsProvider);
+
+    ref.invalidate(sidebarOptionsProvider);
+
+    ref.invalidate(selectedSidebarOptionProvider);
+
+    ref.invalidate(selectedSidebarSubOptionProvider);
   }
 
   static Future<void> removeDataStored() async {
