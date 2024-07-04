@@ -128,6 +128,14 @@ class CollectionsCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(collectionsListStreamProvider);
+        ref.invalidate(collectionsCountProvider);
+        ref.invalidate(specificCollectionsCountProvider);
+        ref.invalidate(collectionsSumProvider);
+        ref.invalidate(collectionsRestSumProvider);
+        ref.invalidate(specificCollectionsSumProvider);
+        ref.invalidate(specificCollectionsRestSumProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: collectionAdditionResponse.statusCode,
@@ -254,6 +262,15 @@ class CollectionsCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        ref.invalidate(collectionsListStreamProvider);
+        ref.invalidate(collectionsCountProvider);
+        ref.invalidate(specificCollectionsCountProvider);
+        ref.invalidate(collectionsSumProvider);
+        ref.invalidate(collectionsRestSumProvider);
+        ref.invalidate(specificCollectionsSumProvider);
+        ref.invalidate(specificCollectionsRestSumProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: collectionUpdateResponse.statusCode,
@@ -320,6 +337,14 @@ class CollectionsCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        ref.invalidate(collectionsListStreamProvider);
+        ref.invalidate(collectionsCountProvider);
+        ref.invalidate(specificCollectionsCountProvider);
+        ref.invalidate(collectionsSumProvider);
+        ref.invalidate(collectionsRestSumProvider);
+        ref.invalidate(specificCollectionsSumProvider);
+        ref.invalidate(specificCollectionsRestSumProvider);
 
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
@@ -389,6 +414,14 @@ class CollectionsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(collectionsListStreamProvider);
+      ref.invalidate(collectionsCountProvider);
+      ref.invalidate(specificCollectionsCountProvider);
+      ref.invalidate(collectionsSumProvider);
+      ref.invalidate(collectionsRestSumProvider);
+      ref.invalidate(specificCollectionsSumProvider);
+      ref.invalidate(specificCollectionsRestSumProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: collectionUpdateResponse.statusCode,
@@ -431,6 +464,14 @@ class CollectionsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(collectionsListStreamProvider);
+    ref.invalidate(collectionsCountProvider);
+    ref.invalidate(specificCollectionsCountProvider);
+    ref.invalidate(collectionsSumProvider);
+    ref.invalidate(collectionsRestSumProvider);
+    ref.invalidate(specificCollectionsSumProvider);
+    ref.invalidate(specificCollectionsRestSumProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

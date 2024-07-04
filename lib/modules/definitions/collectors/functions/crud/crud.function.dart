@@ -68,6 +68,11 @@ class CollectorsCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      ref.invalidate(collectorsListStreamProvider);
+      ref.invalidate(collectorsCountProvider);
+      ref.invalidate(specificCollectorsCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: collectorAdditionResponse.statusCode,
@@ -146,6 +151,10 @@ class CollectorsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(collectorsListStreamProvider);
+      ref.invalidate(collectorsCountProvider);
+      ref.invalidate(specificCollectorsCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: collectorUpdateResponse.statusCode,
@@ -188,6 +197,10 @@ class CollectorsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(collectorsListStreamProvider);
+    ref.invalidate(collectorsCountProvider);
+    ref.invalidate(specificCollectorsCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

@@ -277,6 +277,10 @@ class CustomersCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(customersListStreamProvider);
+        ref.invalidate(customersCountProvider);
+        ref.invalidate(specificCustomersCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: customerAdditionResponse.statusCode,
@@ -555,6 +559,10 @@ class CustomersCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(customersListStreamProvider);
+        ref.invalidate(customersCountProvider);
+        ref.invalidate(specificCustomersCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: customerUpdateResponse.statusCode,
@@ -598,6 +606,10 @@ class CustomersCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(customersListStreamProvider);
+    ref.invalidate(customersCountProvider);
+    ref.invalidate(specificCustomersCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

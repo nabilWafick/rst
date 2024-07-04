@@ -62,6 +62,10 @@ class PersonalStatusCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(personalStatusListStreamProvider);
+      ref.invalidate(personalStatusCountProvider);
+      ref.invalidate(specificPersonalStatusCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: personalStatusAdditionResponse.statusCode,

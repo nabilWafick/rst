@@ -61,6 +61,10 @@ class CategoriesCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(categoriesListStreamProvider);
+      ref.invalidate(categoriesCountProvider);
+      ref.invalidate(specificCategoriesCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: categoryAdditionResponse.statusCode,
@@ -131,6 +135,10 @@ class CategoriesCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(categoriesListStreamProvider);
+      ref.invalidate(categoriesCountProvider);
+      ref.invalidate(specificCategoriesCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: categoryUpdateResponse.statusCode,
@@ -173,6 +181,10 @@ class CategoriesCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(categoriesListStreamProvider);
+    ref.invalidate(categoriesCountProvider);
+    ref.invalidate(specificCategoriesCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

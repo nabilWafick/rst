@@ -61,6 +61,10 @@ class LocalitiesCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(localitiesListStreamProvider);
+      ref.invalidate(localitiesCountProvider);
+      ref.invalidate(specificLocalitiesCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: localityAdditionResponse.statusCode,
@@ -131,6 +135,10 @@ class LocalitiesCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(localitiesListStreamProvider);
+      ref.invalidate(localitiesCountProvider);
+      ref.invalidate(specificLocalitiesCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: localityUpdateResponse.statusCode,
@@ -173,6 +181,10 @@ class LocalitiesCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(localitiesListStreamProvider);
+    ref.invalidate(localitiesCountProvider);
+    ref.invalidate(specificLocalitiesCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

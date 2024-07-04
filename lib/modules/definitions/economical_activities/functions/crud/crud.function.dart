@@ -62,6 +62,10 @@ class EconomicalActivitiesCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(economicalActivitiesListStreamProvider);
+      ref.invalidate(economicalActivitiesCountProvider);
+      ref.invalidate(specificEconomicalActivitiesCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: economicalActivityAdditionResponse.statusCode,
@@ -133,6 +137,10 @@ class EconomicalActivitiesCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(economicalActivitiesListStreamProvider);
+      ref.invalidate(economicalActivitiesCountProvider);
+      ref.invalidate(specificEconomicalActivitiesCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: economicalActivityUpdateResponse.statusCode,
@@ -176,6 +184,10 @@ class EconomicalActivitiesCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(economicalActivitiesListStreamProvider);
+    ref.invalidate(economicalActivitiesCountProvider);
+    ref.invalidate(specificEconomicalActivitiesCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

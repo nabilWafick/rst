@@ -86,6 +86,10 @@ class CardsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(cardsListStreamProvider);
+      ref.invalidate(cardsCountProvider);
+      ref.invalidate(specificCardsCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: cardAdditionResponse.statusCode,
@@ -163,6 +167,10 @@ class CardsCRUDFunctions {
         context: context,
         alertDialog: const FeedbackDialog(),
       );
+
+      ref.invalidate(cardsListStreamProvider);
+      ref.invalidate(cardsCountProvider);
+      ref.invalidate(specificCardsCountProvider);
 
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
@@ -246,6 +254,10 @@ class CardsCRUDFunctions {
       alertDialog: const FeedbackDialog(),
     );
 
+    ref.invalidate(cardsListStreamProvider);
+    ref.invalidate(cardsCountProvider);
+    ref.invalidate(specificCardsCountProvider);
+
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
       statusCode: cardUpdateResponse.statusCode,
@@ -297,6 +309,10 @@ class CardsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(cardsListStreamProvider);
+    ref.invalidate(cardsCountProvider);
+    ref.invalidate(specificCardsCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
@@ -494,6 +510,10 @@ class CardsCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(cardsListStreamProvider);
+        ref.invalidate(cardsCountProvider);
+        ref.invalidate(specificCardsCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: constrainedOutputResponse.statusCode,
@@ -548,6 +568,10 @@ class CardsCRUDFunctions {
       alertDialog: const FeedbackDialog(),
     );
 
+    ref.invalidate(cardsListStreamProvider);
+    ref.invalidate(cardsCountProvider);
+    ref.invalidate(specificCardsCountProvider);
+
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
       statusCode: cardUpdateResponse.statusCode,
@@ -589,6 +613,10 @@ class CardsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(cardsListStreamProvider);
+    ref.invalidate(cardsCountProvider);
+    ref.invalidate(specificCardsCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

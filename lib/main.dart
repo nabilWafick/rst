@@ -45,8 +45,8 @@ class RSTApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: RoutesManager.main,
       onGenerateRoute: RoutesManager.onGenerateRoute,
-      home: // const MainPage(),
-          //   const WidgetTest()
+      home: // const HomePage(),
+          // const WidgetTest()
           const MainPage(),
     );
   }

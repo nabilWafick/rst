@@ -64,6 +64,10 @@ class ProductsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(productsListStreamProvider);
+      ref.invalidate(productsCountProvider);
+      ref.invalidate(specificProductsCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: productAdditionResponse.statusCode,
@@ -137,6 +141,10 @@ class ProductsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(productsListStreamProvider);
+      ref.invalidate(productsCountProvider);
+      ref.invalidate(specificProductsCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: productUpdateResponse.statusCode,
@@ -179,6 +187,10 @@ class ProductsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(productsListStreamProvider);
+    ref.invalidate(productsCountProvider);
+    ref.invalidate(specificProductsCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

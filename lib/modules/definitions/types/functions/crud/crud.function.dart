@@ -189,6 +189,10 @@ class TypesCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(typesListStreamProvider);
+        ref.invalidate(typesCountProvider);
+        ref.invalidate(specificTypesCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: typeAdditionResponse.statusCode,
@@ -381,6 +385,10 @@ class TypesCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(typesListStreamProvider);
+        ref.invalidate(typesCountProvider);
+        ref.invalidate(specificTypesCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: typeUpdateResponse.statusCode,
@@ -424,6 +432,10 @@ class TypesCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(typesListStreamProvider);
+    ref.invalidate(typesCountProvider);
+    ref.invalidate(specificTypesCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

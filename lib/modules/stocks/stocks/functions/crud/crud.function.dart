@@ -102,6 +102,10 @@ class StocksCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(stocksListStreamProvider);
+        ref.invalidate(stocksCountProvider);
+        ref.invalidate(specificStocksCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: stockAdditionResponse.statusCode,
@@ -197,6 +201,10 @@ class StocksCRUDFunctions {
           context: context,
           alertDialog: const FeedbackDialog(),
         );
+
+        ref.invalidate(stocksListStreamProvider);
+        ref.invalidate(stocksCountProvider);
+        ref.invalidate(specificStocksCountProvider);
 
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
@@ -309,6 +317,10 @@ class StocksCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(stocksListStreamProvider);
+        ref.invalidate(stocksCountProvider);
+        ref.invalidate(specificStocksCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: stockUpdateResponse.statusCode,
@@ -420,6 +432,10 @@ class StocksCRUDFunctions {
           alertDialog: const FeedbackDialog(),
         );
 
+        ref.invalidate(stocksListStreamProvider);
+        ref.invalidate(stocksCountProvider);
+        ref.invalidate(specificStocksCountProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: stockUpdateResponse.statusCode,
@@ -463,6 +479,10 @@ class StocksCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(stocksListStreamProvider);
+    ref.invalidate(stocksCountProvider);
+    ref.invalidate(specificStocksCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

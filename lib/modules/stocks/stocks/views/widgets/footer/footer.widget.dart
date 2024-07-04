@@ -39,12 +39,12 @@ class StocksPageFooter extends ConsumerWidget {
                           return RSTText(
                             text: count.when(
                               data: (data) => data != 1
-                                  ? '$data règlements'
-                                  : '$data règlement',
+                                  ? '$data mouvements'
+                                  : '$data mouvement',
                               error: (error, stackTrace) {
-                                return ' règlements';
+                                return ' mouvements';
                               },
-                              loading: () => ' règlements',
+                              loading: () => ' mouvements',
                             ),
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,
@@ -209,10 +209,10 @@ class StocksPageFooter extends ConsumerWidget {
                           return RSTText(
                             text: count.when(
                               data: (data) => data != 1
-                                  ? '$data règlements'
-                                  : '$data règlement',
-                              error: (error, stackTrace) => ' règlements',
-                              loading: () => ' règlements',
+                                  ? '$data mouvements'
+                                  : '$data mouvement',
+                              error: (error, stackTrace) => ' mouvements',
+                              loading: () => ' mouvements',
                             ),
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,

@@ -11,6 +11,7 @@ import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/agents/models/agents.model.dart';
 import 'package:rst/modules/transfers/controllers/transfers.controller.dart';
 import 'package:rst/modules/transfers/models/transfer/transfer.model.dart';
+import 'package:rst/modules/transfers/validations/providers/validations.provider.dart';
 
 class TransfersCRUDFunctions {
   static Future<void> createBetweenCustomerCards({
@@ -67,6 +68,10 @@ class TransfersCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(transfersListStreamProvider);
+    ref.invalidate(transfersCountProvider);
+    ref.invalidate(specificTransfersCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
@@ -129,6 +134,10 @@ class TransfersCRUDFunctions {
       alertDialog: const FeedbackDialog(),
     );
 
+    ref.invalidate(transfersListStreamProvider);
+    ref.invalidate(transfersCountProvider);
+    ref.invalidate(specificTransfersCountProvider);
+
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
       statusCode: transferAdditionResponse.statusCode,
@@ -171,6 +180,10 @@ class TransfersCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(transfersListStreamProvider);
+    ref.invalidate(transfersCountProvider);
+    ref.invalidate(specificTransfersCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
@@ -215,6 +228,10 @@ class TransfersCRUDFunctions {
       alertDialog: const FeedbackDialog(),
     );
 
+    ref.invalidate(transfersListStreamProvider);
+    ref.invalidate(transfersCountProvider);
+    ref.invalidate(specificTransfersCountProvider);
+
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
       statusCode: transferRejectionResponse.statusCode,
@@ -256,6 +273,10 @@ class TransfersCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(transfersListStreamProvider);
+    ref.invalidate(transfersCountProvider);
+    ref.invalidate(specificTransfersCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

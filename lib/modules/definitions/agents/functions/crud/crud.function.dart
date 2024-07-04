@@ -74,6 +74,10 @@ class AgentsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(agentsListStreamProvider);
+      ref.invalidate(agentsCountProvider);
+      ref.invalidate(specificAgentsCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: agentAdditionResponse.statusCode,
@@ -155,6 +159,10 @@ class AgentsCRUDFunctions {
         alertDialog: const FeedbackDialog(),
       );
 
+      ref.invalidate(agentsListStreamProvider);
+      ref.invalidate(agentsCountProvider);
+      ref.invalidate(specificAgentsCountProvider);
+
       await AuthFunctions.autoDisconnectAfterUnauthorizedException(
         ref: ref,
         statusCode: agentUpdateResponse.statusCode,
@@ -197,6 +205,10 @@ class AgentsCRUDFunctions {
       context: context,
       alertDialog: const FeedbackDialog(),
     );
+
+    ref.invalidate(agentsListStreamProvider);
+    ref.invalidate(agentsCountProvider);
+    ref.invalidate(specificAgentsCountProvider);
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
