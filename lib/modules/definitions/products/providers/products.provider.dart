@@ -44,6 +44,12 @@ final productsListFilterParametersAddedProvider =
   return {};
 });
 
+// used for storing added sort tool
+final productsListSortParametersAddedProvider =
+    StateProvider<Map<String, Map<String, String>>>((ref) {
+  return {};
+});
+
 // used for storing fetched products
 final productsListStreamProvider = FutureProvider<List<Product>>((ref) async {
   final listParameters = ref.watch(productsListParametersProvider);

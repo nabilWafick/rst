@@ -27,7 +27,7 @@ class SortParameter extends ConsumerWidget {
       ),
       child: InkWell(
         onTap: () {
-          final listParameters = ref.read(listParametersProvider);
+          final listParameters = ref.watch(listParametersProvider);
 
           // if there is a sort option
           // add a new sort option

@@ -83,33 +83,24 @@ class SortParameterTool extends HookConsumerWidget {
             ),
             trailing: IconButton(
               onPressed: () {
-                // remove the sort option
-                ref.read(listParametersProvider.notifier).update(
-                  (state) {
-                    if (state['orderBy'].length > 1) {
-                      // get th index of the sort option in the list
-                      final index = state['orderBy'].indexOf(sortParameter);
+                ref.read(listParametersProvider.notifier).update((state) {
+                  List<Map<String, String>> currentOrderBy =
+                      List<Map<String, String>>.from(
+                    state['orderBy'] ?? [],
+                  );
 
-                      // remove the sort option
-                      state['orderBy'].removeAt(index);
+                  currentOrderBy.removeWhere(
+                    (param) => param.keys.first == field.back,
+                  );
 
-                      state = {
-                        ...state,
-                        'orderBy': state['orderBy'],
-                      };
-                    } else {
-                      Map<String, dynamic> newState = {};
+                  if (currentOrderBy.isEmpty) {
+                    state.remove('orderBy');
+                  } else {
+                    state = {...state, 'orderBy': currentOrderBy};
+                  }
 
-                      for (MapEntry<String, dynamic> entry in state.entries) {
-                        if (entry.key != 'orderBy') {
-                          newState[entry.key] = entry.value;
-                        }
-                      }
-                      state = newState;
-                    }
-                    return state;
-                  },
-                );
+                  return Map<String, dynamic>.from(state);
+                });
 
                 // hide the widget
                 showWidget.value = false;

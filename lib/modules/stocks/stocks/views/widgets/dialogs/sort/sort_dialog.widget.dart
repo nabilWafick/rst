@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/modules/stocks/stocks/models/stocks.model.dart';
 import 'package:rst/modules/stocks/stocks/models/structure/structure.model.dart';
@@ -72,6 +73,10 @@ class StockSortDialog extends HookConsumerWidget {
                             children: sortConditions
                                 .map(
                                   (sortParameter) => SortParameterTool(
+                                    key: ValueKey(
+                                      FunctionsController
+                                          .generateRandomStringFromCurrentDateTime(),
+                                    ),
                                     sortParameter: sortParameter,
                                     fields: StockStructure.fields
                                         .where(
