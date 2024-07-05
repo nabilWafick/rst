@@ -10,6 +10,7 @@ import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
 import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
+import 'package:rst/modules/cash/collections/providers/collections.provider.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
@@ -141,6 +142,24 @@ class SettlementsCRUDFunctions {
         ref.invalidate(settlementsListStreamProvider);
         ref.invalidate(settlementsCountProvider);
         ref.invalidate(specificSettlementsCountProvider);
+
+        // invalidate collections providers
+        ref.invalidate(collectionsListStreamProvider);
+        ref.invalidate(collectionsCountProvider);
+        ref.invalidate(specificCollectionsCountProvider);
+        ref.invalidate(collectionsSumProvider);
+        ref.invalidate(collectionsRestSumProvider);
+        ref.invalidate(specificCollectionsSumProvider);
+        ref.invalidate(specificCollectionsRestSumProvider);
+
+// invalidate collections providers
+        ref.invalidate(collectionsListStreamProvider);
+        ref.invalidate(collectionsCountProvider);
+        ref.invalidate(specificCollectionsCountProvider);
+        ref.invalidate(collectionsSumProvider);
+        ref.invalidate(collectionsRestSumProvider);
+        ref.invalidate(specificCollectionsSumProvider);
+        ref.invalidate(specificCollectionsRestSumProvider);
 
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
@@ -291,6 +310,15 @@ class SettlementsCRUDFunctions {
         ref.invalidate(settlementsCountProvider);
         ref.invalidate(specificSettlementsCountProvider);
 
+// invalidate collections providers
+        ref.invalidate(collectionsListStreamProvider);
+        ref.invalidate(collectionsCountProvider);
+        ref.invalidate(specificCollectionsCountProvider);
+        ref.invalidate(collectionsSumProvider);
+        ref.invalidate(collectionsRestSumProvider);
+        ref.invalidate(specificCollectionsSumProvider);
+        ref.invalidate(specificCollectionsRestSumProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: settlementAdditionResponse.statusCode,
@@ -390,6 +418,15 @@ class SettlementsCRUDFunctions {
         ref.invalidate(settlementsCountProvider);
         ref.invalidate(specificSettlementsCountProvider);
 
+// invalidate collections providers
+        ref.invalidate(collectionsListStreamProvider);
+        ref.invalidate(collectionsCountProvider);
+        ref.invalidate(specificCollectionsCountProvider);
+        ref.invalidate(collectionsSumProvider);
+        ref.invalidate(collectionsRestSumProvider);
+        ref.invalidate(specificCollectionsSumProvider);
+        ref.invalidate(specificCollectionsRestSumProvider);
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: settlementUpdateResponse.statusCode,
@@ -447,6 +484,20 @@ class SettlementsCRUDFunctions {
     ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
     ref.invalidate(cashOperationsSelectedCardSettlementsCountProvider);
     ref.invalidate(cashOperationsSelectedCardSpecificSettlementsCountProvider);
+
+    // invalidate collections providers
+    ref.invalidate(collectionsListStreamProvider);
+    ref.invalidate(collectionsCountProvider);
+    ref.invalidate(specificCollectionsCountProvider);
+    ref.invalidate(collectionsSumProvider);
+    ref.invalidate(collectionsRestSumProvider);
+    ref.invalidate(specificCollectionsSumProvider);
+    ref.invalidate(specificCollectionsRestSumProvider);
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: settlementUpdateResponse.statusCode,
+    );
   }
 
   static Future<void> delete({
@@ -485,15 +536,24 @@ class SettlementsCRUDFunctions {
       alertDialog: const FeedbackDialog(),
     );
 
-    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
-      ref: ref,
-      statusCode: settlementDeletionResponse.statusCode,
-    );
-
     // invalidate settlements providers
     ref.invalidate(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
     ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
     ref.invalidate(cashOperationsSelectedCardSettlementsCountProvider);
     ref.invalidate(cashOperationsSelectedCardSpecificSettlementsCountProvider);
+
+    // invalidate collections providers
+    ref.invalidate(collectionsListStreamProvider);
+    ref.invalidate(collectionsCountProvider);
+    ref.invalidate(specificCollectionsCountProvider);
+    ref.invalidate(collectionsSumProvider);
+    ref.invalidate(collectionsRestSumProvider);
+    ref.invalidate(specificCollectionsSumProvider);
+    ref.invalidate(specificCollectionsRestSumProvider);
+
+    await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+      ref: ref,
+      statusCode: settlementDeletionResponse.statusCode,
+    );
   }
 }

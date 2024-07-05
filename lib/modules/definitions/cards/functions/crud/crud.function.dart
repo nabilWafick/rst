@@ -19,6 +19,7 @@ import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/customers/models/customers.model.dart';
 import 'package:rst/modules/definitions/types/models/types.model.dart';
 import 'package:rst/modules/stocks/stocks/controllers/stocks.controller.dart';
+import 'package:rst/modules/stocks/stocks/providers/stocks.provider.dart';
 
 class CardsCRUDFunctions {
   static Future<void> create({
@@ -364,6 +365,11 @@ class CardsCRUDFunctions {
     ref.invalidate(cardsCountProvider);
     ref.invalidate(specificCardsCountProvider);
 
+    // invalidate stocks providers
+    ref.invalidate(stocksListStreamProvider);
+    ref.invalidate(stocksCountProvider);
+    ref.invalidate(specificStocksCountProvider);
+
     /// * UPDATE CASH OPERATIONS DATA * ///
     final cashOperationsCustomer =
         ref.watch(cashOperationsSelectedCustomerProvider);
@@ -613,6 +619,11 @@ class CardsCRUDFunctions {
         ref.invalidate(cardsCountProvider);
         ref.invalidate(specificCardsCountProvider);
 
+        // invalidate stocks providers
+        ref.invalidate(stocksListStreamProvider);
+        ref.invalidate(stocksCountProvider);
+        ref.invalidate(specificStocksCountProvider);
+
         /// * UPDATE CASH OPERATIONS DATA * ///
         final cashOperationsCustomer =
             ref.watch(cashOperationsSelectedCustomerProvider);
@@ -720,6 +731,11 @@ class CardsCRUDFunctions {
     ref.invalidate(cardsListStreamProvider);
     ref.invalidate(cardsCountProvider);
     ref.invalidate(specificCardsCountProvider);
+
+    // invalidate stocks providers
+    ref.invalidate(stocksListStreamProvider);
+    ref.invalidate(stocksCountProvider);
+    ref.invalidate(specificStocksCountProvider);
 
     /// * UPDATE CASH OPERATIONS DATA * ///
     final cashOperationsCustomer =
