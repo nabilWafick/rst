@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:rst/modules/auth/connection/views/page/connection.page.dart';
 import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
@@ -40,6 +41,17 @@ class RSTApp extends ConsumerWidget {
         Locale('fr', 'FR'),
         Locale('en', 'US'),
       ],
+      // Wrapping the app with a builder method makes breakpoints
+      // accessible throughout the widget tree.
+      builder: (context, child) => ResponsiveBreakpoints.builder(
+        breakpoints: [
+          const Breakpoint(start: 0, end: 450, name: MOBILE),
+          const Breakpoint(start: 451, end: 800, name: TABLET),
+          const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+          const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+        ],
+        child: child!,
+      ),
       title: 'RST App',
       theme: RSTThemeData.lightTheme,
       debugShowCheckedModeBanner: false,
