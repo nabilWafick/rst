@@ -42,7 +42,7 @@ class RSTApp extends ConsumerWidget {
         Locale('en', 'US'),
       ],
       // Wrapping the app with a builder method makes breakpoints
-      // accessible throughout the widget tree.
+      // accessible throughout the widget tree
       builder: (context, child) => ResponsiveBreakpoints.builder(
         breakpoints: [
           const Breakpoint(start: 0, end: 450, name: MOBILE),
