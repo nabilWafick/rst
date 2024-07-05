@@ -207,7 +207,17 @@ class _CollectorsActivitiesFilterDialogState
                               }
                             }
 
-                            state = newState;
+                            state = {
+                              ...newState,
+                              'where': {
+                                'collectionId': {
+                                  'not': 'null',
+                                },
+                                'isValidated': {
+                                  'equals': true,
+                                },
+                              }
+                            };
 
                             return state;
                           },

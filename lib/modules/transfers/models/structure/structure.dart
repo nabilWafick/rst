@@ -62,7 +62,7 @@ class TransferStructure {
 
   static Field rejectedAt = Field(
     front: 'Rejet',
-    back: 'discardedAt',
+    back: 'rejectedAt',
     type: DateTime,
     isNullable: true,
     isRelation: false,

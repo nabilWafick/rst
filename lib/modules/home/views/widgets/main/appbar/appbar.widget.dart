@@ -26,7 +26,7 @@ class _MainAppbarState extends ConsumerState<MainAppbar> {
 
     return Container(
       height: screenSize.height / 8,
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 10.0),
       child: Column(
         children: [
           Row(

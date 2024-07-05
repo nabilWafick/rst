@@ -55,7 +55,11 @@ class TypeStructure {
             type: String,
             isNullable: false,
             isRelation: true,
-            fields: ProductStructure.fields,
+            fields: ProductStructure.fields
+                .where(
+                  (field) => field.back != 'id',
+                )
+                .toList(),
           ),
         ],
       ),

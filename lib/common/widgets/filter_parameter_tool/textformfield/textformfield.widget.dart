@@ -35,9 +35,7 @@ class FilterParameterToolTextFormField extends HookConsumerWidget {
       keyboardType: textInputType,
       cursorColor: RSTColors.primaryColor,
       cursorHeight: 20.0,
-      style: const TextStyle(
-        fontSize: 12.0,
-      ),
+      style: const TextStyle(fontSize: 10.0, fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 10,

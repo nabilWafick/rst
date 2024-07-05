@@ -1,5 +1,6 @@
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/definitions/customers/models/customers.model.dart';
+import 'package:rst/modules/definitions/types/models/structure/structure.model.dart';
 
 // structure will help to facilitate sort, filter, and data filelds use case
 
@@ -21,20 +22,17 @@ class CardStructure {
   );
 
   static Field type = Field(
-      front: 'Type',
-      back: 'type',
-      type: String,
-      isNullable: false,
-      isRelation: true,
-      fields: [
-        Field(
-          front: 'Libellé',
-          back: 'label',
-          type: String,
-          isNullable: false,
-          isRelation: false,
-        ),
-      ]);
+    front: 'Type',
+    back: 'type',
+    type: String,
+    isNullable: false,
+    isRelation: true,
+    fields: TypeStructure.fields
+        .where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
+  );
 
   static Field typesNumber = Field(
     front: 'Nombre Type',

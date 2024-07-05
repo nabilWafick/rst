@@ -11,7 +11,7 @@ class CashOperationsInfos extends ConsumerWidget {
     final width = MediaQuery.of(context).size.width;
     return SizedBox(
       //  color: Colors.blueGrey,
-      height: 340.0,
+      height: MediaQuery.of(context).size.height / 2.90,
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

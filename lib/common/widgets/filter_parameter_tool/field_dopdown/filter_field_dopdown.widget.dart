@@ -98,17 +98,19 @@ class _RSTFilterToolFieldDropdownState
         label: RSTText(text: widget.label),
         hintText: widget.label,
         initialSelection: selectedDropdownItem,
-        dropdownMenuEntries: widget.dropdownMenuEntriesLabels.map((field) {
-          return DropdownMenuEntry<Field>(
-            value: field,
-            label: field.front,
-            style: const ButtonStyle(
-              textStyle: MaterialStatePropertyAll(
-                TextStyle(fontWeight: FontWeight.w500),
+        dropdownMenuEntries: widget.dropdownMenuEntriesLabels.map(
+          (field) {
+            return DropdownMenuEntry<Field>(
+              value: field,
+              label: field.front,
+              style: const ButtonStyle(
+                textStyle: MaterialStatePropertyAll(
+                  TextStyle(fontWeight: FontWeight.w500),
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          },
+        ).toList(),
         trailingIcon: const Icon(Icons.arrow_drop_down),
         onSelected: (value) {
           if (value == null) return;

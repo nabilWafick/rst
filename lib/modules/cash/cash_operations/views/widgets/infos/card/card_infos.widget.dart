@@ -199,281 +199,293 @@ class _CashOperationsCustomerCardInfosState
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 250.0,
-                    child: material.SwitchListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: .0,
-                        vertical: .0,
-                      ),
-                      splashRadius: .0,
-                      value: cashOperationsSelectedCustomerCard != null
-                          ? cashOperationsSelectedCustomerCard.repaidAt != null
-                          : false,
-                      title: const RSTText(
-                        text: 'Remboursée',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      hoverColor: material.Colors.transparent,
-                      onChanged: !authPermissions![PermissionsValues.admin] &&
-                              !authPermissions[PermissionsValues.updateCard]
-                          ? null
-                          : (value) async {
-                              // reset repayment
-                              ref
-                                  .read(cardRepaymentDateProvider.notifier)
-                                  .state = null;
+          SingleChildScrollView(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 250.0,
+                      child: material.SwitchListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: .0,
+                          vertical: .0,
+                        ),
+                        splashRadius: .0,
+                        value: cashOperationsSelectedCustomerCard != null
+                            ? cashOperationsSelectedCustomerCard.repaidAt !=
+                                null
+                            : false,
+                        title: const RSTText(
+                          text: 'Remboursée',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        hoverColor: material.Colors.transparent,
+                        onChanged: !authPermissions![PermissionsValues.admin] &&
+                                !authPermissions[PermissionsValues.updateCard]
+                            ? null
+                            : (value) async {
+                                // reset repayment
+                                ref
+                                    .read(cardRepaymentDateProvider.notifier)
+                                    .state = null;
 
-                              if (cashOperationsSelectedCustomerCard != null) {
-                                if (value == false) {
-                                  FunctionsController.showAlertDialog(
-                                    context: context,
-                                    alertDialog:
-                                        CardRepaymentUpdateConfirmationDialog(
-                                      card: cashOperationsSelectedCustomerCard,
-                                      update: CardsCRUDFunctions
-                                          .updateRepaymentStatus,
-                                    ),
-                                  );
-                                } else {
-                                  Future.delayed(
-                                    Duration.zero,
-                                    () async {
-                                      FunctionsController.showDateTime(
-                                        context: context,
-                                        ref: ref,
-                                        stateProvider:
-                                            cardRepaymentDateProvider,
-                                        isNullable: false,
-                                      );
-                                    },
-                                  );
-
-                                  FunctionsController.showAlertDialog(
-                                    context: context,
-                                    alertDialog:
-                                        CardRepaymentUpdateConfirmationDialog(
-                                      card: cashOperationsSelectedCustomerCard,
-                                      update: CardsCRUDFunctions
-                                          .updateRepaymentStatus,
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                    ),
-                  ),
-                  LabelValue(
-                    label: 'Date de Remboursement',
-                    value: cashOperationsSelectedCustomerCard != null &&
-                            cashOperationsSelectedCustomerCard.repaidAt != null
-                        ? format.format(
-                            cashOperationsSelectedCustomerCard.repaidAt!,
-                          )
-                        : '',
-                    isColumnFormat: true,
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 250.0,
-                    child: material.SwitchListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: .0,
-                        vertical: .0,
-                      ),
-                      splashRadius: .0,
-                      value: cashOperationsSelectedCustomerCard != null
-                          ? cashOperationsSelectedCustomerCard.satisfiedAt !=
-                              null
-                          : false,
-                      title: const RSTText(
-                        text: 'Satisfaite',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      hoverColor: material.Colors.transparent,
-                      onChanged: !authPermissions[PermissionsValues.admin] &&
-                              !authPermissions[PermissionsValues.updateProduct]
-                          ? null
-                          : (value) async {
-                              // reset satisfaction date
-                              ref
-                                  .read(cardSatisfactionDateProvider.notifier)
-                                  .state = null;
-
-                              // reset constrained output products providers
-                              ref.invalidate(
-                                  cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider);
-
-                              if (cashOperationsSelectedCustomerCard != null) {
-                                // check if all settlements on the card have done
-
-                                final controllerResponse =
-                                    await SettlementsController
-                                        .sumOfNumberForCard(
-                                  cardId:
-                                      cashOperationsSelectedCustomerCard.id!,
-                                );
-
-                                if (controllerResponse.data.count == 372) {
+                                if (cashOperationsSelectedCustomerCard !=
+                                    null) {
                                   if (value == false) {
                                     FunctionsController.showAlertDialog(
                                       context: context,
                                       alertDialog:
-                                          CardSatisfactionUpdateConfirmationDialog(
+                                          CardRepaymentUpdateConfirmationDialog(
                                         card:
                                             cashOperationsSelectedCustomerCard,
-                                        update:
-                                            CardsCRUDFunctions.makeRetrocession,
+                                        update: CardsCRUDFunctions
+                                            .updateRepaymentStatus,
                                       ),
                                     );
                                   } else {
-                                    // the card would be satisfied
-
-                                    try {
-                                      // check product availability
-                                      final controllerResponse =
-                                          await StocksController
-                                              .checkCardProductAvailability(
-                                        cardId:
-                                            cashOperationsSelectedCustomerCard
-                                                .id!,
-                                      );
-
-                                      // check if all products are available
-                                      // return 1 if true
-
-                                      if (controllerResponse.data.count == 1) {
-                                        Future.delayed(
-                                            const Duration(milliseconds: 1),
-                                            () async {
-                                          FunctionsController.showDateTime(
-                                            context: context,
-                                            ref: ref,
-                                            stateProvider:
-                                                cardSatisfactionDateProvider,
-                                            isNullable: false,
-                                          );
-                                        });
-                                        // card products are available, make an normal output from stock
-                                        FunctionsController.showAlertDialog(
+                                    Future.delayed(
+                                      Duration.zero,
+                                      () async {
+                                        FunctionsController.showDateTime(
                                           context: context,
-                                          alertDialog:
-                                              CardSatisfactionUpdateConfirmationDialog(
-                                            card:
-                                                cashOperationsSelectedCustomerCard,
-                                            update: CardsCRUDFunctions
-                                                .makeNormaleSatisfaction,
-                                          ),
+                                          ref: ref,
+                                          stateProvider:
+                                              cardRepaymentDateProvider,
+                                          isNullable: false,
                                         );
-                                      } else {
-                                        Future.delayed(
-                                            const Duration(milliseconds: 1),
-                                            () async {
-                                          FunctionsController.showDateTime(
-                                            context: context,
-                                            ref: ref,
-                                            stateProvider:
-                                                cardSatisfactionDateProvider,
-                                            isNullable: false,
-                                          );
-                                        });
-                                        // all card products are available
-                                        // make an constrained output from stock
-                                        FunctionsController.showAlertDialog(
-                                          context: context,
-                                          alertDialog:
-                                              const ConstrainedCardSatisfactionForm(),
-                                        );
-                                      }
-                                    } catch (error) {
-                                      debugPrint(error.toString());
-                                    }
+                                      },
+                                    );
+
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog:
+                                          CardRepaymentUpdateConfirmationDialog(
+                                        card:
+                                            cashOperationsSelectedCustomerCard,
+                                        update: CardsCRUDFunctions
+                                            .updateRepaymentStatus,
+                                      ),
+                                    );
                                   }
-                                } else {
-                                  // store response
-                                  ref
-                                      .read(feedbackDialogResponseProvider
-                                          .notifier)
-                                      .state = FeedbackDialogResponse(
-                                    result: null,
-                                    error: 'Conflit',
-                                    message:
-                                        'Tous les règlements de la carte n\'ont pas été éffectués',
+                                }
+                              },
+                      ),
+                    ),
+                    LabelValue(
+                      label: 'Date de Remboursement',
+                      value: cashOperationsSelectedCustomerCard != null &&
+                              cashOperationsSelectedCustomerCard.repaidAt !=
+                                  null
+                          ? format.format(
+                              cashOperationsSelectedCustomerCard.repaidAt!,
+                            )
+                          : '',
+                      isColumnFormat: true,
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 250.0,
+                      child: material.SwitchListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: .0,
+                          vertical: .0,
+                        ),
+                        splashRadius: .0,
+                        value: cashOperationsSelectedCustomerCard != null
+                            ? cashOperationsSelectedCustomerCard.satisfiedAt !=
+                                null
+                            : false,
+                        title: const RSTText(
+                          text: 'Satisfaite',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        hoverColor: material.Colors.transparent,
+                        onChanged: !authPermissions[PermissionsValues.admin] &&
+                                !authPermissions[
+                                    PermissionsValues.updateProduct]
+                            ? null
+                            : (value) async {
+                                // reset satisfaction date
+                                ref
+                                    .read(cardSatisfactionDateProvider.notifier)
+                                    .state = null;
+
+                                // reset constrained output products providers
+                                ref.invalidate(
+                                    cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider);
+
+                                if (cashOperationsSelectedCustomerCard !=
+                                    null) {
+                                  // check if all settlements on the card have done
+
+                                  final controllerResponse =
+                                      await SettlementsController
+                                          .sumOfNumberForCard(
+                                    cardId:
+                                        cashOperationsSelectedCustomerCard.id!,
                                   );
 
-                                  // show response
-                                  FunctionsController.showAlertDialog(
-                                    context: context,
-                                    alertDialog: const FeedbackDialog(),
-                                  );
+                                  if (controllerResponse.data.count == 372) {
+                                    if (value == false) {
+                                      FunctionsController.showAlertDialog(
+                                        context: context,
+                                        alertDialog:
+                                            CardSatisfactionUpdateConfirmationDialog(
+                                          card:
+                                              cashOperationsSelectedCustomerCard,
+                                          update: CardsCRUDFunctions
+                                              .makeRetrocession,
+                                        ),
+                                      );
+                                    } else {
+                                      // the card would be satisfied
+
+                                      try {
+                                        // check product availability
+                                        final controllerResponse =
+                                            await StocksController
+                                                .checkCardProductAvailability(
+                                          cardId:
+                                              cashOperationsSelectedCustomerCard
+                                                  .id!,
+                                        );
+
+                                        // check if all products are available
+                                        // return 1 if true
+
+                                        if (controllerResponse.data.count ==
+                                            1) {
+                                          Future.delayed(
+                                              const Duration(milliseconds: 1),
+                                              () async {
+                                            FunctionsController.showDateTime(
+                                              context: context,
+                                              ref: ref,
+                                              stateProvider:
+                                                  cardSatisfactionDateProvider,
+                                              isNullable: false,
+                                            );
+                                          });
+                                          // card products are available, make an normal output from stock
+                                          FunctionsController.showAlertDialog(
+                                            context: context,
+                                            alertDialog:
+                                                CardSatisfactionUpdateConfirmationDialog(
+                                              card:
+                                                  cashOperationsSelectedCustomerCard,
+                                              update: CardsCRUDFunctions
+                                                  .makeNormaleSatisfaction,
+                                            ),
+                                          );
+                                        } else {
+                                          Future.delayed(
+                                              const Duration(milliseconds: 1),
+                                              () async {
+                                            FunctionsController.showDateTime(
+                                              context: context,
+                                              ref: ref,
+                                              stateProvider:
+                                                  cardSatisfactionDateProvider,
+                                              isNullable: false,
+                                            );
+                                          });
+                                          // all card products are available
+                                          // make an constrained output from stock
+                                          FunctionsController.showAlertDialog(
+                                            context: context,
+                                            alertDialog:
+                                                const ConstrainedCardSatisfactionForm(),
+                                          );
+                                        }
+                                      } catch (error) {
+                                        debugPrint(error.toString());
+                                      }
+                                    }
+                                  } else {
+                                    // store response
+                                    ref
+                                        .read(feedbackDialogResponseProvider
+                                            .notifier)
+                                        .state = FeedbackDialogResponse(
+                                      result: null,
+                                      error: 'Conflit',
+                                      message:
+                                          'Tous les règlements de la carte n\'ont pas été éffectués',
+                                    );
+
+                                    // show response
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog: const FeedbackDialog(),
+                                    );
+                                  }
                                 }
-                              }
-                            },
-                    ),
-                  ),
-                  LabelValue(
-                    label: 'Date de Satisfaction',
-                    value: cashOperationsSelectedCustomerCard != null &&
-                            cashOperationsSelectedCustomerCard.satisfiedAt !=
-                                null
-                        ? format.format(
-                            cashOperationsSelectedCustomerCard.satisfiedAt!,
-                          )
-                        : '',
-                    isColumnFormat: true,
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 250.0,
-                    child: material.SwitchListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: .0,
-                        vertical: .0,
+                              },
                       ),
-                      splashRadius: .0,
-                      value: cashOperationsSelectedCustomerCard != null
-                          ? cashOperationsSelectedCustomerCard.transferredAt !=
-                              null
-                          : false,
-                      title: const RSTText(
-                        text: 'Transférée',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      hoverColor: material.Colors.transparent,
-                      onChanged: (value) async {},
                     ),
-                  ),
-                  LabelValue(
-                    label: 'Date de Transfert',
-                    value: cashOperationsSelectedCustomerCard != null &&
-                            cashOperationsSelectedCustomerCard.transferredAt !=
+                    LabelValue(
+                      label: 'Date de Satisfaction',
+                      value: cashOperationsSelectedCustomerCard != null &&
+                              cashOperationsSelectedCustomerCard.satisfiedAt !=
+                                  null
+                          ? format.format(
+                              cashOperationsSelectedCustomerCard.satisfiedAt!,
+                            )
+                          : '',
+                      isColumnFormat: true,
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 250.0,
+                      child: material.SwitchListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: .0,
+                          vertical: .0,
+                        ),
+                        splashRadius: .0,
+                        value: cashOperationsSelectedCustomerCard != null
+                            ? cashOperationsSelectedCustomerCard
+                                    .transferredAt !=
                                 null
-                        ? format.format(
-                            cashOperationsSelectedCustomerCard.transferredAt!,
-                          )
-                        : '',
-                    isColumnFormat: true,
-                  ),
-                ],
-              ),
-            ],
+                            : false,
+                        title: const RSTText(
+                          text: 'Transférée',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        hoverColor: material.Colors.transparent,
+                        onChanged: (value) async {},
+                      ),
+                    ),
+                    LabelValue(
+                      label: 'Date de Transfert',
+                      value: cashOperationsSelectedCustomerCard != null &&
+                              cashOperationsSelectedCustomerCard
+                                      .transferredAt !=
+                                  null
+                          ? format.format(
+                              cashOperationsSelectedCustomerCard.transferredAt!,
+                            )
+                          : '',
+                      isColumnFormat: true,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

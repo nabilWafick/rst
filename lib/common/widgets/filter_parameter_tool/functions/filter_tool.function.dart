@@ -28,11 +28,6 @@ Map<String, dynamic> splitMap({
 
       // populate the subField
       result[newNestedMap.entries.first.key] = newNestedMap.entries.first.value;
-
-      // add include key if it is a relation
-      /*  if (isRelation) {
-        result['include'] = true;
-      }*/
     } else if (value is Map) {
       // continue the nesting if the goal is not reached
       result[key] = splitMap(

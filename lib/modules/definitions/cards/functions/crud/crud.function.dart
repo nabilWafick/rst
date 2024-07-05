@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
@@ -258,6 +259,55 @@ class CardsCRUDFunctions {
     ref.invalidate(cardsCountProvider);
     ref.invalidate(specificCardsCountProvider);
 
+    /// * UPDATE CASH OPERATIONS DATA * ///
+    final cashOperationsCustomer =
+        ref.watch(cashOperationsSelectedCustomerProvider);
+    // get customer cards number
+    // because the number can be knowed without
+    // asking the database
+    final customerCardsNumberData = await CardsController.countSpecific(
+      listParameters: {
+        'skip': 0, // This value is override in backend
+        'take': 100, // This value is override in backend
+        'where': {
+          'customer': {
+            'id': cashOperationsCustomer?.id!.toInt(),
+          },
+        },
+      },
+    );
+
+    // fetch the cards
+    final customerCardsData = await CardsController.getMany(listParameters: {
+      'skip': 0,
+      'take': customerCardsNumberData.data.count,
+      'where': {
+        'customer': {
+          'id': cashOperationsCustomer?.id!.toInt(),
+        },
+      },
+    });
+
+    // store the cards
+    final customerCards = List<Card>.from(
+      customerCardsData.data,
+    );
+
+    // update cash operations customer cards
+    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
+        customerCards;
+
+    // update cashOperations selected customer cards
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
+        customerCards.isNotEmpty
+            ? customerCards.firstWhereOrNull(
+                (card) =>
+                    card.repaidAt == null &&
+                    card.satisfiedAt == null &&
+                    card.transferredAt == null,
+              )
+            : null;
+
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
       statusCode: cardUpdateResponse.statusCode,
@@ -313,6 +363,55 @@ class CardsCRUDFunctions {
     ref.invalidate(cardsListStreamProvider);
     ref.invalidate(cardsCountProvider);
     ref.invalidate(specificCardsCountProvider);
+
+    /// * UPDATE CASH OPERATIONS DATA * ///
+    final cashOperationsCustomer =
+        ref.watch(cashOperationsSelectedCustomerProvider);
+    // get customer cards number
+    // because the number can be knowed without
+    // asking the database
+    final customerCardsNumberData = await CardsController.countSpecific(
+      listParameters: {
+        'skip': 0, // This value is override in backend
+        'take': 100, // This value is override in backend
+        'where': {
+          'customer': {
+            'id': cashOperationsCustomer?.id!.toInt(),
+          },
+        },
+      },
+    );
+
+    // fetch the cards
+    final customerCardsData = await CardsController.getMany(listParameters: {
+      'skip': 0,
+      'take': customerCardsNumberData.data.count,
+      'where': {
+        'customer': {
+          'id': cashOperationsCustomer?.id!.toInt(),
+        },
+      },
+    });
+
+    // store the cards
+    final customerCards = List<Card>.from(
+      customerCardsData.data,
+    );
+
+    // update cash operations customer cards
+    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
+        customerCards;
+
+    // update cashOperations selected customer cards
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
+        customerCards.isNotEmpty
+            ? customerCards.firstWhereOrNull(
+                (card) =>
+                    card.repaidAt == null &&
+                    card.satisfiedAt == null &&
+                    card.transferredAt == null,
+              )
+            : null;
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
@@ -514,6 +613,56 @@ class CardsCRUDFunctions {
         ref.invalidate(cardsCountProvider);
         ref.invalidate(specificCardsCountProvider);
 
+        /// * UPDATE CASH OPERATIONS DATA * ///
+        final cashOperationsCustomer =
+            ref.watch(cashOperationsSelectedCustomerProvider);
+        // get customer cards number
+        // because the number can be knowed without
+        // asking the database
+        final customerCardsNumberData = await CardsController.countSpecific(
+          listParameters: {
+            'skip': 0, // This value is override in backend
+            'take': 100, // This value is override in backend
+            'where': {
+              'customer': {
+                'id': cashOperationsCustomer?.id!.toInt(),
+              },
+            },
+          },
+        );
+
+        // fetch the cards
+        final customerCardsData =
+            await CardsController.getMany(listParameters: {
+          'skip': 0,
+          'take': customerCardsNumberData.data.count,
+          'where': {
+            'customer': {
+              'id': cashOperationsCustomer?.id!.toInt(),
+            },
+          },
+        });
+
+        // store the cards
+        final customerCards = List<Card>.from(
+          customerCardsData.data,
+        );
+
+        // update cash operations customer cards
+        ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
+            customerCards;
+
+        // update cashOperations selected customer cards
+        ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
+            customerCards.isNotEmpty
+                ? customerCards.firstWhereOrNull(
+                    (card) =>
+                        card.repaidAt == null &&
+                        card.satisfiedAt == null &&
+                        card.transferredAt == null,
+                  )
+                : null;
+
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
           statusCode: constrainedOutputResponse.statusCode,
@@ -571,6 +720,55 @@ class CardsCRUDFunctions {
     ref.invalidate(cardsListStreamProvider);
     ref.invalidate(cardsCountProvider);
     ref.invalidate(specificCardsCountProvider);
+
+    /// * UPDATE CASH OPERATIONS DATA * ///
+    final cashOperationsCustomer =
+        ref.watch(cashOperationsSelectedCustomerProvider);
+    // get customer cards number
+    // because the number can be knowed without
+    // asking the database
+    final customerCardsNumberData = await CardsController.countSpecific(
+      listParameters: {
+        'skip': 0, // This value is override in backend
+        'take': 100, // This value is override in backend
+        'where': {
+          'customer': {
+            'id': cashOperationsCustomer?.id!.toInt(),
+          },
+        },
+      },
+    );
+
+    // fetch the cards
+    final customerCardsData = await CardsController.getMany(listParameters: {
+      'skip': 0,
+      'take': customerCardsNumberData.data.count,
+      'where': {
+        'customer': {
+          'id': cashOperationsCustomer?.id!.toInt(),
+        },
+      },
+    });
+
+    // store the cards
+    final customerCards = List<Card>.from(
+      customerCardsData.data,
+    );
+
+    // update cash operations customer cards
+    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
+        customerCards;
+
+    // update cashOperations selected customer cards
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
+        customerCards.isNotEmpty
+            ? customerCards.firstWhereOrNull(
+                (card) =>
+                    card.repaidAt == null &&
+                    card.satisfiedAt == null &&
+                    card.transferredAt == null,
+              )
+            : null;
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,

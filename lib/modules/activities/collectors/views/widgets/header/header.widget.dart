@@ -71,7 +71,9 @@ class _CollectorsActivitiesPageHeaderState
 
                   // updated added filter parameters with list parameters
 
-                  if (collectorsActivitiesListParameters.containsKey('where')) {
+                  if (collectorsActivitiesListParameters.containsKey('where') &&
+                      collectorsActivitiesListParameters['where']
+                          .containsKey('AND')) {
                     for (Map<String, dynamic> filterParameter
                         in collectorsActivitiesListParameters['where']
                             .entries

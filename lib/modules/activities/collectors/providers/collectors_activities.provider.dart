@@ -13,13 +13,13 @@ final collectorsActivitiesListParametersProvider =
       'collectionId': {
         'not': 'null',
       },
-      'AND': [
-        {
-          'isValidated': {
-            'equals': true,
-          },
-        },
-      ],
+      'isValidated': {
+        'equals': true,
+      },
+
+      /*   'AND': [
+        
+      ],*/
     },
     'orderBy': [
       {

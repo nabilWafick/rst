@@ -32,7 +32,7 @@ class CollectionStructure {
   static Field collectedAt = Field(
     front: 'Date',
     back: 'collectedAt',
-    type: double,
+    type: DateTime,
     isNullable: false,
     isRelation: false,
   );

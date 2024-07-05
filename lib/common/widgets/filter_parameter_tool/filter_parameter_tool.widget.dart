@@ -200,11 +200,16 @@ class _FilterParameterToolState extends ConsumerState<FilterParameterTool> {
 
     return showWidget.value
         ? Container(
-            margin: const EdgeInsets.only(bottom: 10.0),
+            margin: const EdgeInsets.only(bottom: 20.0),
             child: Wrap(
-              runSpacing: 5,
+              runSpacing: 7,
               spacing: 5,
               children: [
+                const Icon(
+                  Icons.format_list_bulleted_sharp,
+                  color: RSTColors.primaryColor,
+                  size: 20,
+                ),
                 Consumer(
                   builder: (context, ref, child) {
                     return ValueListenableBuilder<
