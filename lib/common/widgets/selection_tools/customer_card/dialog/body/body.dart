@@ -101,6 +101,8 @@ class _CardSelectionDialogBodyState
     }
   }
 
+  final scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final cardsList =
@@ -120,6 +122,10 @@ class _CardSelectionDialogBodyState
                 isFixedHeader: true,
                 leftHandSideColBackgroundColor: material.Colors.transparent,
                 rightHandSideColBackgroundColor: material.Colors.transparent,
+                horizontalScrollbarStyle: ScrollbarStyle(
+                  thickness: 25.0,
+                  thumbColor: material.Colors.blueGrey[200],
+                ),
                 headerWidgets: [
                   Container(
                     width: 200.0,
@@ -230,37 +236,41 @@ class _CardSelectionDialogBodyState
           Container(
             margin: const EdgeInsets.only(left: 100.0),
             height: 50,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Libellé',
-                    field: CardStructure.label,
-                    selectionListParametersProvider:
-                        cardsSelectionListParametersProvider(widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Type',
-                    field: CardStructure.type,
-                    selectionListParametersProvider:
-                        cardsSelectionListParametersProvider(widget.toolName),
-                    onChanged: typeNameInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 200.0,
-                    hintText: 'Nombre Type',
-                    field: CardStructure.typesNumber,
-                    selectionListParametersProvider:
-                        cardsSelectionListParametersProvider(widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.intInput,
-                  ),
-                ],
+            child: material.Scrollbar(
+              controller: scrollController,
+              child: SingleChildScrollView(
+                controller: scrollController,
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Libellé',
+                      field: CardStructure.label,
+                      selectionListParametersProvider:
+                          cardsSelectionListParametersProvider(widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Type',
+                      field: CardStructure.type,
+                      selectionListParametersProvider:
+                          cardsSelectionListParametersProvider(widget.toolName),
+                      onChanged: typeNameInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 200.0,
+                      hintText: 'Nombre Type',
+                      field: CardStructure.typesNumber,
+                      selectionListParametersProvider:
+                          cardsSelectionListParametersProvider(widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.intInput,
+                    ),
+                  ],
+                ),
               ),
             ),
           )

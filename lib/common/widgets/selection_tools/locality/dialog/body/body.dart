@@ -41,6 +41,10 @@ class _LocalitySelectionDialogBodyState
                 isFixedHeader: true,
                 leftHandSideColBackgroundColor: Colors.transparent,
                 rightHandSideColBackgroundColor: Colors.transparent,
+                horizontalScrollbarStyle: ScrollbarStyle(
+                  thickness: 25.0,
+                  thumbColor: Colors.blueGrey[200],
+                ),
                 headerWidgets: [
                   Container(
                     width: 200.0,

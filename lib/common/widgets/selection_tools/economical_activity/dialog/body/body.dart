@@ -22,6 +22,7 @@ class EconomicalActivitySelectionDialogBody extends StatefulHookConsumerWidget {
 
 class _EconomicalActivitySelectionDialogBodyState
     extends ConsumerState<EconomicalActivitySelectionDialogBody> {
+  final scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final economicalActivitiesList = ref.watch(
@@ -41,6 +42,10 @@ class _EconomicalActivitySelectionDialogBodyState
                 isFixedHeader: true,
                 leftHandSideColBackgroundColor: Colors.transparent,
                 rightHandSideColBackgroundColor: Colors.transparent,
+                horizontalScrollbarStyle: ScrollbarStyle(
+                  thickness: 25.0,
+                  thumbColor: Colors.blueGrey[200],
+                ),
                 headerWidgets: [
                   Container(
                     width: 200.0,

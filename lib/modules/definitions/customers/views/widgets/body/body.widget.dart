@@ -50,6 +50,10 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
             rightHandSideColBackgroundColor: RSTColors.backgroundColor,
+            horizontalScrollbarStyle: ScrollbarStyle(
+              thickness: 25.0,
+              thumbColor: material.Colors.blueGrey[200],
+            ),
             headerWidgets: [
               Container(
                 width: 200.0,
@@ -226,288 +230,293 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
             },
             rightSideItemBuilder: (BuildContext context, int index) {
               final customer = data[index];
-              return Row(
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    width: 100.0,
-                    height: 30.0,
-                    child: RSTTooltip(
-                      options: [
-                        RSTToolTipOption(
-                          icon: material.Icons.aspect_ratio,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Vue Simple',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CustomerSimpleView(
-                                customer: customer,
-                              ),
-                            );
-                          },
-                        ),
-                        RSTToolTipOption(
-                          icon: material.Icons.edit,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Modifier',
-                          onTap: () async {
-                            // invalidate cardsTypesInputsAddedProvider
-                            ref.invalidate(
-                                customerCardsInputsAddedVisibilityProvider);
-
-                            // fetch all cards of customer cards
-                            List<Card> customerCards = [];
-                            try {
-                              // get customer cards number
-                              // because the number can be knowed without
-                              // asking the database
-                              final customerCardsNumberData =
-                                  await CardsController.countSpecific(
-                                listParameters: {
-                                  'skip':
-                                      0, // This value is override in backend
-                                  'take':
-                                      100, // This value is override in backend
-                                  'where': {
-                                    'customer': {
-                                      'id': customer.id!.toInt(),
-                                    },
-                                  },
-                                },
+              return material.SingleChildScrollView(
+                scrollDirection: material.Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 100.0,
+                      height: 30.0,
+                      child: RSTTooltip(
+                        options: [
+                          RSTToolTipOption(
+                            icon: material.Icons.aspect_ratio,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Vue Simple',
+                            onTap: () {
+                              FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: CustomerSimpleView(
+                                  customer: customer,
+                                ),
                               );
+                            },
+                          ),
+                          RSTToolTipOption(
+                            icon: material.Icons.edit,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Modifier',
+                            onTap: () async {
+                              // invalidate cardsTypesInputsAddedProvider
+                              ref.invalidate(
+                                  customerCardsInputsAddedVisibilityProvider);
 
-                              // fetch the cards
-                              final customerCardsData =
-                                  await CardsController.getMany(
-                                      listParameters: {
-                                    'skip': 0,
-                                    'take': customerCardsNumberData.data.count,
+                              // fetch all cards of customer cards
+                              List<Card> customerCards = [];
+                              try {
+                                // get customer cards number
+                                // because the number can be knowed without
+                                // asking the database
+                                final customerCardsNumberData =
+                                    await CardsController.countSpecific(
+                                  listParameters: {
+                                    'skip':
+                                        0, // This value is override in backend
+                                    'take':
+                                        100, // This value is override in backend
                                     'where': {
                                       'customer': {
                                         'id': customer.id!.toInt(),
                                       },
                                     },
-                                  });
+                                  },
+                                );
 
-                              // store the cards
-                              customerCards = List<Card>.from(
-                                customerCardsData.data,
+                                // fetch the cards
+                                final customerCardsData =
+                                    await CardsController.getMany(
+                                        listParameters: {
+                                      'skip': 0,
+                                      'take':
+                                          customerCardsNumberData.data.count,
+                                      'where': {
+                                        'customer': {
+                                          'id': customer.id!.toInt(),
+                                        },
+                                      },
+                                    });
+
+                                // store the cards
+                                customerCards = List<Card>.from(
+                                  customerCardsData.data,
+                                );
+                              } catch (e) {
+                                debugPrint(e.toString());
+                              }
+
+                              // update customer data
+                              customer.cards = customerCards;
+
+                              // add the cards inputs
+                              for (Card card in customerCards) {
+                                ref
+                                    .read(
+                                        customerCardsInputsAddedVisibilityProvider
+                                            .notifier)
+                                    .update((state) {
+                                  state = {
+                                    ...state,
+                                    card.id.toString(): true,
+                                  };
+
+                                  return state;
+                                });
+                              }
+
+                              FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: CustomerUpdateForm(
+                                  customer: customer,
+                                ),
                               );
-                            } catch (e) {
-                              debugPrint(e.toString());
-                            }
-
-                            // update customer data
-                            customer.cards = customerCards;
-
-                            // add the cards inputs
-                            for (Card card in customerCards) {
-                              ref
-                                  .read(
-                                      customerCardsInputsAddedVisibilityProvider
-                                          .notifier)
-                                  .update((state) {
-                                state = {
-                                  ...state,
-                                  card.id.toString(): true,
-                                };
-
-                                return state;
-                              });
-                            }
-
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CustomerUpdateForm(
-                                customer: customer,
-                              ),
-                            );
-                          },
+                            },
+                          ),
+                          RSTToolTipOption(
+                            icon: material.Icons.delete,
+                            iconColor: RSTColors.primaryColor,
+                            name: 'Supprimer',
+                            onTap: () {
+                              FunctionsController.showAlertDialog(
+                                context: context,
+                                alertDialog: CustomerDeletionConfirmationDialog(
+                                  customer: customer,
+                                  confirmToDelete:
+                                      CustomersCRUDFunctions.delete,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.name,
+                          maxLength: 45,
                         ),
-                        RSTToolTipOption(
-                          icon: material.Icons.delete,
-                          iconColor: RSTColors.primaryColor,
-                          name: 'Supprimer',
-                          onTap: () {
-                            FunctionsController.showAlertDialog(
-                              context: context,
-                              alertDialog: CustomerDeletionConfirmationDialog(
-                                customer: customer,
-                                confirmToDelete: CustomersCRUDFunctions.delete,
-                              ),
-                            );
-                          },
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.firstnames,
+                          maxLength: 45,
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.name,
-                        maxLength: 45,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.firstnames,
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.phoneNumber,
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.phoneNumber,
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.address,
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.address,
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.occupation ?? '',
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.occupation ?? '',
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.nicNumber?.toString() ?? '',
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.nicNumber?.toString() ?? '',
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.collector != null
+                              ? '${customer.collector?.name} ${customer.collector?.firstnames}'
+                              : '',
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.collector != null
-                            ? '${customer.collector?.name} ${customer.collector?.firstnames}'
-                            : '',
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.locality?.name ?? '',
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.locality?.name ?? '',
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.category?.name ?? '',
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.category?.name ?? '',
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.economicalActivity?.name ?? '',
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.economicalActivity?.name ?? '',
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 400.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: FunctionsController.truncateText(
+                          text: customer.personalStatus?.name ?? '',
+                          maxLength: 45,
+                        ),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 400.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: customer.personalStatus?.name ?? '',
-                        maxLength: 45,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 300.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: format.format(customer.createdAt),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(customer.createdAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 300.0,
+                      height: 30.0,
+                      child: RSTText(
+                        text: format.format(customer.updatedAt),
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: format.format(customer.updatedAt),
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
             rowSeparatorWidget: const material.Divider(),

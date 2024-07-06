@@ -115,11 +115,11 @@ class _PersonalStatusPageHeaderState
               RSTIconButton(
                 icon: Icons.format_list_bulleted_sharp,
                 text: !personalStatusListParameters.containsKey('orderBy') ||
-                        !personalStatusListParameters['orderBy'].isNotEmty
+                        !personalStatusListParameters['orderBy'].isNotEmpty
                     ? 'Trier'
                     : 'Trié',
-                light: !personalStatusListParameters.containsKey('orderBy') ||
-                    !personalStatusListParameters['orderBy'].isNotEmty,
+                light: personalStatusListParameters.containsKey('orderBy') &&
+                    personalStatusListParameters['orderBy'].isNotEmpty,
                 onTap: () {
                   FunctionsController.showAlertDialog(
                     context: context,

@@ -22,6 +22,8 @@ class CollectorSelectionDialogBody extends StatefulHookConsumerWidget {
 
 class _CollectorSelectionDialogBodyState
     extends ConsumerState<CollectorSelectionDialogBody> {
+  final scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final collectorsList =
@@ -41,6 +43,10 @@ class _CollectorSelectionDialogBodyState
                 isFixedHeader: true,
                 leftHandSideColBackgroundColor: Colors.transparent,
                 rightHandSideColBackgroundColor: Colors.transparent,
+                horizontalScrollbarStyle: ScrollbarStyle(
+                  thickness: 25.0,
+                  thumbColor: Colors.blueGrey[200],
+                ),
                 headerWidgets: [
                   Container(
                     width: 200.0,
@@ -176,49 +182,53 @@ class _CollectorSelectionDialogBodyState
           Container(
             margin: const EdgeInsets.only(left: 100.0),
             height: 50,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Nom',
-                    field: CollectorStructure.name,
-                    selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Prénoms',
-                    field: CollectorStructure.firstnames,
-                    selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Téléphone',
-                    field: CollectorStructure.phoneNumber,
-                    selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Adresse',
-                    field: CollectorStructure.address,
-                    selectionListParametersProvider:
-                        collectorsSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                ],
+            child: Scrollbar(
+              controller: scrollController,
+              child: SingleChildScrollView(
+                controller: scrollController,
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Nom',
+                      field: CollectorStructure.name,
+                      selectionListParametersProvider:
+                          collectorsSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Prénoms',
+                      field: CollectorStructure.firstnames,
+                      selectionListParametersProvider:
+                          collectorsSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Téléphone',
+                      field: CollectorStructure.phoneNumber,
+                      selectionListParametersProvider:
+                          collectorsSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Adresse',
+                      field: CollectorStructure.address,
+                      selectionListParametersProvider:
+                          collectorsSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                  ],
+                ),
               ),
             ),
           )

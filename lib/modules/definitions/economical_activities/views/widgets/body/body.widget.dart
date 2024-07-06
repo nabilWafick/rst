@@ -51,6 +51,10 @@ class _EconomicalActivitiesPageBodyState
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
             rightHandSideColBackgroundColor: RSTColors.backgroundColor,
+            horizontalScrollbarStyle: ScrollbarStyle(
+              thickness: 25.0,
+              thumbColor: Colors.blueGrey[200],
+            ),
             headerWidgets: [
               Container(
                 width: 200.0,

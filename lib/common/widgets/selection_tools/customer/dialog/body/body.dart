@@ -22,6 +22,7 @@ class CustomerSelectionDialogBody extends StatefulHookConsumerWidget {
 
 class _CustomerSelectionDialogBodyState
     extends ConsumerState<CustomerSelectionDialogBody> {
+  final scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final customersList =
@@ -41,6 +42,10 @@ class _CustomerSelectionDialogBodyState
                 isFixedHeader: true,
                 leftHandSideColBackgroundColor: Colors.transparent,
                 rightHandSideColBackgroundColor: Colors.transparent,
+                horizontalScrollbarStyle: ScrollbarStyle(
+                  thickness: 25.0,
+                  thumbColor: Colors.blueGrey[200],
+                ),
                 headerWidgets: [
                   Container(
                     width: 200.0,
@@ -202,67 +207,71 @@ class _CustomerSelectionDialogBodyState
           Container(
             margin: const EdgeInsets.only(left: 100.0),
             height: 50,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Nom',
-                    field: CustomerStructure.name,
-                    selectionListParametersProvider:
-                        customersSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Prénoms',
-                    field: CustomerStructure.firstnames,
-                    selectionListParametersProvider:
-                        customersSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Téléphone',
-                    field: CustomerStructure.phoneNumber,
-                    selectionListParametersProvider:
-                        customersSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Adresse',
-                    field: CustomerStructure.address,
-                    selectionListParametersProvider:
-                        customersSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'Profession',
-                    field: CustomerStructure.occupation,
-                    selectionListParametersProvider:
-                        customersSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.stringInput,
-                  ),
-                  RSTSelectionSearchInput(
-                    width: 400.0,
-                    hintText: 'NCI/NPI',
-                    field: CustomerStructure.nicNumber,
-                    selectionListParametersProvider:
-                        customersSelectionListParametersProvider(
-                            widget.toolName),
-                    onChanged: SelectionToolSearchInputOnChanged.intInput,
-                  ),
-                ],
+            child: Scrollbar(
+              controller: scrollController,
+              child: SingleChildScrollView(
+                controller: scrollController,
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Nom',
+                      field: CustomerStructure.name,
+                      selectionListParametersProvider:
+                          customersSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Prénoms',
+                      field: CustomerStructure.firstnames,
+                      selectionListParametersProvider:
+                          customersSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Téléphone',
+                      field: CustomerStructure.phoneNumber,
+                      selectionListParametersProvider:
+                          customersSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Adresse',
+                      field: CustomerStructure.address,
+                      selectionListParametersProvider:
+                          customersSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'Profession',
+                      field: CustomerStructure.occupation,
+                      selectionListParametersProvider:
+                          customersSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.stringInput,
+                    ),
+                    RSTSelectionSearchInput(
+                      width: 400.0,
+                      hintText: 'NCI/NPI',
+                      field: CustomerStructure.nicNumber,
+                      selectionListParametersProvider:
+                          customersSelectionListParametersProvider(
+                              widget.toolName),
+                      onChanged: SelectionToolSearchInputOnChanged.intInput,
+                    ),
+                  ],
+                ),
               ),
             ),
           )
