@@ -7,6 +7,7 @@ import 'package:rst/common/widgets/selection_tools/functions/on_changed/on_chang
 import 'package:rst/common/widgets/selection_tools/search_input/search_input.widget.dart';
 import 'package:rst/common/widgets/selection_tools/type/providers/selection.provider.dart';
 import 'package:rst/modules/definitions/types/models/structure/structure.model.dart';
+import 'package:rst/utils/colors/colors.util.dart';
 
 class TypeSelectionDialogBody extends StatefulHookConsumerWidget {
   final String toolName;
@@ -42,8 +43,8 @@ class _TypeSelectionDialogBodyState
                 leftHandSideColBackgroundColor: Colors.transparent,
                 rightHandSideColBackgroundColor: Colors.transparent,
                 horizontalScrollbarStyle: ScrollbarStyle(
-                  thickness: 25.0,
-                  thumbColor: Colors.blueGrey[200],
+                  thickness: 20.0,
+                  thumbColor: RSTColors.sidebarTextColor.withOpacity(.2),
                 ),
                 headerWidgets: [
                   Container(
@@ -150,7 +151,7 @@ class _TypeSelectionDialogBodyState
                 ),
                 RSTSelectionSearchInput(
                   width: 300.0,
-                  hintText: 'Prix d\'achat',
+                  hintText: 'Mise',
                   field: TypeStructure.stake,
                   selectionListParametersProvider:
                       typesSelectionListParametersProvider(widget.toolName),

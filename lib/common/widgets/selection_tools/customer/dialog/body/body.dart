@@ -7,6 +7,7 @@ import 'package:rst/common/widgets/selection_tools/customer/providers/selection.
 import 'package:rst/common/widgets/selection_tools/functions/on_changed/on_changed.function.dart';
 import 'package:rst/common/widgets/selection_tools/search_input/search_input.widget.dart';
 import 'package:rst/modules/definitions/customers/models/structure/structure.model.dart';
+import 'package:rst/utils/colors/colors.util.dart';
 
 class CustomerSelectionDialogBody extends StatefulHookConsumerWidget {
   final String toolName;
@@ -43,8 +44,8 @@ class _CustomerSelectionDialogBodyState
                 leftHandSideColBackgroundColor: Colors.transparent,
                 rightHandSideColBackgroundColor: Colors.transparent,
                 horizontalScrollbarStyle: ScrollbarStyle(
-                  thickness: 25.0,
-                  thumbColor: Colors.blueGrey[200],
+                  thickness: 20.0,
+                  thumbColor: RSTColors.sidebarTextColor.withOpacity(.2),
                 ),
                 headerWidgets: [
                   Container(

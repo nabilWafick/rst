@@ -225,8 +225,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
               (authPermissions?[PermissionsValues.readCollector] ?? false),
 
           // Agents
-          9: (authPermissions?[PermissionsValues.admin] ?? false) ||
-              (authPermissions?[PermissionsValues.readAgent] ?? false),
+          9: (authPermissions?[PermissionsValues.admin] ?? false),
         },
       ),
       SidebarOptionModel(

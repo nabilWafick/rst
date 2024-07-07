@@ -9,6 +9,7 @@ import 'package:rst/common/widgets/selection_tools/customer_card/providers/selec
 import 'package:rst/common/widgets/selection_tools/functions/on_changed/on_changed.function.dart';
 import 'package:rst/common/widgets/selection_tools/search_input/search_input.widget.dart';
 import 'package:rst/modules/definitions/cards/models/structure/structure.model.dart';
+import 'package:rst/utils/colors/colors.util.dart';
 
 class CardSelectionDialogBody extends StatefulHookConsumerWidget {
   final String toolName;
@@ -117,14 +118,14 @@ class _CardSelectionDialogBodyState
             child: cardsList.when(
               data: (data) => HorizontalDataTable(
                 leftHandSideColumnWidth: 100,
-                rightHandSideColumnWidth: 1600,
+                rightHandSideColumnWidth: 1000,
                 itemCount: data.length,
                 isFixedHeader: true,
                 leftHandSideColBackgroundColor: material.Colors.transparent,
                 rightHandSideColBackgroundColor: material.Colors.transparent,
                 horizontalScrollbarStyle: ScrollbarStyle(
-                  thickness: 25.0,
-                  thumbColor: material.Colors.blueGrey[200],
+                  thickness: 20.0,
+                  thumbColor: RSTColors.sidebarTextColor.withOpacity(.2),
                 ),
                 headerWidgets: [
                   Container(
