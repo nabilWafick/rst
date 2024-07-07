@@ -467,7 +467,7 @@ class _CashOperationsCustomerCardInfosState
                           fontWeight: FontWeight.w500,
                         ),
                         hoverColor: material.Colors.transparent,
-                        onChanged: (value) async {},
+                        onChanged: null,
                       ),
                     ),
                     LabelValue(
