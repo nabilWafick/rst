@@ -76,7 +76,7 @@ class StocksPageFooter extends ConsumerWidget {
                                         // decrease the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] -= 15,
+                                          'skip': state['skip'] -= 25,
                                         };
 
                                         return state;
@@ -102,7 +102,7 @@ class StocksPageFooter extends ConsumerWidget {
                               ),
                               child: RSTText(
                                 text: data != 0
-                                    ? '${((stocksListParameters['skip'] + 15) / 15).toInt()}'
+                                    ? '${((stocksListParameters['skip'] + 25) / 25).toInt()}'
                                     : '0',
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700,
@@ -116,7 +116,7 @@ class StocksPageFooter extends ConsumerWidget {
                             final stocksListParameters =
                                 ref.watch(stocksListParametersProvider);
 
-                            return stocksListParameters['skip'] + 15 < data
+                            return stocksListParameters['skip'] + 25 < data
                                 ? IconButton(
                                     onPressed: () {
                                       ref
@@ -126,7 +126,7 @@ class StocksPageFooter extends ConsumerWidget {
                                         // increase the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] += 15,
+                                          'skip': state['skip'] += 25,
                                         };
 
                                         return state;

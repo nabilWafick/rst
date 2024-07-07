@@ -77,7 +77,7 @@ class SettlementsPageFooter extends ConsumerWidget {
                                         // decrease the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] -= 15,
+                                          'skip': state['skip'] -= 25,
                                         };
 
                                         return state;
@@ -103,7 +103,7 @@ class SettlementsPageFooter extends ConsumerWidget {
                               ),
                               child: RSTText(
                                 text: data != 0
-                                    ? '${((settlementsListParameters['skip'] + 15) / 15).toInt()}'
+                                    ? '${((settlementsListParameters['skip'] + 25) / 25).toInt()}'
                                     : '0',
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700,
@@ -117,7 +117,7 @@ class SettlementsPageFooter extends ConsumerWidget {
                             final settlementsListParameters =
                                 ref.watch(settlementsListParametersProvider);
 
-                            return settlementsListParameters['skip'] + 15 < data
+                            return settlementsListParameters['skip'] + 25 < data
                                 ? IconButton(
                                     onPressed: () {
                                       ref
@@ -128,7 +128,7 @@ class SettlementsPageFooter extends ConsumerWidget {
                                         // increase the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] += 15,
+                                          'skip': state['skip'] += 25,
                                         };
 
                                         return state;

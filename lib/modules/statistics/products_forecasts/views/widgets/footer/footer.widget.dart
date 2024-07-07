@@ -69,7 +69,7 @@ class ProductsForecastsPageFooter extends ConsumerWidget {
                                           .update((state) {
                                         // decrease the pagination
                                         state = state.copyWith(
-                                          offset: state.offset - 15,
+                                          offset: state.offset - 20,
                                         );
 
                                         return state;
@@ -95,7 +95,7 @@ class ProductsForecastsPageFooter extends ConsumerWidget {
                               ),
                               child: RSTText(
                                 text: data != 0
-                                    ? '${(productsForecastsListParameters.offset + 15) ~/ 15}'
+                                    ? '${(productsForecastsListParameters.offset + 20) ~/ 20}'
                                     : '0',
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700,
@@ -109,7 +109,7 @@ class ProductsForecastsPageFooter extends ConsumerWidget {
                             final productsForecastsListParameters = ref
                                 .watch(productsForecastsListParametersProvider);
 
-                            return productsForecastsListParameters.offset + 15 <
+                            return productsForecastsListParameters.offset + 20 <
                                     data
                                 ? IconButton(
                                     onPressed: () {
@@ -120,7 +120,7 @@ class ProductsForecastsPageFooter extends ConsumerWidget {
                                           .update((state) {
                                         // increase the pagination
                                         state = state.copyWith(
-                                          offset: state.offset + 15,
+                                          offset: state.offset + 20,
                                         );
 
                                         return state;

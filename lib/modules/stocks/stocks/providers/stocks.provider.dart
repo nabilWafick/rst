@@ -20,7 +20,7 @@ final stockOutputQuantityProvider = StateProvider<int>(
 final stocksListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
-    'take': 15,
+    'take': 25,
     'orderBy': [
       {
         'id': 'desc',

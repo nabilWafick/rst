@@ -10,7 +10,7 @@ final productsForecastsListParametersProvider =
   return ProductsForecastsFilter(
     totalSettlementNumber: 186,
     offset: 0,
-    limit: 15,
+    limit: 20,
   );
 });
 

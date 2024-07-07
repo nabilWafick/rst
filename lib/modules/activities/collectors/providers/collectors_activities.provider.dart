@@ -8,7 +8,7 @@ final collectorsActivitiesListParametersProvider =
     StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
-    'take': 15,
+    'take': 25,
     'where': {
       'collectionId': {
         'not': 'null',

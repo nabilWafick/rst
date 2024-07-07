@@ -85,7 +85,7 @@ class CollectorsActivitiesPageFooter extends ConsumerWidget {
                                         // decrease the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] -= 15,
+                                          'skip': state['skip'] -= 25,
                                         };
 
                                         return state;
@@ -112,7 +112,7 @@ class CollectorsActivitiesPageFooter extends ConsumerWidget {
                               ),
                               child: RSTText(
                                 text: data != 0
-                                    ? '${((collectorsActivitiesListParameters['skip'] + 15) / 15).toInt()}'
+                                    ? '${((collectorsActivitiesListParameters['skip'] + 25) / 25).toInt()}'
                                     : '0',
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700,
@@ -128,7 +128,7 @@ class CollectorsActivitiesPageFooter extends ConsumerWidget {
                                     collectorsActivitiesListParametersProvider);
 
                             return collectorsActivitiesListParameters['skip'] +
-                                        15 <
+                                        25 <
                                     data
                                 ? IconButton(
                                     onPressed: () {
@@ -140,7 +140,7 @@ class CollectorsActivitiesPageFooter extends ConsumerWidget {
                                         // increase the pagination
                                         state = {
                                           ...state,
-                                          'skip': state['skip'] += 15,
+                                          'skip': state['skip'] += 25,
                                         };
 
                                         return state;
