@@ -107,3 +107,5 @@ add_custom_target(flutter_assemble DEPENDS
   ${CPP_WRAPPER_SOURCES_PLUGIN}
   ${CPP_WRAPPER_SOURCES_APP}
 )
+
+#set(PDFIUM_VERSION "4634" CACHE STRING "")

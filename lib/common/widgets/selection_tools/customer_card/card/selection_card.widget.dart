@@ -8,6 +8,7 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/dialog/selection_dialog.widget.dart';
 import 'package:rst/common/widgets/selection_tools/customer_card/providers/selection.provider.dart';
+import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provider.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
@@ -71,6 +72,8 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                 // show only cards of the selected customer of cash operations (if his is selected)
                 final cashOperationsSelectedCustomer =
                     ref.watch(customerSelectionToolProvider('cash-operations'));
+                final cashOperationsShowAllCustomerCards =
+                    ref.watch(cashOperationsShowAllCustomerCardsProvider);
 
                 if (widget.toolName == 'cash-operations' &&
                     cashOperationsSelectedCustomer != null) {
@@ -86,6 +89,17 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                         {
                           'customerId': cashOperationsSelectedCustomer.id,
                         },
+                        if (!cashOperationsShowAllCustomerCards) ...[
+                          {
+                            'repaidAt': 'null',
+                          },
+                          {
+                            'satisfiedAt': 'null',
+                          },
+                          {
+                            'transferredAt': 'null',
+                          }
+                        ]
                       ]
                     }
                   };

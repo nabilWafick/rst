@@ -57,7 +57,7 @@ class _CashOperationsSettlementsCardBodyState
           ),
           child: HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 432,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 732,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
@@ -83,6 +83,17 @@ class _CashOperationsSettlementsCardBodyState
                 height: 50.0,
                 alignment: Alignment.center,
                 child: const SizedBox(),
+              ),
+              Container(
+                width: 300.0,
+                height: 50.0,
+                alignment: Alignment.centerLeft,
+                child: const RSTText(
+                  text: 'Date Collecte',
+                  textAlign: TextAlign.center,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Container(
                 width: 300.0,
@@ -295,6 +306,29 @@ class _CashOperationsSettlementsCardBodyState
                                 : null,
                         ]
                       ],
+                    ),
+                  ),
+                   Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: settlement.collection!=null ? format.format(settlement.collection!.collectedAt) : '',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 300.0,
+                    height: 30.0,
+                    child: RSTText(
+                      text: FunctionsController.truncateText(
+                        text: settlement.card.label,
+                        maxLength: 35,
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   Container(
