@@ -51,18 +51,37 @@ class _CollectorsActivitiesPageHeaderState
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: collectorsActivitiesListParameters.containsKey('where') &&
-                        collectorsActivitiesListParameters['where']
-                            .containsKey('AND') &&
-                        collectorsActivitiesListParameters['where']['AND']
-                            .isNotEmpty
+                        ((collectorsActivitiesListParameters['where']
+                                    .containsKey('AND') &&
+                                collectorsActivitiesListParameters['where']
+                                        ['AND']
+                                    .isNotEmpty) ||
+                            (collectorsActivitiesListParameters['where']
+                                    .containsKey('OR') &&
+                                collectorsActivitiesListParameters['where']
+                                        ['OR']
+                                    .isNotEmpty) ||
+                            (collectorsActivitiesListParameters['where']
+                                    .containsKey('NOR') &&
+                                collectorsActivitiesListParameters['where']
+                                        ['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
-                light:
-                    collectorsActivitiesListParameters.containsKey('where') &&
-                        collectorsActivitiesListParameters['where']
-                            .containsKey('AND') &&
-                        collectorsActivitiesListParameters['where']['AND']
-                            .isNotEmpty,
+                light: collectorsActivitiesListParameters
+                        .containsKey('where') &&
+                    ((collectorsActivitiesListParameters['where']
+                                .containsKey('AND') &&
+                            collectorsActivitiesListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (collectorsActivitiesListParameters['where']
+                                .containsKey('OR') &&
+                            collectorsActivitiesListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (collectorsActivitiesListParameters['where']
+                                .containsKey('NOR') &&
+                            collectorsActivitiesListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

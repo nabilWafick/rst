@@ -48,13 +48,24 @@ class _AgentsPageHeaderState extends ConsumerState<AgentsPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: agentsListParameters.containsKey('where') &&
-                        agentsListParameters['where'].containsKey('AND') &&
-                        agentsListParameters['where']['AND'].isNotEmpty
+                        ((agentsListParameters['where'].containsKey('AND') &&
+                                agentsListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (agentsListParameters['where'].containsKey('OR') &&
+                                agentsListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (agentsListParameters['where'].containsKey('NOR') &&
+                                agentsListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: agentsListParameters.containsKey('where') &&
-                    agentsListParameters['where'].containsKey('AND') &&
-                    agentsListParameters['where']['AND'].isNotEmpty,
+                    ((agentsListParameters['where'].containsKey('AND') &&
+                            agentsListParameters['where']['AND'].isNotEmpty) ||
+                        (agentsListParameters['where'].containsKey('OR') &&
+                            agentsListParameters['where']['OR'].isNotEmpty) ||
+                        (agentsListParameters['where'].containsKey('NOR') &&
+                            agentsListParameters['where']['NOR'].isNotEmpty)),
                 onTap: () async {
                   final random = Random();
 

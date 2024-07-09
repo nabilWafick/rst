@@ -46,13 +46,23 @@ class _CardsPageHeaderState extends ConsumerState<CardsPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: cardsListParameters.containsKey('where') &&
-                        cardsListParameters['where'].containsKey('AND') &&
-                        cardsListParameters['where']['AND'].isNotEmpty
+                        ((cardsListParameters['where'].containsKey('AND') &&
+                                cardsListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (cardsListParameters['where'].containsKey('OR') &&
+                                cardsListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (cardsListParameters['where'].containsKey('NOR') &&
+                                cardsListParameters['where']['NOR'].isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: cardsListParameters.containsKey('where') &&
-                    cardsListParameters['where'].containsKey('AND') &&
-                    cardsListParameters['where']['AND'].isNotEmpty,
+                    ((cardsListParameters['where'].containsKey('AND') &&
+                            cardsListParameters['where']['AND'].isNotEmpty) ||
+                        (cardsListParameters['where'].containsKey('OR') &&
+                            cardsListParameters['where']['OR'].isNotEmpty) ||
+                        (cardsListParameters['where'].containsKey('NOR') &&
+                            cardsListParameters['where']['NOR'].isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

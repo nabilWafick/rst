@@ -48,13 +48,28 @@ class _ProductsPageHeaderState extends ConsumerState<ProductsPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: productsListParameters.containsKey('where') &&
-                        productsListParameters['where'].containsKey('AND') &&
-                        productsListParameters['where']['AND'].isNotEmpty
+                        ((productsListParameters['where'].containsKey('AND') &&
+                                productsListParameters['where']
+                                        ['AND']
+                                    .isNotEmpty) ||
+                            (productsListParameters['where']
+                                    .containsKey('OR') &&
+                                productsListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (productsListParameters['where']
+                                    .containsKey('NOR') &&
+                                productsListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: productsListParameters.containsKey('where') &&
-                    productsListParameters['where'].containsKey('AND') &&
-                    productsListParameters['where']['AND'].isNotEmpty,
+                    ((productsListParameters['where'].containsKey('AND') &&
+                            productsListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (productsListParameters['where'].containsKey('OR') &&
+                            productsListParameters['where']['OR'].isNotEmpty) ||
+                        (productsListParameters['where'].containsKey('NOR') &&
+                            productsListParameters['where']['NOR'].isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

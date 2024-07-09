@@ -29,8 +29,19 @@ class _CardFilterDialogState extends ConsumerState<CardFilterDialog> {
     final cardsListFilterParametersAdded =
         ref.watch(cardsListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final cardsListParameters = ref.watch(cardsListParametersProvider);
 
+    final paramOperator = cardsListParameters.containsKey('where')
+        ? cardsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : cardsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : cardsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
         vertical: 20.0,

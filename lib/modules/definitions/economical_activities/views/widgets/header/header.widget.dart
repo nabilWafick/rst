@@ -50,18 +50,37 @@ class _EconomicalActivitiesPageHeaderState
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: economicalActivitiesListParameters.containsKey('where') &&
-                        economicalActivitiesListParameters['where']
-                            .containsKey('AND') &&
-                        economicalActivitiesListParameters['where']['AND']
-                            .isNotEmpty
+                        ((economicalActivitiesListParameters['where']
+                                    .containsKey('AND') &&
+                                economicalActivitiesListParameters['where']
+                                        ['AND']
+                                    .isNotEmpty) ||
+                            (economicalActivitiesListParameters['where']
+                                    .containsKey('OR') &&
+                                economicalActivitiesListParameters['where']
+                                        ['OR']
+                                    .isNotEmpty) ||
+                            (economicalActivitiesListParameters['where']
+                                    .containsKey('NOR') &&
+                                economicalActivitiesListParameters['where']
+                                        ['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
-                light:
-                    economicalActivitiesListParameters.containsKey('where') &&
-                        economicalActivitiesListParameters['where']
-                            .containsKey('AND') &&
-                        economicalActivitiesListParameters['where']['AND']
-                            .isNotEmpty,
+                light: economicalActivitiesListParameters
+                        .containsKey('where') &&
+                    ((economicalActivitiesListParameters['where']
+                                .containsKey('AND') &&
+                            economicalActivitiesListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (economicalActivitiesListParameters['where']
+                                .containsKey('OR') &&
+                            economicalActivitiesListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (economicalActivitiesListParameters['where']
+                                .containsKey('NOR') &&
+                            economicalActivitiesListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
 

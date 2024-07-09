@@ -29,7 +29,19 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
     final agentsListFilterParametersAdded =
         ref.watch(agentsListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final agentsListParameters = ref.watch(agentsListParametersProvider);
+
+    final paramOperator = agentsListParameters.containsKey('where')
+        ? agentsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : agentsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : agentsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

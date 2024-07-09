@@ -29,7 +29,19 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
     final productsListFilterParametersAdded =
         ref.watch(productsListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final productsListParameters = ref.watch(productsListParametersProvider);
+
+    final paramOperator = productsListParameters.containsKey('where')
+        ? productsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : productsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : productsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

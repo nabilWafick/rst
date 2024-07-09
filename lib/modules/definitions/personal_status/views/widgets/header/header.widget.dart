@@ -53,14 +53,33 @@ class _PersonalStatusPageHeaderState
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: personalStatusListParameters.containsKey('where') &&
-                        personalStatusListParameters['where']
-                            .containsKey('AND') &&
-                        personalStatusListParameters['where']['AND'].isNotEmpty
+                        ((personalStatusListParameters['where']
+                                    .containsKey('AND') &&
+                                personalStatusListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (personalStatusListParameters['where']
+                                    .containsKey('OR') &&
+                                personalStatusListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (personalStatusListParameters['where']
+                                    .containsKey('NOR') &&
+                                personalStatusListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: personalStatusListParameters.containsKey('where') &&
-                    personalStatusListParameters['where'].containsKey('AND') &&
-                    personalStatusListParameters['where']['AND'].isNotEmpty,
+                    ((personalStatusListParameters['where']
+                                .containsKey('AND') &&
+                            personalStatusListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (personalStatusListParameters['where']
+                                .containsKey('OR') &&
+                            personalStatusListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (personalStatusListParameters['where']
+                                .containsKey('NOR') &&
+                            personalStatusListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

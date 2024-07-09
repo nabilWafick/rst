@@ -48,13 +48,23 @@ class _TypesPageHeaderState extends ConsumerState<TypesPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: typesListParameters.containsKey('where') &&
-                        typesListParameters['where'].containsKey('AND') &&
-                        typesListParameters['where']['AND'].isNotEmpty
+                        ((typesListParameters['where'].containsKey('AND') &&
+                                typesListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (typesListParameters['where'].containsKey('OR') &&
+                                typesListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (typesListParameters['where'].containsKey('NOR') &&
+                                typesListParameters['where']['NOR'].isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: typesListParameters.containsKey('where') &&
-                    typesListParameters['where'].containsKey('AND') &&
-                    typesListParameters['where']['AND'].isNotEmpty,
+                    ((typesListParameters['where'].containsKey('AND') &&
+                            typesListParameters['where']['AND'].isNotEmpty) ||
+                        (typesListParameters['where'].containsKey('OR') &&
+                            typesListParameters['where']['OR'].isNotEmpty) ||
+                        (typesListParameters['where'].containsKey('NOR') &&
+                            typesListParameters['where']['NOR'].isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

@@ -29,7 +29,20 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
     final categoriesListFilterParametersAdded =
         ref.watch(categoriesListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final categoriesListParameters =
+        ref.watch(categoriesListParametersProvider);
+
+    final paramOperator = categoriesListParameters.containsKey('where')
+        ? categoriesListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : categoriesListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : categoriesListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

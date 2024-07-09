@@ -49,13 +49,30 @@ class _CategoriesPageHeaderState extends ConsumerState<CategoriesPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: categoriesListParameters.containsKey('where') &&
-                        categoriesListParameters['where'].containsKey('AND') &&
-                        categoriesListParameters['where']['AND'].isNotEmpty
+                        ((categoriesListParameters['where']
+                                    .containsKey('AND') &&
+                                categoriesListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (categoriesListParameters['where']
+                                    .containsKey('OR') &&
+                                categoriesListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (categoriesListParameters['where']
+                                    .containsKey('NOR') &&
+                                categoriesListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: categoriesListParameters.containsKey('where') &&
-                    categoriesListParameters['where'].containsKey('AND') &&
-                    categoriesListParameters['where']['AND'].isNotEmpty,
+                    ((categoriesListParameters['where'].containsKey('AND') &&
+                            categoriesListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (categoriesListParameters['where'].containsKey('OR') &&
+                            categoriesListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (categoriesListParameters['where'].containsKey('NOR') &&
+                            categoriesListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

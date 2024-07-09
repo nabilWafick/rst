@@ -29,7 +29,19 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
     final customersListFilterParametersAdded =
         ref.watch(customersListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final customersListParameters = ref.watch(customersListParametersProvider);
+
+    final paramOperator = customersListParameters.containsKey('where')
+        ? customersListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : customersListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : customersListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

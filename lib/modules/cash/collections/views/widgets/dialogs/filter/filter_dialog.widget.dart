@@ -30,7 +30,20 @@ class _CollectionFilterDialogState
     final collectionsListFilterParametersAdded =
         ref.watch(collectionsListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final collectionsListParameters =
+        ref.watch(collectionsListParametersProvider);
+
+    final paramOperator = collectionsListParameters.containsKey('where')
+        ? collectionsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : collectionsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : collectionsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

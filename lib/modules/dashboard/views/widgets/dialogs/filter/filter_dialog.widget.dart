@@ -32,7 +32,20 @@ class _DashboardCollectorsCollectionsFilterDialogState
     final collectorsListFilterParametersAdded = ref
         .watch(dashboardCollectorsCollectionsListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final collectorsListParameters =
+        ref.watch(collectorsListParametersProvider);
+
+    final paramOperator = collectorsListParameters.containsKey('where')
+        ? collectorsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : collectorsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : collectorsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

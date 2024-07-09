@@ -55,18 +55,37 @@ class _CollectorsCollectionsPageHeaderState
                 icon: Icons.filter_alt_rounded,
                 text:
                     collectorsCollectionsListParameters.containsKey('where') &&
-                            collectorsCollectionsListParameters['where']
-                                .containsKey('AND') &&
-                            collectorsCollectionsListParameters['where']['AND']
-                                .isNotEmpty
+                            ((collectorsCollectionsListParameters['where']
+                                        .containsKey('AND') &&
+                                    collectorsCollectionsListParameters['where']
+                                            ['AND']
+                                        .isNotEmpty) ||
+                                (collectorsCollectionsListParameters['where']
+                                        .containsKey('OR') &&
+                                    collectorsCollectionsListParameters['where']
+                                            ['OR']
+                                        .isNotEmpty) ||
+                                (collectorsCollectionsListParameters['where']
+                                        .containsKey('NOR') &&
+                                    collectorsCollectionsListParameters['where']
+                                            ['NOR']
+                                        .isNotEmpty))
                         ? 'Filtré'
                         : 'Filtrer',
-                light:
-                    collectorsCollectionsListParameters.containsKey('where') &&
-                        collectorsCollectionsListParameters['where']
-                            .containsKey('AND') &&
-                        collectorsCollectionsListParameters['where']['AND']
-                            .isNotEmpty,
+                light: collectorsCollectionsListParameters
+                        .containsKey('where') &&
+                    ((collectorsCollectionsListParameters['where']
+                                .containsKey('AND') &&
+                            collectorsCollectionsListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (collectorsCollectionsListParameters['where']
+                                .containsKey('OR') &&
+                            collectorsCollectionsListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (collectorsCollectionsListParameters['where']
+                                .containsKey('NOR') &&
+                            collectorsCollectionsListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

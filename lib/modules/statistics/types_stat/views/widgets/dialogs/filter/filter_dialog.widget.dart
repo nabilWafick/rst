@@ -10,6 +10,7 @@ import 'package:rst/common/widgets/filter_parameter_tool/logical_operator/logica
 import 'package:rst/modules/definitions/types/models/types.model.dart';
 import 'package:rst/modules/definitions/types/models/structure/structure.model.dart';
 import 'package:rst/modules/definitions/types/providers/types.provider.dart';
+import 'package:rst/modules/statistics/types_stat/providers/types_stat.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class TypeFilterDialog extends StatefulHookConsumerWidget {
@@ -26,10 +27,23 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
   Widget build(BuildContext context) {
     const formCardWidth = 880.0;
     // final typesListParameters = ref.watch(typesListParametersProvider);
-    final typesListFilterParametersAdded =
-        ref.watch(typesListFilterParametersAddedProvider);
+    final typesStatsListFilterParametersAdded =
+        ref.watch(typesStatsListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final typesStatsListParameters =
+        ref.watch(typesStatsListParametersProvider);
+
+    final paramOperator = typesStatsListParameters.containsKey('where')
+        ? typesStatsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : typesStatsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : typesStatsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
@@ -84,7 +98,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                     List<Widget> filterParametersToolsList = [];
 
                     for (MapEntry filterParameter
-                        in typesListFilterParametersAdded.entries) {
+                        in typesStatsListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -94,7 +108,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                               )
                               .toList(),
                           filterParametersAddedProvider:
-                              typesListFilterParametersAddedProvider,
+                              typesStatsListFilterParametersAddedProvider,
                         ),
                       );
                     }
@@ -112,7 +126,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
 
               /// * === TEST ===
               RSTText(
-                text: 'Parameters Added : $typesListFilterParametersAdded',
+                text: 'Parameters Added : $typesStatsListFilterParametersAdded',
                 fontSize: 12.0,
               ),
               const SizedBox(
@@ -136,7 +150,8 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                   onTap: () {
                     // add new filter parameter
                     ref
-                        .read(typesListFilterParametersAddedProvider.notifier)
+                        .read(typesStatsListFilterParametersAddedProvider
+                            .notifier)
                         .update(
                       (state) {
                         state = {
@@ -188,7 +203,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            typesListFilterParametersAdded.isNotEmpty
+            typesStatsListFilterParametersAdded.isNotEmpty
                 ? SizedBox(
                     width: 170.0,
                     child: RSTElevatedButton(
@@ -196,7 +211,8 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(typesListFilterParametersAddedProvider);
+                        ref.invalidate(
+                            typesStatsListFilterParametersAddedProvider);
 
                         // remove the filter parameters
                         ref.read(typesListParametersProvider.notifier).update(
@@ -226,10 +242,10 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: typesListFilterParametersAdded.isNotEmpty
+                text: typesStatsListFilterParametersAdded.isNotEmpty
                     ? 'Valider'
                     : 'Fermer',
-                onPressed: typesListFilterParametersAdded.isNotEmpty
+                onPressed: typesStatsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
                         formKey.currentState!.save();
@@ -242,7 +258,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                           // perform filter Tool parameter
                           for (MapEntry<int,
                                   Map<String, dynamic>> filterToolParameterEntry
-                              in typesListFilterParametersAdded.entries) {
+                              in typesStatsListFilterParametersAdded.entries) {
                             final finalFilterToolParameter =
                                 performFilterParameter(
                               ref: ref,
@@ -253,8 +269,9 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(typesListFilterParametersAddedProvider
-                                    .notifier)
+                                .read(
+                                    typesStatsListFilterParametersAddedProvider
+                                        .notifier)
                                 .update((state) {
                               state = {
                                 ...state,

@@ -28,7 +28,19 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
     final transfersListFilterParametersAdded =
         ref.watch(transfersListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final transfersListParameters = ref.watch(transfersListParametersProvider);
+
+    final paramOperator = transfersListParameters.containsKey('where')
+        ? transfersListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : transfersListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : transfersListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

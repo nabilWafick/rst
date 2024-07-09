@@ -30,7 +30,21 @@ class _CollectorsActivitiesFilterDialogState
     final collectorsActivitiesListFilterParametersAdded =
         ref.watch(collectorsActivitiesListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final collectorsActivitiesListParameters =
+        ref.watch(collectorsActivitiesListParametersProvider);
+
+    final paramOperator = collectorsActivitiesListParameters
+            .containsKey('where')
+        ? collectorsActivitiesListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : collectorsActivitiesListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : collectorsActivitiesListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

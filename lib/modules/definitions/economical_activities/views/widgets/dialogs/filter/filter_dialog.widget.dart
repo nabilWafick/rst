@@ -30,8 +30,21 @@ class _EconomicalActivityFilterDialogState
     final economicalActivitiesListFilterParametersAdded =
         ref.watch(economicalActivitiesListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final economicalActivitiesListParameters =
+        ref.watch(economicalActivitiesListParametersProvider);
 
+    final paramOperator = economicalActivitiesListParameters
+            .containsKey('where')
+        ? economicalActivitiesListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : economicalActivitiesListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : economicalActivitiesListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
         vertical: 20.0,

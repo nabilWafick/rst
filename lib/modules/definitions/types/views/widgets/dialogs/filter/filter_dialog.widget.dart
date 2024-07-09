@@ -29,7 +29,19 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
     final typesListFilterParametersAdded =
         ref.watch(typesListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final typesListParameters = ref.watch(typesListParametersProvider);
+
+    final paramOperator = typesListParameters.containsKey('where')
+        ? typesListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : typesListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : typesListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

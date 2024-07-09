@@ -47,13 +47,31 @@ class _SettlementsPageHeaderState extends ConsumerState<SettlementsPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: settlementsListParameters.containsKey('where') &&
-                        settlementsListParameters['where'].containsKey('AND') &&
-                        settlementsListParameters['where']['AND'].isNotEmpty
+                        ((settlementsListParameters['where']
+                                    .containsKey('AND') &&
+                                settlementsListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (settlementsListParameters['where']
+                                    .containsKey('OR') &&
+                                settlementsListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (settlementsListParameters['where']
+                                    .containsKey('NOR') &&
+                                settlementsListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: settlementsListParameters.containsKey('where') &&
-                    settlementsListParameters['where'].containsKey('AND') &&
-                    settlementsListParameters['where']['AND'].isNotEmpty,
+                    ((settlementsListParameters['where'].containsKey('AND') &&
+                            settlementsListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (settlementsListParameters['where'].containsKey('OR') &&
+                            settlementsListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (settlementsListParameters['where']
+                                .containsKey('NOR') &&
+                            settlementsListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

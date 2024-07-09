@@ -104,22 +104,40 @@ class DashboardPage extends HookConsumerWidget {
                         icon: Icons.filter_alt_rounded,
                         text: dashboardCollectorsCollectionsListParameters
                                     .containsKey('where') &&
-                                dashboardCollectorsCollectionsListParameters[
-                                        'where']
-                                    .containsKey('AND') &&
-                                dashboardCollectorsCollectionsListParameters[
-                                        'where']['AND']
-                                    .isNotEmpty
+                                ((dashboardCollectorsCollectionsListParameters['where']
+                                            .containsKey('AND') &&
+                                        dashboardCollectorsCollectionsListParameters['where']
+                                                ['AND']
+                                            .isNotEmpty) ||
+                                    (dashboardCollectorsCollectionsListParameters['where']
+                                            .containsKey('OR') &&
+                                        dashboardCollectorsCollectionsListParameters['where']
+                                                ['OR']
+                                            .isNotEmpty) ||
+                                    (dashboardCollectorsCollectionsListParameters['where']
+                                            .containsKey('NOR') &&
+                                        dashboardCollectorsCollectionsListParameters[
+                                                'where']['NOR']
+                                            .isNotEmpty))
                             ? 'Filtré'
                             : 'Filtrer',
                         light: dashboardCollectorsCollectionsListParameters
                                 .containsKey('where') &&
-                            dashboardCollectorsCollectionsListParameters[
-                                    'where']
-                                .containsKey('AND') &&
-                            dashboardCollectorsCollectionsListParameters[
-                                    'where']['AND']
-                                .isNotEmpty,
+                            ((dashboardCollectorsCollectionsListParameters['where']
+                                        .containsKey('AND') &&
+                                    dashboardCollectorsCollectionsListParameters['where']
+                                            ['AND']
+                                        .isNotEmpty) ||
+                                (dashboardCollectorsCollectionsListParameters['where']
+                                        .containsKey('OR') &&
+                                    dashboardCollectorsCollectionsListParameters['where']
+                                            ['OR']
+                                        .isNotEmpty) ||
+                                (dashboardCollectorsCollectionsListParameters['where']
+                                        .containsKey('NOR') &&
+                                    dashboardCollectorsCollectionsListParameters[
+                                            'where']['NOR']
+                                        .isNotEmpty)),
                         onTap: () async {
                           final random = Random();
 

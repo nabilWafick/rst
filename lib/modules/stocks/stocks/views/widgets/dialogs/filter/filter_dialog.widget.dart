@@ -29,7 +29,19 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
     final stocksListFilterParametersAdded =
         ref.watch(stocksListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final stocksListParameters = ref.watch(stocksListParametersProvider);
+
+    final paramOperator = stocksListParameters.containsKey('where')
+        ? stocksListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : stocksListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : stocksListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

@@ -53,13 +53,29 @@ class _CustomersPageHeaderState extends ConsumerState<CustomersPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: customersListParameters.containsKey('where') &&
-                        customersListParameters['where'].containsKey('AND') &&
-                        customersListParameters['where']['AND'].isNotEmpty
+                        ((customersListParameters['where'].containsKey('AND') &&
+                                customersListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (customersListParameters['where']
+                                    .containsKey('OR') &&
+                                customersListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (customersListParameters['where']
+                                    .containsKey('NOR') &&
+                                customersListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: customersListParameters.containsKey('where') &&
-                    customersListParameters['where'].containsKey('AND') &&
-                    customersListParameters['where']['AND'].isNotEmpty,
+                    ((customersListParameters['where'].containsKey('AND') &&
+                            customersListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (customersListParameters['where'].containsKey('OR') &&
+                            customersListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (customersListParameters['where'].containsKey('NOR') &&
+                            customersListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

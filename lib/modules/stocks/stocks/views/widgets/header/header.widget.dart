@@ -49,13 +49,24 @@ class _StocksPageHeaderState extends ConsumerState<StocksPageHeader> {
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: stocksListParameters.containsKey('where') &&
-                        stocksListParameters['where'].containsKey('AND') &&
-                        stocksListParameters['where']['AND'].isNotEmpty
+                        ((stocksListParameters['where'].containsKey('AND') &&
+                                stocksListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (stocksListParameters['where'].containsKey('OR') &&
+                                stocksListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (stocksListParameters['where'].containsKey('NOR') &&
+                                stocksListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: stocksListParameters.containsKey('where') &&
-                    stocksListParameters['where'].containsKey('AND') &&
-                    stocksListParameters['where']['AND'].isNotEmpty,
+                    ((stocksListParameters['where'].containsKey('AND') &&
+                            stocksListParameters['where']['AND'].isNotEmpty) ||
+                        (stocksListParameters['where'].containsKey('OR') &&
+                            stocksListParameters['where']['OR'].isNotEmpty) ||
+                        (stocksListParameters['where'].containsKey('NOR') &&
+                            stocksListParameters['where']['NOR'].isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

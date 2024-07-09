@@ -28,8 +28,20 @@ class _LocalityFilterDialogState extends ConsumerState<LocalityFilterDialog> {
     // final localitiesListParameters = ref.watch(localitiesListParametersProvider);
     final localitiesListFilterParametersAdded =
         ref.watch(localitiesListFilterParametersAddedProvider);
+    final localitiesListParameters =
+        ref.watch(localitiesListParametersProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final paramOperator = localitiesListParameters.containsKey('where')
+        ? localitiesListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : localitiesListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : localitiesListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(

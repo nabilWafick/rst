@@ -47,13 +47,29 @@ class _TransfersValidationPageHeaderState
               RSTIconButton(
                 icon: Icons.filter_alt_rounded,
                 text: transfersListParameters.containsKey('where') &&
-                        transfersListParameters['where'].containsKey('AND') &&
-                        transfersListParameters['where']['AND'].isNotEmpty
+                        ((transfersListParameters['where'].containsKey('AND') &&
+                                transfersListParameters['where']['AND']
+                                    .isNotEmpty) ||
+                            (transfersListParameters['where']
+                                    .containsKey('OR') &&
+                                transfersListParameters['where']['OR']
+                                    .isNotEmpty) ||
+                            (transfersListParameters['where']
+                                    .containsKey('NOR') &&
+                                transfersListParameters['where']['NOR']
+                                    .isNotEmpty))
                     ? 'Filtré'
                     : 'Filtrer',
                 light: transfersListParameters.containsKey('where') &&
-                    transfersListParameters['where'].containsKey('AND') &&
-                    transfersListParameters['where']['AND'].isNotEmpty,
+                    ((transfersListParameters['where'].containsKey('AND') &&
+                            transfersListParameters['where']['AND']
+                                .isNotEmpty) ||
+                        (transfersListParameters['where'].containsKey('OR') &&
+                            transfersListParameters['where']['OR']
+                                .isNotEmpty) ||
+                        (transfersListParameters['where'].containsKey('NOR') &&
+                            transfersListParameters['where']['NOR']
+                                .isNotEmpty)),
                 onTap: () async {
                   final random = Random();
                   // reset added filter paramters provider

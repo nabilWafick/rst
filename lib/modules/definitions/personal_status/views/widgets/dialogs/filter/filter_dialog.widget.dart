@@ -29,8 +29,20 @@ class _PersonalStatusFilterDialogState
     final personalStatusListFilterParametersAdded =
         ref.watch(personalStatusListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final personalStatusListParameters =
+        ref.watch(personalStatusListParametersProvider);
 
+    final paramOperator = personalStatusListParameters.containsKey('where')
+        ? personalStatusListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : personalStatusListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : personalStatusListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
         vertical: 20.0,

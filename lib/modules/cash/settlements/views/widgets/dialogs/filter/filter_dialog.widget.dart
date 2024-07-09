@@ -30,7 +30,20 @@ class _SettlementFilterDialogState
     final settlementsListFilterParametersAdded =
         ref.watch(settlementsListFilterParametersAddedProvider);
 
-    final logicalOperator = useState<String>('AND');
+    final settlementsListParameters =
+        ref.watch(settlementsListParametersProvider);
+
+    final paramOperator = settlementsListParameters.containsKey('where')
+        ? settlementsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : settlementsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : settlementsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
+
+    final logicalOperator = useState<String>(paramOperator);
 
     return AlertDialog(
       contentPadding: const EdgeInsetsDirectional.symmetric(
