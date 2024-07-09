@@ -74,14 +74,16 @@ Future<void> generateCollectorsCollectionsPdf({
     final authFirstnames = ref.watch(authFirstnamesProvider);
 
     // Create a new pdf docu,ent
+    await PdfInfos.loadFonts();
     final pdf = pw.Document();
 
     // customise font
-    final Uint8List regularFontData =
-        File('assets/fonts/Poppins/Poppins-Regular.ttf').readAsBytesSync();
+    final regularFontData =
+        await rootBundle.load('assets/fonts/Poppins/Poppins-Regular.ttf');
     final regularFont = pw.Font.ttf(regularFontData.buffer.asByteData());
-    final Uint8List mediumFontData =
-        File('assets/fonts/Poppins/Poppins-Medium.ttf').readAsBytesSync();
+
+    final mediumFontData =
+        await rootBundle.load('assets/fonts/Poppins/Poppins-Medium.ttf');
     final mediumFont = pw.Font.ttf(mediumFontData.buffer.asByteData());
 
     final image = await rootBundle.load(RSTImages.companyLogo);
