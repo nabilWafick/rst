@@ -159,6 +159,8 @@ class _ProductsForecastsPageHeaderState
                   ref.invalidate(productsForecastsListStreamProvider);
                   ref.invalidate(productsForecastsCountProvider);
                   ref.invalidate(specificProductsForecastsCountProvider);
+                  ref.invalidate(productsForecastsTotalAmountProvider);
+                  ref.invalidate(specificProductsForecastsAmountProvider);
                 },
               ),
               SizedBox(

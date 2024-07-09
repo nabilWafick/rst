@@ -419,9 +419,9 @@ class ProductsServices {
           connectTimeout: RSTApiConstants.connectionTimeoutDuration,
           receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
         ),
-      ).post(
+      ).get(
         '$route/stats/forecasts',
-        data: productsForecastsFilter.toMap(),
+        queryParameters: productsForecastsFilter.toMap(),
       );
 
       return ServiceResponse(
@@ -469,7 +469,7 @@ class ProductsServices {
           connectTimeout: RSTApiConstants.connectionTimeoutDuration,
           receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
         ),
-      ).post(
+      ).get(
         '$route/stats/forecasts/count',
       );
 
@@ -503,7 +503,56 @@ class ProductsServices {
     }
   }
 
-  static Future<ServiceResponse> getProductsForecastsCountSpecific({
+  static Future<ServiceResponse> getProductsForecastsTotalAmount() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/stats/forecasts/amount',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getSpecificProductsForecastsCount({
     required ProductsForecastsFilter productsForecastsFilter,
   }) async {
     try {
@@ -520,9 +569,61 @@ class ProductsServices {
           connectTimeout: RSTApiConstants.connectionTimeoutDuration,
           receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
         ),
-      ).post(
+      ).get(
         '$route/stats/forecasts/count/specific',
-        data: productsForecastsFilter.toMap(),
+        queryParameters: productsForecastsFilter.toMap(),
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getSpecificProductsForecastsAmount({
+    required ProductsForecastsFilter productsForecastsFilter,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/stats/forecasts/specific/amount',
+        queryParameters: productsForecastsFilter.toMap(),
       );
 
       return ServiceResponse(

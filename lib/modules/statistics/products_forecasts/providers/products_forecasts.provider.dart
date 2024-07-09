@@ -49,6 +49,21 @@ final productsForecastsCountProvider = FutureProvider<int>((ref) async {
       : 0;
 });
 
+// used for storing all productsForecasts total amount
+final productsForecastsTotalAmountProvider = FutureProvider<num>((ref) async {
+  final controllerResponse =
+      await ProductsController.getProductsForecastsTotalAmount();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as num
+      : 0;
+});
+
 // used for storing fetched productsForecasts (productsForecasts respecting filter options) count
 final specificProductsForecastsCountProvider = FutureProvider<int>((ref) async {
   final productsForecastsFilter = ref.watch(
@@ -56,7 +71,7 @@ final specificProductsForecastsCountProvider = FutureProvider<int>((ref) async {
   );
 
   final controllerResponse =
-      await ProductsController.getProductsForecastsCountSpecific(
+      await ProductsController.getSpecificProductsForecastsCount(
     productsForecastsFilter: productsForecastsFilter,
   );
 
@@ -67,5 +82,27 @@ final specificProductsForecastsCountProvider = FutureProvider<int>((ref) async {
 
   return controllerResponse.data != null
       ? controllerResponse.data.count as int
+      : 0;
+});
+
+// used for storing fetched productsForecasts (productsForecasts respecting filter options) count
+final specificProductsForecastsAmountProvider =
+    FutureProvider<num>((ref) async {
+  final productsForecastsFilter = ref.watch(
+    productsForecastsListParametersProvider,
+  );
+
+  final controllerResponse =
+      await ProductsController.getSpecificProductsForecastsAmount(
+    productsForecastsFilter: productsForecastsFilter,
+  );
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null
+      ? controllerResponse.data.count as num
       : 0;
 });

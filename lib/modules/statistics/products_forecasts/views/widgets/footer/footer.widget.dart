@@ -47,6 +47,33 @@ class ProductsForecastsPageFooter extends ConsumerWidget {
                 ),
               ],
             ),
+            Row(
+              children: [
+                const RSTText(
+                  text: 'Montant: ',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final count =
+                        ref.watch(productsForecastsTotalAmountProvider);
+
+                    return RSTText(
+                      text: count.when(
+                        data: (data) => '${data}f',
+                        error: (error, stackTrace) {
+                          return ' f';
+                        },
+                        loading: () => ' f',
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    );
+                  },
+                ),
+              ],
+            ),
             Consumer(
               builder: (context, ref, child) {
                 final count = ref.watch(specificProductsForecastsCountProvider);
@@ -146,6 +173,33 @@ class ProductsForecastsPageFooter extends ConsumerWidget {
                   loading: () => const SizedBox(),
                 );
               },
+            ),
+            Row(
+              children: [
+                const RSTText(
+                  text: 'Montant: ',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final count =
+                        ref.watch(specificProductsForecastsAmountProvider);
+
+                    return RSTText(
+                      text: count.when(
+                        data: (data) => '${data}f',
+                        error: (error, stackTrace) {
+                          return ' f';
+                        },
+                        loading: () => ' f',
+                      ),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
+                    );
+                  },
+                ),
+              ],
             ),
             Row(
               children: [

@@ -186,11 +186,45 @@ class ProductsController {
     );
   }
 
-  static Future<ControllerResponse> getProductsForecastsCountSpecific({
+  static Future<ControllerResponse> getProductsForecastsTotalAmount() async {
+    final serviceResponse =
+        await ProductsServices.getProductsForecastsTotalAmount();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getSpecificProductsForecastsCount({
     required ProductsForecastsFilter productsForecastsFilter,
   }) async {
     final serviceResponse =
-        await ProductsServices.getProductsForecastsCountSpecific(
+        await ProductsServices.getSpecificProductsForecastsCount(
+      productsForecastsFilter: productsForecastsFilter,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getSpecificProductsForecastsAmount({
+    required ProductsForecastsFilter productsForecastsFilter,
+  }) async {
+    final serviceResponse =
+        await ProductsServices.getSpecificProductsForecastsAmount(
       productsForecastsFilter: productsForecastsFilter,
     );
 
