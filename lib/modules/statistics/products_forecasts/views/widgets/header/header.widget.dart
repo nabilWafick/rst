@@ -25,9 +25,12 @@ class ProductsForecastsPageHeader extends StatefulHookConsumerWidget {
 
 class _ProductsForecastsPageHeaderState
     extends ConsumerState<ProductsForecastsPageHeader> {
+  final scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final authPermissions = ref.watch(authPermissionsProvider);
+
+    final toolsSpacing = MediaQuery.of(context).size.width * 0.01;
 
     // listen to product change
     ref.listen(productSelectionToolProvider('products-forecasts'),
@@ -134,14 +137,18 @@ class _ProductsForecastsPageHeaderState
       });
     });
 
-    return Container(
-      margin: const EdgeInsets.only(
-        bottom: 20.0,
-      ),
-      width: double.maxFinite,
-      child: Column(
-        children: [
-          Row(
+    return Scrollbar(
+      controller: scrollController,
+      child: Container(
+        margin: const EdgeInsets.only(
+          bottom: 20.0,
+        ),
+        width: double.maxFinite,
+        child: SingleChildScrollView(
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RSTIconButton(
@@ -154,11 +161,17 @@ class _ProductsForecastsPageHeaderState
                   ref.invalidate(specificProductsForecastsCountProvider);
                 },
               ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
               const ProductSelectionToolCard(
                 width: 200.0,
                 toolName: 'products-forecasts',
                 roundedStyle: RoundedStyle.full,
                 textLimit: 15,
+              ),
+              SizedBox(
+                width: toolsSpacing,
               ),
               const CustomerSelectionToolCard(
                 width: 200.0,
@@ -166,11 +179,17 @@ class _ProductsForecastsPageHeaderState
                 roundedStyle: RoundedStyle.full,
                 textLimit: 15,
               ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
               const CollectorSelectionToolCard(
                 width: 200.0,
                 toolName: 'products-forecasts',
                 roundedStyle: RoundedStyle.full,
                 textLimit: 15,
+              ),
+              SizedBox(
+                width: toolsSpacing,
               ),
               const TypeSelectionToolCard(
                 width: 150.0,
@@ -178,11 +197,17 @@ class _ProductsForecastsPageHeaderState
                 roundedStyle: RoundedStyle.full,
                 textLimit: 15,
               ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
               const CardSelectionToolCard(
                 width: 200.0,
                 toolName: 'products-forecasts',
                 roundedStyle: RoundedStyle.full,
                 textLimit: 15,
+              ),
+              SizedBox(
+                width: toolsSpacing,
               ),
               SizedBox(
                 width: 150.0,
@@ -219,6 +244,9 @@ class _ProductsForecastsPageHeaderState
                   },
                 ),
               ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
               authPermissions![PermissionsValues.admin] ||
                       authPermissions[PermissionsValues.printProductsForecasts]
                   ? RSTIconButton(
@@ -233,6 +261,9 @@ class _ProductsForecastsPageHeaderState
                       },
                     )
                   : const SizedBox(),
+              SizedBox(
+                width: toolsSpacing,
+              ),
               authPermissions[PermissionsValues.admin] ||
                       authPermissions[PermissionsValues.printProductsForecasts]
                   ? RSTIconButton(
@@ -249,7 +280,7 @@ class _ProductsForecastsPageHeaderState
                   : const SizedBox(),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

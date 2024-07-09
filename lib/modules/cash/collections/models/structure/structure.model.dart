@@ -54,8 +54,8 @@ class CollectionStructure {
     front: 'Agent',
     back: 'agent',
     type: String,
-    isNullable: true,
-    isRelation: false,
+    isNullable: false,
+    isRelation: true,
     fields: AgentStructure.fields
         .where(
           (field) => field.back != 'id',

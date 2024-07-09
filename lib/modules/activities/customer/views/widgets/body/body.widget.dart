@@ -100,7 +100,7 @@ class _CustomerActivitiesPageBodyState
                       width: 20.0,
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * .65,
+                      width: MediaQuery.of(context).size.width * .55,
                       height: 40.0,
                       child: HorizontalScroller(
                         children: customerActivitiesSelectedCustomer == null ||

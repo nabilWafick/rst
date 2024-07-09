@@ -374,7 +374,8 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
                     width: 300.0,
                     height: 30.0,
                     child: RSTText(
-                      text: format.format(settlement.createdAt),
+                      text:
+                          '${format.format(settlement.createdAt)} ${FunctionsController.getFormatedTime(dateTime: settlement.createdAt)}',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),
@@ -384,7 +385,8 @@ class _SettlementsPageBodyState extends ConsumerState<SettlementsPageBody> {
                     width: 300.0,
                     height: 30.0,
                     child: RSTText(
-                      text: format.format(settlement.updatedAt),
+                      text:
+                          '${format.format(settlement.updatedAt)} ${FunctionsController.getFormatedTime(dateTime: settlement.updatedAt)}',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),

@@ -10,12 +10,14 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/customers/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/customers/providers/customers.provider.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/customers.widget.dart';
 import 'package:rst/modules/definitions/customers/views/widgets/simple_view/simple_view.widget.dart';
 import 'package:rst/modules/definitions/cards/models/cards.model.dart';
+import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class CustomersPageBody extends StatefulHookConsumerWidget {
@@ -36,6 +38,7 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
   @override
   Widget build(BuildContext context) {
     final customersList = ref.watch(customersListStreamProvider);
+    final authPermissions = ref.watch(authPermissionsProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -253,100 +256,109 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                               );
                             },
                           ),
-                          RSTToolTipOption(
-                            icon: material.Icons.edit,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Modifier',
-                            onTap: () async {
-                              // invalidate cardsTypesInputsAddedProvider
-                              ref.invalidate(
-                                  customerCardsInputsAddedVisibilityProvider);
+                          authPermissions![PermissionsValues.admin] ||
+                                  authPermissions[
+                                      PermissionsValues.updateCustomer]
+                              ? RSTToolTipOption(
+                                  icon: material.Icons.edit,
+                                  iconColor: RSTColors.primaryColor,
+                                  name: 'Modifier',
+                                  onTap: () async {
+                                    // invalidate cardsTypesInputsAddedProvider
+                                    ref.invalidate(
+                                        customerCardsInputsAddedVisibilityProvider);
 
-                              // fetch all cards of customer cards
-                              List<Card> customerCards = [];
-                              try {
-                                // get customer cards number
-                                // because the number can be knowed without
-                                // asking the database
-                                final customerCardsNumberData =
-                                    await CardsController.countSpecific(
-                                  listParameters: {
-                                    'skip':
-                                        0, // This value is override in backend
-                                    'take':
-                                        100, // This value is override in backend
-                                    'where': {
-                                      'customer': {
-                                        'id': customer.id!.toInt(),
-                                      },
-                                    },
-                                  },
-                                );
-
-                                // fetch the cards
-                                final customerCardsData =
-                                    await CardsController.getMany(
+                                    // fetch all cards of customer cards
+                                    List<Card> customerCards = [];
+                                    try {
+                                      // get customer cards number
+                                      // because the number can be knowed without
+                                      // asking the database
+                                      final customerCardsNumberData =
+                                          await CardsController.countSpecific(
                                         listParameters: {
-                                      'skip': 0,
-                                      'take':
-                                          customerCardsNumberData.data.count,
-                                      'where': {
-                                        'customer': {
-                                          'id': customer.id!.toInt(),
+                                          'skip':
+                                              0, // This value is override in backend
+                                          'take':
+                                              100, // This value is override in backend
+                                          'where': {
+                                            'customer': {
+                                              'id': customer.id!.toInt(),
+                                            },
+                                          },
                                         },
-                                      },
-                                    });
+                                      );
 
-                                // store the cards
-                                customerCards = List<Card>.from(
-                                  customerCardsData.data,
-                                );
-                              } catch (e) {
-                                debugPrint(e.toString());
-                              }
+                                      // fetch the cards
+                                      final customerCardsData =
+                                          await CardsController.getMany(
+                                              listParameters: {
+                                            'skip': 0,
+                                            'take': customerCardsNumberData
+                                                .data.count,
+                                            'where': {
+                                              'customer': {
+                                                'id': customer.id!.toInt(),
+                                              },
+                                            },
+                                          });
 
-                              // update customer data
-                              customer.cards = customerCards;
+                                      // store the cards
+                                      customerCards = List<Card>.from(
+                                        customerCardsData.data,
+                                      );
+                                    } catch (e) {
+                                      debugPrint(e.toString());
+                                    }
 
-                              // add the cards inputs
-                              for (Card card in customerCards) {
-                                ref
-                                    .read(
-                                        customerCardsInputsAddedVisibilityProvider
-                                            .notifier)
-                                    .update((state) {
-                                  state = {
-                                    ...state,
-                                    card.id.toString(): true,
-                                  };
+                                    // update customer data
+                                    customer.cards = customerCards;
 
-                                  return state;
-                                });
-                              }
+                                    // add the cards inputs
+                                    for (Card card in customerCards) {
+                                      ref
+                                          .read(
+                                              customerCardsInputsAddedVisibilityProvider
+                                                  .notifier)
+                                          .update((state) {
+                                        state = {
+                                          ...state,
+                                          card.id.toString(): true,
+                                        };
 
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog: CustomerUpdateForm(
-                                  customer: customer,
-                                ),
-                              );
-                            },
-                          ),
-                          RSTToolTipOption(
-                            icon: material.Icons.delete,
-                            iconColor: RSTColors.primaryColor,
-                            name: 'Supprimer',
-                            onTap: () {
-                              FunctionsController.showAlertDialog(
-                                context: context,
-                                alertDialog: CustomerDeletionConfirmationDialog(
-                                  customer: customer,
-                                  confirmToDelete:
-                                      CustomersCRUDFunctions.delete,
-                                ),
-                              );
-                            },
-                          ),
+                                        return state;
+                                      });
+                                    }
+
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog: CustomerUpdateForm(
+                                        customer: customer,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : null,
+                          authPermissions[PermissionsValues.admin] ||
+                                  authPermissions[
+                                      PermissionsValues.deleteCustomer]
+                              ? RSTToolTipOption(
+                                  icon: material.Icons.delete,
+                                  iconColor: RSTColors.primaryColor,
+                                  name: 'Supprimer',
+                                  onTap: () {
+                                    FunctionsController.showAlertDialog(
+                                      context: context,
+                                      alertDialog:
+                                          CustomerDeletionConfirmationDialog(
+                                        customer: customer,
+                                        confirmToDelete:
+                                            CustomersCRUDFunctions.delete,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : null,
                         ],
                       ),
                     ),

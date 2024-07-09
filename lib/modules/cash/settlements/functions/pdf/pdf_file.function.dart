@@ -152,6 +152,20 @@ Future<void> generateSettlementsPdf({
                   horizontal: 5.0,
                 ),
                 child: pw.Text(
+                  'Date Collecte',
+                  style: pw.TextStyle(
+                    font: mediumFont,
+                    fontSize: 7,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+              ),
+              pw.Container(
+                margin: const pw.EdgeInsets.symmetric(
+                  vertical: 5.0,
+                  horizontal: 5.0,
+                ),
+                child: pw.Text(
                   'Carte',
                   style: pw.TextStyle(
                     font: mediumFont,
@@ -263,6 +277,19 @@ Future<void> generateSettlementsPdf({
           for (int i = 0; i < settlements.length; ++i)
             pw.TableRow(
               children: [
+                pw.Container(
+                  margin: const pw.EdgeInsets.symmetric(
+                    vertical: 5.0,
+                    horizontal: 5.0,
+                  ),
+                  child: pw.Text(
+                    format.format(settlements[i].collection!.collectedAt),
+                    style: pw.TextStyle(
+                      font: regularFont,
+                      fontSize: 7,
+                    ),
+                  ),
+                ),
                 pw.Container(
                   margin: const pw.EdgeInsets.symmetric(
                     vertical: 5.0,

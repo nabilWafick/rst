@@ -319,7 +319,7 @@ Future<void> generateProductsPdf({
         FeedbackDialogResponse(
       result: null,
       error: 'PDF',
-      message: 'Une erreur s\'est produite',
+      message: 'Une erreur s\'est produite. \n $error',
     );
 
     // show Export button

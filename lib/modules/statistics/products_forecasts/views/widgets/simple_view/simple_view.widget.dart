@@ -54,7 +54,7 @@ class ProductForecastSimpleView extends ConsumerWidget {
             children: [
               Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
                     children: productForecastPerCollectorList.map(

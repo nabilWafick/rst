@@ -327,17 +327,17 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         },
       ),
       SidebarOptionModel(
-        icon: Icons.swap_vert_outlined,
+        icon: Icons.swap_vert_rounded,
         name: 'Transferts',
         subOptions: [
           SidebarSubOptionModel(
             index: 19,
-            icon: Icons.swap_vert_outlined,
+            icon: Icons.swap_vert_rounded,
             name: 'Entre Cartes',
           ),
           SidebarSubOptionModel(
             index: 20,
-            icon: Icons.swap_vert_outlined,
+            icon: Icons.swap_vert_rounded,
             name: 'Entre Comptes',
           ),
           SidebarSubOptionModel(

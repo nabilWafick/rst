@@ -305,7 +305,8 @@ class _CollectorsActivitiesPageBodyState
                           width: 300.0,
                           height: 30.0,
                           child: RSTText(
-                            text: format.format(collectorActivity.createdAt),
+                            text:
+                                '${format.format(collectorActivity.createdAt)} ${FunctionsController.getFormatedTime(dateTime: collectorActivity.createdAt)}',
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,
                           ),
@@ -315,7 +316,8 @@ class _CollectorsActivitiesPageBodyState
                           width: 300.0,
                           height: 30.0,
                           child: RSTText(
-                            text: format.format(collectorActivity.updatedAt),
+                            text:
+                                '${format.format(collectorActivity.updatedAt)} ${FunctionsController.getFormatedTime(dateTime: collectorActivity.createdAt)}',
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,
                           ),

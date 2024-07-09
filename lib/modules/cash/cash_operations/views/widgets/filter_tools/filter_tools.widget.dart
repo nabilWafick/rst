@@ -24,6 +24,7 @@ class CashOperationsFilterTools extends StatefulHookConsumerWidget {
 
 class _CashOperationsFilterToolsState
     extends ConsumerState<CashOperationsFilterTools> {
+  final scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final cashOperationsSelectedCustomerCards =
@@ -60,103 +61,133 @@ class _CashOperationsFilterToolsState
 
     final authPermissions = ref.watch(authPermissionsProvider);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          RSTIconButton(
-            icon: Icons.refresh,
-            text: 'Rafraichir',
-            onTap: () {
-              // invalidate collector tool provider
-              ref.invalidate(collectorSelectionToolProvider('cash-operations'));
-            },
-          ),
-          const CustomerSelectionToolCard(
-            toolName: 'cash-operations',
-            width: 280.0,
-            roundedStyle: RoundedStyle.full,
-            textLimit: 25,
-          ),
-          const CollectorSelectionToolCard(
-            toolName: 'cash-operations',
-            width: 280.0,
-            roundedStyle: RoundedStyle.full,
-            textLimit: 25,
-          ),
-          const CardSelectionToolCard(
-            toolName: 'cash-operations',
-            width: 280.0,
-            roundedStyle: RoundedStyle.full,
-            textLimit: 25,
-          ),
-          cashOperationsSelectedCustomerCards.length > 1
-              ? authPermissions![PermissionsValues.admin] ||
-                      authPermissions[PermissionsValues.addSettlement]
-                  ? RSTIconButton(
-                      icon: Icons.add_circle,
-                      text: 'Régler plusieurs cartes',
-                      onTap: () {
-                        // reset collection date provider
-                        ref
-                            .read(settlementCollectionDateProvider.notifier)
-                            .state = null;
+    final toolsSpacing = MediaQuery.of(context).size.width * 0.01;
 
-                        // reset collection amount provider
-                        ref
-                            .read(
-                                settlementCollectorCollectionProvider.notifier)
-                            .state = null;
+    return Scrollbar(
+      controller: scrollController,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 15.0),
+        child: SingleChildScrollView(
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RSTIconButton(
+                icon: Icons.refresh,
+                text: 'Rafraichir',
+                onTap: () {
+                  // invalidate collector tool provider
+                  ref.invalidate(
+                      collectorSelectionToolProvider('cash-operations'));
+                },
+              ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
+              const CustomerSelectionToolCard(
+                toolName: 'cash-operations',
+                width: 280.0,
+                roundedStyle: RoundedStyle.full,
+                textLimit: 25,
+              ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
+              const CollectorSelectionToolCard(
+                toolName: 'cash-operations',
+                width: 280.0,
+                roundedStyle: RoundedStyle.full,
+                textLimit: 25,
+              ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
+              const CardSelectionToolCard(
+                toolName: 'cash-operations',
+                width: 280.0,
+                roundedStyle: RoundedStyle.full,
+                textLimit: 25,
+              ),
+              SizedBox(
+                width: toolsSpacing,
+              ),
+              cashOperationsSelectedCustomerCards.length > 1
+                  ? authPermissions![PermissionsValues.admin] ||
+                          authPermissions[PermissionsValues.addSettlement]
+                      ? RSTIconButton(
+                          icon: Icons.add_circle,
+                          text: 'Régler plusieurs cartes',
+                          onTap: () {
+                            // reset collection date provider
+                            ref
+                                .read(settlementCollectionDateProvider.notifier)
+                                .state = null;
 
-                        // reset added inputs provider
-                        ref
-                            .read(
-                              multipleSettlementsAddedInputsVisibilityProvider
-                                  .notifier,
-                            )
-                            .state = {};
+                            // reset c
 
-                        // reset selected customer cards provider
-                        ref
-                            .read(
-                              multipleSettlementsSelectedCustomerCardsProvider
-                                  .notifier,
-                            )
-                            .state = {};
+                            ref
+                                .read(settlementCollectorCollectionProvider
+                                    .notifier)
+                                .state = null;
 
-                        FunctionsController.showAlertDialog(
-                          context: context,
-                          alertDialog: const MultipleSettlementsAdditionForm(),
-                        );
-                      },
+                            // reset added inputs provider
+                            ref
+                                .read(
+                                  multipleSettlementsAddedInputsVisibilityProvider
+                                      .notifier,
+                                )
+                                .state = {};
+
+                            // reset selected customer cards provider
+                            ref
+                                .read(
+                                  multipleSettlementsSelectedCustomerCardsProvider
+                                      .notifier,
+                                )
+                                .state = {};
+
+                            FunctionsController.showAlertDialog(
+                              context: context,
+                              alertDialog:
+                                  const MultipleSettlementsAdditionForm(),
+                            );
+                          },
+                        )
+                      : const SizedBox()
+                  : const SizedBox(),
+              SizedBox(
+                width: toolsSpacing,
+              ),
+              authPermissions![PermissionsValues.admin] ||
+                      authPermissions[
+                          PermissionsValues.showAllCustomerCardsCash]
+                  ? SizedBox(
+                      width: 220.0,
+                      child: CheckboxListTile(
+                        value: ref.watch(
+                          cashOperationsShowAllCustomerCardsProvider,
+                        ),
+                        title: const RSTText(
+                          text: 'Toutes les cartes',
+                          fontSize: 12,
+                        ),
+                        hoverColor: Colors.transparent,
+                        onChanged: (value) {
+                          ref
+                              .read(
+                                cashOperationsShowAllCustomerCardsProvider
+                                    .notifier,
+                              )
+                              .state = value!;
+                        },
+                      ),
                     )
-                  : const SizedBox()
-              : const SizedBox(),
-          authPermissions![PermissionsValues.admin] ||
-                  authPermissions[PermissionsValues.showAllCustomerCardsCash]
-              ? SizedBox(
-                  width: 220.0,
-                  child: CheckboxListTile(
-                    value: ref.watch(
-                      cashOperationsShowAllCustomerCardsProvider,
-                    ),
-                    title: const RSTText(
-                      text: 'Toutes les cartes',
-                      fontSize: 12,
-                    ),
-                    hoverColor: Colors.transparent,
-                    onChanged: (value) {
-                      ref
-                          .read(
-                            cashOperationsShowAllCustomerCardsProvider.notifier,
-                          )
-                          .state = value!;
-                    },
-                  ),
-                )
-              : const SizedBox(),
-        ],
+                  : const SizedBox(),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -308,25 +308,14 @@ class _CashOperationsSettlementsCardBodyState
                       ],
                     ),
                   ),
-                   Container(
-                    alignment: Alignment.centerLeft,
-                    width: 300.0,
-                    height: 30.0,
-                    child: RSTText(
-                      text: settlement.collection!=null ? format.format(settlement.collection!.collectedAt) : '',
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     width: 300.0,
                     height: 30.0,
                     child: RSTText(
-                      text: FunctionsController.truncateText(
-                        text: settlement.card.label,
-                        maxLength: 35,
-                      ),
+                      text: settlement.collection != null
+                          ? format.format(settlement.collection!.collectedAt)
+                          : '',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),
@@ -412,7 +401,8 @@ class _CashOperationsSettlementsCardBodyState
                     width: 300.0,
                     height: 30.0,
                     child: RSTText(
-                      text: format.format(settlement.createdAt),
+                      text:
+                          '${format.format(settlement.createdAt)} ${FunctionsController.getFormatedTime(dateTime: settlement.createdAt)}',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),
@@ -422,7 +412,8 @@ class _CashOperationsSettlementsCardBodyState
                     width: 300.0,
                     height: 30.0,
                     child: RSTText(
-                      text: format.format(settlement.updatedAt),
+                      text:
+                          '${format.format(settlement.updatedAt)} ${FunctionsController.getFormatedTime(dateTime: settlement.updatedAt)}',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),

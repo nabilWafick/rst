@@ -48,14 +48,17 @@ class CardStructure {
     type: String,
     isNullable: false,
     isRelation: true,
-    fields: CustomerStructure.fields,
+    fields: CustomerStructure.fields.where(
+          (field) => field.back != 'id',
+        )
+        .toList(),
   );
 
   static Field repaidAt = Field(
     front: 'Date de Remboursement',
     back: 'repaidAt',
     type: DateTime,
-    isNullable: false,
+    isNullable: true,
     isRelation: false,
   );
 
@@ -63,7 +66,7 @@ class CardStructure {
     front: 'Date de Satisfaction',
     back: 'satisfiedAt',
     type: DateTime,
-    isNullable: false,
+    isNullable: true,
     isRelation: false,
   );
 
@@ -71,7 +74,7 @@ class CardStructure {
     front: 'Date de Transfert',
     back: 'transferredAt',
     type: DateTime,
-    isNullable: false,
+    isNullable: true,
     isRelation: false,
   );
 

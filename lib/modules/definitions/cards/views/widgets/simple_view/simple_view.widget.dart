@@ -52,7 +52,7 @@ class CardSimpleView extends ConsumerWidget {
         width: formCardWidth,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               margin: const EdgeInsetsDirectional.symmetric(
