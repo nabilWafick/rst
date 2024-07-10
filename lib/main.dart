@@ -29,12 +29,50 @@ Future<void> main() async {
   );
 }
 
-class RSTApp extends ConsumerWidget {
+class AppLifecycleObserver extends WidgetsBindingObserver {
+  final VoidCallback onAppClosed;
+
+  AppLifecycleObserver({required this.onAppClosed});
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      onAppClosed();
+    }
+  }
+}
+
+class RSTApp extends StatefulHookConsumerWidget {
   const RSTApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _RSTAppState();
+}
+
+class _RSTAppState extends ConsumerState<RSTApp> {
+  late AppLifecycleObserver _observer;
+
+  @override
+  void initState() {
+    super.initState();
+    _observer = AppLifecycleObserver(
+      onAppClosed: _handleAppClosed,
+    );
+    WidgetsBinding.instance.addObserver(_observer);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(_observer);
+    super.dispose();
+  }
+
+  _handleAppClosed() async {
+    await AuthFunctions.disconnectOnInit();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [

@@ -16,8 +16,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
 
-    debugPrint('HomePage initState called');
-
     // instanciate webSocketService
     // _webSocketService = WebSocketService(ref: ref);
 
