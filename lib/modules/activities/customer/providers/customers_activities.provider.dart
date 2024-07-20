@@ -61,10 +61,12 @@ final customerActivitiesSelectedCardSettlementsListParametersProvider =
         },
       ]
     },
-    'ordery': [
+    'orderBy': [
       {
-        'createdAt': 'asc',
-      },
+        'collection': {
+          'collectedAt': 'asc',
+        },
+      }
     ]
   };
 });

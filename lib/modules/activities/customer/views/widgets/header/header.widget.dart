@@ -88,11 +88,11 @@ class _CustomerActivitiesPageHeaderState
                                         .toInt(),
                                   },
                                 },
-                                'ordery': [
-                                  {
-                                    'createdAt': 'asc',
+                                'orderBy': {
+                                  'collection': {
+                                    'collectedAt': 'asc',
                                   },
-                                ]
+                                }
                               },
                             );
 
@@ -112,11 +112,11 @@ class _CustomerActivitiesPageHeaderState
                                         .toInt(),
                                   },
                                 },
-                                'ordery': [
-                                  {
-                                    'createdAt': 'asc',
+                                'orderBy': {
+                                  'collection': {
+                                    'collectedAt': 'asc',
                                   },
-                                ]
+                                }
                               },
                               showPrintButton: showPrintButton,
                               popAfterPrint: false,
