@@ -17,7 +17,12 @@ final cardSettlementsOverviewListParametersProvider =
           'cardId': cashOperationsSelectedCustomerCard?.id ?? 0,
         },
       ]
-    }
+    },
+    'ordery': [
+      {
+        'createdAt': 'asc',
+      },
+    ]
   };
 });
 

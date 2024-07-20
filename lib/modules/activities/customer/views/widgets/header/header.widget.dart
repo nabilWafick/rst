@@ -88,6 +88,11 @@ class _CustomerActivitiesPageHeaderState
                                         .toInt(),
                                   },
                                 },
+                                'ordery': [
+                                  {
+                                    'createdAt': 'asc',
+                                  },
+                                ]
                               },
                             );
 
@@ -107,6 +112,11 @@ class _CustomerActivitiesPageHeaderState
                                         .toInt(),
                                   },
                                 },
+                                'ordery': [
+                                  {
+                                    'createdAt': 'asc',
+                                  },
+                                ]
                               },
                               showPrintButton: showPrintButton,
                               popAfterPrint: false,

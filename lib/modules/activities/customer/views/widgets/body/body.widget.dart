@@ -89,44 +89,48 @@ class _CustomerActivitiesPageBodyState
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const RSTText(
-                      text: 'Cartes: ',
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    const SizedBox(
-                      width: 20.0,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .55,
-                      height: 40.0,
-                      child: HorizontalScroller(
-                        children: customerActivitiesSelectedCustomer == null ||
-                                customerActivitiesSelectedCustomerCard == null
-                            ? []
-                            : customerActivitiesSelectedCustomerCards
-                                .where(
-                                  (customerCard) {
-                                    return customerActivitiesShowAllCustomerCards
-                                        ? customerCard == customerCard
-                                        : customerCard.satisfiedAt == null &&
-                                            customerCard.repaidAt == null &&
-                                            customerCard.transferredAt == null;
-                                  },
-                                )
-                                .map(
-                                  (customerCard) => CardBox(
-                                    card: customerCard,
-                                    selectedCustomerCardProvider:
-                                        customerActivitiesSelectedCustomerCardProvider,
-                                  ),
-                                )
-                                .toList(),
+                SizedBox(
+                  child: Row(
+                    children: [
+                      const RSTText(
+                        text: 'Cartes: ',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w600,
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        width: 20.0,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .55,
+                        height: 40.0,
+                        child: HorizontalScroller(
+                          children: customerActivitiesSelectedCustomer ==
+                                      null ||
+                                  customerActivitiesSelectedCustomerCard == null
+                              ? []
+                              : customerActivitiesSelectedCustomerCards
+                                  .where(
+                                    (customerCard) {
+                                      return customerActivitiesShowAllCustomerCards
+                                          ? customerCard == customerCard
+                                          : customerCard.satisfiedAt == null &&
+                                              customerCard.repaidAt == null &&
+                                              customerCard.transferredAt ==
+                                                  null;
+                                    },
+                                  )
+                                  .map(
+                                    (customerCard) => CardBox(
+                                      card: customerCard,
+                                      selectedCustomerCardProvider:
+                                          customerActivitiesSelectedCustomerCardProvider,
+                                    ),
+                                  )
+                                  .toList(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 authPermissions![PermissionsValues.admin] ||
                         authPermissions[PermissionsValues

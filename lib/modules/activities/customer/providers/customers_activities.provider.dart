@@ -60,7 +60,12 @@ final customerActivitiesSelectedCardSettlementsListParametersProvider =
           'cardId': 0,
         },
       ]
-    }
+    },
+    'ordery': [
+      {
+        'createdAt': 'asc',
+      },
+    ]
   };
 });
 
