@@ -288,6 +288,35 @@ class AuthFunctions {
     }
   }
 
+  static Future<void> disconnectAgent({
+    required WidgetRef ref,
+    required BuildContext context,
+    required String agentEmail,
+  }) async {
+    try {
+      // launch agent disconnection
+      final agentDisconnectionResponse = await AuthController.disconnect(
+        userEmail: agentEmail,
+      );
+
+      // store response
+      ref.read(feedbackDialogResponseProvider.notifier).state =
+          FeedbackDialogResponse(
+        result: agentDisconnectionResponse.result?.fr,
+        error: agentDisconnectionResponse.error?.fr,
+        message: 'L\'agent a été déconnecté avec succès',
+      );
+
+      // show response
+      FunctionsController.showAlertDialog(
+        context: context,
+        alertDialog: const FeedbackDialog(),
+      );
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
   static void invalidateHomePageProviders({
     required dynamic ref,
   }) {

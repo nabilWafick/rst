@@ -7,6 +7,7 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip.widget.dart';
 import 'package:rst/common/widgets/tooltip/tooltip_option/tooltip_option.model.dart';
+import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/agents/functions/crud/crud.function.dart';
 import 'package:rst/modules/definitions/agents/providers/agents.provider.dart';
 import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
@@ -179,7 +180,22 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
                             );
                           },
                         ),
-                        authPermissions![PermissionsValues.admin] ||
+                        (authPermissions![PermissionsValues.admin] ||
+                                authPermissions[PermissionsValues.updateAgent])
+                            ? RSTToolTipOption(
+                                icon: Icons.edit,
+                                iconColor: RSTColors.primaryColor,
+                                name: 'Déconnectez',
+                                onTap: () async {
+                                  AuthFunctions.disconnectAgent(
+                                    ref: ref,
+                                    context: context,
+                                    agentEmail: agent.email,
+                                  );
+                                },
+                              )
+                            : null,
+                        authPermissions[PermissionsValues.admin] ||
                                 authPermissions[PermissionsValues.updateAgent]
                             ? RSTToolTipOption(
                                 icon: Icons.edit,
