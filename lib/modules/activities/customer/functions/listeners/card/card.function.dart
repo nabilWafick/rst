@@ -34,7 +34,14 @@ onCustomerActivitiesCustomerCardChange({
                 'cardId': newCustomerCard.id,
               },
             ],
-          }
+          },
+          'orderBy': [
+            {
+              'collection': {
+                'collectedAt': 'asc',
+              },
+            }
+          ]
         };
       } catch (e) {
         debugPrint(e.toString());

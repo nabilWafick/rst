@@ -18,11 +18,11 @@ final cardSettlementsOverviewListParametersProvider =
         },
       ]
     },
-    'ordery': [
-      {
-        'createdAt': 'asc',
+    'orderBy': {
+      'collection': {
+        'collectedAt': 'asc',
       },
-    ]
+    },
   };
 });
 

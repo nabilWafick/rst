@@ -47,7 +47,7 @@ class _CustomerActivitiesSettlementsCardBodyState
           ),
           child: HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 732,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 1064,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
