@@ -185,7 +185,7 @@ class _AgentsPageBodyState extends ConsumerState<AgentsPageBody> {
                             ? RSTToolTipOption(
                                 icon: Icons.edit,
                                 iconColor: RSTColors.primaryColor,
-                                name: 'Déconnectez',
+                                name: 'Déconnecter',
                                 onTap: () async {
                                   AuthFunctions.disconnectAgent(
                                     ref: ref,
