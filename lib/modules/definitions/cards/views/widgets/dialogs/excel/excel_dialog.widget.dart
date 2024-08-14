@@ -132,6 +132,7 @@ class CardExcelFileGenerationDialog extends HookConsumerWidget {
                             listParameters: {
                               'skip': 0,
                               'take': cardsCount.data.count,
+                              'where': cardsListParameters['where'],
                             },
                             showExportButton: showExportButton,
                           );

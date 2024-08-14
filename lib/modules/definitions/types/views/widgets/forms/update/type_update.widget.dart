@@ -184,8 +184,11 @@ class _TypeUpdateFormState extends ConsumerState<TypeUpdateForm> {
                     }
                   }
 
-                  return Column(
-                    children: typeProductsInputs,
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: typeProductsInputs,
+                    ),
                   );
                 },
               )

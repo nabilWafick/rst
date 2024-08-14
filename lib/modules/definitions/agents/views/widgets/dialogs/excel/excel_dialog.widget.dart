@@ -132,6 +132,7 @@ class AgentExcelFileGenerationDialog extends HookConsumerWidget {
                             listParameters: {
                               'skip': 0,
                               'take': agentsCount.data.count,
+                              'where': agentsListParameters['where'],
                             },
                             showExportButton: showExportButton,
                           );

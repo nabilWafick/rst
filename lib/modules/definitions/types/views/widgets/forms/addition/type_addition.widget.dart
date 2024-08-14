@@ -149,8 +149,11 @@ class _TypeAdditionFormState extends ConsumerState<TypeAdditionForm> {
                     }
                   }
 
-                  return Column(
-                    children: typeProductsInputs,
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: typeProductsInputs,
+                    ),
                   );
                 },
               )

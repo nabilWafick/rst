@@ -91,7 +91,7 @@ class _TransfersBCCPageBodyState extends ConsumerState<TransfersBCCPageBody> {
             text: enableTransferButton.value
                 ? "Transférer"
                 : "Veuillez patienter",
-            onPressed: !authPermissions![PermissionsValues.admin] ||
+            onPressed: !authPermissions![PermissionsValues.admin] &&
                     !authPermissions[PermissionsValues.addTransfer]
                 ? () {}
                 : () async {
