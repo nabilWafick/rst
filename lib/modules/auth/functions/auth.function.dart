@@ -22,6 +22,7 @@ import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provi
 import 'package:rst/modules/cash/collections/providers/collections.provider.dart';
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/dashboard/providers/dashboard.provider.dart';
+import 'package:rst/modules/definitions/agents/models/agent/agent.model.dart';
 import 'package:rst/modules/definitions/agents/providers/agents.provider.dart';
 import 'package:rst/modules/definitions/cards/providers/cards.provider.dart';
 import 'package:rst/modules/definitions/categories/providers/categories.provider.dart';
@@ -269,6 +270,39 @@ class AuthFunctions {
     }
   }
 
+  static Future<void> disconnectAgent({
+    required WidgetRef ref,
+    required BuildContext context,
+    required Agent agent,
+    required ValueNotifier<bool> showDisconnectionButton,
+  }) async {
+    try {
+      // hide disconnection button
+      showDisconnectionButton.value = false;
+
+      // launch agent disconnection
+      final userDisconnectionResponse = await AuthController.disconnect(
+        userEmail: agent.email,
+      );
+
+      // store response
+      ref.read(feedbackDialogResponseProvider.notifier).state =
+          FeedbackDialogResponse(
+        result: 'L\'agent a été déconnecté avec succès',
+        error: userDisconnectionResponse.error?.fr,
+        message: userDisconnectionResponse.message!.fr,
+      );
+
+      // show response
+      FunctionsController.showAlertDialog(
+        context: context,
+        alertDialog: const FeedbackDialog(),
+      );
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
   static Future<void> disconnectOnInit() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -283,35 +317,6 @@ class AuthFunctions {
         // remove stored data
         removeDataStored();
       }
-    } catch (error) {
-      debugPrint(error.toString());
-    }
-  }
-
-  static Future<void> disconnectAgent({
-    required WidgetRef ref,
-    required BuildContext context,
-    required String agentEmail,
-  }) async {
-    try {
-      // launch agent disconnection
-      final agentDisconnectionResponse = await AuthController.disconnect(
-        userEmail: agentEmail,
-      );
-
-      // store response
-      ref.read(feedbackDialogResponseProvider.notifier).state =
-          FeedbackDialogResponse(
-        result: agentDisconnectionResponse.result?.fr,
-        error: agentDisconnectionResponse.error?.fr,
-        message: 'L\'agent a été déconnecté avec succès',
-      );
-
-      // show response
-      FunctionsController.showAlertDialog(
-        context: context,
-        alertDialog: const FeedbackDialog(),
-      );
     } catch (error) {
       debugPrint(error.toString());
     }
