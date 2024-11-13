@@ -40,20 +40,16 @@ Future<void> generateCollectionsExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Montant");
-    sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Reste");
-    sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Date");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Montant");
+    sheet.cell(CellIndex.indexByString("B1")).value = TextCellValue("Reste");
+    sheet.cell(CellIndex.indexByString("C1")).value = TextCellValue("Date");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Collecteur");
-    sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Agent");
+        TextCellValue("Collecteur");
+    sheet.cell(CellIndex.indexByString("E1")).value = TextCellValue("Agent");
     sheet.cell(CellIndex.indexByString("F1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("G1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to collection model list
     final collections = List<Collection>.from(collectionsList.data);

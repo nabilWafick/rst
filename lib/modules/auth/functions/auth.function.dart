@@ -75,8 +75,7 @@ class AuthFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: userRegistrationResponse.result?.fr,
           error: userRegistrationResponse.error?.fr,
           message: userRegistrationResponse.message!.fr,
@@ -145,8 +144,7 @@ class AuthFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: userConnectionResponse.result?.fr,
           error: userConnectionResponse.error?.fr,
           message: userConnectionResponse.message!.fr,
@@ -228,8 +226,7 @@ class AuthFunctions {
       );
 
       // store response
-      ref.read(feedbackDialogResponseProvider.notifier).state =
-          FeedbackDialogResponse(
+      ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
         result: userDisconnectionResponse.result?.fr,
         error: userDisconnectionResponse.error?.fr,
         message: userDisconnectionResponse.message!.fr,
@@ -239,6 +236,9 @@ class AuthFunctions {
       if (userDisconnectionResponse.error == null) {
         // remove preferences data
         removeDataStored();
+
+        ref.read(userEmailProvider.notifier).state = "";
+        ref.read(userPasswordProvider.notifier).state = "";
 
         ref.read(authNameProvider.notifier).state = null;
 
@@ -286,8 +286,7 @@ class AuthFunctions {
       );
 
       // store response
-      ref.read(feedbackDialogResponseProvider.notifier).state =
-          FeedbackDialogResponse(
+      ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
         result: 'L\'agent a été déconnecté avec succès',
         error: userDisconnectionResponse.error?.fr,
         message: userDisconnectionResponse.message!.fr,
@@ -409,8 +408,7 @@ class AuthFunctions {
 
     // dashboard
     ref.invalidate(dashboardCollectorsCollectionsListParametersProvider);
-    ref.invalidate(
-        dashboardCollectorsCollectionsListFilterParametersAddedProvider);
+    ref.invalidate(dashboardCollectorsCollectionsListFilterParametersAddedProvider);
     ref.invalidate(dashboardDayCollectorsCollectionsListStreamProvider);
     ref.invalidate(dashboardWeekCollectorsCollectionsListStreamProvider);
     ref.invalidate(dashboardMonthCollectorsCollectionsListStreamProvider);
@@ -493,8 +491,7 @@ class AuthFunctions {
     ref.invalidate(cashOperationsSelectedCustomerCardProvider);
     ref.invalidate(cashOperationsSelectedCustomerCardsProvider);
     ref.invalidate(cashOperationsShowAllCustomerCardsProvider);
-    ref.invalidate(
-        cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider);
+    ref.invalidate(cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider);
     ref.invalidate(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
     ref.invalidate(cashOperationsSelectedCardSettlementsListParametersProvider);
     ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
@@ -538,14 +535,11 @@ class AuthFunctions {
     ref.invalidate(customerActivitiesSelectedCollectorProvider);
     ref.invalidate(customerActivitiesSelectedCustomerCardsProvider);
     ref.invalidate(customerActivitiesShowAllCustomerCardsProvider);
-    ref.invalidate(
-        customerActivitiesSelectedCardTotalSettlementsNumbersProvider);
-    ref.invalidate(
-        customerActivitiesSelectedCardSettlementsListParametersProvider);
+    ref.invalidate(customerActivitiesSelectedCardTotalSettlementsNumbersProvider);
+    ref.invalidate(customerActivitiesSelectedCardSettlementsListParametersProvider);
     ref.invalidate(customerActivitiesSelectedCardSettlementsProvider);
     ref.invalidate(customerActivitiesSelectedCardSettlementsCountProvider);
-    ref.invalidate(
-        customerActivitiesSelectedCardSpecificSettlementsCountProvider);
+    ref.invalidate(customerActivitiesSelectedCardSpecificSettlementsCountProvider);
 
     // collectors statistics
     ref.invalidate(collectorCollectionTypeProvider);

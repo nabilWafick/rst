@@ -40,12 +40,11 @@ Future<void> generateLocalitiesExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Nom");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Nom");
     sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to Locality model list
     final localities = List<Locality>.from(localitiesList.data);

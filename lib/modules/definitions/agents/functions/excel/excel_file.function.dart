@@ -40,20 +40,16 @@ Future<void> generateAgentsExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Nom");
-    sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Prénoms");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Nom");
+    sheet.cell(CellIndex.indexByString("B1")).value = TextCellValue("Prénoms");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Téléphone");
-    sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Email");
-    sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Adresse");
+        TextCellValue("Téléphone");
+    sheet.cell(CellIndex.indexByString("D1")).value = TextCellValue("Email");
+    sheet.cell(CellIndex.indexByString("E1")).value = TextCellValue("Adresse");
     sheet.cell(CellIndex.indexByString("F1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("G1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to agent model list
     final agents = List<Agent>.from(agentsList.data);

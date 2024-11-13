@@ -40,22 +40,17 @@ Future<void> generateSettlementsExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Carte");
-    sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Nombre");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Carte");
+    sheet.cell(CellIndex.indexByString("B1")).value = TextCellValue("Nombre");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Est Validé");
-    sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Type");
-    sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Client");
-    sheet.cell(CellIndex.indexByString("F1")).value =
-        const TextCellValue("Agent");
+        TextCellValue("Est Validé");
+    sheet.cell(CellIndex.indexByString("D1")).value = TextCellValue("Type");
+    sheet.cell(CellIndex.indexByString("E1")).value = TextCellValue("Client");
+    sheet.cell(CellIndex.indexByString("F1")).value = TextCellValue("Agent");
     sheet.cell(CellIndex.indexByString("G1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("H1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to settlement model list
     final settlements = List<Settlement>.from(settlementsList.data);

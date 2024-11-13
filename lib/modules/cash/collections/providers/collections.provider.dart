@@ -18,8 +18,7 @@ final collectionDateProvider = StateProvider<DateTime?>(
 );
 
 // used for storing collections filter options
-final collectionsListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final collectionsListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
@@ -38,8 +37,7 @@ final collectionsListFilterParametersAddedProvider =
 });
 
 // used for storing fetched collections
-final collectionsListStreamProvider =
-    FutureProvider<List<Collection>>((ref) async {
+final collectionsListStreamProvider = FutureProvider<List<Collection>>((ref) async {
   final listParameters = ref.watch(collectionsListParametersProvider);
 
   final controllerResponse = await CollectionsController.getMany(
@@ -65,9 +63,7 @@ final collectionsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final collectionsSumProvider = FutureProvider<num>((ref) async {
@@ -78,9 +74,18 @@ final collectionsSumProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+final collectionsProfitProvider = FutureProvider<num>((ref) async {
+  final controllerResponse = await CollectionsController.profit();
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final collectionsRestSumProvider = FutureProvider<num>((ref) async {
@@ -91,9 +96,7 @@ final collectionsRestSumProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched collections (collections respecting filter options) count
@@ -109,9 +112,7 @@ final specificCollectionsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final specificCollectionsSumProvider = FutureProvider<num>((ref) async {
@@ -126,9 +127,7 @@ final specificCollectionsSumProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final specificCollectionsRestSumProvider = FutureProvider<num>((ref) async {
@@ -143,9 +142,7 @@ final specificCollectionsRestSumProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final dayCollectionProvider = FutureProvider<num>((ref) async {
@@ -156,9 +153,7 @@ final dayCollectionProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final monthCollectionProvider = FutureProvider<num>((ref) async {
@@ -169,9 +164,7 @@ final monthCollectionProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final weekCollectionProvider = FutureProvider<num>((ref) async {
@@ -182,9 +175,7 @@ final weekCollectionProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 final yearCollectionProvider = FutureProvider<num>((ref) async {
@@ -195,7 +186,5 @@ final yearCollectionProvider = FutureProvider<num>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

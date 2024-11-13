@@ -41,27 +41,23 @@ Future<void> generateTransfersExcelFile({
 
     // Write headers with formatting
     sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Client Émetteur");
+        TextCellValue("Client Émetteur");
     sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Carte Émettrice");
-    sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Type");
+        TextCellValue("Carte Émettrice");
+    sheet.cell(CellIndex.indexByString("C1")).value = TextCellValue("Type");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Client Récepteur");
+        TextCellValue("Client Récepteur");
     sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Carte Réceptrice");
-    sheet.cell(CellIndex.indexByString("F1")).value =
-        const TextCellValue("Type");
+        TextCellValue("Carte Réceptrice");
+    sheet.cell(CellIndex.indexByString("F1")).value = TextCellValue("Type");
     sheet.cell(CellIndex.indexByString("G1")).value =
-        const TextCellValue("Validation");
-    sheet.cell(CellIndex.indexByString("H1")).value =
-        const TextCellValue("Rejet");
-    sheet.cell(CellIndex.indexByString("I1")).value =
-        const TextCellValue("Agent");
+        TextCellValue("Validation");
+    sheet.cell(CellIndex.indexByString("H1")).value = TextCellValue("Rejet");
+    sheet.cell(CellIndex.indexByString("I1")).value = TextCellValue("Agent");
     sheet.cell(CellIndex.indexByString("J1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("K1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to transfer model list
     final transfers = List<Transfer>.from(transfersList.data);

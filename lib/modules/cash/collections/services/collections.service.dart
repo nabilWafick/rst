@@ -274,6 +274,55 @@ class CollectionsServices {
     }
   }
 
+  static Future<ServiceResponse> profit() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/profit/estimation',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server erroradmin
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
   static Future<ServiceResponse> sumAllRest() async {
     try {
       final prefs = await SharedPreferences.getInstance();

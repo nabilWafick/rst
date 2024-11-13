@@ -3,6 +3,8 @@ import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/modules/definitions/products/services/products.service.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/product_forecast/product_forecast.model.dart';
+import 'package:rst/modules/statistics/products_improvidence/models/filter_parameter/filter_parameter.model.dart';
+import 'package:rst/modules/statistics/products_improvidence/models/product_improvidence/product_improvidence.model.dart';
 
 class ProductsController {
   static Future<ControllerResponse> create({
@@ -172,8 +174,7 @@ class ProductsController {
   }
 
   static Future<ControllerResponse> getProductsForecastsCountAll() async {
-    final serviceResponse =
-        await ProductsServices.getProductsForecastsCountAll();
+    final serviceResponse = await ProductsServices.getProductsForecastsCountAll();
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
@@ -187,8 +188,7 @@ class ProductsController {
   }
 
   static Future<ControllerResponse> getProductsForecastsTotalAmount() async {
-    final serviceResponse =
-        await ProductsServices.getProductsForecastsTotalAmount();
+    final serviceResponse = await ProductsServices.getProductsForecastsTotalAmount();
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
@@ -204,8 +204,7 @@ class ProductsController {
   static Future<ControllerResponse> getSpecificProductsForecastsCount({
     required ProductsForecastsFilter productsForecastsFilter,
   }) async {
-    final serviceResponse =
-        await ProductsServices.getSpecificProductsForecastsCount(
+    final serviceResponse = await ProductsServices.getSpecificProductsForecastsCount(
       productsForecastsFilter: productsForecastsFilter,
     );
 
@@ -223,9 +222,95 @@ class ProductsController {
   static Future<ControllerResponse> getSpecificProductsForecastsAmount({
     required ProductsForecastsFilter productsForecastsFilter,
   }) async {
-    final serviceResponse =
-        await ProductsServices.getSpecificProductsForecastsAmount(
+    final serviceResponse = await ProductsServices.getSpecificProductsForecastsAmount(
       productsForecastsFilter: productsForecastsFilter,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  // **** IMPROVIDENCE
+  static Future<ControllerResponse> getProductsImprovidence({
+    required ProductsForecastsFilter productsImprovidenceFilter,
+  }) async {
+    final serviceResponse = await ProductsServices.getProductsImprovidence(
+      productsImprovidenceFilter: productsImprovidenceFilter,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: serviceResponse.data
+          ?.map(
+            (productImprovidence) => ProductForecast.fromMap(
+              productImprovidence,
+            ),
+          )
+          .toList(),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getProductsImprovidenceCountAll() async {
+    final serviceResponse = await ProductsServices.getProductsImprovidenceCountAll();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getProductsImprovidenceTotalAmount() async {
+    final serviceResponse = await ProductsServices.getProductsImprovidenceTotalAmount();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getSpecificProductsImprovidenceCount({
+    required ProductsForecastsFilter productsImprovidenceFilter,
+  }) async {
+    final serviceResponse = await ProductsServices.getSpecificProductsImprovidenceCount(
+      productsImprovidenceFilter: productsImprovidenceFilter,
+    );
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> getSpecificProductsImprovidenceAmount({
+    required ProductsForecastsFilter productsImprovidenceFilter,
+  }) async {
+    final serviceResponse = await ProductsServices.getSpecificProductsImprovidenceAmount(
+      productsImprovidenceFilter: productsImprovidenceFilter,
     );
 
     return ControllerResponse(

@@ -51,8 +51,8 @@ dependencies:
   responsive_framework: ^1.4.0
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
-  syncfusion_flutter_charts: ^25.1.42+1
-  pdf: ^3.10.7
+  syncfusion_flutter_charts: ^27.1.51
+  pdf: ^3.11.1
   printing: ^5.11.1
   horizontal_data_table: ^4.3.1
   dio: ^5.4.3+1

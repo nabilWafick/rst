@@ -40,24 +40,22 @@ Future<void> generateStocksExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Produit");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Produit");
     sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Quantité Initiale");
+        TextCellValue("Quantité Initiale");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Quantité Stock");
+        TextCellValue("Quantité Stock");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Quantité Entrée");
+        TextCellValue("Quantité Entrée");
     sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Quantité Sortie");
+        TextCellValue("Quantité Sortie");
     sheet.cell(CellIndex.indexByString("F1")).value =
-        const TextCellValue("Type Mouvement");
-    sheet.cell(CellIndex.indexByString("G1")).value =
-        const TextCellValue("Agent");
+        TextCellValue("Type Mouvement");
+    sheet.cell(CellIndex.indexByString("G1")).value = TextCellValue("Agent");
     sheet.cell(CellIndex.indexByString("H1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("I1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to stock model list
     final stocks = List<Stock>.from(stocksList.data);

@@ -16,8 +16,7 @@ class DashboardOverview extends StatefulHookConsumerWidget {
   const DashboardOverview({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DashboardOverviewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DashboardOverviewState();
 }
 
 class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
@@ -25,6 +24,7 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
   Widget build(BuildContext context) {
     final totalCollections = ref.watch(collectionsSumProvider);
     final totalCollectionsRest = ref.watch(collectionsRestSumProvider);
+    final collectionsProfit = ref.watch(collectionsProfitProvider);
     final totalCustomer = ref.watch(customersCountProvider);
     final totalCollectors = ref.watch(collectorsCountProvider);
     final totalCards = ref.watch(cardsCountProvider);
@@ -49,6 +49,7 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
             text: 'Rafraîchir',
             onTap: () {
               ref.invalidate(collectionsSumProvider);
+              ref.invalidate(collectionsProfitProvider);
               ref.invalidate(collectionsRestSumProvider);
               ref.invalidate(customersCountProvider);
               ref.invalidate(collectorsCountProvider);
@@ -105,6 +106,20 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                     return data;
                   },
                   error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
+                label: 'Compte',
+                value: collectionsProfit.when(
+                  data: (data) {
+                    debugPrint(" =====================> Compte: $data");
+                    return data;
+                  },
+                  error: (error, stackTrace) {
+                    return 0;
+                  },
                   loading: () => 0,
                 ),
                 ceil: true,

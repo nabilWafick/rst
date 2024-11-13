@@ -65,16 +65,14 @@ Future<void> generateCollectorsCollectionsExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Nom");
-    sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Prénoms");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Nom");
+    sheet.cell(CellIndex.indexByString("B1")).value = TextCellValue("Prénoms");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Téléphone");
+        TextCellValue("Téléphone");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Nombre Collectes");
+        TextCellValue("Nombre Collectes");
     sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Collecte Totale");
+        TextCellValue("Collecte Totale");
 
     // cast data to type model list
     final collectorsCollections =

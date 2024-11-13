@@ -40,32 +40,27 @@ Future<void> generateCustomersExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Nom");
-    sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Prénoms");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Nom");
+    sheet.cell(CellIndex.indexByString("B1")).value = TextCellValue("Prénoms");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Téléphone");
-    sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Adresse");
+        TextCellValue("Téléphone");
+    sheet.cell(CellIndex.indexByString("D1")).value = TextCellValue("Adresse");
     sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Profession");
-    sheet.cell(CellIndex.indexByString("F1")).value =
-        const TextCellValue("CNI/NPI");
+        TextCellValue("Profession");
+    sheet.cell(CellIndex.indexByString("F1")).value = TextCellValue("CNI/NPI");
     sheet.cell(CellIndex.indexByString("G1")).value =
-        const TextCellValue("Collecteur");
-    sheet.cell(CellIndex.indexByString("H1")).value =
-        const TextCellValue("Localité");
+        TextCellValue("Collecteur");
+    sheet.cell(CellIndex.indexByString("H1")).value = TextCellValue("Localité");
     sheet.cell(CellIndex.indexByString("I1")).value =
-        const TextCellValue("Catégorie");
+        TextCellValue("Catégorie");
     sheet.cell(CellIndex.indexByString("J1")).value =
-        const TextCellValue("Activité Économique");
+        TextCellValue("Activité Économique");
     sheet.cell(CellIndex.indexByString("K1")).value =
-        const TextCellValue("Statut Personnel");
+        TextCellValue("Statut Personnel");
     sheet.cell(CellIndex.indexByString("L1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("M1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to customer model list
     final customers = List<Customer>.from(customersList.data);

@@ -40,16 +40,13 @@ Future<void> generateTypesExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Nom");
-    sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Mise");
-    sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Produits");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Nom");
+    sheet.cell(CellIndex.indexByString("B1")).value = TextCellValue("Mise");
+    sheet.cell(CellIndex.indexByString("C1")).value = TextCellValue("Produits");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Insertion");
+        TextCellValue("Insertion");
     sheet.cell(CellIndex.indexByString("E1")).value =
-        const TextCellValue("Dernière Modification");
+        TextCellValue("Dernière Modification");
 
     // cast data to type model list
     final types = List<Type>.from(typesList.data);

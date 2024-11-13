@@ -97,6 +97,20 @@ class CollectionsController {
     );
   }
 
+  static Future<ControllerResponse> profit() async {
+    final serviceResponse = await CollectionsServices.profit();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
   static Future<ControllerResponse> sumAllRest() async {
     final serviceResponse = await CollectionsServices.sumAllRest();
 

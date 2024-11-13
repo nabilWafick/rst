@@ -23,6 +23,7 @@ import 'package:rst/modules/home/models/sidebar_option/sidebar_option.model.dart
 import 'package:rst/modules/home/models/suboption/suboption.model.dart';
 import 'package:rst/modules/statistics/collectors_collections/views/page/collectors_collections.page.dart';
 import 'package:rst/modules/statistics/products_forecasts/views/page/products_forecasts.page.dart';
+import 'package:rst/modules/statistics/products_improvidence/views/page/products_improvidence.page.dart';
 import 'package:rst/modules/statistics/types_stat/views/page/types_stat.page.dart';
 import 'package:rst/modules/stocks/stocks/views/page/stocks.page.dart';
 import 'package:rst/modules/transfers/between_customer_cards/views/page/transfers_bcc.page.dart';
@@ -74,15 +75,13 @@ final modulesVisibilityConditionsProvider = Provider<Map<int, bool>>((ref) {
 
     // Activities
     3: (authPermissions?[PermissionsValues.admin] ?? false) ||
-        (authPermissions?[PermissionsValues.showCustomersActivities] ??
-            false) ||
+        (authPermissions?[PermissionsValues.showCustomersActivities] ?? false) ||
         (authPermissions?[PermissionsValues.showCollectorsActivities] ?? false),
 
     // Statistiques
     4: (authPermissions?[PermissionsValues.admin] ?? false) ||
         (authPermissions?[PermissionsValues.showTypesStatistics] ?? false) ||
-        (authPermissions?[PermissionsValues.showCollectorsStatistics] ??
-            false) ||
+        (authPermissions?[PermissionsValues.showCollectorsStatistics] ?? false) ||
         (authPermissions?[PermissionsValues.showProductsForecasts] ?? false),
 
     // Transfers
@@ -106,8 +105,7 @@ final modulesVisibilityConditionsProvider = Provider<Map<int, bool>>((ref) {
 
 final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
   (ref) {
-    final modulesVisibilityConditions =
-        ref.watch(modulesVisibilityConditionsProvider);
+    final modulesVisibilityConditions = ref.watch(modulesVisibilityConditionsProvider);
 
     final authPermissions = ref.watch(authPermissionsProvider);
 
@@ -201,8 +199,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
 
           // Economical Activities
           3: (authPermissions?[PermissionsValues.admin] ?? false) ||
-              (authPermissions?[PermissionsValues.readEconomicalActivity] ??
-                  false),
+              (authPermissions?[PermissionsValues.readEconomicalActivity] ?? false),
 
           // Personal Status
           4: (authPermissions?[PermissionsValues.admin] ?? false) ||
@@ -280,13 +277,11 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         subOptionsVisibility: {
           // Customers activities
           0: (authPermissions?[PermissionsValues.admin] ?? false) ||
-              (authPermissions?[PermissionsValues.showCustomersActivities] ??
-                  false),
+              (authPermissions?[PermissionsValues.showCustomersActivities] ?? false),
 
           // Collectors activities
           1: (authPermissions?[PermissionsValues.admin] ?? false) ||
-              (authPermissions?[PermissionsValues.showCollectorsActivities] ??
-                  false),
+              (authPermissions?[PermissionsValues.showCollectorsActivities] ?? false),
         },
       ),
       SidebarOptionModel(
@@ -308,22 +303,27 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
             icon: Icons.language,
             name: 'Prévisions',
           ),
+          SidebarSubOptionModel(
+            index: 19,
+            icon: Icons.language,
+            name: 'Exclusions',
+          ),
         ],
         subOptionsVisibility: {
           // Types
           0: (authPermissions?[PermissionsValues.admin] ?? false) ||
-              (authPermissions?[PermissionsValues.showTypesStatistics] ??
-                  false),
+              (authPermissions?[PermissionsValues.showTypesStatistics] ?? false),
 
           // Periodic Collections
           1: (authPermissions?[PermissionsValues.admin] ?? false) ||
-              (authPermissions?[PermissionsValues.showCollectorsStatistics] ??
-                  false),
+              (authPermissions?[PermissionsValues.showCollectorsStatistics] ?? false),
 
           // Products Forecast
           2: (authPermissions?[PermissionsValues.admin] ?? false) ||
-              (authPermissions?[PermissionsValues.showProductsForecasts] ??
-                  false),
+              (authPermissions?[PermissionsValues.showProductsForecasts] ?? false),
+          // Products Exclusion
+          3: (authPermissions?[PermissionsValues.admin] ?? false) ||
+              (authPermissions?[PermissionsValues.showProductsForecasts] ?? false),
         },
       ),
       SidebarOptionModel(
@@ -331,17 +331,17 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Transferts',
         subOptions: [
           SidebarSubOptionModel(
-            index: 19,
+            index: 20,
             icon: Icons.swap_vert_rounded,
             name: 'Entre Cartes',
           ),
           SidebarSubOptionModel(
-            index: 20,
+            index: 21,
             icon: Icons.swap_vert_rounded,
             name: 'Entre Comptes',
           ),
           SidebarSubOptionModel(
-            index: 21,
+            index: 22,
             icon: Icons.published_with_changes_outlined,
             name: 'Validations',
           ),
@@ -365,7 +365,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Stocks',
         subOptions: [
           SidebarSubOptionModel(
-            index: 22,
+            index: 23,
             icon: Icons.widgets_outlined,
             name: 'Stocks',
           ),
@@ -381,7 +381,7 @@ final sidebarOptionsProvider = Provider<List<SidebarOptionModel>>(
         name: 'Empty',
         subOptions: [
           SidebarSubOptionModel(
-            index: 23,
+            index: 24,
             icon: Icons.hourglass_empty,
             name: 'Empty',
           ),
@@ -424,6 +424,7 @@ final pagesProvider = Provider<List<Widget>>((ref) {
     TypesStatsPage(),
     CollectorsCollectionsPage(),
     ProductsForecastsPage(),
+    ProductsImprovidencePage(),
     TransfersBCCPage(),
     TransfersBCPage(),
     TransfersValidationPage(),
@@ -451,12 +452,10 @@ final selectedSidebarOptionProvider = StateProvider<SidebarOptionModel>((ref) {
   return sidebarOption;
 });
 
-final selectedSidebarSubOptionProvider =
-    StateProvider<SidebarSubOptionModel>((ref) {
+final selectedSidebarSubOptionProvider = StateProvider<SidebarSubOptionModel>((ref) {
   final sidebarOption = ref.watch(selectedSidebarOptionProvider);
 
-  final firstSubOptionVisible =
-      sidebarOption.subOptionsVisibility.entries.firstWhereOrNull(
+  final firstSubOptionVisible = sidebarOption.subOptionsVisibility.entries.firstWhereOrNull(
     (subOption) {
       return subOption.value;
     },

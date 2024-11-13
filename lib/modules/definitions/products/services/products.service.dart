@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
+import 'package:rst/modules/statistics/products_improvidence/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
 import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -624,6 +625,262 @@ class ProductsServices {
       ).get(
         '$route/stats/forecasts/specific/amount',
         queryParameters: productsForecastsFilter.toMap(),
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  // **** IMPROVIDNCE
+
+  static Future<ServiceResponse> getProductsImprovidence({
+    required ProductsForecastsFilter productsImprovidenceFilter,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/stats/improvidence',
+        queryParameters: productsImprovidenceFilter.toMap(),
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getProductsImprovidenceCountAll() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/stats/improvidence/count',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getProductsImprovidenceTotalAmount() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/stats/improvidence/amount',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getSpecificProductsImprovidenceCount({
+    required ProductsForecastsFilter productsImprovidenceFilter,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/stats/improvidence/count/specific',
+        queryParameters: productsImprovidenceFilter.toMap(),
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server error
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> getSpecificProductsImprovidenceAmount({
+    required ProductsForecastsFilter productsImprovidenceFilter,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/stats/improvidence/specific/amount',
+        queryParameters: productsImprovidenceFilter.toMap(),
       );
 
       return ServiceResponse(

@@ -36,14 +36,13 @@ Future<void> generateProductsForecastsExcelFile({
     var sheet = excel['Sheet1'];
 
     // Write headers with formatting
-    sheet.cell(CellIndex.indexByString("A1")).value =
-        const TextCellValue("Nom");
+    sheet.cell(CellIndex.indexByString("A1")).value = TextCellValue("Nom");
     sheet.cell(CellIndex.indexByString("B1")).value =
-        const TextCellValue("Prévision Nombre");
+        TextCellValue("Prévision Nombre");
     sheet.cell(CellIndex.indexByString("C1")).value =
-        const TextCellValue("Prévision Montant");
+        TextCellValue("Prévision Montant");
     sheet.cell(CellIndex.indexByString("D1")).value =
-        const TextCellValue("Nombre Clients");
+        TextCellValue("Nombre Clients");
     // cast data to type model list
     final productsForecasts =
         List<ProductForecast>.from(productsForecastsList.data);
