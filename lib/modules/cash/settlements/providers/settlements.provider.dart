@@ -21,8 +21,7 @@ final settlementCollectorCollectionProvider = StateProvider<Collection?>((ref) {
 });
 
 // used for storing settlements filter options
-final settlementsListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final settlementsListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
@@ -37,13 +36,11 @@ final settlementsListParametersProvider =
 /// **** MULTIPLE SETTLEMENTS PROVIDERS ****
 
 // for managing Types inputs, add,hide inputs, identify inputs
-final multipleSettlementsAddedInputsVisibilityProvider =
-    StateProvider<Map<String, bool>>((ref) {
+final multipleSettlementsAddedInputsVisibilityProvider = StateProvider<Map<String, bool>>((ref) {
   return {};
 });
 
-final multipleSettlementsSelectedCustomerCardsProvider =
-    StateProvider<Map<String, Card>>((ref) {
+final multipleSettlementsSelectedCustomerCardsProvider = StateProvider<Map<String, Card>>((ref) {
   return {};
 });
 
@@ -56,8 +53,7 @@ final settlementsListFilterParametersAddedProvider =
 });
 
 // used for storing fetched settlements
-final settlementsListStreamProvider =
-    FutureProvider<List<Settlement>>((ref) async {
+final settlementsListStreamProvider = FutureProvider<List<Settlement>>((ref) async {
   final listParameters = ref.watch(settlementsListParametersProvider);
 
   final controllerResponse = await SettlementsController.getMany(
@@ -83,9 +79,26 @@ final settlementsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+// used for storing all settlements of database count
+final yearSettlementsCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await SettlementsController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched settlements (settlements respecting filter options) count
@@ -101,7 +114,5 @@ final specificSettlementsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

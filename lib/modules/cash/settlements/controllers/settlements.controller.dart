@@ -91,8 +91,10 @@ class SettlementsController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await SettlementsServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await SettlementsServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

@@ -4,8 +4,7 @@ import 'package:rst/modules/transfers/controllers/transfers.controller.dart';
 import 'package:rst/modules/transfers/models/transfer/transfer.model.dart';
 
 // used for storing transfers filter options
-final transfersListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final transfersListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
@@ -50,9 +49,26 @@ final transfersCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+// used for storing all transfers of database count
+final yearTransfersCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await TransfersController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched transfers (transfers respecting filter options) count
@@ -68,7 +84,5 @@ final specificTransfersCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

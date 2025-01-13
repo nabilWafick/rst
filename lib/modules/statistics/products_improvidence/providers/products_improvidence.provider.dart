@@ -2,8 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/products_forecasts.model.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/filter_parameter/filter_parameter.model.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/product_improvidence/product_improvidence.model.dart';
 
 // used for storing productsImprovidence filter options
 final productsImprovidenceListParametersProvider = StateProvider<ProductsForecastsFilter>((ref) {

@@ -91,14 +91,9 @@ class Card {
       type: Type.fromMap(map['type'] as Map<String, dynamic>),
       typesNumber: map['typesNumber'] as int,
       customer: Customer.fromMap(map['customer'] as Map<String, dynamic>),
-      satisfiedAt: map['satisfiedAt'] != null
-          ? DateTime.parse(map['satisfiedAt'])
-          : null,
-      repaidAt:
-          map['repaidAt'] != null ? DateTime.parse(map['repaidAt']) : null,
-      transferredAt: map['transferredAt'] != null
-          ? DateTime.parse(map['transferredAt'])
-          : null,
+      satisfiedAt: map['satisfiedAt'] != null ? DateTime.parse(map['satisfiedAt']) : null,
+      repaidAt: map['repaidAt'] != null ? DateTime.parse(map['repaidAt']) : null,
+      transferredAt: map['transferredAt'] != null ? DateTime.parse(map['transferredAt']) : null,
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );
@@ -106,8 +101,7 @@ class Card {
 
   String toJson() => json.encode(toMap());
 
-  factory Card.fromJson(String source) =>
-      Card.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Card.fromJson(String source) => Card.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

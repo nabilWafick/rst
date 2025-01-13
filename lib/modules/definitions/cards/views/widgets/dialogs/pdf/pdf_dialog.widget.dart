@@ -119,8 +119,7 @@ class CardPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current cards filter option
-                        final cardsListParameters =
-                            ref.read(cardsListParametersProvider);
+                        final cardsListParameters = ref.read(cardsListParametersProvider);
 
                         if (exportAllCards.value) {
                           // get all cards count

@@ -125,8 +125,8 @@ class ProductsForecastsPdfGenerationDialog extends HookConsumerWidget {
 
                         if (exportAllProductsForecasts.value) {
                           // get all types count
-                          final productsForecatsCount = await ProductsController
-                              .getProductsForecastsCountAll();
+                          final productsForecatsCount =
+                              await ProductsController.getProductsForecastsCountAll();
 
                           // generate excel file
                           await generateProductsForecastsPdf(
@@ -143,8 +143,7 @@ class ProductsForecastsPdfGenerationDialog extends HookConsumerWidget {
                           await generateProductsForecastsPdf(
                             context: context,
                             ref: ref,
-                            productsForecastsFilter:
-                                productsForecastsListParameters,
+                            productsForecastsFilter: productsForecastsListParameters,
                             showPrintButton: showPrintButton,
                           );
                         }

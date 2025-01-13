@@ -23,15 +23,28 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
   @override
   Widget build(BuildContext context) {
     final totalCollections = ref.watch(collectionsSumProvider);
+    //  final yearTotalCollections = ref.watch(yearCollectionsSumProvider);
     final totalCollectionsRest = ref.watch(collectionsRestSumProvider);
+    final dayTotalCollectionsRest = ref.watch(dayCollectionsRestSumProvider);
+    final weekTotalCollectionsRest = ref.watch(weekCollectionsRestSumProvider);
+    final monthTotalCollectionsRest = ref.watch(monthCollectionsRestSumProvider);
+    final yearTotalCollectionsRest = ref.watch(yearCollectionsRestSumProvider);
     final collectionsProfit = ref.watch(collectionsProfitProvider);
-    final totalCustomer = ref.watch(customersCountProvider);
+    final yearCollectionsProfit = ref.watch(yearCollectionsProfitProvider);
+    final totalCustomers = ref.watch(customersCountProvider);
+    final yearTotalCustomers = ref.watch(yearCustomersCountProvider);
     final totalCollectors = ref.watch(collectorsCountProvider);
+    final yearTotalCollectors = ref.watch(yearCollectorsCountProvider);
     final totalCards = ref.watch(cardsCountProvider);
+    final yearTotalCards = ref.watch(yearCardsCountProvider);
     final totalAgents = ref.watch(agentsCountProvider);
+    final yearTotalAgents = ref.watch(yearAgentsCountProvider);
     final totalTypes = ref.watch(typesCountProvider);
+    final yearTotalTypes = ref.watch(yearTypesCountProvider);
     final totalProducts = ref.watch(productsCountProvider);
+    final yearTotalProducts = ref.watch(yearProductsCountProvider);
     final totalSettlements = ref.watch(settlementsCountProvider);
+    final yearTotalSettlements = ref.watch(yearSettlementsCountProvider);
     final dayCollection = ref.watch(dayCollectionProvider);
     final weekCollection = ref.watch(weekCollectionProvider);
     final monthCollection = ref.watch(monthCollectionProvider);
@@ -49,15 +62,28 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
             text: 'Rafraîchir',
             onTap: () {
               ref.invalidate(collectionsSumProvider);
+              ref.invalidate(yearCollectionsSumProvider);
               ref.invalidate(collectionsProfitProvider);
+              ref.invalidate(yearCollectionsProfitProvider);
               ref.invalidate(collectionsRestSumProvider);
+              ref.invalidate(dayCollectionsRestSumProvider);
+              ref.invalidate(weekCollectionsRestSumProvider);
+              ref.invalidate(monthCollectionsRestSumProvider);
+              ref.invalidate(yearCollectionsRestSumProvider);
               ref.invalidate(customersCountProvider);
+              ref.invalidate(yearCustomersCountProvider);
               ref.invalidate(collectorsCountProvider);
+              ref.invalidate(yearCollectorsCountProvider);
               ref.invalidate(cardsCountProvider);
+              ref.invalidate(yearCardsCountProvider);
               ref.invalidate(agentsCountProvider);
+              ref.invalidate(yearAgentsCountProvider);
               ref.invalidate(settlementsCountProvider);
+              ref.invalidate(yearSettlementsCountProvider);
               ref.invalidate(typesCountProvider);
+              ref.invalidate(yearTypesCountProvider);
               ref.invalidate(productsCountProvider);
+              ref.invalidate(yearProductsCountProvider);
               ref.invalidate(dayCollectionProvider);
               ref.invalidate(monthCollectionProvider);
               ref.invalidate(weekCollectionProvider);
@@ -100,7 +126,7 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               DashboardCard(
-                label: 'Collectes',
+                label: 'Collecte',
                 value: totalCollections.when(
                   data: (data) {
                     return data;
@@ -109,23 +135,10 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                   loading: () => 0,
                 ),
                 ceil: true,
+                isVisible: false,
               ),
               DashboardCard(
-                label: 'Compte',
-                value: collectionsProfit.when(
-                  data: (data) {
-                    debugPrint(" =====================> Compte: $data");
-                    return data;
-                  },
-                  error: (error, stackTrace) {
-                    return 0;
-                  },
-                  loading: () => 0,
-                ),
-                ceil: true,
-              ),
-              DashboardCard(
-                label: 'Restes',
+                label: 'Reste',
                 value: totalCollectionsRest.when(
                   data: (data) {
                     return data;
@@ -134,9 +147,11 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                   loading: () => 0,
                 ),
                 ceil: true,
+                isVisible: false,
               ),
               DashboardCard(
-                label: 'Collecte Journalière',
+                period: "Aujourd'hui",
+                label: 'Collecte',
                 value: dayCollection.when(
                   data: (data) {
                     return data;
@@ -147,7 +162,20 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                 ceil: true,
               ),
               DashboardCard(
-                label: 'Collecte Hebdomadaire',
+                period: "Aujourd'hui",
+                label: 'Reste',
+                value: dayTotalCollectionsRest.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
+                period: "Cette semaine",
+                label: 'Collecte',
                 value: weekCollection.when(
                   data: (data) {
                     return data;
@@ -158,7 +186,20 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                 ceil: true,
               ),
               DashboardCard(
-                label: 'Collecte Mensuelle',
+                period: "Cette semaine",
+                label: 'Reste',
+                value: weekTotalCollectionsRest.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
+                period: "Ce mois",
+                label: 'Collecte',
                 value: monthCollection.when(
                   data: (data) {
                     return data;
@@ -169,7 +210,20 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                 ceil: true,
               ),
               DashboardCard(
-                label: 'Collecte Annuelle',
+                period: "Ce mois",
+                label: 'Reste',
+                value: monthTotalCollectionsRest.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Collecte',
                 value: yearCollection.when(
                   data: (data) {
                     return data;
@@ -178,6 +232,49 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                   loading: () => 0,
                 ),
                 ceil: true,
+                isVisible: false,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Reste',
+                value: yearTotalCollectionsRest.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+                isVisible: false,
+              ),
+              DashboardCard(
+                label: 'Compte',
+                value: collectionsProfit.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) {
+                    return 0;
+                  },
+                  loading: () => 0,
+                ),
+                ceil: true,
+                isVisible: false,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Compte',
+                value: yearCollectionsProfit.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) {
+                    return 0;
+                  },
+                  loading: () => 0,
+                ),
+                ceil: true,
+                isVisible: false,
               ),
               DashboardCard(
                 label: 'Règlements',
@@ -189,10 +286,37 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                   loading: () => 0,
                 ),
                 ceil: true,
+                isVisible: false,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Règlements',
+                value: yearTotalSettlements.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+                isVisible: false,
               ),
               DashboardCard(
                 label: 'Clients',
-                value: totalCustomer.when(
+                value: totalCustomers.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+                isVisible: false,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Clients',
+                value: yearTotalCustomers.when(
                   data: (data) {
                     return data;
                   },
@@ -204,6 +328,19 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
               DashboardCard(
                 label: 'Cartes',
                 value: totalCards.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+                isVisible: false,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Cartes',
+                value: yearTotalCards.when(
                   data: (data) {
                     return data;
                   },
@@ -224,8 +361,32 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                 ceil: true,
               ),
               DashboardCard(
+                period: "Cette année",
+                label: 'Agents',
+                value: yearTotalAgents.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
                 label: 'Collecteurs',
                 value: totalCollectors.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Collecteurs',
+                value: yearTotalCollectors.when(
                   data: (data) {
                     return data;
                   },
@@ -246,8 +407,32 @@ class _DashboardOverviewState extends ConsumerState<DashboardOverview> {
                 ceil: true,
               ),
               DashboardCard(
+                period: "Cette année",
+                label: 'Types',
+                value: yearTotalTypes.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
                 label: 'Produits',
                 value: totalProducts.when(
+                  data: (data) {
+                    return data;
+                  },
+                  error: (error, stackTrace) => 0,
+                  loading: () => 0,
+                ),
+                ceil: true,
+              ),
+              DashboardCard(
+                period: "Cette année",
+                label: 'Produits',
+                value: yearTotalProducts.when(
                   data: (data) {
                     return data;
                   },

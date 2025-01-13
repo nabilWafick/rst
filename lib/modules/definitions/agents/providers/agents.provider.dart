@@ -94,9 +94,7 @@ final agentsListStreamProvider = FutureProvider<List<Agent>>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? List<Agent>.from(controllerResponse.data)
-      : <Agent>[];
+  return controllerResponse.data != null ? List<Agent>.from(controllerResponse.data) : <Agent>[];
 });
 
 // used for storing all agents of database count
@@ -108,9 +106,26 @@ final agentsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+// used for storing all agents of database count
+final yearAgentsCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await AgentsController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched agents (agents respecting filter options) count
@@ -126,13 +141,10 @@ final specificAgentsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
-final agentsPermissionsGroupsProvider =
-    StateProvider<List<PermissionsGroup>>((ref) {
+final agentsPermissionsGroupsProvider = StateProvider<List<PermissionsGroup>>((ref) {
   return [
     /// **** CRUD PERMISSIONS **** ///
 
@@ -554,8 +566,7 @@ final agentsPermissionsGroupsProvider =
         ),
         Permission(
           isGranted: false,
-          front:
-              'Afficher les infos supplémentaires de l\'activité d\'un collecteur',
+          front: 'Afficher les infos supplémentaires de l\'activité d\'un collecteur',
           back: PermissionsValues.showCollectorsActivitiesMoreInfos,
         ),
       ],
@@ -582,8 +593,7 @@ final agentsPermissionsGroupsProvider =
         ),
         Permission(
           isGranted: false,
-          front:
-              'Afficher les infos supplémentaires des statistiques des types',
+          front: 'Afficher les infos supplémentaires des statistiques des types',
           back: PermissionsValues.showTypesStatisticsMoreInfos,
         ),
       ],
@@ -610,8 +620,7 @@ final agentsPermissionsGroupsProvider =
         ),
         Permission(
           isGranted: false,
-          front:
-              'Afficher les infos supplémentaires des statistiques des colecteurs',
+          front: 'Afficher les infos supplémentaires des statistiques des colecteurs',
           back: PermissionsValues.showCollectorsStatisticsMoreInfos,
         ),
       ],
@@ -638,8 +647,7 @@ final agentsPermissionsGroupsProvider =
         ),
         Permission(
           isGranted: false,
-          front:
-              'Afficher les infos supplémentaires des prévisions des produits',
+          front: 'Afficher les infos supplémentaires des prévisions des produits',
           back: PermissionsValues.showProductsForecastsMoreInfos,
         ),
       ],

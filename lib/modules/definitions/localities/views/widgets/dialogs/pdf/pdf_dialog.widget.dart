@@ -119,13 +119,11 @@ class LocalityPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current localities filter option
-                        final localitiesListParameters =
-                            ref.read(localitiesListParametersProvider);
+                        final localitiesListParameters = ref.read(localitiesListParametersProvider);
 
                         if (exportAllLocalities.value) {
                           // get all localities count
-                          final localitiesCount =
-                              await LocalitiesController.countAll();
+                          final localitiesCount = await LocalitiesController.countAll();
 
                           // generate excel file
                           await generateLocalitiesPdf(

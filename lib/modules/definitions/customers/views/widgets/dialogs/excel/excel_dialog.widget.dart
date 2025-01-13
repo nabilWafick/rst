@@ -118,13 +118,11 @@ class CustomerExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current Customers filter option
-                        final customersListParameters =
-                            ref.read(customersListParametersProvider);
+                        final customersListParameters = ref.read(customersListParametersProvider);
 
                         if (exportAllCustomers.value) {
                           // get all customers count
-                          final customersCount =
-                              await CustomersController.countAll();
+                          final customersCount = await CustomersController.countAll();
 
                           // generate excel file
                           await generateCustomersExcelFile(

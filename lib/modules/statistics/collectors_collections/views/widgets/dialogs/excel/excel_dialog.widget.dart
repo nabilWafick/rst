@@ -10,8 +10,7 @@ import 'package:rst/modules/statistics/collectors_collections/functions/excel/ex
 import 'package:rst/modules/statistics/collectors_collections/providers/collectors_collections.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class CollectorsCollectionsExcelFileGenerationDialog
-    extends HookConsumerWidget {
+class CollectorsCollectionsExcelFileGenerationDialog extends HookConsumerWidget {
   const CollectorsCollectionsExcelFileGenerationDialog({
     super.key,
   });
@@ -119,13 +118,12 @@ class CollectorsCollectionsExcelFileGenerationDialog
                       text: 'Exporter',
                       onPressed: () async {
                         // get current collectorsCollectionss filter option
-                        final collectorsCollectionssListParameters = ref
-                            .read(collectorsCollectionsListParametersProvider);
+                        final collectorsCollectionssListParameters =
+                            ref.read(collectorsCollectionsListParametersProvider);
 
                         if (exportAllCollectorsCollections.value) {
                           // get all collectorsCollectionss count
-                          final collectorsCollectionssCount =
-                              await CollectorsController.countAll();
+                          final collectorsCollectionssCount = await CollectorsController.countAll();
 
                           // generate excel file
                           await generateCollectorsCollectionsExcelFile(
@@ -142,8 +140,7 @@ class CollectorsCollectionsExcelFileGenerationDialog
                           await generateCollectorsCollectionsExcelFile(
                             context: context,
                             ref: ref,
-                            listParameters:
-                                collectorsCollectionssListParameters,
+                            listParameters: collectorsCollectionssListParameters,
                             showExportButton: showExportButton,
                           );
                         }

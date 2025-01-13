@@ -16,18 +16,16 @@ class StockFilterDialog extends StatefulHookConsumerWidget {
   const StockFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _StockFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _StockFilterDialogState();
 }
 
 class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final stocksListParameters = ref.watch(stocksListParametersProvider);
-    final stocksListFilterParametersAdded =
-        ref.watch(stocksListFilterParametersAddedProvider);
+    final stocksListFilterParametersAdded = ref.watch(stocksListFilterParametersAddedProvider);
 
     final stocksListParameters = ref.watch(stocksListParametersProvider);
 
@@ -95,8 +93,7 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in stocksListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in stocksListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -105,8 +102,7 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
                                 (field) => field.back != 'id',
                               )
                               .toList(),
-                          filterParametersAddedProvider:
-                              stocksListFilterParametersAddedProvider,
+                          filterParametersAddedProvider: stocksListFilterParametersAddedProvider,
                         ),
                       );
                     }
@@ -130,9 +126,7 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(stocksListFilterParametersAddedProvider.notifier)
-                        .update(
+                    ref.read(stocksListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -198,8 +192,7 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -221,9 +214,7 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: stocksListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: stocksListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: stocksListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -235,11 +226,9 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in stocksListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -248,13 +237,11 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(stocksListFilterParametersAddedProvider
-                                    .notifier)
+                                .read(stocksListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -266,15 +253,12 @@ class _StockFilterDialogState extends ConsumerState<StockFilterDialog> {
 
                           // add filter parameters to stocksListParameter
 
-                          ref
-                              .read(stocksListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(stocksListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

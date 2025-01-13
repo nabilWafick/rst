@@ -16,18 +16,16 @@ class AgentFilterDialog extends StatefulHookConsumerWidget {
   const AgentFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AgentFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AgentFilterDialogState();
 }
 
 class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final agentsListParameters = ref.watch(agentsListParametersProvider);
-    final agentsListFilterParametersAdded =
-        ref.watch(agentsListFilterParametersAddedProvider);
+    final agentsListFilterParametersAdded = ref.watch(agentsListFilterParametersAddedProvider);
 
     final agentsListParameters = ref.watch(agentsListParametersProvider);
 
@@ -95,8 +93,7 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in agentsListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in agentsListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -105,8 +102,7 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
                                 (field) => field.back != 'id',
                               )
                               .toList(),
-                          filterParametersAddedProvider:
-                              agentsListFilterParametersAddedProvider,
+                          filterParametersAddedProvider: agentsListFilterParametersAddedProvider,
                         ),
                       );
                     }
@@ -130,9 +126,7 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(agentsListFilterParametersAddedProvider.notifier)
-                        .update(
+                    ref.read(agentsListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -198,8 +192,7 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -221,9 +214,7 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: agentsListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: agentsListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: agentsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -235,11 +226,9 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in agentsListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -248,13 +237,11 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(agentsListFilterParametersAddedProvider
-                                    .notifier)
+                                .read(agentsListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -266,15 +253,12 @@ class _AgentFilterDialogState extends ConsumerState<AgentFilterDialog> {
 
                           // add filter parameters to agentsListParameter
 
-                          ref
-                              .read(agentsListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(agentsListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

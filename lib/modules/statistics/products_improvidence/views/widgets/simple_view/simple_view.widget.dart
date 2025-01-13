@@ -4,7 +4,6 @@ import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/product_forecast/product_forecast.model.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/product_improvidence/product_improvidence.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
 class ProductImprovidenceSimpleView extends ConsumerWidget {
@@ -201,7 +200,7 @@ class ProductImprovidenceSimpleView extends ConsumerWidget {
                                                 child: RSTText(
                                                   text: FunctionsController.truncateText(
                                                     text:
-                                                        '${productImprovidencePerCollector.customersNames[index]} ${productImprovidencePerCollector.customersNames[index]}',
+                                                        '${productImprovidencePerCollector.customersNames[index]} ${productImprovidencePerCollector.customersFirstnames[index]}',
                                                     maxLength: 30,
                                                   ),
                                                   textAlign: TextAlign.start,

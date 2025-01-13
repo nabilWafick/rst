@@ -52,6 +52,8 @@ class FunctionsController {
       cancelText: 'Annuler',
     );
 
+    debugPrint(" ==============> Selected date: $selectedDate");
+
     DateTime? dateTime;
 
     if (selectedDate != null) {
@@ -65,6 +67,8 @@ class FunctionsController {
         second: 0,
       );
     }
+
+    debugPrint(" =================> Selected time: $dateTime");
 
     if (isNullable) {
       if ((ereasable != null && ereasable) || dateTime != null) {
@@ -140,14 +144,9 @@ class FunctionsController {
   static String getFormatedTime({
     required DateTime dateTime,
   }) {
-    String hour =
-        dateTime.hour < 10 ? '0${dateTime.hour}' : dateTime.hour.toString();
-    String minute = dateTime.minute < 10
-        ? '0${dateTime.minute}'
-        : dateTime.minute.toString();
-    String second = dateTime.second < 10
-        ? '0${dateTime.second}'
-        : dateTime.second.toString();
+    String hour = dateTime.hour < 10 ? '0${dateTime.hour}' : dateTime.hour.toString();
+    String minute = dateTime.minute < 10 ? '0${dateTime.minute}' : dateTime.minute.toString();
+    String second = dateTime.second < 10 ? '0${dateTime.second}' : dateTime.second.toString();
     return '$hour:$minute:$second';
   }
 
@@ -190,15 +189,12 @@ class FunctionsController {
     } else {
       // ceil is used for checking if the value passed will be rounded or
       // not since va,ue on database are storing as decimal. So, value like 1200.0 are getting so it is nec dividing
-      return ceil
-          ? number.toInt().toString()
-          : number.toStringAsFixed(2).replaceFirst(r'.', r',');
+      return ceil ? number.toInt().toString() : number.toStringAsFixed(2).replaceFirst(r'.', r',');
     }
   }
 
   static String generateRandomStringFromCurrentDateTime() {
-    String millisecondsString =
-        DateTime.now().millisecondsSinceEpoch.toString();
+    String millisecondsString = DateTime.now().millisecondsSinceEpoch.toString();
     String result = '';
     Random random = Random();
 

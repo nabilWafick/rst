@@ -69,8 +69,10 @@ class CollectionsController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await CollectionsServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await CollectionsServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
@@ -83,8 +85,10 @@ class CollectionsController {
     );
   }
 
-  static Future<ControllerResponse> sumAll() async {
-    final serviceResponse = await CollectionsServices.sumAll();
+  static Future<ControllerResponse> sumAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await CollectionsServices.sumAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
@@ -111,8 +115,24 @@ class CollectionsController {
     );
   }
 
-  static Future<ControllerResponse> sumAllRest() async {
-    final serviceResponse = await CollectionsServices.sumAllRest();
+  static Future<ControllerResponse> yearProfit() async {
+    final serviceResponse = await CollectionsServices.yearProfit();
+
+    return ControllerResponse(
+      statusCode: serviceResponse.statusCode,
+      data: DataCount.fromMap(
+        serviceResponse.data,
+      ),
+      result: serviceResponse.result,
+      error: serviceResponse.error,
+      message: serviceResponse.message,
+    );
+  }
+
+  static Future<ControllerResponse> sumAllRest({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await CollectionsServices.sumAllRest(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

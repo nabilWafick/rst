@@ -16,22 +16,19 @@ class SettlementFilterDialog extends StatefulHookConsumerWidget {
   const SettlementFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SettlementFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SettlementFilterDialogState();
 }
 
-class _SettlementFilterDialogState
-    extends ConsumerState<SettlementFilterDialog> {
+class _SettlementFilterDialogState extends ConsumerState<SettlementFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final settlementsListParameters = ref.watch(settlementsListParametersProvider);
     final settlementsListFilterParametersAdded =
         ref.watch(settlementsListFilterParametersAddedProvider);
 
-    final settlementsListParameters =
-        ref.watch(settlementsListParametersProvider);
+    final settlementsListParameters = ref.watch(settlementsListParametersProvider);
 
     final paramOperator = settlementsListParameters.containsKey('where')
         ? settlementsListParameters['where'].containsKey('AND')
@@ -97,16 +94,15 @@ class _SettlementFilterDialogState
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in settlementsListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in settlementsListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
                           fields: SettlementStructure.fields
-                              .where(
+                          /*.where(
                                 (field) => !field.isRelation,
-                              )
-                              .toList(),
+                              ).toList()*/
+                          ,
                           filterParametersAddedProvider:
                               settlementsListFilterParametersAddedProvider,
                         ),
@@ -132,10 +128,7 @@ class _SettlementFilterDialogState
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(settlementsListFilterParametersAddedProvider
-                            .notifier)
-                        .update(
+                    ref.read(settlementsListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -194,18 +187,14 @@ class _SettlementFilterDialogState
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            settlementsListFilterParametersAddedProvider);
+                        ref.invalidate(settlementsListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(settlementsListParametersProvider.notifier)
-                            .update(
+                        ref.read(settlementsListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -227,9 +216,7 @@ class _SettlementFilterDialogState
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: settlementsListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: settlementsListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: settlementsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -241,11 +228,9 @@ class _SettlementFilterDialogState
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in settlementsListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -254,14 +239,11 @@ class _SettlementFilterDialogState
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(
-                                    settlementsListFilterParametersAddedProvider
-                                        .notifier)
+                                .read(settlementsListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -273,15 +255,12 @@ class _SettlementFilterDialogState
 
                           // add filter parameters to settlementsListParameter
 
-                          ref
-                              .read(settlementsListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(settlementsListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

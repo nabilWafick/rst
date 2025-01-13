@@ -119,13 +119,11 @@ class CategoryPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current categories filter option
-                        final categoriesListParameters =
-                            ref.read(categoriesListParametersProvider);
+                        final categoriesListParameters = ref.read(categoriesListParametersProvider);
 
                         if (exportAllcategories.value) {
                           // get all categories count
-                          final categoriesCount =
-                              await CategoriesController.countAll();
+                          final categoriesCount = await CategoriesController.countAll();
 
                           // generate excel file
                           await generateCategoriesPdf(

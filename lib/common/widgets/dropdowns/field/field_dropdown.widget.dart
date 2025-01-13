@@ -36,8 +36,7 @@ class RSTFieldDropdown extends StatefulHookConsumerWidget {
     required this.dropdownMenuEntriesValues,
   });
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RSTFieldDropdownState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RSTFieldDropdownState();
 }
 
 class _RSTFieldDropdownState extends ConsumerState<RSTFieldDropdown> {
@@ -62,8 +61,7 @@ class _RSTFieldDropdownState extends ConsumerState<RSTFieldDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedDropdownItem =
-        ref.watch(fieldDropdownProvider(widget.providerName));
+    final selectedDropdownItem = ref.watch(fieldDropdownProvider(widget.providerName));
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 5.0,
@@ -81,12 +79,11 @@ class _RSTFieldDropdownState extends ConsumerState<RSTFieldDropdown> {
         dropdownMenuEntries: widget.dropdownMenuEntriesLabels
             .map(
               (dropdownMenuEntryLabel) => DropdownMenuEntry(
-                value: widget.dropdownMenuEntriesValues[widget
-                    .dropdownMenuEntriesLabels
-                    .indexOf(dropdownMenuEntryLabel)],
+                value: widget.dropdownMenuEntriesValues[
+                    widget.dropdownMenuEntriesLabels.indexOf(dropdownMenuEntryLabel)],
                 label: dropdownMenuEntryLabel.front,
                 style: const ButtonStyle(
-                  textStyle: MaterialStatePropertyAll(
+                  textStyle: WidgetStatePropertyAll(
                     TextStyle(
                       fontWeight: FontWeight.w500,
                     ),
@@ -99,8 +96,7 @@ class _RSTFieldDropdownState extends ConsumerState<RSTFieldDropdown> {
           Icons.arrow_drop_down,
         ),
         onSelected: (value) {
-          ref.read(fieldDropdownProvider(widget.providerName).notifier).state =
-              value!;
+          ref.read(fieldDropdownProvider(widget.providerName).notifier).state = value!;
         },
       ),
     );

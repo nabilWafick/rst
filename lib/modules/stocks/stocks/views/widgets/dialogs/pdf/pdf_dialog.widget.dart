@@ -119,8 +119,7 @@ class StockPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current stocks filter option
-                        final stocksListParameters =
-                            ref.read(stocksListParametersProvider);
+                        final stocksListParameters = ref.read(stocksListParametersProvider);
 
                         if (exportAllstocks.value) {
                           // get all stocks count

@@ -118,13 +118,11 @@ class TransferExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current transfers filter option
-                        final transfersListParameters =
-                            ref.read(transfersListParametersProvider);
+                        final transfersListParameters = ref.read(transfersListParametersProvider);
 
                         if (exportAllTransfers.value) {
                           // get all transfers count
-                          final transfersCount =
-                              await TransfersController.countAll();
+                          final transfersCount = await TransfersController.countAll();
 
                           // generate excel file
                           await generateTransfersExcelFile(

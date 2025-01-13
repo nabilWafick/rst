@@ -16,16 +16,14 @@ class EconomicalActivityFilterDialog extends StatefulHookConsumerWidget {
   const EconomicalActivityFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _EconomicalActivityFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _EconomicalActivityFilterDialogState();
 }
 
-class _EconomicalActivityFilterDialogState
-    extends ConsumerState<EconomicalActivityFilterDialog> {
+class _EconomicalActivityFilterDialogState extends ConsumerState<EconomicalActivityFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final economicalActivitiesListParameters = ref.watch(economicalActivitiesListParametersProvider);
     final economicalActivitiesListFilterParametersAdded =
         ref.watch(economicalActivitiesListFilterParametersAddedProvider);
@@ -33,8 +31,7 @@ class _EconomicalActivityFilterDialogState
     final economicalActivitiesListParameters =
         ref.watch(economicalActivitiesListParametersProvider);
 
-    final paramOperator = economicalActivitiesListParameters
-            .containsKey('where')
+    final paramOperator = economicalActivitiesListParameters.containsKey('where')
         ? economicalActivitiesListParameters['where'].containsKey('AND')
             ? 'AND'
             : economicalActivitiesListParameters['where'].containsKey('OR')
@@ -98,8 +95,7 @@ class _EconomicalActivityFilterDialogState
                     List<Widget> filterParametersToolsList = [];
 
                     for (MapEntry filterParameter
-                        in economicalActivitiesListFilterParametersAdded
-                            .entries) {
+                        in economicalActivitiesListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -133,11 +129,7 @@ class _EconomicalActivityFilterDialogState
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(
-                            economicalActivitiesListFilterParametersAddedProvider
-                                .notifier)
-                        .update(
+                    ref.read(economicalActivitiesListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -196,19 +188,14 @@ class _EconomicalActivityFilterDialogState
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            economicalActivitiesListFilterParametersAddedProvider);
+                        ref.invalidate(economicalActivitiesListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(economicalActivitiesListParametersProvider
-                                .notifier)
-                            .update(
+                        ref.read(economicalActivitiesListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -230,11 +217,9 @@ class _EconomicalActivityFilterDialogState
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: economicalActivitiesListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
-                onPressed: economicalActivitiesListFilterParametersAdded
-                        .isNotEmpty
+                text:
+                    economicalActivitiesListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
+                onPressed: economicalActivitiesListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
                         formKey.currentState!.save();
@@ -245,12 +230,9 @@ class _EconomicalActivityFilterDialogState
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
-                              in economicalActivitiesListFilterParametersAdded
-                                  .entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
+                              in economicalActivitiesListFilterParametersAdded.entries) {
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -260,13 +242,11 @@ class _EconomicalActivityFilterDialogState
                             /// update added filter
                             ref
                                 .read(
-                                    economicalActivitiesListFilterParametersAddedProvider
-                                        .notifier)
+                                    economicalActivitiesListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -279,15 +259,13 @@ class _EconomicalActivityFilterDialogState
                           // add filter parameters to economicalActivitiesListParameter
 
                           ref
-                              .read(economicalActivitiesListParametersProvider
-                                  .notifier)
+                              .read(economicalActivitiesListParametersProvider.notifier)
                               .update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

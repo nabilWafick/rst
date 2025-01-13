@@ -16,18 +16,16 @@ class TypeFilterDialog extends StatefulHookConsumerWidget {
   const TypeFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _TypeFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TypeFilterDialogState();
 }
 
 class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final typesListParameters = ref.watch(typesListParametersProvider);
-    final typesListFilterParametersAdded =
-        ref.watch(typesListFilterParametersAddedProvider);
+    final typesListFilterParametersAdded = ref.watch(typesListFilterParametersAddedProvider);
 
     final logicalOperator = useState<String>('AND');
 
@@ -83,14 +81,12 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in typesListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in typesListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
                           fields: TypeStructure.fields,
-                          filterParametersAddedProvider:
-                              typesListFilterParametersAddedProvider,
+                          filterParametersAddedProvider: typesListFilterParametersAddedProvider,
                         ),
                       );
                     }
@@ -115,8 +111,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                 height: 5.00,
               ),
               RSTText(
-                text:
-                    'List Parameters : ${ref.watch(typesListParametersProvider)}',
+                text: 'List Parameters : ${ref.watch(typesListParametersProvider)}',
                 fontSize: 12.0,
               ),
 
@@ -131,9 +126,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(typesListFilterParametersAddedProvider.notifier)
-                        .update(
+                    ref.read(typesListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -199,8 +192,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -222,9 +214,7 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: typesListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: typesListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: typesListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -236,11 +226,9 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in typesListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -249,13 +237,11 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(typesListFilterParametersAddedProvider
-                                    .notifier)
+                                .read(typesListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -267,15 +253,12 @@ class _TypeFilterDialogState extends ConsumerState<TypeFilterDialog> {
 
                           // add filter parameters to typesListParameter
 
-                          ref
-                              .read(typesListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(typesListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

@@ -33,10 +33,8 @@ class SettlementsCRUDFunctions {
       final settlementNumber = ref.watch(settlementNumberProvider);
       final cashOperationsSelectedCustomerCard =
           ref.watch(cashOperationsSelectedCustomerCardProvider);
-      final settlementCollectionDate =
-          ref.watch(settlementCollectionDateProvider);
-      final settlementCollectorCollection =
-          ref.watch(settlementCollectorCollectionProvider);
+      final settlementCollectionDate = ref.watch(settlementCollectionDateProvider);
+      final settlementCollectorCollection = ref.watch(settlementCollectorCollectionProvider);
 
       bool areDataValidated = true;
 
@@ -45,8 +43,7 @@ class SettlementsCRUDFunctions {
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucune date de collecte n\'a été sélectionnée',
@@ -67,8 +64,7 @@ class SettlementsCRUDFunctions {
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucune collecte n\'a été trouvée pour cette date',
@@ -111,8 +107,7 @@ class SettlementsCRUDFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: settlementAdditionResponse.result?.fr,
           error: settlementAdditionResponse.error?.fr,
           message: settlementAdditionResponse.message!.fr,
@@ -133,12 +128,10 @@ class SettlementsCRUDFunctions {
         );
 
         // invalidate settlements providers
-        ref.invalidate(
-            cashOperationsSelectedCardTotalSettlementsNumbersProvider);
+        ref.invalidate(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
         ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
         ref.invalidate(cashOperationsSelectedCardSettlementsCountProvider);
-        ref.invalidate(
-            cashOperationsSelectedCardSpecificSettlementsCountProvider);
+        ref.invalidate(cashOperationsSelectedCardSpecificSettlementsCountProvider);
         ref.invalidate(settlementsListStreamProvider);
         ref.invalidate(settlementsCountProvider);
         ref.invalidate(specificSettlementsCountProvider);
@@ -183,10 +176,8 @@ class SettlementsCRUDFunctions {
 
       // get form inputs value
 
-      final settlementCollectionDate =
-          ref.watch(settlementCollectionDateProvider);
-      final settlementCollectorCollection =
-          ref.watch(settlementCollectorCollectionProvider);
+      final settlementCollectionDate = ref.watch(settlementCollectionDateProvider);
+      final settlementCollectorCollection = ref.watch(settlementCollectorCollectionProvider);
 
       bool areDataValidated = true;
 
@@ -195,8 +186,7 @@ class SettlementsCRUDFunctions {
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucune date de collecte n\'a été sélectionnée',
@@ -217,8 +207,7 @@ class SettlementsCRUDFunctions {
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucune collecte n\'a été trouvée pour cette date',
@@ -247,8 +236,8 @@ class SettlementsCRUDFunctions {
           if (settlementInputVisibility.value) {
             settlements.add(
               Settlement(
-                number: ref.watch(familyIntFormFieldValueProvider(
-                    settlementInputVisibility.key)),
+                number:
+                    ref.watch(familyIntFormFieldValueProvider(settlementInputVisibility.key)) ?? 1,
                 isValidated: true,
                 card: ref.watch(
                   cardSelectionToolProvider(settlementInputVisibility.key),
@@ -272,14 +261,12 @@ class SettlementsCRUDFunctions {
         }
 
         // launch settlement addition
-        final settlementAdditionResponse =
-            await SettlementsController.createMultiple(
+        final settlementAdditionResponse = await SettlementsController.createMultiple(
           settlements: settlements,
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: settlementAdditionResponse.result?.fr,
           error: settlementAdditionResponse.error?.fr,
           message: settlementAdditionResponse.message!.fr,
@@ -300,12 +287,10 @@ class SettlementsCRUDFunctions {
         );
 
         // invalidate settlements providers
-        ref.invalidate(
-            cashOperationsSelectedCardTotalSettlementsNumbersProvider);
+        ref.invalidate(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
         ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
         ref.invalidate(cashOperationsSelectedCardSettlementsCountProvider);
-        ref.invalidate(
-            cashOperationsSelectedCardSpecificSettlementsCountProvider);
+        ref.invalidate(cashOperationsSelectedCardSpecificSettlementsCountProvider);
         ref.invalidate(settlementsListStreamProvider);
         ref.invalidate(settlementsCountProvider);
         ref.invalidate(specificSettlementsCountProvider);
@@ -375,8 +360,7 @@ class SettlementsCRUDFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: settlementUpdateResponse.result?.fr,
           error: settlementUpdateResponse.error?.fr,
           message: settlementUpdateResponse.message!.fr,
@@ -408,12 +392,10 @@ class SettlementsCRUDFunctions {
         );
 
         // invalidate settlements providers
-        ref.invalidate(
-            cashOperationsSelectedCardTotalSettlementsNumbersProvider);
+        ref.invalidate(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
         ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
         ref.invalidate(cashOperationsSelectedCardSettlementsCountProvider);
-        ref.invalidate(
-            cashOperationsSelectedCardSpecificSettlementsCountProvider);
+        ref.invalidate(cashOperationsSelectedCardSpecificSettlementsCountProvider);
         ref.invalidate(settlementsListStreamProvider);
         ref.invalidate(settlementsCountProvider);
         ref.invalidate(specificSettlementsCountProvider);
@@ -452,8 +434,7 @@ class SettlementsCRUDFunctions {
     );
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: settlementUpdateResponse.result?.fr,
       error: settlementUpdateResponse.error?.fr,
       message: settlementUpdateResponse.message!.fr,
@@ -515,8 +496,7 @@ class SettlementsCRUDFunctions {
     );
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: settlementDeletionResponse.result?.fr,
       error: settlementDeletionResponse.error?.fr,
       message: settlementDeletionResponse.message!.fr,

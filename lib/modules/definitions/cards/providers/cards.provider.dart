@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
+import 'package:rst/utils/constants/api/api.constant.dart';
 
 // used for storing card label (form)
 final cardLabelProvider = StateProvider<String>(
@@ -43,6 +44,28 @@ final cardsListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
+    'where': {
+      'OR': [
+        {
+          'repaidAt': {
+            'equals': RSTApiConstants.nullValue,
+            //   DateTime.now().toIso8601String(),
+          },
+        },
+        {
+          'satisfiedAt': {
+            'equals': RSTApiConstants.nullValue,
+            //   DateTime.now().toIso8601String(),
+          },
+        },
+        {
+          'transferredAt': {
+            'equals': RSTApiConstants.nullValue,
+            //   DateTime.now().toIso8601String(),
+          },
+        },
+      ]
+    },
     'orderBy': [
       {
         'id': 'desc',
@@ -52,8 +75,7 @@ final cardsListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
 });
 
 // used for storing added filter tool
-final cardsListFilterParametersAddedProvider =
-    StateProvider<Map<int, Map<String, dynamic>>>((ref) {
+final cardsListFilterParametersAddedProvider = StateProvider<Map<int, Map<String, dynamic>>>((ref) {
   return {};
 });
 
@@ -70,9 +92,7 @@ final cardsListStreamProvider = FutureProvider<List<Card>>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? List<Card>.from(controllerResponse.data)
-      : <Card>[];
+  return controllerResponse.data != null ? List<Card>.from(controllerResponse.data) : <Card>[];
 });
 
 // used for storing all cards of database count
@@ -84,9 +104,25 @@ final cardsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+final yearCardsCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await CardsController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched cards (cards respecting filter options) count
@@ -102,7 +138,5 @@ final specificCardsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

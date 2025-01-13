@@ -118,8 +118,7 @@ class CardExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current Cards filter option
-                        final cardsListParameters =
-                            ref.read(cardsListParametersProvider);
+                        final cardsListParameters = ref.read(cardsListParametersProvider);
 
                         if (exportAllCards.value) {
                           // get all cards count

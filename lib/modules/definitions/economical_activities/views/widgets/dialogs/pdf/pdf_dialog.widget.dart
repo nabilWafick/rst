@@ -119,8 +119,8 @@ class EconomicalActivityPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current economicalActivities filter option
-                        final economicalActivitiesListParameters = ref
-                            .read(economicalActivitiesListParametersProvider);
+                        final economicalActivitiesListParameters =
+                            ref.read(economicalActivitiesListParametersProvider);
 
                         if (exportAlleconomicalActivities.value) {
                           // get all economicalActivities count

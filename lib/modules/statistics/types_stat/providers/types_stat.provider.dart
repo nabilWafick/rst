@@ -4,8 +4,7 @@ import 'package:rst/modules/definitions/types/controllers/types.controller.dart'
 import 'package:rst/modules/statistics/types_stat/models/type_stat/type_stat.model.dart';
 
 // used for storing typesStats filter options
-final typesStatsListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final typesStatsListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 20,
@@ -19,8 +18,7 @@ final typesStatsListFilterParametersAddedProvider =
 });
 
 // used for storing fetched typesStats
-final typesStatsListStreamProvider =
-    FutureProvider<List<TypeStat>>((ref) async {
+final typesStatsListStreamProvider = FutureProvider<List<TypeStat>>((ref) async {
   final listParameters = ref.watch(typesStatsListParametersProvider);
 
   final controllerResponse = await TypesController.getGlobalStats(
@@ -46,9 +44,7 @@ final typesStatsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched typesStats (typesStats respecting filter options) count
@@ -64,7 +60,5 @@ final specificTypesStatsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

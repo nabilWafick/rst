@@ -118,8 +118,7 @@ class AgentExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current agents filter option
-                        final agentsListParameters =
-                            ref.read(agentsListParametersProvider);
+                        final agentsListParameters = ref.read(agentsListParametersProvider);
 
                         if (exportAllAgents.value) {
                           // get all agents count

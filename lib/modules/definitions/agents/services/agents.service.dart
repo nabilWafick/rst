@@ -176,7 +176,9 @@ class AgentsServices {
     }
   }
 
-  static Future<ServiceResponse> countAll() async {
+  static Future<ServiceResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -193,6 +195,7 @@ class AgentsServices {
         ),
       ).get(
         '$route/count/all',
+        queryParameters: listParameters,
       );
 
       return ServiceResponse(

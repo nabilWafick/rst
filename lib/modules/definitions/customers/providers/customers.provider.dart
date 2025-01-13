@@ -41,7 +41,7 @@ final customerNicNumberProvider = StateProvider<int?>(
 // used for storing customer occupation (form)
 final customerOccupationProvider = StateProvider<String?>(
   (ref) {
-    return;
+    return '';
   },
 );
 
@@ -60,14 +60,12 @@ final customerSignatureProvider = StateProvider<String?>(
 );
 
 // for managing products inputs, add,hide inputs, identify inputs
-final customerCardsInputsAddedVisibilityProvider =
-    StateProvider<Map<String, bool>>((ref) {
+final customerCardsInputsAddedVisibilityProvider = StateProvider<Map<String, bool>>((ref) {
   return {};
 });
 
 // used for storing customers filter options
-final customersListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final customersListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
@@ -112,9 +110,26 @@ final customersCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+// used for storing all customers of database count
+final yearCustomersCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await CustomersController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched customers (customers respecting filter options) count
@@ -130,7 +145,5 @@ final specificCustomersCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

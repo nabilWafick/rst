@@ -119,13 +119,11 @@ class ProductPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current products filter option
-                        final productsListParameters =
-                            ref.read(productsListParametersProvider);
+                        final productsListParameters = ref.read(productsListParametersProvider);
 
                         if (exportAllProducts.value) {
                           // get all products count
-                          final productsCount =
-                              await ProductsController.countAll();
+                          final productsCount = await ProductsController.countAll();
 
                           // generate excel file
                           await generateProductsPdf(

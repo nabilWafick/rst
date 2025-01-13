@@ -180,8 +180,10 @@ class CollectorsController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await CollectorsServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await CollectorsServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

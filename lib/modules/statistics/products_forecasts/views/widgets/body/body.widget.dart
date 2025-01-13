@@ -13,12 +13,10 @@ class ProductsForecastsPageBody extends StatefulHookConsumerWidget {
   const ProductsForecastsPageBody({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ProductsForecastsPageBodyState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsForecastsPageBodyState();
 }
 
-class _ProductsForecastsPageBodyState
-    extends ConsumerState<ProductsForecastsPageBody> {
+class _ProductsForecastsPageBodyState extends ConsumerState<ProductsForecastsPageBody> {
   @override
   Widget build(BuildContext context) {
     final productsForecasts = ref.watch(productsForecastsListStreamProvider);

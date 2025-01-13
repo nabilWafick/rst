@@ -16,18 +16,16 @@ class ProductFilterDialog extends StatefulHookConsumerWidget {
   const ProductFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ProductFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductFilterDialogState();
 }
 
 class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final productsListParameters = ref.watch(productsListParametersProvider);
-    final productsListFilterParametersAdded =
-        ref.watch(productsListFilterParametersAddedProvider);
+    final productsListFilterParametersAdded = ref.watch(productsListFilterParametersAddedProvider);
 
     final productsListParameters = ref.watch(productsListParametersProvider);
 
@@ -95,8 +93,7 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in productsListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in productsListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -105,8 +102,7 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                                 (field) => field.back != 'id',
                               )
                               .toList(),
-                          filterParametersAddedProvider:
-                              productsListFilterParametersAddedProvider,
+                          filterParametersAddedProvider: productsListFilterParametersAddedProvider,
                         ),
                       );
                     }
@@ -130,10 +126,7 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(
-                            productsListFilterParametersAddedProvider.notifier)
-                        .update(
+                    ref.read(productsListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -192,18 +185,14 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            productsListFilterParametersAddedProvider);
+                        ref.invalidate(productsListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(productsListParametersProvider.notifier)
-                            .update(
+                        ref.read(productsListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -225,9 +214,7 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: productsListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: productsListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: productsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -239,11 +226,9 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in productsListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -252,13 +237,11 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(productsListFilterParametersAddedProvider
-                                    .notifier)
+                                .read(productsListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -270,15 +253,12 @@ class _ProductFilterDialogState extends ConsumerState<ProductFilterDialog> {
 
                           // add filter parameters to productsListParameter
 
-                          ref
-                              .read(productsListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(productsListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

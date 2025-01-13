@@ -9,7 +9,7 @@ class Type {
   final int? id;
   final String name;
   final double stake;
-  final List<TypeProduct> typeProducts;
+  List<TypeProduct> typeProducts = [];
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -63,16 +63,15 @@ class Type {
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] as String,
       stake: double.tryParse(map['stake']) ?? .0,
-      typeProducts:
-          map['typeProducts'].isNotEmpty || map['typeProducts'] != null
-              ? List<TypeProduct>.from(
-                  (map['typeProducts'] as List<dynamic>).map<TypeProduct>(
-                    (typeProduct) => TypeProduct.fromMap(
-                      typeProduct as Map<String, dynamic>,
-                    ),
-                  ),
-                )
-              : [],
+      typeProducts: map['typeProducts'].isNotEmpty || map['typeProducts'] != null
+          ? List<TypeProduct>.from(
+              (map['typeProducts'] as List<dynamic>).map<TypeProduct>(
+                (typeProduct) => TypeProduct.fromMap(
+                  typeProduct as Map<String, dynamic>,
+                ),
+              ),
+            )
+          : [],
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );
@@ -80,8 +79,7 @@ class Type {
 
   String toJson() => json.encode(toMap());
 
-  factory Type.fromJson(String source) =>
-      Type.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Type.fromJson(String source) => Type.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

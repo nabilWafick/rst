@@ -159,17 +159,14 @@ class WebSocketService {
           ref.invalidate(settlementsCountProvider);
           ref.invalidate(specificSettlementsCountProvider);
 
-          ref.invalidate(
-              cashOperationsSelectedCardTotalSettlementsNumbersProvider);
+          ref.invalidate(cashOperationsSelectedCardTotalSettlementsNumbersProvider);
           ref.invalidate(cashOperationsSelectedCardSettlementsProvider);
           ref.invalidate(cashOperationsSelectedCardSettlementsCountProvider);
-          ref.invalidate(
-              cashOperationsSelectedCardSpecificSettlementsCountProvider);
+          ref.invalidate(cashOperationsSelectedCardSpecificSettlementsCountProvider);
 
           ref.invalidate(cardSettlementsOverviewProvider);
           ref.invalidate(cardSettlementsOverviewCountProvider);
-          ref.invalidate(
-              cardSettlementsOverviewSpecificSettlementsCountProvider);
+          ref.invalidate(cardSettlementsOverviewSpecificSettlementsCountProvider);
           break;
 
         case 'stock':
@@ -217,7 +214,7 @@ class WebSocketService {
     }
   }
 
-  void _scheduleReconnect() {
+  void scheduleReconnect() {
     if (_reconnectAttempts >= _maxReconnectAttempts) {
       debugPrint('Max reconnection attempts reached. Stopping reconnection.');
       return;

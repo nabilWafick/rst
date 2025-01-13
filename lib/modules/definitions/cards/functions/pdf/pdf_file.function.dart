@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,11 +14,11 @@ import 'package:rst/common/functions/practical/pratical.function.dart';
 import 'package:rst/common/models/feedback_dialog_response/feedback_dialog_response.model.dart';
 import 'package:rst/common/providers/common.provider.dart';
 import 'package:rst/common/widgets/feedback_dialog/feedback_dialog.widget.dart';
+import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/utils/utils.dart';
-import 'package:rst/common/widgets/pdf_info/pdf_info.info.dart';
 
 Future<void> generateCardsPdf({
   required BuildContext context,
@@ -48,12 +48,10 @@ Future<void> generateCardsPdf({
     final pdf = pw.Document();
 
     // customise font
-    final regularFontData =
-        await rootBundle.load('assets/fonts/Poppins/Poppins-Regular.ttf');
+    final regularFontData = await rootBundle.load('assets/fonts/Poppins/Poppins-Regular.ttf');
     final regularFont = pw.Font.ttf(regularFontData.buffer.asByteData());
 
-    final mediumFontData =
-        await rootBundle.load('assets/fonts/Poppins/Poppins-Medium.ttf');
+    final mediumFontData = await rootBundle.load('assets/fonts/Poppins/Poppins-Medium.ttf');
     final mediumFont = pw.Font.ttf(mediumFontData.buffer.asByteData());
 
     final image = await rootBundle.load(RSTImages.companyLogo);
@@ -338,9 +336,7 @@ Future<void> generateCardsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    cards[i].repaidAt != null
-                        ? format.format(cards[i].repaidAt!)
-                        : '',
+                    cards[i].repaidAt != null ? format.format(cards[i].repaidAt!) : '',
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -353,9 +349,7 @@ Future<void> generateCardsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    cards[i].satisfiedAt != null
-                        ? format.format(cards[i].satisfiedAt!)
-                        : '',
+                    cards[i].satisfiedAt != null ? format.format(cards[i].satisfiedAt!) : '',
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -368,9 +362,7 @@ Future<void> generateCardsPdf({
                     horizontal: 5.0,
                   ),
                   child: pw.Text(
-                    cards[i].transferredAt != null
-                        ? format.format(cards[i].transferredAt!)
-                        : '',
+                    cards[i].transferredAt != null ? format.format(cards[i].transferredAt!) : '',
                     style: pw.TextStyle(
                       font: regularFont,
                       fontSize: 7,
@@ -438,8 +430,7 @@ Future<void> generateCardsPdf({
       onLayout: (PdfPageFormat format) async => pdf.save(),
     );
 
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: 'PDF',
       error: null,
       message: 'Fichier généré',
@@ -459,8 +450,7 @@ Future<void> generateCardsPdf({
   } catch (error) {
     debugPrint(error.toString());
 
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: null,
       error: 'PDF',
       message: 'Une erreur s\'est produite',

@@ -8,7 +8,6 @@ import 'package:rst/common/widgets/text/text.widget.dart';
 import 'package:rst/modules/definitions/products/controllers/products.controller.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/modules/statistics/products_improvidence/functions/excel/excel_file.function.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/modules/statistics/products_improvidence/providers/products_improvidence.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 

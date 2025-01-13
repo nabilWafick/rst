@@ -11,8 +11,7 @@ final categoryNameProvider = StateProvider<String>(
 );
 
 // used for storing categories filter options
-final categoriesListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final categoriesListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
@@ -31,8 +30,7 @@ final categoriesListFilterParametersAddedProvider =
 });
 
 // used for storing fetched categories
-final categoriesListStreamProvider =
-    FutureProvider<List<Category>>((ref) async {
+final categoriesListStreamProvider = FutureProvider<List<Category>>((ref) async {
   final listParameters = ref.watch(categoriesListParametersProvider);
 
   final controllerResponse = await CategoriesController.getMany(
@@ -58,9 +56,26 @@ final categoriesCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+// used for storing all categories of database count
+final yearCategoriesCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await CategoriesController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched categories (categories respecting filter options) count
@@ -76,7 +91,5 @@ final specificCategoriesCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

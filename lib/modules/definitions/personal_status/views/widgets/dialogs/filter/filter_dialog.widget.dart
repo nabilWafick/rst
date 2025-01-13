@@ -15,22 +15,19 @@ class PersonalStatusFilterDialog extends StatefulHookConsumerWidget {
   const PersonalStatusFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _PersonalStatusFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _PersonalStatusFilterDialogState();
 }
 
-class _PersonalStatusFilterDialogState
-    extends ConsumerState<PersonalStatusFilterDialog> {
+class _PersonalStatusFilterDialogState extends ConsumerState<PersonalStatusFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final personalStatusListParameters = ref.watch(personalStatusListParametersProvider);
     final personalStatusListFilterParametersAdded =
         ref.watch(personalStatusListFilterParametersAddedProvider);
 
-    final personalStatusListParameters =
-        ref.watch(personalStatusListParametersProvider);
+    final personalStatusListParameters = ref.watch(personalStatusListParametersProvider);
 
     final paramOperator = personalStatusListParameters.containsKey('where')
         ? personalStatusListParameters['where'].containsKey('AND')
@@ -130,10 +127,7 @@ class _PersonalStatusFilterDialogState
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(personalStatusListFilterParametersAddedProvider
-                            .notifier)
-                        .update(
+                    ref.read(personalStatusListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -192,18 +186,14 @@ class _PersonalStatusFilterDialogState
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            personalStatusListFilterParametersAddedProvider);
+                        ref.invalidate(personalStatusListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(personalStatusListParametersProvider.notifier)
-                            .update(
+                        ref.read(personalStatusListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -225,9 +215,7 @@ class _PersonalStatusFilterDialogState
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: personalStatusListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: personalStatusListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: personalStatusListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -239,12 +227,9 @@ class _PersonalStatusFilterDialogState
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
-                              in personalStatusListFilterParametersAdded
-                                  .entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
+                              in personalStatusListFilterParametersAdded.entries) {
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -253,14 +238,11 @@ class _PersonalStatusFilterDialogState
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(
-                                    personalStatusListFilterParametersAddedProvider
-                                        .notifier)
+                                .read(personalStatusListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -272,16 +254,12 @@ class _PersonalStatusFilterDialogState
 
                           // add filter parameters to personalStatusListParameter
 
-                          ref
-                              .read(
-                                  personalStatusListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(personalStatusListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

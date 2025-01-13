@@ -13,8 +13,7 @@ import 'package:rst/modules/definitions/collectors/models/structure/structure.mo
 import 'package:rst/modules/definitions/collectors/providers/collectors.provider.dart';
 import 'package:rst/utils/colors/colors.util.dart';
 
-class DashboardCollectorsCollectionsFilterDialog
-    extends StatefulHookConsumerWidget {
+class DashboardCollectorsCollectionsFilterDialog extends StatefulHookConsumerWidget {
   const DashboardCollectorsCollectionsFilterDialog({super.key});
 
   @override
@@ -27,13 +26,12 @@ class _DashboardCollectorsCollectionsFilterDialogState
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final collectorsListParameters = ref.watch(collectorsListParametersProvider);
-    final collectorsListFilterParametersAdded = ref
-        .watch(dashboardCollectorsCollectionsListFilterParametersAddedProvider);
+    final collectorsListFilterParametersAdded =
+        ref.watch(dashboardCollectorsCollectionsListFilterParametersAddedProvider);
 
-    final collectorsListParameters =
-        ref.watch(collectorsListParametersProvider);
+    final collectorsListParameters = ref.watch(collectorsListParametersProvider);
 
     final paramOperator = collectorsListParameters.containsKey('where')
         ? collectorsListParameters['where'].containsKey('AND')
@@ -99,8 +97,7 @@ class _DashboardCollectorsCollectionsFilterDialogState
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in collectorsListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in collectorsListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -135,9 +132,8 @@ class _DashboardCollectorsCollectionsFilterDialogState
                   onTap: () {
                     // add new filter parameter
                     ref
-                        .read(
-                            dashboardCollectorsCollectionsListFilterParametersAddedProvider
-                                .notifier)
+                        .read(dashboardCollectorsCollectionsListFilterParametersAddedProvider
+                            .notifier)
                         .update(
                       (state) {
                         state = {
@@ -201,14 +197,11 @@ class _DashboardCollectorsCollectionsFilterDialogState
                             dashboardCollectorsCollectionsListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(collectorsListParametersProvider.notifier)
-                            .update(
+                        ref.read(collectorsListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -230,9 +223,7 @@ class _DashboardCollectorsCollectionsFilterDialogState
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: collectorsListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: collectorsListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: collectorsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -244,11 +235,9 @@ class _DashboardCollectorsCollectionsFilterDialogState
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in collectorsListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -263,8 +252,7 @@ class _DashboardCollectorsCollectionsFilterDialogState
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -276,15 +264,12 @@ class _DashboardCollectorsCollectionsFilterDialogState
 
                           // add filter parameters to collectorsListParameter
 
-                          ref
-                              .read(collectorsListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(collectorsListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

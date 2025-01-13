@@ -118,8 +118,8 @@ class EconomicalActivityExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current economicalActivities filter option
-                        final economicalActivitiesListParameters = ref
-                            .read(economicalActivitiesListParametersProvider);
+                        final economicalActivitiesListParameters =
+                            ref.read(economicalActivitiesListParametersProvider);
 
                         if (exportAllEconomicalActivities.value) {
                           // get all economicalActivities count

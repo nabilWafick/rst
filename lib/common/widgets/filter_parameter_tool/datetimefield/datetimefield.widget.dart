@@ -6,22 +6,23 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/utils/utils.dart';
 
 final filterParameterToolDateTimeFieldValueProvider =
-    StateProvider.family<DateTime, String>((ref, providerName) {
-  return DateTime.now();
+    StateProvider.family<DateTime?, String>((ref, providerName) {
+  return;
 });
 
 class FilterParameterToolDateTimeField extends StatefulHookConsumerWidget {
   final String? initialValue;
   final String providerName;
+//  final bool isNullable;
   const FilterParameterToolDateTimeField({
     super.key,
     this.initialValue,
+//    required this.isNullable,
     required this.providerName,
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _FilterParameterToolDateTimeFieldState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _FilterParameterToolDateTimeFieldState();
 }
 
 class _FilterParameterToolDateTimeFieldState
@@ -31,12 +32,12 @@ class _FilterParameterToolDateTimeFieldState
     super.initState();
     WidgetsBinding.instance.addPersistentFrameCallback((_) {
       if (widget.initialValue != null && mounted) {
+        debugPrint(" ==================> widget.initialValue: ${widget.initialValue} ");
+
         final isoStringDate = widget.initialValue!.split('Z')[0];
 
         ref
-            .watch(filterParameterToolDateTimeFieldValueProvider(
-                    widget.providerName)
-                .notifier)
+            .watch(filterParameterToolDateTimeFieldValueProvider(widget.providerName).notifier)
             .state = DateTime.parse(isoStringDate);
       }
     });
@@ -44,48 +45,58 @@ class _FilterParameterToolDateTimeFieldState
 
   @override
   Widget build(BuildContext context) {
-    final selectedDateTime = ref.watch(
-        filterParameterToolDateTimeFieldValueProvider(widget.providerName));
+    final selectedDateTime =
+        ref.watch(filterParameterToolDateTimeFieldValueProvider(widget.providerName));
+
     final format = DateFormat.yMMMMEEEEd('fr');
-    final formatedDate = format.format(selectedDateTime);
-    final formatedTime = FunctionsController.getFormatedTime(
-      dateTime: selectedDateTime,
-    );
-    return InkWell(
-      onTap: () async {
-        try {
-          await FunctionsController.showDateTime(
-            context: context,
-            ref: ref,
-            stateProvider: filterParameterToolDateTimeFieldValueProvider(
-              widget.providerName,
+    final formatedDate = selectedDateTime != null ? format.format(selectedDateTime) : '';
+    final formatedTime = selectedDateTime != null
+        ? FunctionsController.getFormatedTime(
+            dateTime: selectedDateTime,
+          )
+        : '';
+    return selectedDateTime == null
+        ? const SizedBox()
+        : InkWell(
+            onTap: () async {
+              try {
+                await FunctionsController.showDateTime(
+                  context: context,
+                  ref: ref,
+                  stateProvider: filterParameterToolDateTimeFieldValueProvider(
+                    widget.providerName,
+                  ),
+                  isNullable: true,
+                );
+
+                debugPrint(
+                    " =============> DateTime Readed: ${ref.read(filterParameterToolDateTimeFieldValueProvider(
+                  widget.providerName,
+                ))}");
+              } catch (error) {
+                debugPrint(error.toString());
+              }
+            },
+            splashColor: RSTColors.primaryColor.withOpacity(.05),
+            hoverColor: RSTColors.primaryColor.withOpacity(.05),
+            child: Container(
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1.5,
+                  color: RSTColors.primaryColor,
+                ),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: RSTText(
+                text: FunctionsController.truncateText(
+                  text: '$formatedDate $formatedTime',
+                  maxLength: 25,
+                ),
+                fontSize: 12.0,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            isNullable: false,
           );
-        } catch (error) {
-          debugPrint(error.toString());
-        }
-      },
-      splashColor: RSTColors.primaryColor.withOpacity(.05),
-      hoverColor: RSTColors.primaryColor.withOpacity(.05),
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.5,
-            color: RSTColors.primaryColor,
-          ),
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: RSTText(
-          text: FunctionsController.truncateText(
-            text: '$formatedDate $formatedTime',
-            maxLength: 25,
-          ),
-          fontSize: 12.0,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
   }
 }

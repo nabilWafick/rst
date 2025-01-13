@@ -5,14 +5,12 @@ import 'package:rst/modules/definitions/collectors/controllers/collectors.contro
 import 'package:rst/modules/statistics/collectors_collections/models/collector_collection/collector_collection.model.dart';
 import 'package:rst/modules/statistics/collectors_collections/models/collector_collection_type/collector_collection_type.model.dart';
 
-final collectorCollectionTypeProvider =
-    StateProvider<CollectorCollectionType>((ref) {
+final collectorCollectionTypeProvider = StateProvider<CollectorCollectionType>((ref) {
   return CollectorCollectionType.day;
 });
 
 // used for storing collectorsCollections filter options
-final collectorsCollectionsListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final collectorsCollectionsListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 20,
@@ -81,14 +79,11 @@ final collectorsCollectionsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched collectorsCollections (collectorsCollections respecting filter options) count
-final specificCollectorsCollectionsCountProvider =
-    FutureProvider<int>((ref) async {
+final specificCollectorsCollectionsCountProvider = FutureProvider<int>((ref) async {
   final listParameters = ref.watch(collectorsCollectionsListParametersProvider);
 
   final controllerResponse = await CollectorsController.countSpecific(
@@ -100,7 +95,5 @@ final specificCollectorsCollectionsCountProvider =
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

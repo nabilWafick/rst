@@ -24,12 +24,10 @@ class MultipleSettlementsAdditionForm extends StatefulHookConsumerWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MultipleSettlementsAdditionFormState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MultipleSettlementsAdditionFormState();
 }
 
-class _MultipleSettlementsAdditionFormState
-    extends ConsumerState<MultipleSettlementsAdditionForm> {
+class _MultipleSettlementsAdditionFormState extends ConsumerState<MultipleSettlementsAdditionForm> {
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -41,15 +39,12 @@ class _MultipleSettlementsAdditionFormState
   @override
   Widget build(BuildContext context) {
     final showValidatedButton = useState<bool>(true);
-    final cashOperationsSelectedCollector =
-        ref.watch(cashOperationsSelectedCollectorProvider);
+    final cashOperationsSelectedCollector = ref.watch(cashOperationsSelectedCollectorProvider);
     final cashOperationsSelectedCustomerCards =
         ref.watch(cashOperationsSelectedCustomerCardsProvider);
-    final settlementCollectorCollection =
-        ref.watch(settlementCollectorCollectionProvider);
+    final settlementCollectorCollection = ref.watch(settlementCollectorCollectionProvider);
     const formCardWidth = 1000.0;
-    final settlementCollectionDate =
-        ref.watch(settlementCollectionDateProvider);
+    final settlementCollectionDate = ref.watch(settlementCollectionDateProvider);
 
     final format = DateFormat.yMMMMEEEEd('fr');
 
@@ -155,8 +150,7 @@ class _MultipleSettlementsAdditionFormState
                       ),
                       settlementCollectorCollection != null
                           ? RSTText(
-                              text:
-                                  '${settlementCollectorCollection.rest.ceil().toString()}f',
+                              text: '${settlementCollectorCollection.rest.ceil().toString()}f',
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             )
@@ -183,8 +177,8 @@ class _MultipleSettlementsAdditionFormState
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final multipleSettlementsAddedInputs = ref.watch(
-                        multipleSettlementsAddedInputsVisibilityProvider);
+                    final multipleSettlementsAddedInputs =
+                        ref.watch(multipleSettlementsAddedInputsVisibilityProvider);
                     return Container(
                       margin: const EdgeInsets.symmetric(
                         vertical: 20.0,
@@ -195,13 +189,12 @@ class _MultipleSettlementsAdditionFormState
                           int visibleInputs = 0;
 
                           // get multiple settlements selected card
-                          final multipleSettlementsMapSelectedCards = ref.read(
-                              multipleSettlementsSelectedCustomerCardsProvider);
+                          final multipleSettlementsMapSelectedCards =
+                              ref.read(multipleSettlementsSelectedCustomerCardsProvider);
 
                           // get selected card in list
                           List<Card> multipleSettlementsSelectedCards =
-                              multipleSettlementsMapSelectedCards.values
-                                  .toList();
+                              multipleSettlementsMapSelectedCards.values.toList();
 
                           // define the inputs name
                           final inputName =
@@ -229,13 +222,10 @@ class _MultipleSettlementsAdditionFormState
                             // get the first that is not multiple settlements selected cards
 
                             ref
-                                    .read(
-                                      cardSelectionToolProvider(inputName)
-                                          .notifier,
-                                    )
-                                    .state =
-                                cashOperationsSelectedCustomerCards
-                                    .firstWhereOrNull(
+                                .read(
+                                  cardSelectionToolProvider(inputName).notifier,
+                                )
+                                .state = cashOperationsSelectedCustomerCards.firstWhereOrNull(
                               (customerCard) =>
                                   !multipleSettlementsSelectedCards.any(
                                     (card) => card.id == customerCard.id,
@@ -245,15 +235,13 @@ class _MultipleSettlementsAdditionFormState
                                   customerCard.transferredAt == null,
                             );
 
-                            final newCard =
-                                ref.watch(cardSelectionToolProvider(inputName));
+                            final newCard = ref.watch(cardSelectionToolProvider(inputName));
 
                             // add the defined card if it is not null to multipleSettlementsSelectedCards
                             if (newCard != null) {
                               ref
                                   .read(
-                                multipleSettlementsSelectedCustomerCardsProvider
-                                    .notifier,
+                                multipleSettlementsSelectedCustomerCardsProvider.notifier,
                               )
                                   .update(
                                 (state) {
@@ -270,8 +258,7 @@ class _MultipleSettlementsAdditionFormState
                             // add the new multiple settlement input
                             ref
                                 .read(
-                              multipleSettlementsAddedInputsVisibilityProvider
-                                  .notifier,
+                              multipleSettlementsAddedInputsVisibilityProvider.notifier,
                             )
                                 .update(
                               (state) {
@@ -294,10 +281,8 @@ class _MultipleSettlementsAdditionFormState
                     final customerCardsSettlemenentCardsMaps = ref.watch(
                       multipleSettlementsAddedInputsVisibilityProvider,
                     );
-                    List<MultipleSettlementInput>
-                        customerCardsSettlemenentCardsList = [];
-                    for (MapEntry mapEntry
-                        in customerCardsSettlemenentCardsMaps.entries) {
+                    List<MultipleSettlementInput> customerCardsSettlemenentCardsList = [];
+                    for (MapEntry mapEntry in customerCardsSettlemenentCardsMaps.entries) {
                       customerCardsSettlemenentCardsList.add(
                         MultipleSettlementInput(
                           inputName: mapEntry.key,
@@ -347,10 +332,11 @@ class _MultipleSettlementsAdditionFormState
                   if (multipleSettlementsAddedInputsEntry.value) {
                     settlementsNumbers.add(
                       ref.watch(
-                        familyIntFormFieldValueProvider(
-                          multipleSettlementsAddedInputsEntry.key,
-                        ),
-                      ),
+                            familyIntFormFieldValueProvider(
+                              multipleSettlementsAddedInputsEntry.key,
+                            ),
+                          ) ??
+                          1,
                     );
                   }
                 }

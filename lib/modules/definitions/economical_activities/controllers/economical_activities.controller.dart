@@ -69,8 +69,11 @@ class EconomicalActivitiesController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await EconomicalActivitiesServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse =
+        await EconomicalActivitiesServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

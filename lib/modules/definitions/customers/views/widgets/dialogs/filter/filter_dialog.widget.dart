@@ -16,15 +16,14 @@ class CustomerFilterDialog extends StatefulHookConsumerWidget {
   const CustomerFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CustomerFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CustomerFilterDialogState();
 }
 
 class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final customersListParameters = ref.watch(customersListParametersProvider);
     final customersListFilterParametersAdded =
         ref.watch(customersListFilterParametersAddedProvider);
@@ -95,8 +94,7 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in customersListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in customersListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -105,8 +103,7 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
                                 (field) => field.back != 'id',
                               )
                               .toList(),
-                          filterParametersAddedProvider:
-                              customersListFilterParametersAddedProvider,
+                          filterParametersAddedProvider: customersListFilterParametersAddedProvider,
                         ),
                       );
                     }
@@ -130,10 +127,7 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(
-                            customersListFilterParametersAddedProvider.notifier)
-                        .update(
+                    ref.read(customersListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -192,18 +186,14 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            customersListFilterParametersAddedProvider);
+                        ref.invalidate(customersListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(customersListParametersProvider.notifier)
-                            .update(
+                        ref.read(customersListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -225,9 +215,7 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: customersListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: customersListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: customersListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -239,11 +227,9 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in customersListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -252,13 +238,11 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(customersListFilterParametersAddedProvider
-                                    .notifier)
+                                .read(customersListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -270,15 +254,12 @@ class _CustomerFilterDialogState extends ConsumerState<CustomerFilterDialog> {
 
                           // add filter parameters to customersListParameter
 
-                          ref
-                              .read(customersListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(customersListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

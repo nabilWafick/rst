@@ -16,21 +16,19 @@ class CollectorFilterDialog extends StatefulHookConsumerWidget {
   const CollectorFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CollectorFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CollectorFilterDialogState();
 }
 
 class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final collectorsListParameters = ref.watch(collectorsListParametersProvider);
     final collectorsListFilterParametersAdded =
         ref.watch(collectorsListFilterParametersAddedProvider);
 
-    final collectorsListParameters =
-        ref.watch(collectorsListParametersProvider);
+    final collectorsListParameters = ref.watch(collectorsListParametersProvider);
 
     final paramOperator = collectorsListParameters.containsKey('where')
         ? collectorsListParameters['where'].containsKey('AND')
@@ -96,8 +94,7 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in collectorsListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in collectorsListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -131,10 +128,7 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(collectorsListFilterParametersAddedProvider
-                            .notifier)
-                        .update(
+                    ref.read(collectorsListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -193,18 +187,14 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            collectorsListFilterParametersAddedProvider);
+                        ref.invalidate(collectorsListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(collectorsListParametersProvider.notifier)
-                            .update(
+                        ref.read(collectorsListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -226,9 +216,7 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: collectorsListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: collectorsListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: collectorsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -240,11 +228,9 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in collectorsListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -253,14 +239,11 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(
-                                    collectorsListFilterParametersAddedProvider
-                                        .notifier)
+                                .read(collectorsListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -272,15 +255,12 @@ class _CollectorFilterDialogState extends ConsumerState<CollectorFilterDialog> {
 
                           // add filter parameters to collectorsListParameter
 
-                          ref
-                              .read(collectorsListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(collectorsListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

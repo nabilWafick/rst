@@ -24,12 +24,10 @@ class MultipleSettlementInput extends StatefulHookConsumerWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MultipleSettlementInputState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MultipleSettlementInputState();
 }
 
-class _MultipleSettlementInputState
-    extends ConsumerState<MultipleSettlementInput> {
+class _MultipleSettlementInputState extends ConsumerState<MultipleSettlementInput> {
   String? settlementNumberChecker({required dynamic value}) {
     if (value <= 0 || value > 372) {
       return 'Entrez un nombre valide entre 1 et 372';
@@ -109,9 +107,7 @@ class _MultipleSettlementInputState
                           showInput.value = false;
 
                           ref
-                              .read(
-                                  multipleSettlementsAddedInputsVisibilityProvider
-                                      .notifier)
+                              .read(multipleSettlementsAddedInputsVisibilityProvider.notifier)
                               .update(
                             (state) {
                               // if input is visible, hide it
@@ -129,14 +125,12 @@ class _MultipleSettlementInputState
 
                           ref
                               .read(
-                            multipleSettlementsSelectedCustomerCardsProvider
-                                .notifier,
+                            multipleSettlementsSelectedCustomerCardsProvider.notifier,
                           )
                               .update((state) {
                             Map<String, Card> newMap = {};
 
-                            for (MapEntry<String, Card> stateEntry
-                                in state.entries) {
+                            for (MapEntry<String, Card> stateEntry in state.entries) {
                               if (stateEntry.key != widget.inputName) {
                                 newMap[stateEntry.key] = stateEntry.value;
                               }
@@ -181,7 +175,7 @@ class _MultipleSettlementInputState
                       child: LabelValue(
                           label: 'Montant',
                           value:
-                              '${selectedCustomerCard!.typesNumber * selectedCustomerCard.type.stake.ceil() * settlementNumber}f'),
+                              '${selectedCustomerCard!.typesNumber * selectedCustomerCard.type.stake.ceil() * (settlementNumber ?? 1)}f'),
                     ),
                   ],
                 )

@@ -4,6 +4,7 @@ import 'package:rst/common/widgets/common.widgets.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/boolfield/boolfield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/datetimefield/datetimefield.widget.dart';
 import 'package:rst/common/widgets/filter_parameter_tool/textformfield/validator/filter_tool_validator.dart';
+import 'package:rst/utils/utils.dart';
 
 Map<String, dynamic> splitMap({
   required Map<String, dynamic> map,
@@ -105,15 +106,13 @@ Map<String, dynamic> performFilterParameter({
 
   filterParameter.forEach((key, value) {
     // check if the key is an operator
-    if (FilterOperators.allOperators
-        .any((operatore) => operatore.back == key)) {
+    if (FilterOperators.allOperators.any((operatore) => operatore.back == key)) {
       // watch the last subField of the filterTool
-      final filterToolLastSubField =
-          ref.watch(filterToolLastSubFieldProvider(filterToolIndex));
+      final filterToolLastSubField = ref.watch(filterToolLastSubFieldProvider(filterToolIndex));
 
       // watch the tool operator
-      final filterToolOperator = ref.watch(operatorDropdownProvider(
-          'filter_parameter_tool_operator_$filterToolIndex'));
+      final filterToolOperator =
+          ref.watch(operatorDropdownProvider('filter_parameter_tool_operator_$filterToolIndex'));
 
       // store input value
 
@@ -141,7 +140,8 @@ Map<String, dynamic> performFilterParameter({
             ),
           );
 
-          filterValue = double.tryParse(filterValue) ?? 0;
+          filterValue =
+              filterValue == null ? RSTApiConstants.nullValue : double.tryParse(filterValue) ?? 0;
         } else if (filterToolLastSubField.type == DateTime) {
           filterValue = ref.watch(
             filterParameterToolDateTimeFieldValueProvider(
@@ -149,7 +149,8 @@ Map<String, dynamic> performFilterParameter({
             ),
           );
 
-          filterValue = '${filterValue.toIso8601String()}Z';
+          filterValue =
+              filterValue == null ? RSTApiConstants.nullValue : '${filterValue.toIso8601String()}Z';
         }
       } else if (FilterOperators.numberOperators.contains(filterToolOperator) &&
           (filterToolLastSubField.type == int ||
@@ -161,7 +162,8 @@ Map<String, dynamic> performFilterParameter({
           ),
         );
 
-        filterValue = double.tryParse(filterValue) ?? 0;
+        filterValue =
+            filterValue == null ? RSTApiConstants.nullValue : double.tryParse(filterValue) ?? 0;
       } else if (FilterOperators.stringOperators.contains(filterToolOperator)) {
         filterValue = ref.watch(
           filterParameterToolTextFieldValueProvider(
@@ -175,7 +177,8 @@ Map<String, dynamic> performFilterParameter({
           ),
         );
 
-        filterValue = '${filterValue.toIso8601String()}Z';
+        filterValue =
+            filterValue == null ? RSTApiConstants.nullValue : '${filterValue.toIso8601String()}Z';
       }
 
       // remove the default operator 'equals'
@@ -211,19 +214,18 @@ void defineFilterToolOperatorAndValue({
 }) {
   filterParameter.forEach((key, value) {
     // check if the key is an operator
-    if (FilterOperators.allOperators
-        .any((operatore) => operatore.back == key)) {
+    if (FilterOperators.allOperators.any((operatore) => operatore.back == key)) {
       // update  tool operator
       ref
-          .read(operatorDropdownProvider(
-                  'filter_parameter_tool_operator_$filterToolIndex')
-              .notifier)
+          .read(
+              operatorDropdownProvider('filter_parameter_tool_operator_$filterToolIndex').notifier)
           .state = FilterOperators.allOperators.firstWhere(
         (operatore) => operatore.back == key,
       );
 
       // update tool value
-      ref.read(filterToolValueProvider(filterToolIndex).notifier).state = value;
+      ref.read(filterToolValueProvider(filterToolIndex).notifier).state =
+          value == RSTApiConstants.nullValue ? null : value;
     } else if (value is Map) {
       // continue the nesting if the goal is not reached
       defineFilterToolOperatorAndValue(

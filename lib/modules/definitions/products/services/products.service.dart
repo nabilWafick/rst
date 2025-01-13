@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:rst/common/models/common.model.dart';
 import 'package:rst/modules/definitions/products/models/product/product.model.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/utils/constants/api/api.constant.dart';
 import 'package:rst/utils/constants/preferences_keys/preferences_keys.constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -178,7 +177,9 @@ class ProductsServices {
     }
   }
 
-  static Future<ServiceResponse> countAll() async {
+  static Future<ServiceResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -195,6 +196,7 @@ class ProductsServices {
         ),
       ).get(
         '$route/count/all',
+        queryParameters: listParameters,
       );
 
       return ServiceResponse(

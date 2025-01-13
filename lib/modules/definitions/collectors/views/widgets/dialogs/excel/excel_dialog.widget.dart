@@ -118,13 +118,11 @@ class CollectorExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current Collectors filter option
-                        final collectorsListParameters =
-                            ref.read(collectorsListParametersProvider);
+                        final collectorsListParameters = ref.read(collectorsListParametersProvider);
 
                         if (exportAllCollectors.value) {
                           // get all collectors count
-                          final collectorsCount =
-                              await CollectorsController.countAll();
+                          final collectorsCount = await CollectorsController.countAll();
 
                           // generate excel file
                           await generateCollectorsExcelFile(

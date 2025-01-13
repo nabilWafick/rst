@@ -69,8 +69,10 @@ class TransfersController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await TransfersServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await TransfersServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

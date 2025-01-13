@@ -11,8 +11,7 @@ final economicalActivityNameProvider = StateProvider<String>(
 );
 
 // used for storing economicalActivities filter options
-final economicalActivitiesListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final economicalActivitiesListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
@@ -58,14 +57,30 @@ final economicalActivitiesCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+// used for storing all economicalActivities of database count
+final yearEconomicalActivitiesCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await EconomicalActivitiesController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched economicalActivities (economicalActivities respecting filter options) count
-final specificEconomicalActivitiesCountProvider =
-    FutureProvider<int>((ref) async {
+final specificEconomicalActivitiesCountProvider = FutureProvider<int>((ref) async {
   final listParameters = ref.watch(economicalActivitiesListParametersProvider);
 
   final controllerResponse = await EconomicalActivitiesController.countSpecific(
@@ -77,7 +92,5 @@ final specificEconomicalActivitiesCountProvider =
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

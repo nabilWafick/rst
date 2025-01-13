@@ -5,8 +5,7 @@ import 'package:rst/modules/statistics/products_forecasts/models/filter_paramete
 import 'package:rst/modules/statistics/products_forecasts/models/product_forecast/product_forecast.model.dart';
 
 // used for storing productsForecasts filter options
-final productsForecastsListParametersProvider =
-    StateProvider<ProductsForecastsFilter>((ref) {
+final productsForecastsListParametersProvider = StateProvider<ProductsForecastsFilter>((ref) {
   return ProductsForecastsFilter(
     totalSettlementNumber: 186,
     offset: 0,
@@ -15,10 +14,8 @@ final productsForecastsListParametersProvider =
 });
 
 // used for storing fetched productsForecasts
-final productsForecastsListStreamProvider =
-    FutureProvider<List<ProductForecast>>((ref) async {
-  final productsForecastsFilter =
-      ref.watch(productsForecastsListParametersProvider);
+final productsForecastsListStreamProvider = FutureProvider<List<ProductForecast>>((ref) async {
+  final productsForecastsFilter = ref.watch(productsForecastsListParametersProvider);
 
   final controllerResponse = await ProductsController.getProductsForecasts(
     productsForecastsFilter: productsForecastsFilter,
@@ -36,32 +33,26 @@ final productsForecastsListStreamProvider =
 
 // used for storing all productsForecasts of database count
 final productsForecastsCountProvider = FutureProvider<int>((ref) async {
-  final controllerResponse =
-      await ProductsController.getProductsForecastsCountAll();
+  final controllerResponse = await ProductsController.getProductsForecastsCountAll();
 
   await AuthFunctions.autoDisconnectAfterUnauthorizedException(
     ref: ref,
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing all productsForecasts total amount
 final productsForecastsTotalAmountProvider = FutureProvider<num>((ref) async {
-  final controllerResponse =
-      await ProductsController.getProductsForecastsTotalAmount();
+  final controllerResponse = await ProductsController.getProductsForecastsTotalAmount();
 
   await AuthFunctions.autoDisconnectAfterUnauthorizedException(
     ref: ref,
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as num
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as num : 0;
 });
 
 // used for storing fetched productsForecasts (productsForecasts respecting filter options) count
@@ -70,8 +61,7 @@ final specificProductsForecastsCountProvider = FutureProvider<int>((ref) async {
     productsForecastsListParametersProvider,
   );
 
-  final controllerResponse =
-      await ProductsController.getSpecificProductsForecastsCount(
+  final controllerResponse = await ProductsController.getSpecificProductsForecastsCount(
     productsForecastsFilter: productsForecastsFilter,
   );
 
@@ -80,20 +70,16 @@ final specificProductsForecastsCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched productsForecasts (productsForecasts respecting filter options) count
-final specificProductsForecastsAmountProvider =
-    FutureProvider<num>((ref) async {
+final specificProductsForecastsAmountProvider = FutureProvider<num>((ref) async {
   final productsForecastsFilter = ref.watch(
     productsForecastsListParametersProvider,
   );
 
-  final controllerResponse =
-      await ProductsController.getSpecificProductsForecastsAmount(
+  final controllerResponse = await ProductsController.getSpecificProductsForecastsAmount(
     productsForecastsFilter: productsForecastsFilter,
   );
 
@@ -102,7 +88,5 @@ final specificProductsForecastsAmountProvider =
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as num
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as num : 0;
 });

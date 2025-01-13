@@ -176,7 +176,9 @@ class TransfersServices {
     }
   }
 
-  static Future<ServiceResponse> countAll() async {
+  static Future<ServiceResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 

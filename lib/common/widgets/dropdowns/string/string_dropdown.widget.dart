@@ -28,8 +28,7 @@ class RSTStringDropdown extends ConsumerStatefulWidget {
     required this.dropdownMenuEntriesValues,
   });
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RSTStringDropdownState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RSTStringDropdownState();
 }
 
 class _RSTStringDropdownState extends ConsumerState<RSTStringDropdown> {
@@ -43,9 +42,8 @@ class _RSTStringDropdownState extends ConsumerState<RSTStringDropdown> {
         // check if dropdown item is not empty so as to avoid error
         // while setting the  the first item as the selectedItem
         if (widget.dropdownMenuEntriesValues.isNotEmpty) {
-          ref
-              .read(formStringDropdownProvider(widget.providerName).notifier)
-              .state = widget.dropdownMenuEntriesValues[0];
+          ref.read(formStringDropdownProvider(widget.providerName).notifier).state =
+              widget.dropdownMenuEntriesValues[0];
         }
       },
     );
@@ -55,8 +53,7 @@ class _RSTStringDropdownState extends ConsumerState<RSTStringDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedDropdownItem =
-        ref.watch(formStringDropdownProvider(widget.providerName));
+    final selectedDropdownItem = ref.watch(formStringDropdownProvider(widget.providerName));
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 5.0,
@@ -74,12 +71,11 @@ class _RSTStringDropdownState extends ConsumerState<RSTStringDropdown> {
         dropdownMenuEntries: widget.dropdownMenuEntriesLabels
             .map(
               (dropdownMenuEntryLabel) => DropdownMenuEntry(
-                value: widget.dropdownMenuEntriesValues[widget
-                    .dropdownMenuEntriesLabels
-                    .indexOf(dropdownMenuEntryLabel)],
+                value: widget.dropdownMenuEntriesValues[
+                    widget.dropdownMenuEntriesLabels.indexOf(dropdownMenuEntryLabel)],
                 label: dropdownMenuEntryLabel,
                 style: const ButtonStyle(
-                  textStyle: MaterialStatePropertyAll(
+                  textStyle: WidgetStatePropertyAll(
                     TextStyle(
                       fontWeight: FontWeight.w500,
                     ),
@@ -92,9 +88,7 @@ class _RSTStringDropdownState extends ConsumerState<RSTStringDropdown> {
           Icons.arrow_drop_down,
         ),
         onSelected: (value) {
-          ref
-              .read(formStringDropdownProvider(widget.providerName).notifier)
-              .state = value!;
+          ref.read(formStringDropdownProvider(widget.providerName).notifier).state = value!;
         },
       ),
     );

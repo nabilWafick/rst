@@ -33,8 +33,7 @@ class RSTFilterToolFieldDropdown extends RSTFieldDropdown {
 
   /// used for storing every nested field dropdown builded
   /// it used in filter tool for diplaying all subField dropdown builded
-  final ValueNotifier<List<RSTFilterToolFieldDropdown>>
-      filterToolFieldsDropdowns;
+  final ValueNotifier<List<RSTFilterToolFieldDropdown>> filterToolFieldsDropdowns;
 
   /// the value of the first entry of the parent entry
   /// ex: `parameter = {'product': {'name': '1'}}`
@@ -48,8 +47,7 @@ class RSTFilterToolFieldDropdown extends RSTFieldDropdown {
 
   /// the provider of the filter tools added (Map<int, Map<String,dynamic>>)
   /// used for storing alls tools parameters aded
-  final StateProvider<Map<int, Map<String, dynamic>>>
-      filterParametersAddedProvider;
+  final StateProvider<Map<int, Map<String, dynamic>>> filterParametersAddedProvider;
   const RSTFilterToolFieldDropdown({
     super.key,
     super.width,
@@ -67,24 +65,19 @@ class RSTFilterToolFieldDropdown extends RSTFieldDropdown {
     required this.filterParametersAddedProvider,
   });
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RSTFilterToolFieldDropdownState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RSTFilterToolFieldDropdownState();
 }
 
-class _RSTFilterToolFieldDropdownState
-    extends ConsumerState<RSTFilterToolFieldDropdown> {
+class _RSTFilterToolFieldDropdownState extends ConsumerState<RSTFilterToolFieldDropdown> {
   @override
   Widget build(BuildContext context) {
-    final selectedDropdownItem =
-        ref.watch(filterToolFieldDropdownProvider(widget.providerName));
+    final selectedDropdownItem = ref.watch(filterToolFieldDropdownProvider(widget.providerName));
 
     // Set initial value if not set
-    if (selectedDropdownItem.back.isEmpty &&
-        widget.dropdownMenuEntriesValues.isNotEmpty) {
+    if (selectedDropdownItem.back.isEmpty && widget.dropdownMenuEntriesValues.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .read(filterToolFieldDropdownProvider(widget.providerName).notifier)
-            .state = widget.dropdownMenuEntriesValues[0];
+        ref.read(filterToolFieldDropdownProvider(widget.providerName).notifier).state =
+            widget.dropdownMenuEntriesValues[0];
       });
     }
 
@@ -104,7 +97,7 @@ class _RSTFilterToolFieldDropdownState
               value: field,
               label: field.front,
               style: const ButtonStyle(
-                textStyle: MaterialStatePropertyAll(
+                textStyle: WidgetStatePropertyAll(
                   TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
@@ -115,18 +108,12 @@ class _RSTFilterToolFieldDropdownState
         onSelected: (value) {
           if (value == null) return;
 
-          ref
-              .read(
-                  filterToolFieldDropdownProvider(widget.providerName).notifier)
-              .state = value;
+          ref.read(filterToolFieldDropdownProvider(widget.providerName).notifier).state = value;
 
-          ref
-              .read(widget.filterParametersAddedProvider.notifier)
-              .update((state) {
+          ref.read(widget.filterParametersAddedProvider.notifier).update((state) {
             final newState = Map<int, Map<String, dynamic>>.from(state);
-            final newFilterToolMap = value.isRelation
-                ? _handleRelationField(value)
-                : _handleNonRelationField(value);
+            final newFilterToolMap =
+                value.isRelation ? _handleRelationField(value) : _handleNonRelationField(value);
             newState[widget.filterToolIndex] = newFilterToolMap;
             return newState;
           });
@@ -144,9 +131,7 @@ class _RSTFilterToolFieldDropdownState
   Map<String, dynamic> _handleRelationField(Field value) {
     final newNestedMap = generateNestedMap(field: value);
     return splitMap(
-      map: ref.read(
-              widget.filterParametersAddedProvider)[widget.filterToolIndex] ??
-          {},
+      map: ref.read(widget.filterParametersAddedProvider)[widget.filterToolIndex] ?? {},
       depth: 0,
       targetDepth: widget.subFieldIndex,
       newNestedMap: newNestedMap,
@@ -156,9 +141,7 @@ class _RSTFilterToolFieldDropdownState
 
   Map<String, dynamic> _handleNonRelationField(Field value) {
     return splitMap(
-      map: ref.read(
-              widget.filterParametersAddedProvider)[widget.filterToolIndex] ??
-          {},
+      map: ref.read(widget.filterParametersAddedProvider)[widget.filterToolIndex] ?? {},
       depth: 0,
       targetDepth: widget.subFieldIndex,
       newNestedMap: generateNestedMap(field: value),
@@ -180,12 +163,8 @@ class _RSTFilterToolFieldDropdownState
   }
 
   void _updateLastSelectedField(Field value) {
-    ref
-        .read(filterToolLastSubFieldProvider(widget.filterToolIndex).notifier)
-        .state = value;
-    widget.filterToolFieldsDropdowns.value = widget
-        .filterToolFieldsDropdowns.value
-        .take(widget.subFieldIndex + 1)
-        .toList();
+    ref.read(filterToolLastSubFieldProvider(widget.filterToolIndex).notifier).state = value;
+    widget.filterToolFieldsDropdowns.value =
+        widget.filterToolFieldsDropdowns.value.take(widget.subFieldIndex + 1).toList();
   }
 }

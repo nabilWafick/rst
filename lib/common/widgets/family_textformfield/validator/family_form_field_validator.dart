@@ -1,25 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final familyTextFormFieldValueProvider =
-    StateProvider.family<String, String>((ref, inputProvider) {
-  return '';
+    StateProvider.family<String?, String>((ref, inputProvider) {
+  return;
 });
 
-final familyIntFormFieldValueProvider =
-    StateProvider.family<int, String>((ref, inputProvider) {
-  return 0;
+final familyIntFormFieldValueProvider = StateProvider.family<int?, String>((ref, inputProvider) {
+  return;
 });
 
 final familyDoubleFormFieldValueProvider =
-    StateProvider.family<double, String>((ref, inputProvider) {
-  return .0;
+    StateProvider.family<double?, String>((ref, inputProvider) {
+  return;
 });
 
 class FamilyFormFieldValidator {
   static String? textFieldValue(
     String? value,
     String inputProvider,
-    String? Function({required String value}) textFieldValidator,
+    String? Function({required String? value}) textFieldValidator,
     WidgetRef ref,
   ) {
     return textFieldValidator(
@@ -32,7 +31,7 @@ class FamilyFormFieldValidator {
   static String? intFieldValue(
     String? value,
     String inputProvider,
-    String? Function({required int value}) intFieldValidator,
+    String? Function({required int? value}) intFieldValidator,
     WidgetRef ref,
   ) {
     return intFieldValidator(
@@ -45,7 +44,7 @@ class FamilyFormFieldValidator {
   static String? doubleFieldValue(
     String? value,
     String inputProvider,
-    String? Function({required double value}) doubleFieldValidator,
+    String? Function({required double? value}) doubleFieldValidator,
     WidgetRef ref,
   ) {
     return doubleFieldValidator(

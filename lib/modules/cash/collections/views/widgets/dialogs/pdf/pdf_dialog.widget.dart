@@ -124,8 +124,7 @@ class CollectionPdfGenerationDialog extends HookConsumerWidget {
 
                         if (exportAllCollections.value) {
                           // get all collections count
-                          final collectionsCount =
-                              await CollectionsController.countAll();
+                          final collectionsCount = await CollectionsController.countAll();
 
                           // generate excel file
                           await generateCollectionsPdf(

@@ -12,7 +12,6 @@ import 'package:rst/common/widgets/selection_tools/type/providers/selection.prov
 import 'package:rst/modules/definitions/agents/providers/permissions_values.dart';
 import 'package:rst/modules/home/providers/home.provider.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/modules/statistics/products_improvidence/providers/products_improvidence.provider.dart';
 import 'package:rst/modules/statistics/products_improvidence/views/widgets/dialogs/excel/excel_dialog.widget.dart';
 import 'package:rst/modules/statistics/products_improvidence/views/widgets/dialogs/pdf/pdf_dialog.widget.dart';

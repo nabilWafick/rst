@@ -15,8 +15,7 @@ class CollectorsCollectionsFilterDialog extends StatefulHookConsumerWidget {
   const CollectorsCollectionsFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CollectorsCollectionsFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CollectorsCollectionsFilterDialogState();
 }
 
 class _CollectorsCollectionsFilterDialogState
@@ -24,7 +23,7 @@ class _CollectorsCollectionsFilterDialogState
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final CollectorsCollectionsListParameters = ref.watch(CollectorsCollectionsListParametersProvider);
     final collectorsCollectionsListFilterParametersAdded =
         ref.watch(collectorsCollectionsListFilterParametersAddedProvider);
@@ -32,17 +31,15 @@ class _CollectorsCollectionsFilterDialogState
     final collectorsCollectionsListParameters =
         ref.watch(collectorsCollectionsListParametersProvider);
 
-    final paramOperator =
-        collectorsCollectionsListParameters.containsKey('where')
-            ? collectorsCollectionsListParameters['where'].containsKey('AND')
-                ? 'AND'
-                : collectorsCollectionsListParameters['where'].containsKey('OR')
-                    ? 'OR'
-                    : collectorsCollectionsListParameters['where']
-                            .containsKey('NOR')
-                        ? 'NOR'
-                        : 'AND'
-            : 'AND';
+    final paramOperator = collectorsCollectionsListParameters.containsKey('where')
+        ? collectorsCollectionsListParameters['where'].containsKey('AND')
+            ? 'AND'
+            : collectorsCollectionsListParameters['where'].containsKey('OR')
+                ? 'OR'
+                : collectorsCollectionsListParameters['where'].containsKey('NOR')
+                    ? 'NOR'
+                    : 'AND'
+        : 'AND';
 
     final logicalOperator = useState<String>(paramOperator);
 
@@ -99,8 +96,7 @@ class _CollectorsCollectionsFilterDialogState
                     List<Widget> filterParametersToolsList = [];
 
                     for (MapEntry filterParameter
-                        in collectorsCollectionsListFilterParametersAdded
-                            .entries) {
+                        in collectorsCollectionsListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -128,16 +124,14 @@ class _CollectorsCollectionsFilterDialogState
 
               /// * === TEST ===
               RSTText(
-                text:
-                    'Parameters Added : $collectorsCollectionsListFilterParametersAdded',
+                text: 'Parameters Added : $collectorsCollectionsListFilterParametersAdded',
                 fontSize: 12.0,
               ),
               const SizedBox(
                 height: 5.00,
               ),
               RSTText(
-                text:
-                    'List Parameters : ${ref.watch(collectorsCollectionsListParametersProvider)}',
+                text: 'List Parameters : ${ref.watch(collectorsCollectionsListParametersProvider)}',
                 fontSize: 12.0,
               ),
 
@@ -154,8 +148,7 @@ class _CollectorsCollectionsFilterDialogState
                     // add new filter parameter
                     ref
                         .read(
-                      collectorsCollectionsListFilterParametersAddedProvider
-                          .notifier,
+                      collectorsCollectionsListFilterParametersAddedProvider.notifier,
                     )
                         .update(
                       (state) {
@@ -221,15 +214,11 @@ class _CollectorsCollectionsFilterDialogState
                         );
 
                         // remove the filter parameters
-                        ref
-                            .read(collectorsCollectionsListParametersProvider
-                                .notifier)
-                            .update(
+                        ref.read(collectorsCollectionsListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -254,8 +243,7 @@ class _CollectorsCollectionsFilterDialogState
                 text: collectorsCollectionsListFilterParametersAdded.isNotEmpty
                     ? 'Valider'
                     : 'Fermer',
-                onPressed: collectorsCollectionsListFilterParametersAdded
-                        .isNotEmpty
+                onPressed: collectorsCollectionsListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
                         formKey.currentState!.save();
@@ -266,12 +254,9 @@ class _CollectorsCollectionsFilterDialogState
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
-                              in collectorsCollectionsListFilterParametersAdded
-                                  .entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
+                              in collectorsCollectionsListFilterParametersAdded.entries) {
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -281,13 +266,11 @@ class _CollectorsCollectionsFilterDialogState
                             /// update added filter
                             ref
                                 .read(
-                                    collectorsCollectionsListFilterParametersAddedProvider
-                                        .notifier)
+                                    collectorsCollectionsListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -300,15 +283,13 @@ class _CollectorsCollectionsFilterDialogState
                           // add filter parameters to CollectorsCollectionsListParameter
 
                           ref
-                              .read(collectorsCollectionsListParametersProvider
-                                  .notifier)
+                              .read(collectorsCollectionsListParametersProvider.notifier)
                               .update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

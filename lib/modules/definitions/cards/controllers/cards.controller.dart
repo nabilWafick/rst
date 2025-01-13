@@ -69,8 +69,10 @@ class CardsController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await CardsServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await CardsServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

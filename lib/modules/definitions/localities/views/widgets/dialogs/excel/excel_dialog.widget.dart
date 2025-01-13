@@ -118,13 +118,11 @@ class LocalityExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current Localities filter option
-                        final localitiesListParameters =
-                            ref.read(localitiesListParametersProvider);
+                        final localitiesListParameters = ref.read(localitiesListParametersProvider);
 
                         if (exportAllLocalities.value) {
                           // get all localities count
-                          final localitiesCount =
-                              await LocalitiesController.countAll();
+                          final localitiesCount = await LocalitiesController.countAll();
 
                           // generate excel file
                           await generateLocalitiesExcelFile(

@@ -15,15 +15,14 @@ class TransferFilterDialog extends StatefulHookConsumerWidget {
   const TransferFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _TransferFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TransferFilterDialogState();
 }
 
 class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final transfersListParameters = ref.watch(transfersListParametersProvider);
     final transfersListFilterParametersAdded =
         ref.watch(transfersListFilterParametersAddedProvider);
@@ -94,8 +93,7 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in transfersListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in transfersListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -104,8 +102,7 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                                 (field) => field.back != 'id',
                               )
                               .toList(),
-                          filterParametersAddedProvider:
-                              transfersListFilterParametersAddedProvider,
+                          filterParametersAddedProvider: transfersListFilterParametersAddedProvider,
                         ),
                       );
                     }
@@ -129,10 +126,7 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(
-                            transfersListFilterParametersAddedProvider.notifier)
-                        .update(
+                    ref.read(transfersListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -191,18 +185,14 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            transfersListFilterParametersAddedProvider);
+                        ref.invalidate(transfersListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(transfersListParametersProvider.notifier)
-                            .update(
+                        ref.read(transfersListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -224,9 +214,7 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: transfersListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: transfersListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: transfersListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -238,11 +226,9 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in transfersListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -251,13 +237,11 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(transfersListFilterParametersAddedProvider
-                                    .notifier)
+                                .read(transfersListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -269,15 +253,12 @@ class _TransferFilterDialogState extends ConsumerState<TransferFilterDialog> {
 
                           // add filter parameters to transfersListParameter
 
-                          ref
-                              .read(transfersListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(transfersListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

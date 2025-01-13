@@ -67,8 +67,7 @@ class CardsCRUDFunctions {
       );
 
       // store response
-      ref.read(feedbackDialogResponseProvider.notifier).state =
-          FeedbackDialogResponse(
+      ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
         result: cardAdditionResponse.result?.fr,
         error: cardAdditionResponse.error?.fr,
         message: cardAdditionResponse.message!.fr,
@@ -138,8 +137,7 @@ class CardsCRUDFunctions {
       );
 
       // store response
-      ref.read(feedbackDialogResponseProvider.notifier).state =
-          FeedbackDialogResponse(
+      ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
         result: cardUpdateResponse.result?.fr,
         error: cardUpdateResponse.error?.fr,
         message: cardUpdateResponse.message!.fr,
@@ -226,8 +224,7 @@ class CardsCRUDFunctions {
     );
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: cardUpdateResponse.result?.fr,
       error: cardUpdateResponse.error?.fr,
       message: cardUpdateResponse.message!.fr,
@@ -261,8 +258,7 @@ class CardsCRUDFunctions {
     ref.invalidate(specificCardsCountProvider);
 
     /// * UPDATE CASH OPERATIONS DATA * ///
-    final cashOperationsCustomer =
-        ref.watch(cashOperationsSelectedCustomerProvider);
+    final cashOperationsCustomer = ref.watch(cashOperationsSelectedCustomerProvider);
     // get customer cards number
     // because the number can be knowed without
     // asking the database
@@ -295,19 +291,15 @@ class CardsCRUDFunctions {
     );
 
     // update cash operations customer cards
-    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
-        customerCards;
+    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state = customerCards;
 
     // update cashOperations selected customer cards
-    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
-        customerCards.isNotEmpty
-            ? customerCards.firstWhereOrNull(
-                (card) =>
-                    card.repaidAt == null &&
-                    card.satisfiedAt == null &&
-                    card.transferredAt == null,
-              )
-            : null;
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state = customerCards.isNotEmpty
+        ? customerCards.firstWhereOrNull(
+            (card) =>
+                card.repaidAt == null && card.satisfiedAt == null && card.transferredAt == null,
+          )
+        : null;
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
@@ -331,8 +323,7 @@ class CardsCRUDFunctions {
         cardId: card.id!, agentId: 7, satisfiedAt: cardSatisfactionDate!);
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: cardUpdateResponse.result?.fr,
       error: cardUpdateResponse.error?.fr,
       message: cardUpdateResponse.message!.fr,
@@ -371,8 +362,7 @@ class CardsCRUDFunctions {
     ref.invalidate(specificStocksCountProvider);
 
     /// * UPDATE CASH OPERATIONS DATA * ///
-    final cashOperationsCustomer =
-        ref.watch(cashOperationsSelectedCustomerProvider);
+    final cashOperationsCustomer = ref.watch(cashOperationsSelectedCustomerProvider);
     // get customer cards number
     // because the number can be knowed without
     // asking the database
@@ -405,19 +395,15 @@ class CardsCRUDFunctions {
     );
 
     // update cash operations customer cards
-    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
-        customerCards;
+    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state = customerCards;
 
     // update cashOperations selected customer cards
-    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
-        customerCards.isNotEmpty
-            ? customerCards.firstWhereOrNull(
-                (card) =>
-                    card.repaidAt == null &&
-                    card.satisfiedAt == null &&
-                    card.transferredAt == null,
-              )
-            : null;
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state = customerCards.isNotEmpty
+        ? customerCards.firstWhereOrNull(
+            (card) =>
+                card.repaidAt == null && card.satisfiedAt == null && card.transferredAt == null,
+          )
+        : null;
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
@@ -444,8 +430,7 @@ class CardsCRUDFunctions {
       final cardSatisfactionDate = ref.watch(cardSatisfactionDateProvider);
 
       // store products and productsNumers
-      final cashOperationsConstrainedOutputProductsInputsAddedVisibility =
-          ref.watch(
+      final cashOperationsConstrainedOutputProductsInputsAddedVisibility = ref.watch(
         cashOperationsConstrainedOutputProductsInputsAddedVisibilityProvider,
       );
 
@@ -457,8 +442,7 @@ class CardsCRUDFunctions {
       // check if all typeProductInput added have a selected product
       // if true, store the selcted product
       for (MapEntry<String, bool> typeProductInputAddedVisibility
-          in cashOperationsConstrainedOutputProductsInputsAddedVisibility
-              .entries) {
+          in cashOperationsConstrainedOutputProductsInputsAddedVisibility.entries) {
         // check if the input is visible
         if (typeProductInputAddedVisibility.value) {
           // check if a product have been selected with-in the input
@@ -481,8 +465,7 @@ class CardsCRUDFunctions {
 
               // show error alert
               // store response
-              ref.read(feedbackDialogResponseProvider.notifier).state =
-                  FeedbackDialogResponse(
+              ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
                 result: null,
                 error: 'Répétition',
                 message: 'Un produit a été plusieurs fois selectionné',
@@ -501,8 +484,7 @@ class CardsCRUDFunctions {
             } else {
               // store the number of product defined
               final productNumber = ref.watch(
-                familyIntFormFieldValueProvider(
-                    typeProductInputAddedVisibility.key),
+                familyIntFormFieldValueProvider(typeProductInputAddedVisibility.key),
               );
 
               // add and store the typeProduct
@@ -510,7 +492,7 @@ class CardsCRUDFunctions {
                 TypeProduct(
                   typeId: null,
                   productId: selectedProduct.id!,
-                  productNumber: productNumber,
+                  productNumber: productNumber ?? 1,
                   product: selectedProduct,
                 ),
               );
@@ -520,8 +502,7 @@ class CardsCRUDFunctions {
 
             // show error alert
             // store response
-            ref.read(feedbackDialogResponseProvider.notifier).state =
-                FeedbackDialogResponse(
+            ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
               result: null,
               error: 'Manque',
               message: 'Tous les produits n\'ont pas été selectionnés',
@@ -546,8 +527,7 @@ class CardsCRUDFunctions {
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucun produit n\'a été sélectionné',
@@ -565,8 +545,7 @@ class CardsCRUDFunctions {
 
       if (areDataValidated) {
         // launch type addition
-        final constrainedOutputResponse =
-            await StocksController.createStockConstrainedOutput(
+        final constrainedOutputResponse = await StocksController.createStockConstrainedOutput(
           cardId: card.id!,
           productsIds: typeProducts
               .map(
@@ -583,8 +562,7 @@ class CardsCRUDFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: constrainedOutputResponse.result?.fr,
           error: constrainedOutputResponse.error?.fr,
           message: constrainedOutputResponse.message!.fr,
@@ -625,8 +603,7 @@ class CardsCRUDFunctions {
         ref.invalidate(specificStocksCountProvider);
 
         /// * UPDATE CASH OPERATIONS DATA * ///
-        final cashOperationsCustomer =
-            ref.watch(cashOperationsSelectedCustomerProvider);
+        final cashOperationsCustomer = ref.watch(cashOperationsSelectedCustomerProvider);
         // get customer cards number
         // because the number can be knowed without
         // asking the database
@@ -643,8 +620,7 @@ class CardsCRUDFunctions {
         );
 
         // fetch the cards
-        final customerCardsData =
-            await CardsController.getMany(listParameters: {
+        final customerCardsData = await CardsController.getMany(listParameters: {
           'skip': 0,
           'take': customerCardsNumberData.data.count,
           'where': {
@@ -660,19 +636,16 @@ class CardsCRUDFunctions {
         );
 
         // update cash operations customer cards
-        ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
-            customerCards;
+        ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state = customerCards;
 
         // update cashOperations selected customer cards
-        ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
-            customerCards.isNotEmpty
-                ? customerCards.firstWhereOrNull(
-                    (card) =>
-                        card.repaidAt == null &&
-                        card.satisfiedAt == null &&
-                        card.transferredAt == null,
-                  )
-                : null;
+        ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state = customerCards
+                .isNotEmpty
+            ? customerCards.firstWhereOrNull(
+                (card) =>
+                    card.repaidAt == null && card.satisfiedAt == null && card.transferredAt == null,
+              )
+            : null;
 
         await AuthFunctions.autoDisconnectAfterUnauthorizedException(
           ref: ref,
@@ -698,8 +671,7 @@ class CardsCRUDFunctions {
     );
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: cardUpdateResponse.result?.fr,
       error: cardUpdateResponse.error?.fr,
       message: cardUpdateResponse.message!.fr,
@@ -738,8 +710,7 @@ class CardsCRUDFunctions {
     ref.invalidate(specificStocksCountProvider);
 
     /// * UPDATE CASH OPERATIONS DATA * ///
-    final cashOperationsCustomer =
-        ref.watch(cashOperationsSelectedCustomerProvider);
+    final cashOperationsCustomer = ref.watch(cashOperationsSelectedCustomerProvider);
     // get customer cards number
     // because the number can be knowed without
     // asking the database
@@ -772,19 +743,15 @@ class CardsCRUDFunctions {
     );
 
     // update cash operations customer cards
-    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state =
-        customerCards;
+    ref.read(cashOperationsSelectedCustomerCardsProvider.notifier).state = customerCards;
 
     // update cashOperations selected customer cards
-    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state =
-        customerCards.isNotEmpty
-            ? customerCards.firstWhereOrNull(
-                (card) =>
-                    card.repaidAt == null &&
-                    card.satisfiedAt == null &&
-                    card.transferredAt == null,
-              )
-            : null;
+    ref.read(cashOperationsSelectedCustomerCardProvider.notifier).state = customerCards.isNotEmpty
+        ? customerCards.firstWhereOrNull(
+            (card) =>
+                card.repaidAt == null && card.satisfiedAt == null && card.transferredAt == null,
+          )
+        : null;
 
     await AuthFunctions.autoDisconnectAfterUnauthorizedException(
       ref: ref,
@@ -807,8 +774,7 @@ class CardsCRUDFunctions {
     );
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: cardDeletionResponse.result?.fr,
       error: cardDeletionResponse.error?.fr,
       message: cardDeletionResponse.message!.fr,

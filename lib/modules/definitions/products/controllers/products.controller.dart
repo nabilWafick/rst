@@ -3,8 +3,6 @@ import 'package:rst/modules/definitions/products/models/products.model.dart';
 import 'package:rst/modules/definitions/products/services/products.service.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/filter_parameter/filter_parameter.model.dart';
 import 'package:rst/modules/statistics/products_forecasts/models/product_forecast/product_forecast.model.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/filter_parameter/filter_parameter.model.dart';
-import 'package:rst/modules/statistics/products_improvidence/models/product_improvidence/product_improvidence.model.dart';
 
 class ProductsController {
   static Future<ControllerResponse> create({
@@ -73,8 +71,10 @@ class ProductsController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await ProductsServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await ProductsServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

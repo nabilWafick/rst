@@ -69,8 +69,10 @@ class AgentsController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await AgentsServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await AgentsServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

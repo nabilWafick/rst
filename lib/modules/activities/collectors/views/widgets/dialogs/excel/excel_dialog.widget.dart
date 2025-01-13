@@ -123,8 +123,7 @@ class CollectorsActivitiesExcelFileGenerationDialog extends HookConsumerWidget {
 
                         if (exportAllsettlements.value) {
                           // get all settlements count
-                          final settlementsCount =
-                              await SettlementsController.countAll();
+                          final settlementsCount = await SettlementsController.countAll();
 
                           // generate excel file
                           await generateCollectorActivitiesExcelFile(

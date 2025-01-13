@@ -16,21 +16,19 @@ class CategoryFilterDialog extends StatefulHookConsumerWidget {
   const CategoryFilterDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CategoryFilterDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CategoryFilterDialogState();
 }
 
 class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    const formCardWidth = 880.0;
+    const formCardWidth = 950.0;
     // final categoriesListParameters = ref.watch(categoriesListParametersProvider);
     final categoriesListFilterParametersAdded =
         ref.watch(categoriesListFilterParametersAddedProvider);
 
-    final categoriesListParameters =
-        ref.watch(categoriesListParametersProvider);
+    final categoriesListParameters = ref.watch(categoriesListParametersProvider);
 
     final paramOperator = categoriesListParameters.containsKey('where')
         ? categoriesListParameters['where'].containsKey('AND')
@@ -96,8 +94,7 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
                     // will store filter parameters tools
                     List<Widget> filterParametersToolsList = [];
 
-                    for (MapEntry filterParameter
-                        in categoriesListFilterParametersAdded.entries) {
+                    for (MapEntry filterParameter in categoriesListFilterParametersAdded.entries) {
                       filterParametersToolsList.add(
                         FilterParameterTool(
                           index: filterParameter.key,
@@ -131,10 +128,7 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
                 child: InkWell(
                   onTap: () {
                     // add new filter parameter
-                    ref
-                        .read(categoriesListFilterParametersAddedProvider
-                            .notifier)
-                        .update(
+                    ref.read(categoriesListFilterParametersAddedProvider.notifier).update(
                       (state) {
                         state = {
                           ...state,
@@ -193,18 +187,14 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
                       backgroundColor: RSTColors.primaryColor,
                       onPressed: () {
                         // reset filter tools parameters provider
-                        ref.invalidate(
-                            categoriesListFilterParametersAddedProvider);
+                        ref.invalidate(categoriesListFilterParametersAddedProvider);
 
                         // remove the filter parameters
-                        ref
-                            .read(categoriesListParametersProvider.notifier)
-                            .update(
+                        ref.read(categoriesListParametersProvider.notifier).update(
                           (state) {
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               // remove where key from parameters
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
@@ -226,9 +216,7 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
             SizedBox(
               width: 170.0,
               child: RSTElevatedButton(
-                text: categoriesListFilterParametersAdded.isNotEmpty
-                    ? 'Valider'
-                    : 'Fermer',
+                text: categoriesListFilterParametersAdded.isNotEmpty ? 'Valider' : 'Fermer',
                 onPressed: categoriesListFilterParametersAdded.isNotEmpty
                     ? () async {
                         // save in update case
@@ -240,11 +228,9 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
                           List<Map<String, dynamic>> filterParameters = [];
 
                           // perform filter Tool parameter
-                          for (MapEntry<int,
-                                  Map<String, dynamic>> filterToolParameterEntry
+                          for (MapEntry<int, Map<String, dynamic>> filterToolParameterEntry
                               in categoriesListFilterParametersAdded.entries) {
-                            final finalFilterToolParameter =
-                                performFilterParameter(
+                            final finalFilterToolParameter = performFilterParameter(
                               ref: ref,
                               filterToolIndex: filterToolParameterEntry.key,
                               filterParameter: filterToolParameterEntry.value,
@@ -253,14 +239,11 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
                             /// * === TEST === * /
                             /// update added filter
                             ref
-                                .read(
-                                    categoriesListFilterParametersAddedProvider
-                                        .notifier)
+                                .read(categoriesListFilterParametersAddedProvider.notifier)
                                 .update((state) {
                               state = {
                                 ...state,
-                                filterToolParameterEntry.key:
-                                    finalFilterToolParameter,
+                                filterToolParameterEntry.key: finalFilterToolParameter,
                               };
                               return state;
                             });
@@ -272,15 +255,12 @@ class _CategoryFilterDialogState extends ConsumerState<CategoryFilterDialog> {
 
                           // add filter parameters to categoriesListParameter
 
-                          ref
-                              .read(categoriesListParametersProvider.notifier)
-                              .update((state) {
+                          ref.read(categoriesListParametersProvider.notifier).update((state) {
                             // remove if exists, 'AND', 'OR', 'NOT' keys
 
                             Map<String, dynamic> newState = {};
 
-                            for (MapEntry<String, dynamic> entry
-                                in state.entries) {
+                            for (MapEntry<String, dynamic> entry in state.entries) {
                               if (entry.key != 'where') {
                                 newState[entry.key] = entry.value;
                               }

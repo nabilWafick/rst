@@ -119,13 +119,12 @@ class CollectorsCollectionsPdfGenerationDialog extends HookConsumerWidget {
                       text: 'Imprimer',
                       onPressed: () async {
                         // get current collectorsCollections filter option
-                        final collectorsCollectionsListParameters = ref
-                            .read(collectorsCollectionsListParametersProvider);
+                        final collectorsCollectionsListParameters =
+                            ref.read(collectorsCollectionsListParametersProvider);
 
                         if (exportAllCollectorsCollections.value) {
                           // get all collectorsCollections count
-                          final collectorsCollectionsCount =
-                              await CollectorsController.countAll();
+                          final collectorsCollectionsCount = await CollectorsController.countAll();
 
                           // generate excel file
                           await generateCollectorsCollectionsPdf(

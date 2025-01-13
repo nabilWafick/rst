@@ -68,8 +68,7 @@ class TypesCRUDFunctions {
 
               // show error alert
               // store response
-              ref.read(feedbackDialogResponseProvider.notifier).state =
-                  FeedbackDialogResponse(
+              ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
                 result: null,
                 error: 'Répétition',
                 message: 'Un produit a été plusieurs fois selectionné',
@@ -88,8 +87,7 @@ class TypesCRUDFunctions {
             } else {
               // store the number of product defined
               final productNumber = ref.watch(
-                familyIntFormFieldValueProvider(
-                    typeProductInputAddedVisibility.key),
+                familyIntFormFieldValueProvider(typeProductInputAddedVisibility.key),
               );
 
               // add and store the typeProduct
@@ -97,7 +95,7 @@ class TypesCRUDFunctions {
                 TypeProduct(
                   typeId: null,
                   productId: selectedProduct.id!,
-                  productNumber: productNumber,
+                  productNumber: productNumber ?? 1,
                   product: selectedProduct,
                 ),
               );
@@ -107,8 +105,7 @@ class TypesCRUDFunctions {
 
             // show error alert
             // store response
-            ref.read(feedbackDialogResponseProvider.notifier).state =
-                FeedbackDialogResponse(
+            ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
               result: null,
               error: 'Manque',
               message: 'Tous les produits n\'ont pas été selectionnés',
@@ -133,8 +130,7 @@ class TypesCRUDFunctions {
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucun produit n\'a été sélectionné',
@@ -167,8 +163,7 @@ class TypesCRUDFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: typeAdditionResponse.result?.fr,
           error: typeAdditionResponse.error?.fr,
           message: typeAdditionResponse.message!.fr,
@@ -254,8 +249,7 @@ class TypesCRUDFunctions {
 
               // show error alert
               // store response
-              ref.read(feedbackDialogResponseProvider.notifier).state =
-                  FeedbackDialogResponse(
+              ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
                 result: null,
                 error: 'Répétition',
                 message: 'Un produit a été plusieurs fois selectionné',
@@ -274,8 +268,7 @@ class TypesCRUDFunctions {
             } else {
               // store the number of product defined
               final productNumber = ref.watch(
-                familyIntFormFieldValueProvider(
-                    typeProductInputAddedVisibility.key),
+                familyIntFormFieldValueProvider(typeProductInputAddedVisibility.key),
               );
 
               // add and store the typeProduct
@@ -283,7 +276,7 @@ class TypesCRUDFunctions {
                 TypeProduct(
                   typeId: null,
                   productId: selectedProduct.id!,
-                  productNumber: productNumber,
+                  productNumber: productNumber ?? 1,
                   product: selectedProduct,
                 ),
               );
@@ -293,8 +286,7 @@ class TypesCRUDFunctions {
 
             // show error alert
             // store response
-            ref.read(feedbackDialogResponseProvider.notifier).state =
-                FeedbackDialogResponse(
+            ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
               result: null,
               error: 'Manque',
               message: 'Tous les produits n\'ont pas été selectionnés',
@@ -319,8 +311,7 @@ class TypesCRUDFunctions {
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucun produit n\'a été sélectionné',
@@ -353,8 +344,7 @@ class TypesCRUDFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: typeUpdateResponse.result?.fr,
           error: typeUpdateResponse.error?.fr,
           message: typeUpdateResponse.message!.fr,
@@ -412,8 +402,7 @@ class TypesCRUDFunctions {
     );
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: typeDeletionResponse.result?.fr,
       error: typeDeletionResponse.error?.fr,
       message: typeDeletionResponse.message!.fr,

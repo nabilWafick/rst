@@ -168,9 +168,10 @@ class StocksController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await StocksServices.countAll();
-
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await StocksServices.countAll(listParameters: listParameters);
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,
       data: DataCount.fromMap(

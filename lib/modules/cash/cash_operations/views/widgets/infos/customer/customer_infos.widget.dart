@@ -14,16 +14,13 @@ class CashOperationsCustomerInfos extends StatefulHookConsumerWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CashOperationsCustomerInfosState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CashOperationsCustomerInfosState();
 }
 
-class _CashOperationsCustomerInfosState
-    extends ConsumerState<CashOperationsCustomerInfos> {
+class _CashOperationsCustomerInfosState extends ConsumerState<CashOperationsCustomerInfos> {
   @override
   Widget build(BuildContext context) {
-    final cashOperationsSelectedCustomer =
-        ref.watch(cashOperationsSelectedCustomerProvider);
+    final cashOperationsSelectedCustomer = ref.watch(cashOperationsSelectedCustomerProvider);
     final cashOperationsSelectedCustomerCards =
         ref.watch(cashOperationsSelectedCustomerCardsProvider);
     return Container(
@@ -84,8 +81,7 @@ class _CashOperationsCustomerInfosState
               LabelValue(
                 label: 'Activité Économique',
                 value: cashOperationsSelectedCustomer != null
-                    ? cashOperationsSelectedCustomer.economicalActivity?.name ??
-                        ''
+                    ? cashOperationsSelectedCustomer.economicalActivity?.name ?? ''
                     : '',
               ),
               LabelValue(
@@ -114,6 +110,30 @@ class _CashOperationsCustomerInfosState
                         .toString()
                     : '',
               ),
+
+              Consumer(
+                builder: (context, ref, child) {
+                  final usableCards = cashOperationsSelectedCustomerCards
+                      .where(
+                        (card) =>
+                            card.repaidAt == null &&
+                            card.satisfiedAt == null &&
+                            card.transferredAt == null,
+                      )
+                      .toList();
+
+                  int amount = 0;
+
+                  for (int i = 0; i < usableCards.length; i++) {
+                    amount += usableCards[i].typesNumber * usableCards[i].type.stake.toInt();
+                  }
+
+                  return LabelValue(
+                    label: 'Mise totale',
+                    value: cashOperationsSelectedCustomer != null ? '${amount}f' : '',
+                  );
+                },
+              )
             ],
           ),
           const SizedBox(),

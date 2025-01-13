@@ -63,7 +63,7 @@ class ProductForecastSimpleView extends ConsumerWidget {
                             ? Container(
                                 alignment: Alignment.center,
                                 margin: const EdgeInsets.symmetric(
-                                  vertical: 20.0,
+                                  vertical: 30.0,
                                 ),
                                 child: Column(
                                   children: [
@@ -84,13 +84,14 @@ class ProductForecastSimpleView extends ConsumerWidget {
                                       child: HorizontalDataTable(
                                         leftHandSideColumnWidth: 100,
                                         rightHandSideColumnWidth: 1700,
-                                        itemCount: productForecastPerCollector
-                                            .customersIds.length,
+                                        itemCount: productForecastPerCollector.customersIds.length,
+                                        horizontalScrollbarStyle: ScrollbarStyle(
+                                          thickness: 25.0,
+                                          thumbColor: RSTColors.primaryColor.withOpacity(.1),
+                                        ),
                                         isFixedHeader: true,
-                                        leftHandSideColBackgroundColor:
-                                            Colors.transparent,
-                                        rightHandSideColBackgroundColor:
-                                            Colors.transparent,
+                                        leftHandSideColBackgroundColor: Colors.transparent,
+                                        rightHandSideColBackgroundColor: Colors.transparent,
                                         headerWidgets: [
                                           Container(
                                             width: 200.0,
@@ -192,8 +193,7 @@ class ProductForecastSimpleView extends ConsumerWidget {
                                             ),
                                           );
                                         },
-                                        rightSideItemBuilder:
-                                            (BuildContext context, int index) {
+                                        rightSideItemBuilder: (BuildContext context, int index) {
                                           return Row(
                                             children: [
                                               Container(
@@ -201,10 +201,9 @@ class ProductForecastSimpleView extends ConsumerWidget {
                                                 height: 30.0,
                                                 alignment: Alignment.centerLeft,
                                                 child: RSTText(
-                                                  text: FunctionsController
-                                                      .truncateText(
+                                                  text: FunctionsController.truncateText(
                                                     text:
-                                                        '${productForecastPerCollector.customersNames[index]} ${productForecastPerCollector.customersNames[index]}',
+                                                        '${productForecastPerCollector.customersNames[index]} ${productForecastPerCollector.customersFirstnames[index]}',
                                                     maxLength: 30,
                                                   ),
                                                   textAlign: TextAlign.start,
@@ -217,54 +216,9 @@ class ProductForecastSimpleView extends ConsumerWidget {
                                                 height: 30.0,
                                                 alignment: Alignment.centerLeft,
                                                 child: RSTText(
-                                                  text:
-                                                      productForecastPerCollector
-                                                          .forecastsNumbers[
-                                                              index]
-                                                          .toString(),
-                                                  textAlign: TextAlign.center,
-                                                  fontSize: 12.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 200.0,
-                                                height: 30.0,
-                                                alignment: Alignment.centerLeft,
-                                                child: RSTText(
-                                                  text:
-                                                      productForecastPerCollector
-                                                          .typesNames[index]
-                                                          .toString(),
-                                                  textAlign: TextAlign.center,
-                                                  fontSize: 12.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 300.0,
-                                                height: 30.0,
-                                                alignment: Alignment.centerLeft,
-                                                child: RSTText(
-                                                  text:
-                                                      productForecastPerCollector
-                                                          .cardsLabels[index]
-                                                          .toString(),
-                                                  textAlign: TextAlign.center,
-                                                  fontSize: 12.0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 200.0,
-                                                height: 30.0,
-                                                alignment: Alignment.centerLeft,
-                                                child: RSTText(
-                                                  text:
-                                                      productForecastPerCollector
-                                                          .cardsTypesNumbers[
-                                                              index]
-                                                          .toString(),
+                                                  text: productForecastPerCollector
+                                                      .forecastsNumbers[index]
+                                                      .toString(),
                                                   textAlign: TextAlign.center,
                                                   fontSize: 12.0,
                                                   fontWeight: FontWeight.w500,
@@ -276,8 +230,46 @@ class ProductForecastSimpleView extends ConsumerWidget {
                                                 alignment: Alignment.centerLeft,
                                                 child: RSTText(
                                                   text: productForecastPerCollector
-                                                      .totalsSettlementsNumbers[
-                                                          index]
+                                                      .typesNames[index]
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 300.0,
+                                                height: 30.0,
+                                                alignment: Alignment.centerLeft,
+                                                child: RSTText(
+                                                  text: productForecastPerCollector
+                                                      .cardsLabels[index]
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 200.0,
+                                                height: 30.0,
+                                                alignment: Alignment.centerLeft,
+                                                child: RSTText(
+                                                  text: productForecastPerCollector
+                                                      .cardsTypesNumbers[index]
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 200.0,
+                                                height: 30.0,
+                                                alignment: Alignment.centerLeft,
+                                                child: RSTText(
+                                                  text: productForecastPerCollector
+                                                      .totalsSettlementsNumbers[index]
                                                       .toString(),
                                                   textAlign: TextAlign.center,
                                                   fontSize: 12.0,
@@ -300,10 +292,8 @@ class ProductForecastSimpleView extends ConsumerWidget {
                                           );
                                         },
                                         rowSeparatorWidget: const Divider(),
-                                        scrollPhysics:
-                                            const BouncingScrollPhysics(),
-                                        horizontalScrollPhysics:
-                                            const BouncingScrollPhysics(),
+                                        scrollPhysics: const BouncingScrollPhysics(),
+                                        horizontalScrollPhysics: const BouncingScrollPhysics(),
                                       ),
                                     ),
                                   ],

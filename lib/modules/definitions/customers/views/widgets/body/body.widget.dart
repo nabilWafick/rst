@@ -24,8 +24,7 @@ class CustomersPageBody extends StatefulHookConsumerWidget {
   const CustomersPageBody({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CustomersPageBodyState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CustomersPageBodyState();
 }
 
 class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
@@ -48,7 +47,7 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
         child: customersList.when(
           data: (data) => HorizontalDataTable(
             leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 3232,
+            rightHandSideColumnWidth: MediaQuery.of(context).size.width + 3100,
             itemCount: data.length,
             isFixedHeader: true,
             leftHandSideColBackgroundColor: RSTColors.backgroundColor,
@@ -257,16 +256,14 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                             },
                           ),
                           authPermissions![PermissionsValues.admin] ||
-                                  authPermissions[
-                                      PermissionsValues.updateCustomer]
+                                  authPermissions[PermissionsValues.updateCustomer]
                               ? RSTToolTipOption(
                                   icon: material.Icons.edit,
                                   iconColor: RSTColors.primaryColor,
                                   name: 'Modifier',
                                   onTap: () async {
                                     // invalidate cardsTypesInputsAddedProvider
-                                    ref.invalidate(
-                                        customerCardsInputsAddedVisibilityProvider);
+                                    ref.invalidate(customerCardsInputsAddedVisibilityProvider);
 
                                     // fetch all cards of customer cards
                                     List<Card> customerCards = [];
@@ -277,10 +274,8 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                                       final customerCardsNumberData =
                                           await CardsController.countSpecific(
                                         listParameters: {
-                                          'skip':
-                                              0, // This value is override in backend
-                                          'take':
-                                              100, // This value is override in backend
+                                          'skip': 0, // This value is override in backend
+                                          'take': 100, // This value is override in backend
                                           'where': {
                                             'customer': {
                                               'id': customer.id!.toInt(),
@@ -291,17 +286,15 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
 
                                       // fetch the cards
                                       final customerCardsData =
-                                          await CardsController.getMany(
-                                              listParameters: {
-                                            'skip': 0,
-                                            'take': customerCardsNumberData
-                                                .data.count,
-                                            'where': {
-                                              'customer': {
-                                                'id': customer.id!.toInt(),
-                                              },
-                                            },
-                                          });
+                                          await CardsController.getMany(listParameters: {
+                                        'skip': 0,
+                                        'take': customerCardsNumberData.data.count,
+                                        'where': {
+                                          'customer': {
+                                            'id': customer.id!.toInt(),
+                                          },
+                                        },
+                                      });
 
                                       // store the cards
                                       customerCards = List<Card>.from(
@@ -317,9 +310,7 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                                     // add the cards inputs
                                     for (Card card in customerCards) {
                                       ref
-                                          .read(
-                                              customerCardsInputsAddedVisibilityProvider
-                                                  .notifier)
+                                          .read(customerCardsInputsAddedVisibilityProvider.notifier)
                                           .update((state) {
                                         state = {
                                           ...state,
@@ -340,8 +331,7 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                                 )
                               : null,
                           authPermissions[PermissionsValues.admin] ||
-                                  authPermissions[
-                                      PermissionsValues.deleteCustomer]
+                                  authPermissions[PermissionsValues.deleteCustomer]
                               ? RSTToolTipOption(
                                   icon: material.Icons.delete,
                                   iconColor: RSTColors.primaryColor,
@@ -349,11 +339,9 @@ class _CustomersPageBodyState extends ConsumerState<CustomersPageBody> {
                                   onTap: () {
                                     FunctionsController.showAlertDialog(
                                       context: context,
-                                      alertDialog:
-                                          CustomerDeletionConfirmationDialog(
+                                      alertDialog: CustomerDeletionConfirmationDialog(
                                         customer: customer,
-                                        confirmToDelete:
-                                            CustomersCRUDFunctions.delete,
+                                        confirmToDelete: CustomersCRUDFunctions.delete,
                                       ),
                                     );
                                   },

@@ -3,8 +3,8 @@ import 'package:rst/utils/colors/colors.util.dart';
 
 class RSTThemeData {
   static final lightTheme = ThemeData(
-    scrollbarTheme: ScrollbarThemeData(
-      thumbVisibility: MaterialStateProperty.all(true),
+    scrollbarTheme: const ScrollbarThemeData(
+      thumbVisibility: WidgetStatePropertyAll(true),
     ),
     unselectedWidgetColor: RSTColors.primaryColor,
     colorScheme: ColorScheme.fromSeed(
@@ -154,7 +154,7 @@ class RSTThemeData {
         /*   maximumSize: MaterialStatePropertyAll(
           Size(double.maxFinite, 200.0),
         ),*/
-        backgroundColor: MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(
           RSTColors.backgroundColor,
         ),
       ),
@@ -182,8 +182,7 @@ class RSTThemeData {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
-          borderSide:
-              const BorderSide(color: RSTColors.primaryColor, width: 2.0),
+          borderSide: const BorderSide(color: RSTColors.primaryColor, width: 2.0),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),

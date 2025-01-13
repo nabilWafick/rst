@@ -69,8 +69,10 @@ class LocalitiesController {
     );
   }
 
-  static Future<ControllerResponse> countAll() async {
-    final serviceResponse = await LocalitiesServices.countAll();
+  static Future<ControllerResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
+    final serviceResponse = await LocalitiesServices.countAll(listParameters: listParameters);
 
     return ControllerResponse(
       statusCode: serviceResponse.statusCode,

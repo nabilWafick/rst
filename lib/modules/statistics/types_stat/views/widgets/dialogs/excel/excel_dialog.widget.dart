@@ -118,8 +118,7 @@ class TypesStatsExcelFileGenerationDialog extends HookConsumerWidget {
                       text: 'Exporter',
                       onPressed: () async {
                         // get current types filter option
-                        final typesListParameters =
-                            ref.read(typesListParametersProvider);
+                        final typesListParameters = ref.read(typesListParametersProvider);
 
                         if (exportAllTypesStats.value) {
                           // get all types count

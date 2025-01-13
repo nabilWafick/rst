@@ -32,8 +32,7 @@ class RSTOperatorDropdown extends ConsumerStatefulWidget {
     required this.dropdownMenuEntriesValues,
   });
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RSTOperatorDropdownState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RSTOperatorDropdownState();
 }
 
 class _RSTOperatorDropdownState extends ConsumerState<RSTOperatorDropdown> {
@@ -47,9 +46,8 @@ class _RSTOperatorDropdownState extends ConsumerState<RSTOperatorDropdown> {
         // check if dropdown item is not empty so as to avoid error
         // while setting the  the first item as the selectedItem
         if (widget.dropdownMenuEntriesValues.isNotEmpty) {
-          ref
-              .read(operatorDropdownProvider(widget.providerName).notifier)
-              .state = widget.dropdownMenuEntriesValues[0];
+          ref.read(operatorDropdownProvider(widget.providerName).notifier).state =
+              widget.dropdownMenuEntriesValues[0];
         }
       },
     );
@@ -59,8 +57,7 @@ class _RSTOperatorDropdownState extends ConsumerState<RSTOperatorDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedDropdownItem =
-        ref.watch(operatorDropdownProvider(widget.providerName));
+    final selectedDropdownItem = ref.watch(operatorDropdownProvider(widget.providerName));
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 5.0,
@@ -78,12 +75,11 @@ class _RSTOperatorDropdownState extends ConsumerState<RSTOperatorDropdown> {
         dropdownMenuEntries: widget.dropdownMenuEntriesLabels
             .map(
               (dropdownMenuEntryLabel) => DropdownMenuEntry(
-                value: widget.dropdownMenuEntriesValues[widget
-                    .dropdownMenuEntriesLabels
-                    .indexOf(dropdownMenuEntryLabel)],
+                value: widget.dropdownMenuEntriesValues[
+                    widget.dropdownMenuEntriesLabels.indexOf(dropdownMenuEntryLabel)],
                 label: dropdownMenuEntryLabel.front,
                 style: const ButtonStyle(
-                  textStyle: MaterialStatePropertyAll(
+                  textStyle: WidgetStatePropertyAll(
                     TextStyle(
                       fontWeight: FontWeight.w500,
                     ),
@@ -96,9 +92,7 @@ class _RSTOperatorDropdownState extends ConsumerState<RSTOperatorDropdown> {
           Icons.arrow_drop_down,
         ),
         onSelected: (value) {
-          ref
-              .read(operatorDropdownProvider(widget.providerName).notifier)
-              .state = value!;
+          ref.read(operatorDropdownProvider(widget.providerName).notifier).state = value!;
         },
       ),
     );

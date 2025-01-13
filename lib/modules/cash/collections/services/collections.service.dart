@@ -176,7 +176,9 @@ class CollectionsServices {
     }
   }
 
-  static Future<ServiceResponse> countAll() async {
+  static Future<ServiceResponse> countAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -191,9 +193,7 @@ class CollectionsServices {
           connectTimeout: RSTApiConstants.connectionTimeoutDuration,
           receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
         ),
-      ).get(
-        '$route/count/all',
-      );
+      ).get('$route/count/all', queryParameters: listParameters);
 
       return ServiceResponse(
         statusCode: 200,
@@ -225,7 +225,9 @@ class CollectionsServices {
     }
   }
 
-  static Future<ServiceResponse> sumAll() async {
+  static Future<ServiceResponse> sumAll({
+    Map<String, dynamic>? listParameters,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -242,6 +244,7 @@ class CollectionsServices {
         ),
       ).get(
         '$route/sum/all',
+        queryParameters: listParameters,
       );
 
       return ServiceResponse(
@@ -323,7 +326,58 @@ class CollectionsServices {
     }
   }
 
-  static Future<ServiceResponse> sumAllRest() async {
+  static Future<ServiceResponse> yearProfit() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final accessToken = prefs.getString(RSTPreferencesKeys.accesToken);
+
+      final headers = {'Authorization': 'Bearer $accessToken'};
+
+      final response = await Dio(
+        BaseOptions(
+          baseUrl: RSTApiConstants.apiBaseUrl ?? '',
+          headers: headers,
+          connectTimeout: RSTApiConstants.connectionTimeoutDuration,
+          receiveTimeout: RSTApiConstants.receiveTimeoutDuration,
+        ),
+      ).get(
+        '$route/year/profit/estimation',
+      );
+
+      return ServiceResponse(
+        statusCode: 200,
+        data: response.data,
+      );
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // server erroradmin
+        debugPrint(error.response?.data.toString());
+
+        return ServiceResponse.fromMap(error.response?.data);
+      } else {
+        // connection error
+        debugPrint(error.response.toString());
+
+        return ServiceResponse(
+          statusCode: 503,
+          data: null,
+          error: ServiceError(
+            en: 'Service Unavailable',
+            fr: 'Service Indisponible',
+          ),
+          message: ServiceMessage(
+            en: 'Unable to communicate with server',
+            fr: 'Impossible de communiquer avec le serveur',
+          ),
+        );
+      }
+    }
+  }
+
+  static Future<ServiceResponse> sumAllRest({
+    Map<String, dynamic>? listParameters,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -340,6 +394,7 @@ class CollectionsServices {
         ),
       ).get(
         '$route/sum/all/rest',
+        queryParameters: listParameters,
       );
 
       return ServiceResponse(

@@ -2,24 +2,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rst/modules/auth/functions/auth.function.dart';
 import 'package:rst/modules/cash/settlements/controllers/settlements.controller.dart';
 import 'package:rst/modules/cash/settlements/models/settlement/settlement.model.dart';
+import 'package:rst/utils/utils.dart';
 
 // used for storing collectorsActivities filter options
-final collectorsActivitiesListParametersProvider =
-    StateProvider<Map<String, dynamic>>((ref) {
+final collectorsActivitiesListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'skip': 0,
     'take': 25,
     'where': {
       'collectionId': {
-        'not': 'null',
+        'not': RSTApiConstants.nullValue,
       },
       'isValidated': {
         'equals': true,
       },
-
-      /*   'AND': [
-        
-      ],*/
+      'AND': [
+        {
+          'collection': {
+            'collectedAt': {'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z'},
+          }
+        },
+        {
+          'collection': {
+            'collectedAt': {'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z'}
+          }
+        }
+      ]
     },
     'orderBy': [
       {
@@ -36,8 +44,7 @@ final collectorsActivitiesListFilterParametersAddedProvider =
 });
 
 // used for storing fetched collectorsActivities
-final collectorsActivitiesListStreamProvider =
-    FutureProvider<List<Settlement>>((ref) async {
+final collectorsActivitiesListStreamProvider = FutureProvider<List<Settlement>>((ref) async {
   final listParameters = ref.watch(collectorsActivitiesListParametersProvider);
 
   final controllerResponse = await SettlementsController.getMany(
@@ -63,14 +70,11 @@ final collectorsActivitiesCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched collectorsActivities (settlements respecting filter options) count
-final specificCollectorsActivitiesCountProvider =
-    FutureProvider<int>((ref) async {
+final specificCollectorsActivitiesCountProvider = FutureProvider<int>((ref) async {
   final listParameters = ref.watch(collectorsActivitiesListParametersProvider);
 
   final controllerResponse = await SettlementsController.countSpecific(
@@ -82,7 +86,5 @@ final specificCollectorsActivitiesCountProvider =
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });

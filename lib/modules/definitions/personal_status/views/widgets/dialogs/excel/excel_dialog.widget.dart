@@ -123,8 +123,7 @@ class PersonalStatusExcelFileGenerationDialog extends HookConsumerWidget {
 
                         if (exportAllPersonalStatus.value) {
                           // get all personalStatus count
-                          final personalStatusCount =
-                              await PersonalStatusController.countAll();
+                          final personalStatusCount = await PersonalStatusController.countAll();
 
                           // generate excel file
                           await generatePersonalStatusExcelFile(

@@ -5,6 +5,7 @@ import 'package:rst/utils/colors/colors.util.dart';
 
 class FilterParameterToolTextFormField extends HookConsumerWidget {
   final String inputProvider;
+//  final bool isNullable;
   final TextEditingController? textEditingController;
   final String? label;
   final String? hintText;
@@ -17,6 +18,7 @@ class FilterParameterToolTextFormField extends HookConsumerWidget {
   const FilterParameterToolTextFormField({
     super.key,
     required this.inputProvider,
+//    required this.isNullable,
     this.textEditingController,
     this.label,
     this.hintText,

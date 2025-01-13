@@ -44,16 +44,13 @@ class CustomersCRUDFunctions {
       final customerAddress = ref.watch(customerAddressProvider);
       final customerOccupation = ref.watch(customerOccupationProvider);
       final customerNicNumber = ref.watch(customerNicNumberProvider);
-      final customerCategory =
-          ref.watch(categorySelectionToolProvider('customer-addition'));
+      final customerCategory = ref.watch(categorySelectionToolProvider('customer-addition'));
       final customerPersonalStatus =
           ref.watch(personalStatusSelectionToolProvider('customer-addition'));
-      final customerEconomicalActivity = ref
-          .watch(economicalActivitySelectionToolProvider('customer-addition'));
-      final customerLocality =
-          ref.watch(localitySelectionToolProvider('customer-addition'));
-      final customerCollector =
-          ref.watch(collectorSelectionToolProvider('customer-addition'));
+      final customerEconomicalActivity =
+          ref.watch(economicalActivitySelectionToolProvider('customer-addition'));
+      final customerLocality = ref.watch(localitySelectionToolProvider('customer-addition'));
+      final customerCollector = ref.watch(collectorSelectionToolProvider('customer-addition'));
 
       // store types and typesNumers
       final customerCardsInputsAddedVisibility =
@@ -89,8 +86,7 @@ class CustomersCRUDFunctions {
 
             // show error alert
             // store response
-            ref.read(feedbackDialogResponseProvider.notifier).state =
-                FeedbackDialogResponse(
+            ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
               result: null,
               error: 'Conflit',
               message: 'Un libellé a été plusieurs fois selectionnés',
@@ -108,7 +104,7 @@ class CustomersCRUDFunctions {
             break;
           } else {
             // add the label to cardsLabels list
-            cardsLabels.add(cardLabel);
+            cardsLabels.add(cardLabel ?? DateTime.now().toIso8601String());
 
             // check if a type have been selected with-in the input
             final selectedType = ref.watch(
@@ -130,8 +126,7 @@ class CustomersCRUDFunctions {
 
                 // show error alert
                 // store response
-                ref.read(feedbackDialogResponseProvider.notifier).state =
-                    FeedbackDialogResponse(
+                ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
                   result: null,
                   error: 'Répétition',
                   message: 'Un type a été plusieurs fois selectionné',
@@ -161,9 +156,9 @@ class CustomersCRUDFunctions {
                 // add and store the customerCard
                 customerCards.add(
                   Card(
-                    label: cardLabel,
+                    label: cardLabel ?? DateTime.now().toIso8601String(),
                     type: selectedType,
-                    typesNumber: typesNumber,
+                    typesNumber: typesNumber ?? 1,
                     customer: Customer(
                       id: 1000000000000000000,
                       name: customerName,
@@ -183,8 +178,7 @@ class CustomersCRUDFunctions {
 
               // show error alert
               // store response
-              ref.read(feedbackDialogResponseProvider.notifier).state =
-                  FeedbackDialogResponse(
+              ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
                 result: null,
                 error: 'Manque',
                 message: 'Tous les types n\'ont pas été selectionnés',
@@ -205,15 +199,12 @@ class CustomersCRUDFunctions {
         }
       }
 
-      if (areDataValidated &&
-          customerCards.isNotEmpty &&
-          customerCollector == null) {
+      if (areDataValidated && customerCards.isNotEmpty && customerCollector == null) {
         areDataValidated = false;
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucun collecteur n\'a pas été sélectionné',
@@ -256,8 +247,7 @@ class CustomersCRUDFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: customerAdditionResponse.result?.fr,
           error: customerAdditionResponse.error?.fr,
           message: customerAdditionResponse.message!.fr,
@@ -310,16 +300,13 @@ class CustomersCRUDFunctions {
       final customerAddress = ref.watch(customerAddressProvider);
       final customerOccupation = ref.watch(customerOccupationProvider);
       final customerNicNumber = ref.watch(customerNicNumberProvider);
-      final customerCategory =
-          ref.watch(categorySelectionToolProvider('customer-update'));
+      final customerCategory = ref.watch(categorySelectionToolProvider('customer-update'));
       final customerPersonalStatus =
           ref.watch(personalStatusSelectionToolProvider('customer-update'));
       final customerEconomicalActivity =
           ref.watch(economicalActivitySelectionToolProvider('customer-update'));
-      final customerLocality =
-          ref.watch(localitySelectionToolProvider('customer-update'));
-      final customerCollector =
-          ref.watch(collectorSelectionToolProvider('customer-update'));
+      final customerLocality = ref.watch(localitySelectionToolProvider('customer-update'));
+      final customerCollector = ref.watch(collectorSelectionToolProvider('customer-update'));
 
       // store types and typesNumers
       final customerCardsInputsAddedVisibility =
@@ -355,8 +342,7 @@ class CustomersCRUDFunctions {
 
             // show error alert
             // store response
-            ref.read(feedbackDialogResponseProvider.notifier).state =
-                FeedbackDialogResponse(
+            ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
               result: null,
               error: 'Conflit',
               message: 'Un libellé a été plusieurs fois selectionnés',
@@ -374,7 +360,7 @@ class CustomersCRUDFunctions {
             break;
           } else {
             // add the label to cardsLabels list
-            cardsLabels.add(cardLabel);
+            cardsLabels.add(cardLabel ?? DateTime.now().toIso8601String());
 
             // check if a type have been selected with-in the input
             final selectedType = ref.watch(
@@ -386,75 +372,50 @@ class CustomersCRUDFunctions {
             // if a type is selected, store the type type
             if (selectedType != null) {
               // check if the type have not been selected or is not repeated
-              final identicalTypes = cardsTypes.where(
+              /*  final identicalTypes = cardsTypes.where(
                 (type) => type.id == selectedType.id,
               );
+              */
 
-              // if the type have been added
-              if (identicalTypes.isNotEmpty) {
-                areDataValidated = false;
+              // add the selected type to cards types list
+              cardsTypes.add(selectedType);
 
-                // show error alert
-                // store response
-                ref.read(feedbackDialogResponseProvider.notifier).state =
-                    FeedbackDialogResponse(
-                  result: null,
-                  error: 'Répétition',
-                  message: 'Un type a été plusieurs fois selectionné',
-                );
+              // store the number of type defined
+              final typesNumber = ref.watch(
+                familyIntFormFieldValueProvider(
+                  customerCardInputAddedVisibility.key,
+                ),
+              );
 
-                // show validated button
-                showValidatedButton.value = true;
-
-                // show alert
-                FunctionsController.showAlertDialog(
-                  context: context,
-                  alertDialog: const FeedbackDialog(),
-                );
-
-                break;
-              } else {
-                // add the selected type to cards types list
-                cardsTypes.add(selectedType);
-
-                // store the number of type defined
-                final typesNumber = ref.watch(
-                  familyIntFormFieldValueProvider(
-                    customerCardInputAddedVisibility.key,
-                  ),
-                );
-
-                // add and store the customerCard
-                customerCards.add(
-                  Card(
-                    // especially done for olden cards
-                    // they ids have been used as key for
-                    // card inputs visibility provider
-                    id: int.tryParse(customerCardInputAddedVisibility.key),
-                    label: cardLabel,
-                    type: selectedType,
-                    typesNumber: typesNumber,
-                    customer: Customer(
-                      id: customer.id,
-                      name: customerName,
-                      firstnames: customerFirstnames,
-                      phoneNumber: customerPhoneNumber,
-                      address: customerAddress,
-                      createdAt: DateTime.now(),
-                      updatedAt: DateTime.now(),
-                    ),
+              // add and store the customerCard
+              customerCards.add(
+                Card(
+                  // especially done for olden cards
+                  // they ids have been used as key for
+                  // card inputs visibility provider
+                  id: int.tryParse(customerCardInputAddedVisibility.key),
+                  label: cardLabel ?? DateTime.now().toIso8601String(),
+                  type: selectedType,
+                  typesNumber: typesNumber ?? 1,
+                  customer: Customer(
+                    id: customer.id,
+                    name: customerName,
+                    firstnames: customerFirstnames,
+                    phoneNumber: customerPhoneNumber,
+                    address: customerAddress,
                     createdAt: DateTime.now(),
                     updatedAt: DateTime.now(),
                   ),
-                );
-              }
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                ),
+              );
             } else {
               areDataValidated = false;
 
               // show error alert
               // store response
-              ref.read(feedbackDialogResponseProvider.notifier).state =
-                  FeedbackDialogResponse(
+              ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
                 result: null,
                 error: 'Manque',
                 message: 'Tous les types n\'ont pas été selectionnés',
@@ -475,15 +436,12 @@ class CustomersCRUDFunctions {
         }
       }
 
-      if (areDataValidated &&
-          customerCards.isNotEmpty &&
-          customerCollector == null) {
+      if (areDataValidated && customerCards.isNotEmpty && customerCollector == null) {
         areDataValidated = false;
 
         // show error alert
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: null,
           error: 'Conflit',
           message: 'Aucun collecteur n\'a pas été sélectionné',
@@ -527,8 +485,7 @@ class CustomersCRUDFunctions {
         );
 
         // store response
-        ref.read(feedbackDialogResponseProvider.notifier).state =
-            FeedbackDialogResponse(
+        ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
           result: customerUpdateResponse.result?.fr,
           error: customerUpdateResponse.error?.fr,
           message: customerUpdateResponse.message!.fr,
@@ -586,8 +543,7 @@ class CustomersCRUDFunctions {
     );
 
     // store response
-    ref.read(feedbackDialogResponseProvider.notifier).state =
-        FeedbackDialogResponse(
+    ref.read(feedbackDialogResponseProvider.notifier).state = FeedbackDialogResponse(
       result: customerDeletionResponse.result?.fr,
       error: customerDeletionResponse.error?.fr,
       message: customerDeletionResponse.message!.fr,

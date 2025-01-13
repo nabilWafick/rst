@@ -18,8 +18,7 @@ final typeStakeProvider = StateProvider<double>(
 );
 
 // for managing products inputs, add,hide inputs, identify inputs
-final typeProductsInputsAddedVisibilityProvider =
-    StateProvider<Map<String, bool>>((ref) {
+final typeProductsInputsAddedVisibilityProvider = StateProvider<Map<String, bool>>((ref) {
   return {};
 });
 
@@ -43,8 +42,7 @@ final typesListParametersProvider = StateProvider<Map<String, dynamic>>((ref) {
 });
 
 // used for storing added filter tool
-final typesListFilterParametersAddedProvider =
-    StateProvider<Map<int, Map<String, dynamic>>>((ref) {
+final typesListFilterParametersAddedProvider = StateProvider<Map<int, Map<String, dynamic>>>((ref) {
   return {};
 });
 
@@ -61,9 +59,7 @@ final typesListStreamProvider = FutureProvider<List<Type>>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? List<Type>.from(controllerResponse.data)
-      : <Type>[];
+  return controllerResponse.data != null ? List<Type>.from(controllerResponse.data) : <Type>[];
 });
 
 // used for storing all types of database count
@@ -75,9 +71,26 @@ final typesCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
+});
+
+// used for storing all types of database count
+final yearTypesCountProvider = FutureProvider<int>((ref) async {
+  final controllerResponse = await TypesController.countAll(listParameters: {
+    'where': {
+      'createdAt': {
+        'gte': '${DateTime(DateTime.now().year).toIso8601String()}Z',
+        'lt': '${DateTime(DateTime.now().year + 1).toIso8601String()}Z',
+      },
+    }
+  });
+
+  await AuthFunctions.autoDisconnectAfterUnauthorizedException(
+    ref: ref,
+    statusCode: controllerResponse.statusCode,
+  );
+
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
 
 // used for storing fetched types (types respecting filter options) count
@@ -93,7 +106,5 @@ final specificTypesCountProvider = FutureProvider<int>((ref) async {
     statusCode: controllerResponse.statusCode,
   );
 
-  return controllerResponse.data != null
-      ? controllerResponse.data.count as int
-      : 0;
+  return controllerResponse.data != null ? controllerResponse.data.count as int : 0;
 });
