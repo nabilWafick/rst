@@ -123,8 +123,8 @@ class _TypeUpdateFormState extends ConsumerState<TypeUpdateForm> {
                         )
                             .update((state) {
                           // generate a random inputName
-                          final inputName = FunctionsController
-                              .generateRandomStringFromCurrentDateTime();
+                          final inputName =
+                              FunctionsController.generateRandomStringFromCurrentDateTime();
 
                           state = {
                             ...state,
@@ -151,8 +151,7 @@ class _TypeUpdateFormState extends ConsumerState<TypeUpdateForm> {
                       // check if the key is an integer
                       // if true, it's a product added before
                       // detect the product and pass it to the input
-                      final numKey =
-                          int.tryParse(typeProductInputAddedVisibility.key);
+                      final numKey = int.tryParse(typeProductInputAddedVisibility.key);
 
                       if (numKey == null) {
                         typeProductsInputs.add(
@@ -168,14 +167,12 @@ class _TypeUpdateFormState extends ConsumerState<TypeUpdateForm> {
                             inputName: typeProductInputAddedVisibility.key,
                             product: widget.type.typeProducts
                                 .firstWhere(
-                                  (typeProduct) =>
-                                      typeProduct.product.id == numKey,
+                                  (typeProduct) => typeProduct.product.id == numKey,
                                 )
                                 .product,
                             productNumber: widget.type.typeProducts
                                 .firstWhere(
-                                  (typeProduct) =>
-                                      typeProduct.product.id == numKey,
+                                  (typeProduct) => typeProduct.product.id == numKey,
                                 )
                                 .productNumber,
                           ),
@@ -184,10 +181,15 @@ class _TypeUpdateFormState extends ConsumerState<TypeUpdateForm> {
                     }
                   }
 
-                  return SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: typeProductsInputs,
+                  return Container(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * .4,
+                    ),
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        children: typeProductsInputs,
+                      ),
                     ),
                   );
                 },

@@ -15,8 +15,7 @@ import 'package:rst/utils/colors/colors.util.dart';
 class TypeAdditionForm extends StatefulHookConsumerWidget {
   const TypeAdditionForm({super.key});
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _TypeAdditionFormState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TypeAdditionFormState();
 }
 
 class _TypeAdditionFormState extends ConsumerState<TypeAdditionForm> {
@@ -115,8 +114,8 @@ class _TypeAdditionFormState extends ConsumerState<TypeAdditionForm> {
                         )
                             .update((state) {
                           // generate a random inputName
-                          final inputName = FunctionsController
-                              .generateRandomStringFromCurrentDateTime();
+                          final inputName =
+                              FunctionsController.generateRandomStringFromCurrentDateTime();
 
                           state = {
                             ...state,
@@ -149,10 +148,16 @@ class _TypeAdditionFormState extends ConsumerState<TypeAdditionForm> {
                     }
                   }
 
-                  return SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: typeProductsInputs,
+                  return Container(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * .4,
+                    ),
+                    //  color: Colors.blueGrey,
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        children: typeProductsInputs,
+                      ),
                     ),
                   );
                 },
