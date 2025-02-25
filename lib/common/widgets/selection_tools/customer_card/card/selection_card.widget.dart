@@ -12,6 +12,7 @@ import 'package:rst/modules/cash/cash_operations/providers/cash_operations.provi
 import 'package:rst/modules/cash/settlements/providers/settlements.provider.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
+import 'package:rst/utils/constants/api/api.constant.dart';
 
 class CardSelectionToolCard extends StatefulHookConsumerWidget {
   final String toolName;
@@ -32,8 +33,7 @@ class CardSelectionToolCard extends StatefulHookConsumerWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CardSelectionToolCardState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CardSelectionToolCardState();
 }
 
 class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
@@ -48,8 +48,7 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
           milliseconds: 100,
         ),
         () {
-          ref.read(cardSelectionToolProvider(widget.toolName).notifier).state =
-              widget.card;
+          ref.read(cardSelectionToolProvider(widget.toolName).notifier).state = widget.card;
         },
       );
     }
@@ -77,11 +76,8 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
 
                 if (widget.toolName == 'cash-operations' &&
                     cashOperationsSelectedCustomer != null) {
-                  ref
-                      .read(cardsSelectionListParametersProvider(
-                              'cash-operations')
-                          .notifier)
-                      .state = {
+                  ref.read(cardsSelectionListParametersProvider('cash-operations').notifier).state =
+                      {
                     'skip': 0,
                     'take': 15,
                     'where': {
@@ -91,13 +87,13 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                         },
                         if (!cashOperationsShowAllCustomerCards) ...[
                           {
-                            'repaidAt': 'null',
+                            'repaidAt': RSTApiConstants.nullValue,
                           },
                           {
-                            'satisfiedAt': 'null',
+                            'satisfiedAt': RSTApiConstants.nullValue,
                           },
                           {
-                            'transferredAt': 'null',
+                            'transferredAt': RSTApiConstants.nullValue,
                           }
                         ]
                       ]
@@ -110,13 +106,12 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                 final multipleSettlementsSelectedCustomerCards =
                     ref.watch(multipleSettlementsSelectedCustomerCardsProvider);
 
-                List<int> selectedCardIds =
-                    multipleSettlementsSelectedCustomerCards.values
-                        .toList()
-                        .map(
-                          (card) => card.id!,
-                        )
-                        .toList();
+                List<int> selectedCardIds = multipleSettlementsSelectedCustomerCards.values
+                    .toList()
+                    .map(
+                      (card) => card.id!,
+                    )
+                    .toList();
 
                 if (widget.toolName.contains('multiple-settlement-input-') &&
                     cashOperationsSelectedCustomer != null) {
@@ -139,13 +134,13 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                         },
                         // null is transformed to correct null value in backend
                         {
-                          'repaidAt': 'null',
+                          'repaidAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'satisfiedAt': 'null',
+                          'satisfiedAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'transferredAt': 'null',
+                          'transferredAt': RSTApiConstants.nullValue,
                         }
                       ]
                     }
@@ -154,13 +149,13 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
 
                 /// ****  TRANSFER BETWEEN CUSTOMER CARDS FILTERING **** ///
                 // read the slected customer, issuing and rceiving card
-                final transferBCCCustomer = ref.watch(
-                    customerSelectionToolProvider('transfer-bcc-customer'));
+                final transferBCCCustomer =
+                    ref.watch(customerSelectionToolProvider('transfer-bcc-customer'));
                 final transferBCCIssuingCard = ref.watch(
                   cardSelectionToolProvider('transfer-bcc-issuing-card'),
                 );
-                final transferBCCReceivingCard = ref.watch(
-                    cardSelectionToolProvider('transfer-bcc-receiving-card'));
+                final transferBCCReceivingCard =
+                    ref.watch(cardSelectionToolProvider('transfer-bcc-receiving-card'));
 
                 if (transferBCCCustomer != null &&
                     (widget.toolName == 'transfer-bcc-issuing-card' ||
@@ -185,13 +180,13 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                         },
                         // null is transformed to correct null value in backend
                         {
-                          'repaidAt': 'null',
+                          'repaidAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'satisfiedAt': 'null',
+                          'satisfiedAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'transferredAt': 'null',
+                          'transferredAt': RSTApiConstants.nullValue,
                         }
                       ]
                     }
@@ -217,13 +212,13 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                         },
                         // null is transformed to correct null value in backend
                         {
-                          'repaidAt': 'null',
+                          'repaidAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'satisfiedAt': 'null',
+                          'satisfiedAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'transferredAt': 'null',
+                          'transferredAt': RSTApiConstants.nullValue,
                         }
                       ]
                     }
@@ -232,18 +227,16 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
 
                 /// ****  TRANSFER BETWEEN CUSTOMERS CARDS FILTERING **** ///
                 // read the slected customer, issuing and rceiving card
-                final transferBCIssuingCustomer = ref.watch(
-                    customerSelectionToolProvider(
-                        'transfer-bc-issuing-customer'));
+                final transferBCIssuingCustomer =
+                    ref.watch(customerSelectionToolProvider('transfer-bc-issuing-customer'));
 
-                final transferBCReceivingCustomer = ref.watch(
-                    customerSelectionToolProvider(
-                        'transfer-bc-receiving-customer'));
+                final transferBCReceivingCustomer =
+                    ref.watch(customerSelectionToolProvider('transfer-bc-receiving-customer'));
                 final transferBCIssuingCard = ref.watch(
                   cardSelectionToolProvider('transfer-bc-issuing-card'),
                 );
-                final transferBCReceivingCard = ref.watch(
-                    cardSelectionToolProvider('transfer-bc-receiving-card'));
+                final transferBCReceivingCard =
+                    ref.watch(cardSelectionToolProvider('transfer-bc-receiving-card'));
 
                 // filter issuing customer card
                 if (transferBCIssuingCustomer != null &&
@@ -268,13 +261,13 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                         },
                         // null is transformed to correct null value in backend
                         {
-                          'repaidAt': 'null',
+                          'repaidAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'satisfiedAt': 'null',
+                          'satisfiedAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'transferredAt': 'null',
+                          'transferredAt': RSTApiConstants.nullValue,
                         }
                       ]
                     }
@@ -304,13 +297,13 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                         },
                         // null is transformed to correct null value in backend
                         {
-                          'repaidAt': 'null',
+                          'repaidAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'satisfiedAt': 'null',
+                          'satisfiedAt': RSTApiConstants.nullValue,
                         },
                         {
-                          'transferredAt': 'null',
+                          'transferredAt': RSTApiConstants.nullValue,
                         }
                       ]
                     }
@@ -336,9 +329,7 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
           decoration: BoxDecoration(
             border: Border.all(
               width: .5,
-              color: focusOn.value
-                  ? RSTColors.primaryColor
-                  : RSTColors.tertiaryColor,
+              color: focusOn.value ? RSTColors.primaryColor : RSTColors.tertiaryColor,
             ),
             borderRadius: widget.roundedStyle == RoundedStyle.full
                 ? BorderRadius.circular(15.0)
@@ -346,24 +337,16 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                     ? BorderRadius.circular(.0)
                     : BorderRadius.only(
                         topLeft: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyLeft
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyLeft ? 15.0 : 0,
                         ),
                         bottomLeft: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyLeft
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyLeft ? 15.0 : 0,
                         ),
                         topRight: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyRight
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyRight ? 15.0 : 0,
                         ),
                         bottomRight: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyRight
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyRight ? 15.0 : 0,
                         ),
                       ),
           ),
@@ -376,9 +359,7 @@ class _CardSelectionToolCardState extends ConsumerState<CardSelectionToolCard> {
                 child: Icon(
                   material.Icons.credit_card,
                   size: 15,
-                  color: focusOn.value
-                      ? RSTColors.primaryColor
-                      : RSTColors.tertiaryColor,
+                  color: focusOn.value ? RSTColors.primaryColor : RSTColors.tertiaryColor,
                 ),
               ),
               const SizedBox(

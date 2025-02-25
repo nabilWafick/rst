@@ -11,6 +11,7 @@ import 'package:rst/modules/activities/collectors/providers/collectors_activitie
 import 'package:rst/modules/cash/settlements/models/settlements.model.dart';
 import 'package:rst/modules/cash/settlements/models/structure/structure.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
+import 'package:rst/utils/constants/api/api.constant.dart';
 
 class CollectorsActivitiesFilterDialog extends StatefulHookConsumerWidget {
   const CollectorsActivitiesFilterDialog({super.key});
@@ -213,7 +214,7 @@ class _CollectorsActivitiesFilterDialogState
                               ...newState,
                               'where': {
                                 'collectionId': {
-                                  'not': 'null',
+                                  'not': RSTApiConstants.nullValue,
                                 },
                                 'isValidated': {
                                   'equals': true,
@@ -293,7 +294,7 @@ class _CollectorsActivitiesFilterDialogState
                               ...state,
                               'where': {
                                 'collectionId': {
-                                  'not': 'null',
+                                  'not': RSTApiConstants.nullValue,
                                 },
                                 logicalOperator.value: filterParameters,
                               }

@@ -9,6 +9,7 @@ import 'package:rst/common/widgets/selection_tools/customer/dialog/selection_dia
 import 'package:rst/common/widgets/selection_tools/customer/providers/selection.provider.dart';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
 import 'package:rst/utils/colors/colors.util.dart';
+import 'package:rst/utils/constants/api/api.constant.dart';
 
 class CustomerSelectionToolCard extends StatefulHookConsumerWidget {
   final String toolName;
@@ -29,12 +30,10 @@ class CustomerSelectionToolCard extends StatefulHookConsumerWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CustomerSelectionToolCardState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CustomerSelectionToolCardState();
 }
 
-class _CustomerSelectionToolCardState
-    extends ConsumerState<CustomerSelectionToolCard> {
+class _CustomerSelectionToolCardState extends ConsumerState<CustomerSelectionToolCard> {
   final focusNode = FocusNode();
   @override
   void initState() {
@@ -46,9 +45,7 @@ class _CustomerSelectionToolCardState
           milliseconds: 100,
         ),
         () {
-          ref
-              .read(customerSelectionToolProvider(widget.toolName).notifier)
-              .state = widget.customer;
+          ref.read(customerSelectionToolProvider(widget.toolName).notifier).state = widget.customer;
         },
       );
     }
@@ -56,8 +53,7 @@ class _CustomerSelectionToolCardState
 
   @override
   Widget build(BuildContext context) {
-    final selectedCustomer =
-        ref.watch(customerSelectionToolProvider(widget.toolName));
+    final selectedCustomer = ref.watch(customerSelectionToolProvider(widget.toolName));
     final focusOn = useState<bool>(false);
     double width = widget.width ?? 210;
     return Container(
@@ -71,15 +67,13 @@ class _CustomerSelectionToolCardState
                 ref.invalidate(customersSelectionListParametersProvider);
 
                 // show only customers of the selected collector of cash operations (if his is seleclected)
-                final cashOperationsSelectedCollector = ref
-                    .watch(collectorSelectionToolProvider('cash-operations'));
+                final cashOperationsSelectedCollector =
+                    ref.watch(collectorSelectionToolProvider('cash-operations'));
 
                 if (widget.toolName == 'cash-operations' &&
                     cashOperationsSelectedCollector != null) {
                   ref
-                      .read(customersSelectionListParametersProvider(
-                              'cash-operations')
-                          .notifier)
+                      .read(customersSelectionListParametersProvider('cash-operations').notifier)
                       .state = {
                     'skip': 0,
                     'take': 15,
@@ -95,8 +89,8 @@ class _CustomerSelectionToolCardState
 
                 /// ****  TRANSFER BETWEEN CUSTOMERS CARDS FILTERING **** ///
 
-                final transferBCCCustomer = ref.watch(
-                    customerSelectionToolProvider('transfer-bcc-customer'));
+                final transferBCCCustomer =
+                    ref.watch(customerSelectionToolProvider('transfer-bcc-customer'));
 
                 if (widget.toolName == 'transfer-bcc-customer') {
                   ref
@@ -118,9 +112,9 @@ class _CustomerSelectionToolCardState
                         {
                           'cards': {
                             'some': {
-                              'repaidAt': 'null',
-                              'satisfiedAt': 'null',
-                              'transferredAt': 'null',
+                              'repaidAt': RSTApiConstants.nullValue,
+                              'satisfiedAt': RSTApiConstants.nullValue,
+                              'transferredAt': RSTApiConstants.nullValue,
                             },
                           },
                         }
@@ -131,13 +125,11 @@ class _CustomerSelectionToolCardState
 
                 /// ****  TRANSFER BETWEEN CUSTOMERS  FILTERING **** ///
                 // read the slected customers
-                final transferBCIssuingCustomer = ref.watch(
-                    customerSelectionToolProvider(
-                        'transfer-bc-issuing-customer'));
+                final transferBCIssuingCustomer =
+                    ref.watch(customerSelectionToolProvider('transfer-bc-issuing-customer'));
 
-                final transferBCReceivingCustomer = ref.watch(
-                    customerSelectionToolProvider(
-                        'transfer-bc-receiving-customer'));
+                final transferBCReceivingCustomer =
+                    ref.watch(customerSelectionToolProvider('transfer-bc-receiving-customer'));
 
                 final transferBCCustomersIds =
                     [transferBCIssuingCustomer, transferBCReceivingCustomer]
@@ -172,9 +164,9 @@ class _CustomerSelectionToolCardState
                         {
                           'cards': {
                             'some': {
-                              'repaidAt': 'null',
-                              'satisfiedAt': 'null',
-                              'transferredAt': 'null',
+                              'repaidAt': RSTApiConstants.nullValue,
+                              'satisfiedAt': RSTApiConstants.nullValue,
+                              'transferredAt': RSTApiConstants.nullValue,
                             },
                           },
                         }
@@ -201,9 +193,9 @@ class _CustomerSelectionToolCardState
                         {
                           'cards': {
                             'some': {
-                              'repaidAt': 'null',
-                              'satisfiedAt': 'null',
-                              'transferredAt': 'null',
+                              'repaidAt': RSTApiConstants.nullValue,
+                              'satisfiedAt': RSTApiConstants.nullValue,
+                              'transferredAt': RSTApiConstants.nullValue,
                             },
                           },
                         }
@@ -214,8 +206,7 @@ class _CustomerSelectionToolCardState
 
                 FunctionsController.showAlertDialog(
                   context: context,
-                  alertDialog:
-                      CustomerSelectionDialog(toolName: widget.toolName),
+                  alertDialog: CustomerSelectionDialog(toolName: widget.toolName),
                 );
               }
             : null,
@@ -230,9 +221,7 @@ class _CustomerSelectionToolCardState
           decoration: BoxDecoration(
             border: Border.all(
               width: .5,
-              color: focusOn.value
-                  ? RSTColors.primaryColor
-                  : RSTColors.tertiaryColor,
+              color: focusOn.value ? RSTColors.primaryColor : RSTColors.tertiaryColor,
             ),
             borderRadius: widget.roundedStyle == RoundedStyle.full
                 ? BorderRadius.circular(15.0)
@@ -240,24 +229,16 @@ class _CustomerSelectionToolCardState
                     ? BorderRadius.circular(.0)
                     : BorderRadius.only(
                         topLeft: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyLeft
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyLeft ? 15.0 : 0,
                         ),
                         bottomLeft: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyLeft
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyLeft ? 15.0 : 0,
                         ),
                         topRight: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyRight
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyRight ? 15.0 : 0,
                         ),
                         bottomRight: Radius.circular(
-                          widget.roundedStyle == RoundedStyle.onlyRight
-                              ? 15.0
-                              : 0,
+                          widget.roundedStyle == RoundedStyle.onlyRight ? 15.0 : 0,
                         ),
                       ),
           ),
@@ -265,15 +246,12 @@ class _CustomerSelectionToolCardState
             children: [
               InkWell(
                 onTap: () {
-                  ref.invalidate(
-                      customerSelectionToolProvider(widget.toolName));
+                  ref.invalidate(customerSelectionToolProvider(widget.toolName));
                 },
                 child: Icon(
                   Icons.account_circle_outlined,
                   size: 15,
-                  color: focusOn.value
-                      ? RSTColors.primaryColor
-                      : RSTColors.tertiaryColor,
+                  color: focusOn.value ? RSTColors.primaryColor : RSTColors.tertiaryColor,
                 ),
               ),
               const SizedBox(

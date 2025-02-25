@@ -4,6 +4,7 @@ import 'package:rst/common/widgets/selection_tools/customer_card/providers/selec
 import 'package:rst/modules/definitions/cards/controllers/cards.controller.dart';
 import 'package:rst/modules/definitions/cards/models/card/card.model.dart';
 import 'package:rst/modules/definitions/customers/models/customer/customer.model.dart';
+import 'package:rst/utils/constants/api/api.constant.dart';
 
 onTransferBCReceivingCustomerChange({
   required WidgetRef ref,
@@ -34,13 +35,13 @@ onTransferBCReceivingCustomerChange({
                   },
                 },
                 {
-                  'repaidAt': 'null',
+                  'repaidAt': RSTApiConstants.nullValue,
                 },
                 {
-                  'satisfiedAt': 'null',
+                  'satisfiedAt': RSTApiConstants.nullValue,
                 },
                 {
-                  'transferredAt': 'null',
+                  'transferredAt': RSTApiConstants.nullValue,
                 },
               ]
             },
@@ -48,8 +49,7 @@ onTransferBCReceivingCustomerChange({
         );
 
         // fetch the cards
-        final customerCardsData =
-            await CardsController.getMany(listParameters: {
+        final customerCardsData = await CardsController.getMany(listParameters: {
           'skip': 0,
           'take': customerCardsNumberData.data.count,
           'where': {
@@ -60,13 +60,13 @@ onTransferBCReceivingCustomerChange({
                 },
               },
               {
-                'repaidAt': 'null',
+                'repaidAt': RSTApiConstants.nullValue,
               },
               {
-                'satisfiedAt': 'null',
+                'satisfiedAt': RSTApiConstants.nullValue,
               },
               {
-                'transferredAt': 'null',
+                'transferredAt': RSTApiConstants.nullValue,
               },
             ]
           },
@@ -78,10 +78,7 @@ onTransferBCReceivingCustomerChange({
         );
 
         // update transferBC ReceivingCard
-        ref
-                .read(cardSelectionToolProvider('transfer-bc-receiving-card')
-                    .notifier)
-                .state =
+        ref.read(cardSelectionToolProvider('transfer-bc-receiving-card').notifier).state =
             customerCards.isNotEmpty ? customerCards.firstOrNull : null;
       } catch (e) {
         debugPrint(e.toString());
